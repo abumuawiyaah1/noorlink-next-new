@@ -8,6 +8,7 @@ import {
   type DeviceBrand,
 } from "@/lib/devices-api";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
+import { OPEN_CHECKER_EVENT } from "@/components/landing/HowItWorksBridge";
 
 function normalize(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, " ");
@@ -114,11 +115,17 @@ export function DeviceCheckerBridge() {
       document.getElementById("device-check-btn")?.click();
     }
 
+    function openFromHowItWorks() {
+      setModalOpen(true);
+    }
+
     document.addEventListener("click", runCheck, true);
     document.addEventListener("keydown", onKeyDown);
+    window.addEventListener(OPEN_CHECKER_EVENT, openFromHowItWorks);
     return () => {
       document.removeEventListener("click", runCheck, true);
       document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener(OPEN_CHECKER_EVENT, openFromHowItWorks);
     };
   }, []);
 
