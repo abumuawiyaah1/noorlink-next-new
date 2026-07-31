@@ -58,6 +58,26 @@ Removing the domain from the Netlify **site** is not enough if Cloudflare DNS st
    - https://noorlink.co → `x-opennext: 1`
    - https://api.noorlink.co → still Railway
 
+### If `www` won’t add in the dashboard
+
+After removing `www` from Pages, the Custom Domain UI often stays stuck (“already in use” / fails silently) even when DNS is empty.
+
+**Option A — deploy via Wrangler (preferred)**  
+`wrangler.jsonc` includes both `noorlink.co` and `www.noorlink.co` as `custom_domain` routes. Push/redeploy Workers Builds so Wrangler creates `www` DNS + cert.
+
+**Option B — Worker Route (manual)**  
+1. DNS → Add record:  
+   - Type `CNAME`  
+   - Name `www`  
+   - Target `noorlink.co`  
+   - Proxy **on** (orange)  
+2. Worker → Domains & Routes → **Add route** (not Custom Domain):  
+   - `www.noorlink.co/*` → Worker `noorlink-next-new`
+
+**Option C — Redirect only**  
+Rules → Redirect Rules:  
+`www.noorlink.co/*` → `https://noorlink.co/${1}` (301). Apex already works.
+
 If `workers.dev` shows **error 1042**, redeploy the Worker after DNS is clean (failed custom-domain deploys can leave a bad version).
 
 ## Fix for error 8000098 / white screen

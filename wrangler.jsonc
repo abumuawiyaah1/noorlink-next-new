@@ -26,8 +26,11 @@
 	"vars": {
 		"NEXT_PUBLIC_API_URL": "https://api.noorlink.co",
 		"BACKEND_API_URL": "https://api.noorlink.co"
-	}
-	// Custom domains are attached in the Cloudflare dashboard after Netlify DNS
-	// records are fully removed (see DEPLOY.md). Putting them in wrangler while
-	// leftover Netlify DNS exists can fail the deploy and break workers.dev (1042).
+	},
+	// Apex is already attached in the dashboard. www often fails in the UI after
+	// leaving Pages — deploy creates/updates the Worker custom domain + DNS.
+	"routes": [
+		{ "pattern": "noorlink.co", "custom_domain": true },
+		{ "pattern": "www.noorlink.co", "custom_domain": true }
+	]
 }
