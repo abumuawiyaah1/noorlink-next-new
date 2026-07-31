@@ -1,6 +1,9 @@
-/** Client-side API base.
- * Production: empty → same-origin `/api/...` (proxied by app/api to Railway).
- * Local: defaults to FastAPI on :8000 unless NEXT_PUBLIC_API_URL is set.
+/**
+ * Browser API base for noorlink-automation (Railway).
+ *
+ * Production: empty string → same-origin `/api/...`, proxied by
+ * `app/api/[[...path]]/route.ts` to `BACKEND_API_URL` (https://api.noorlink.co).
+ * Local: defaults to automation FastAPI on :8000 unless NEXT_PUBLIC_API_URL is set.
  */
 export const API_BASE =
   process.env.NEXT_PUBLIC_API_URL !== undefined

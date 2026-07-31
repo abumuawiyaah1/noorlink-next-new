@@ -1,49 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NoorLink Next (storefront)
 
-## Getting Started
+Frontend for [noorlink.co](https://noorlink.co). Backend is **[noorlink-automation](https://github.com/abumuawiyaah1/noorlink-automation)** on Railway (`https://api.noorlink.co`).
 
-First, run the development server:
+## Architecture
+
+```
+Browser (noorlink.co)
+  │
+  │  same-origin /api/*
+  ▼
+Next.js Worker (this repo)
+  │  BACKEND_API_URL
+  ▼
+noorlink-automation (Railway / api.noorlink.co)
+  │
+  ▼
+Supabase + Stripe + Resend
+```
+
+| Layer | Repo / URL |
+| --- | --- |
+| Frontend | `abumuawiyaah1/noorlink-next-new` → Cloudflare Worker |
+| Backend | `abumuawiyaah1/noorlink-automation` → `https://api.noorlink.co` |
+
+Browser never calls Railway cross-origin. It calls `/api/...`, and `app/api/[[...path]]/route.ts` proxies to automation.
+
+Verify: `curl https://noorlink.co/api/health` → `"service":"noorlink-automation"`, `"connected":true`.
+
+## Env
+
+| Variable | Purpose | Production |
+| --- | --- | --- |
+| `NEXT_PUBLIC_API_URL` | Browser API base (empty = same-origin `/api`) | _(empty)_ |
+| `BACKEND_API_URL` | Worker/proxy → automation | `https://api.noorlink.co` |
+
+See `.env.example`, `.env.production`, and `wrangler.jsonc`.
+
+## Local
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+With automation local on `:8000`, leave `NEXT_PUBLIC_API_URL` unset (defaults to `http://127.0.0.1:8000`). Or set `NEXT_PUBLIC_API_URL=` and `BACKEND_API_URL=http://127.0.0.1:8000` to exercise the proxy.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Cloudflare (OpenNext)
-
-Worker URL: https://noorlink-next-new.jibnjorge-1c3.workers.dev  
-
-Backend API: https://api.noorlink.co  
-
-This app must deploy as a **Cloudflare Worker** via OpenNext — **not** as a Cloudflare Pages static project.
+## Deploy (Cloudflare Workers — not Pages)
 
 ```bash
-npm run preview   # local Workers runtime preview
-npm run deploy    # build + deploy to Cloudflare Workers
-npm run tail      # live Worker logs (not pages deployment tail)
+npm run preview   # local Workers preview
+npm run deploy    # OpenNext build + Wrangler deploy
+npm run tail      # Worker logs
 ```
 
-Custom domain + API wiring steps: [DEPLOY.md](./DEPLOY.md)
-
-#Noorlink Test.
- 
+Full cutover notes: [DEPLOY.md](./DEPLOY.md).

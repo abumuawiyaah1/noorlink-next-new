@@ -56,7 +56,14 @@ function PlanCard({
     plan.isPayAsYouGo ||
     plan.isRechargeable;
 
-  const checkoutHref = `/checkout?country=${encodeURIComponent(countryName)}&price=${encodeURIComponent(plan.price.toFixed(2))}${flag ? `&flag=${encodeURIComponent(flag)}` : ""}`;
+  const checkoutParams = new URLSearchParams({
+    country: countryName,
+    price: plan.price.toFixed(2),
+    plan: plan.name,
+    packageId: plan.id,
+  });
+  if (flag) checkoutParams.set("flag", flag);
+  const checkoutHref = `/checkout?${checkoutParams.toString()}`;
 
   return (
     <article
