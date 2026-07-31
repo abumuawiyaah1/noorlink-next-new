@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { TravelerPlansPage } from "@/components/plans/TravelerPlansPage";
 import { normalizeCountrySlug } from "@/lib/country-slugs";
-import { pingPlansApi } from "@/lib/plans-diagnostics";
+import { fetchPlansByCountryServer } from "@/lib/plans-api";
+import { buildRegionalPlansFallback } from "@/lib/regional-plans-fallback";
 import "@/styles/plans-dynamic.css";
 
 export const dynamic = "force-dynamic";
@@ -25,28 +26,22 @@ export default async function CountryPlansPage({ params }: PageProps) {
   const { country } = await params;
   const countryId = normalizeCountrySlug(country);
 
-  let initialData = null;
-  let initialError: string | null = null;
-
-  const connectivity = await pingPlansApi(countryId, { serverSide: true });
-
-  if (connectivity.ok && connectivity.data) {
-    initialData = connectivity.data;
-  } else {
-    console.error("[plans/[country]] Server fetch failed:", {
+  let initialData;
+  try {
+    initialData = await fetchPlansByCountryServer(countryId);
+  } catch (err) {
+    console.error("[plans/[country]] Server fetch failed — regional fallback", {
       countryId,
-      connectivity,
+      error: err,
     });
-    initialError =
-      connectivity.error ??
-      "Unable to load plans. The service may be temporarily unavailable.";
+    initialData = buildRegionalPlansFallback(countryId);
   }
 
   return (
     <TravelerPlansPage
       countryId={countryId}
       initialData={initialData}
-      initialError={initialError}
+      initialError={null}
     />
   );
 }

@@ -2,6 +2,7 @@ import { API_BASE } from "@/lib/api-client";
 import { SERVER_API_BASE } from "@/lib/api-server";
 import { normalizeCountrySlug } from "@/lib/country-slugs";
 import { normalizePlansResponse } from "@/lib/plans-diagnostics";
+import { buildRegionalPlansFallback } from "@/lib/regional-plans-fallback";
 
 export type PricingStrategy = "MANUAL" | "AUTOMATED";
 export type MarginStatus = "manual" | "automated" | "floor_applied";
@@ -103,6 +104,26 @@ function wrapPlansNetworkError(
   return new Error(message);
 }
 
+function withCatalogOrFallback(
+  countryId: string,
+  payload: PlansByCountryResponse,
+): PlansByCountryResponse {
+  if (payload.plans?.length) return payload;
+  console.warn(
+    "[plans-api] Empty catalog from automation — using regional fallback",
+    countryId,
+  );
+  return buildRegionalPlansFallback(countryId);
+}
+
+function fallbackAfterError(countryId: string, err: unknown): PlansByCountryResponse {
+  console.warn(
+    "[plans-api] Automation catalog unavailable — using regional fallback",
+    { countryId, error: err instanceof Error ? err.message : err },
+  );
+  return buildRegionalPlansFallback(countryId);
+}
+
 /** Server Component fetch — no client cache, hits pricing engine directly. */
 export async function fetchPlansByCountryServer(
   countryId: string,
@@ -116,8 +137,13 @@ export async function fetchPlansByCountryServer(
       headers: { Accept: "application/json" },
       cache: "no-store",
     });
-    return await parsePlansResponse(res, url, slug);
+    const payload = await parsePlansResponse(res, url, slug);
+    return withCatalogOrFallback(slug, payload);
   } catch (err: unknown) {
+    // Prefer sellable regional templates over a hard 503 page.
+    if (err instanceof Error && /503|unavailable|reach the plans/i.test(err.message)) {
+      return fallbackAfterError(slug, err);
+    }
     throw wrapPlansNetworkError(err, url, slug);
   }
 }
@@ -134,8 +160,9 @@ export async function fetchPlansByCountry(
       headers: { Accept: "application/json" },
     });
 
-    return await parsePlansResponse(res, url, slug);
+    const payload = await parsePlansResponse(res, url, slug);
+    return withCatalogOrFallback(slug, payload);
   } catch (err: unknown) {
-    throw wrapPlansNetworkError(err, url, slug);
+    return fallbackAfterError(slug, err);
   }
 }

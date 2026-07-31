@@ -9,6 +9,7 @@ import {
   type PlanCategory,
   type PlansByCountryResponse,
 } from "@/lib/plans-api";
+import { isRegionalFallbackPlanId } from "@/lib/regional-plans-fallback";
 import "@/styles/plans-dynamic.css";
 
 type PlanTab = PlanCategory;
@@ -56,7 +57,16 @@ function PlanCard({
     plan.isPayAsYouGo ||
     plan.isRechargeable;
 
-  const checkoutHref = `/checkout?country=${encodeURIComponent(countryName)}&price=${encodeURIComponent(plan.price.toFixed(2))}${flag ? `&flag=${encodeURIComponent(flag)}` : ""}`;
+  const checkoutParams = new URLSearchParams({
+    country: countryName,
+    price: plan.price.toFixed(2),
+    plan: plan.name,
+  });
+  if (!isRegionalFallbackPlanId(plan.id)) {
+    checkoutParams.set("packageId", plan.id);
+  }
+  if (flag) checkoutParams.set("flag", flag);
+  const checkoutHref = `/checkout?${checkoutParams.toString()}`;
 
   return (
     <article
@@ -124,14 +134,16 @@ export function TravelerPlansPage({
   initialError = null,
 }: TravelerPlansPageProps) {
   const [data, setData] = useState<PlansByCountryResponse | null>(initialData);
-  const [loading, setLoading] = useState(!initialData && !initialError);
-  const [error, setError] = useState<string | null>(initialError);
+  const [loading, setLoading] = useState(!initialData);
+  const [error, setError] = useState<string | null>(
+    initialData ? null : initialError,
+  );
   const [activeTab, setActiveTab] = useState<PlanTab>(
     initialData ? pickInitialTab(initialData) : "fixed",
   );
 
   useEffect(() => {
-    if (initialData || initialError) return;
+    if (initialData) return;
 
     let cancelled = false;
 
@@ -140,10 +152,12 @@ export function TravelerPlansPage({
       setError(null);
 
       try {
+        // fetchPlansByCountry falls back to regional templates on 503.
         const response = await fetchPlansByCountry(countryId);
         if (cancelled) return;
 
         setData(response);
+        setError(null);
         const firstTab = TABS.find(
           (tab) => (response.planGroups[tab.id]?.length ?? 0) > 0,
         );
@@ -171,7 +185,7 @@ export function TravelerPlansPage({
     return () => {
       cancelled = true;
     };
-  }, [countryId, initialData, initialError]);
+  }, [countryId, initialData]);
 
   const title = data?.countryName ?? countryId.replace(/-/g, " ");
   const flag = data?.flag;

@@ -1,5 +1,6 @@
 import { PilgrimSelectionPage } from "@/components/pilgrimage/PilgrimSelectionPage";
-import { pingPlansApi } from "@/lib/plans-diagnostics";
+import { fetchPlansByCountryServer } from "@/lib/plans-api";
+import { buildRegionalPlansFallback } from "@/lib/regional-plans-fallback";
 
 export const dynamic = "force-dynamic";
 
@@ -12,27 +13,21 @@ export const metadata = {
 };
 
 export default async function HajjUmrahPage() {
-  let initialData = null;
-  let initialError: string | null = null;
-
-  const connectivity = await pingPlansApi(SAUDI_COUNTRY_ID, { serverSide: true });
-
-  if (connectivity.ok && connectivity.data) {
-    initialData = connectivity.data;
-  } else {
-    console.error("[hajj-umrah] Server fetch failed:", {
+  let initialData;
+  try {
+    initialData = await fetchPlansByCountryServer(SAUDI_COUNTRY_ID);
+  } catch (err) {
+    console.error("[hajj-umrah] Server fetch failed — regional fallback", {
       countryId: SAUDI_COUNTRY_ID,
-      connectivity,
+      error: err,
     });
-    initialError =
-      connectivity.error ??
-      "Unable to load plans. The service may be temporarily unavailable.";
+    initialData = buildRegionalPlansFallback(SAUDI_COUNTRY_ID);
   }
 
   return (
     <PilgrimSelectionPage
       initialData={initialData}
-      initialError={initialError}
+      initialError={null}
     />
   );
 }
