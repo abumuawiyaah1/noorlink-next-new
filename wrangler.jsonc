@@ -1,24 +1,18 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	// Must match the Cloudflare Worker name you deploy to.
-	// Do NOT deploy this app as a Cloudflare Pages project.
 	"name": "noorlink-next-new",
-	// OpenNext entrypoint (produced by `opennextjs-cloudflare build`)
 	"main": ".open-next/worker.js",
-	// Must be >= 2025-05-05 for FinalizationRegistry / Next.js on Workers
 	"compatibility_date": "2026-06-23",
 	"compatibility_flags": [
 		"nodejs_compat",
 		"global_fetch_strictly_public"
 	],
-	// Static assets + Next.js chunks from the OpenNext build.
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
 	},
 	"services": [
 		{
-			// Required for OpenNext caching / revalidation self-calls
 			"binding": "WORKER_SELF_REFERENCE",
 			"service": "noorlink-next-new"
 		}
@@ -29,18 +23,11 @@
 	"observability": {
 		"enabled": true
 	},
-	// Runtime env for server-side fetches from the Worker
 	"vars": {
 		"NEXT_PUBLIC_API_URL": "https://api.noorlink.co",
 		"BACKEND_API_URL": "https://api.noorlink.co"
-	},
-	// Custom domains for this Worker (Cloudflare-managed zone required).
-	// BEFORE deploying with these enabled: remove noorlink.co from Netlify
-	// (and any Cloudflare Pages custom domain) to avoid DNS conflicts.
-	"routes": [
-		{ "pattern": "noorlink.co", "custom_domain": true },
-		{ "pattern": "www.noorlink.co", "custom_domain": true }
-	]
-	// DO NOT add "pages_build_output_dir".
-	// @opennextjs/cloudflare requires Workers: `opennextjs-cloudflare deploy`.
+	}
+	// Custom domains are attached in the Cloudflare dashboard after Netlify DNS
+	// records are fully removed (see DEPLOY.md). Putting them in wrangler while
+	// leftover Netlify DNS exists can fail the deploy and break workers.dev (1042).
 }

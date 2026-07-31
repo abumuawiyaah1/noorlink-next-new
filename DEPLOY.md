@@ -29,26 +29,36 @@ Local default remains `http://127.0.0.1:8000` when those env vars are unset.
 
 ## Attach custom domain (`noorlink.co`)
 
-Worker is live at: `https://noorlink-next-new.jibnjorge-1c3.workers.dev`
+Worker URL: `https://noorlink-next-new.jibnjorge-1c3.workers.dev`
 
-`wrangler.jsonc` maps:
+Attach domains in the dashboard (after DNS is clean), not while Netlify DNS leftovers remain:
+
+**Workers & Pages → Worker `noorlink-next-new` → Settings → Domains & Routes → Add Custom Domain**
 
 - `noorlink.co`
 - `www.noorlink.co`
 
-### Cutover from Netlify (required first)
+### Cutover checklist (Netlify fully gone)
 
-`noorlink.co` currently serves via **Netlify** (behind Cloudflare). Attach the Worker domain only after removing Netlify:
+Removing the domain from the Netlify **site** is not enough if Cloudflare DNS still points at Netlify.
 
-1. Netlify → Site → Domain management → remove `noorlink.co` / `www.noorlink.co`.
-2. Cloudflare → remove any **Pages** custom domain for `noorlink.co` if present.
-3. Ensure the zone `noorlink.co` stays on Cloudflare nameservers.
-4. Redeploy the Worker (`npm run deploy` or push to `main` with Workers Builds).
-5. Cloudflare creates DNS + certificates for the Worker custom domains.
+1. Netlify → Domain management → confirm `noorlink.co` / `www` are gone.
+2. Cloudflare → **DNS** for `noorlink.co` → delete any record that mentions Netlify, e.g.:
+   - CNAME → `*.netlify.app`
+   - A/AAAA that Netlify created
+3. Confirm with:
+   ```bash
+   curl -sI https://noorlink.co | rg -i 'x-nf|netlify|x-opennext'
+   ```
+   You must **not** see `x-nf-request-id`.
+4. Redeploy Worker (Workers Builds or `npm run deploy`).
+5. Add Custom Domains in the Worker dashboard (step above).
 6. Verify:
-   - https://noorlink.co → Next.js (`x-opennext: 1`)
-   - https://www.noorlink.co → same
-   - https://api.noorlink.co → still Railway backend
+   - https://noorlink-next-new.jibnjorge-1c3.workers.dev → `x-opennext: 1`
+   - https://noorlink.co → `x-opennext: 1`
+   - https://api.noorlink.co → still Railway
+
+If `workers.dev` shows **error 1042**, redeploy the Worker after DNS is clean (failed custom-domain deploys can leave a bad version).
 
 ### Dashboard alternative (no wrangler routes)
 
