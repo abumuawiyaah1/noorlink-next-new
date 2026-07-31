@@ -24,7 +24,7 @@
 		"enabled": true
 	},
 	"vars": {
-		"NEXT_PUBLIC_API_URL": "https://api.noorlink.co",
+		// Browser uses same-origin /api proxy (see .env.production NEXT_PUBLIC_API_URL=)
 		"BACKEND_API_URL": "https://api.noorlink.co"
 	},
 	// Apex already live. Re-declare www so Workers Builds republishes DNS
