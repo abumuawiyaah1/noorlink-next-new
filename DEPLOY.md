@@ -60,10 +60,6 @@ Removing the domain from the Netlify **site** is not enough if Cloudflare DNS st
 
 If `workers.dev` shows **error 1042**, redeploy the Worker after DNS is clean (failed custom-domain deploys can leave a bad version).
 
-### Dashboard alternative (no wrangler routes)
-
-Workers & Pages → Worker `noorlink-next-new` → Settings → Domains & Routes → **Add Custom Domain** → `noorlink.co` and `www.noorlink.co`.
-
 ## Fix for error 8000098 / white screen
 
 That error means Cloudflare deployed **static files only**. OpenNext never ran as a Worker.
