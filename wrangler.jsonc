@@ -12,7 +12,6 @@
 		"global_fetch_strictly_public"
 	],
 	// Static assets + Next.js chunks from the OpenNext build.
-	// This is the correct "output mapping" — NOT pages_build_output_dir.
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
@@ -20,7 +19,6 @@
 	"services": [
 		{
 			// Required for OpenNext caching / revalidation self-calls
-			// service name must match top-level "name"
 			"binding": "WORKER_SELF_REFERENCE",
 			"service": "noorlink-next-new"
 		}
@@ -30,8 +28,19 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	// Runtime env for server-side fetches from the Worker
+	"vars": {
+		"NEXT_PUBLIC_API_URL": "https://api.noorlink.co",
+		"BACKEND_API_URL": "https://api.noorlink.co"
+	},
+	// Custom domains for this Worker (Cloudflare-managed zone required).
+	// BEFORE deploying with these enabled: remove noorlink.co from Netlify
+	// (and any Cloudflare Pages custom domain) to avoid DNS conflicts.
+	"routes": [
+		{ "pattern": "noorlink.co", "custom_domain": true },
+		{ "pattern": "www.noorlink.co", "custom_domain": true }
+	]
 	// DO NOT add "pages_build_output_dir".
-	// DO NOT use `wrangler pages deploy` or Cloudflare Pages Git builds.
 	// @opennextjs/cloudflare requires Workers: `opennextjs-cloudflare deploy`.
 }
