@@ -31,15 +31,19 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Cloudflare (OpenNext)
 
-This app must deploy as a **Cloudflare Worker** via OpenNext — **not** as a Cloudflare Pages static project.
+Worker URL: https://noorlink-next-new.jibnjorge-1c3.workers.dev  
 
-If you see Pages error `8000098` (“does not have a Pages Function… cannot tail a static site”) or a blank page, you are still on Pages. Follow the migration steps in [DEPLOY.md](./DEPLOY.md).
+Backend API: https://api.noorlink.co  
+
+This app must deploy as a **Cloudflare Worker** via OpenNext — **not** as a Cloudflare Pages static project.
 
 ```bash
 npm run preview   # local Workers runtime preview
 npm run deploy    # build + deploy to Cloudflare Workers
 npm run tail      # live Worker logs (not pages deployment tail)
 ```
+
+Custom domain + API wiring steps: [DEPLOY.md](./DEPLOY.md)
 
 #Noorlink Test.
  

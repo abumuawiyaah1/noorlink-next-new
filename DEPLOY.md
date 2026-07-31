@@ -9,6 +9,51 @@
 > - `wrangler pages deployment tail` error **8000098**
 >   (“does not have a Pages Function… you cannot tail a static site”)
 
+## Backend API (already live)
+
+The FastAPI backend is at **https://api.noorlink.co** (Railway).
+
+This frontend reads:
+
+| Variable | Purpose | Production value |
+| --- | --- | --- |
+| `NEXT_PUBLIC_API_URL` | Browser → API (CORS) | `https://api.noorlink.co` |
+| `BACKEND_API_URL` | Worker server → API | `https://api.noorlink.co` |
+
+Set in:
+
+- `.env.production` (build-time for `NEXT_PUBLIC_*`)
+- `wrangler.jsonc` → `vars` (runtime for the Worker)
+
+Local default remains `http://127.0.0.1:8000` when those env vars are unset.
+
+## Attach custom domain (`noorlink.co`)
+
+Worker is live at: `https://noorlink-next-new.jibnjorge-1c3.workers.dev`
+
+`wrangler.jsonc` maps:
+
+- `noorlink.co`
+- `www.noorlink.co`
+
+### Cutover from Netlify (required first)
+
+`noorlink.co` currently serves via **Netlify** (behind Cloudflare). Attach the Worker domain only after removing Netlify:
+
+1. Netlify → Site → Domain management → remove `noorlink.co` / `www.noorlink.co`.
+2. Cloudflare → remove any **Pages** custom domain for `noorlink.co` if present.
+3. Ensure the zone `noorlink.co` stays on Cloudflare nameservers.
+4. Redeploy the Worker (`npm run deploy` or push to `main` with Workers Builds).
+5. Cloudflare creates DNS + certificates for the Worker custom domains.
+6. Verify:
+   - https://noorlink.co → Next.js (`x-opennext: 1`)
+   - https://www.noorlink.co → same
+   - https://api.noorlink.co → still Railway backend
+
+### Dashboard alternative (no wrangler routes)
+
+Workers & Pages → Worker `noorlink-next-new` → Settings → Domains & Routes → **Add Custom Domain** → `noorlink.co` and `www.noorlink.co`.
+
 ## Fix for error 8000098 / white screen
 
 That error means Cloudflare deployed **static files only**. OpenNext never ran as a Worker.
