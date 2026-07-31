@@ -26,11 +26,10 @@
 	"vars": {
 		"NEXT_PUBLIC_API_URL": "https://api.noorlink.co",
 		"BACKEND_API_URL": "https://api.noorlink.co"
-	},
-	// Apex is already attached in the dashboard. www often fails in the UI after
-	// leaving Pages — deploy creates/updates the Worker custom domain + DNS.
-	"routes": [
-		{ "pattern": "noorlink.co", "custom_domain": true },
-		{ "pattern": "www.noorlink.co", "custom_domain": true }
-	]
+	}
+	// Do NOT declare custom domains here.
+	// Apex (noorlink.co) is attached in the dashboard.
+	// Declaring www via wrangler created an orphaned Workers-managed DNS
+	// record and broke workers.dev with error 1042.
+	// Use a Cloudflare Redirect Rule for www → https://noorlink.co (see DEPLOY.md).
 }
