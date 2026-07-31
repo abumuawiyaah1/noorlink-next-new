@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
+import { createCheckoutSession } from "@/lib/automation-api";
 
 function parsePrice(value: string | null): number {
   if (!value) return 0;
@@ -11,11 +12,12 @@ function parsePrice(value: string | null): number {
 }
 
 export function ModernCheckoutPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const country = searchParams.get("country") ?? "Your destination";
   const flag = searchParams.get("flag") ?? "🌍";
+  const packageId = searchParams.get("packageId") ?? undefined;
+  const planName = searchParams.get("plan") ?? undefined;
   const price = parsePrice(searchParams.get("price")) || 12;
 
   const [email, setEmail] = useState("");
@@ -26,7 +28,7 @@ export function ModernCheckoutPage() {
 
   const formattedTotal = useMemo(() => price.toFixed(2), [price]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
 
@@ -41,16 +43,33 @@ export function ModernCheckoutPage() {
     }
 
     setSubmitting(true);
+    try {
+      const session = await createCheckoutSession({
+        country,
+        price,
+        email: email.trim(),
+        flag,
+        packageId,
+      });
 
-    const params = new URLSearchParams({
-      country,
-      price: formattedTotal,
-      email: email.trim(),
-    });
-    if (phone.trim()) params.set("phone", phone.trim());
-    if (flag) params.set("flag", flag);
+      if (!session.checkoutUrl) {
+        throw new Error(
+          session.message ||
+            "Checkout session created but no payment URL was returned.",
+        );
+      }
 
-    router.push(`/success?${params.toString()}`);
+      // Hand off to Stripe Checkout (created by noorlink-automation).
+      window.location.assign(session.checkoutUrl);
+    } catch (err) {
+      console.error("[checkout] automation session failed", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to start checkout. Please try again.",
+      );
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -136,6 +155,12 @@ export function ModernCheckoutPage() {
                   <span>{flag} Destination</span>
                   <strong>{country}</strong>
                 </div>
+                {planName ? (
+                  <div className="summary-row">
+                    <span>Plan</span>
+                    <strong>{planName}</strong>
+                  </div>
+                ) : null}
                 <div className="summary-row summary-total">
                   <span>Total</span>
                   <strong>${formattedTotal}</strong>
@@ -145,10 +170,10 @@ export function ModernCheckoutPage() {
                   className={`pay-btn${submitting ? " loading" : ""}`}
                   disabled={submitting}
                 >
-                  Pay ${formattedTotal}
+                  {submitting ? "Connecting to payment…" : `Pay $${formattedTotal}`}
                 </button>
                 <p style={{ fontSize: "0.8rem", textAlign: "center", marginTop: 15, color: "#888" }}>
-                  Secure checkout powered by NoorLink.
+                  Secure checkout via NoorLink Automation + Stripe.
                 </p>
               </div>
             </aside>

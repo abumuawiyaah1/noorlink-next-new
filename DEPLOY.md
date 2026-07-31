@@ -9,11 +9,20 @@
 > - `wrangler pages deployment tail` error **8000098**
 >   (“does not have a Pages Function… you cannot tail a static site”)
 
-## Backend API (already live)
+## Backend API (noorlink-automation)
 
-The FastAPI backend is at **https://api.noorlink.co** (Railway).
+The FastAPI backend is **[noorlink-automation](https://github.com/abumuawiyaah1/noorlink-automation)** at **https://api.noorlink.co** (Railway).
 
 Browser calls are **same-origin** (`/api/...`) and proxied by `app/api/[[...path]]/route.ts` to Railway. That avoids CORS blocks between `noorlink.co` and `api.noorlink.co`.
+
+| Frontend feature | Automation route |
+| --- | --- |
+| Plans pages | `GET /api/v1/plans?country_id=` |
+| Device checker | `GET /api/v1/devices/compatible` |
+| Hero popular pills | `GET /api/v1/analytics/popular` |
+| Checkout pay button | `POST /api/checkout/session` → Stripe URL |
+| Dashboard lookup | `GET /api/orders/lookup?orderId=&email=` |
+| Health | `GET /health` (via `/api/health`) |
 
 | Variable | Purpose | Production value |
 | --- | --- | --- |
@@ -26,6 +35,8 @@ Set in:
 - `wrangler.jsonc` → `vars.BACKEND_API_URL` (runtime)
 
 Local default remains `http://127.0.0.1:8000` when `NEXT_PUBLIC_API_URL` is unset.
+
+If `/api/health` shows `"status":"degraded"` or plans return 503, the Worker is still connected — fix **Supabase credentials / tables** on the Railway automation service.
 
 ## Attach custom domain (`noorlink.co`)
 

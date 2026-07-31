@@ -64,6 +64,7 @@ async function proxyToBackend(req: Request, ctx: Ctx): Promise<Response> {
       outHeaders.set(key, value);
     }
   });
+  outHeaders.set("x-noorlink-backend", "noorlink-automation");
 
   return new Response(upstream.body, {
     status: upstream.status,
