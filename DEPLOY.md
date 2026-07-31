@@ -75,19 +75,36 @@ Worker name in `wrangler.jsonc`: `noorlink-next-new`.
 
 ## Option B — Cloudflare Workers Builds (Git)
 
-Create / open a **Worker** connected to this GitHub repo (Workers & Pages → Create → Worker, or Workers Builds).
+Create / open a **Worker** connected to this GitHub repo  
+(Workers & Pages → **Create** → **Worker**, or open an existing **Worker** → Settings → Builds).
 
-**Build settings:**
+Do **not** use the Pages project settings screen that only has:
 
-| Setting | Value |
+- Build command  
+- Build output  
+- Root directory  
+- Build comments  
+
+That Pages form has **no Deploy command** and will publish a static site → white screen + error `8000098`.
+
+### Correct Workers Builds fields
+
+| Field | Value |
 | --- | --- |
-| Build command | `npx opennextjs-cloudflare build` |
-| Deploy command | `npx opennextjs-cloudflare deploy` |
-| Root directory | `/` (repo root) |
-| Node.js version | `20` (or newer) |
+| **Build command** | `npx opennextjs-cloudflare build` |
+| **Deploy command** | `npx opennextjs-cloudflare deploy` |
+| **Root directory** | leave empty (repo root) or `/` |
+| **Build output / output directory** | leave **empty** (never `.open-next`, never `.next`) |
+| **Node.js version** | `20` or newer |
 
-Do **not** set a Pages “Build output directory”.  
-Do **not** use the existing Pages project’s Git integration.
+Wrangler reads `wrangler.jsonc` and deploys:
+
+- worker: `.open-next/worker.js`
+- assets: `.open-next/assets`
+
+### If you only see Pages fields (no Deploy command)
+
+You are still editing the **Pages** project `noorlink-next-new`. Stop that build, create/connect a **Worker** instead, then use the table above.
 
 ## Option C — GitHub Actions
 
