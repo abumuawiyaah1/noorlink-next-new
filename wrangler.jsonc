@@ -1,6 +1,8 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "noorlink-next",
+	// Must match the Cloudflare Worker name you deploy to.
+	// Do NOT deploy this app as a Cloudflare Pages project.
+	"name": "noorlink-next-new",
 	// OpenNext entrypoint (produced by `opennextjs-cloudflare build`)
 	"main": ".open-next/worker.js",
 	// Must be >= 2025-05-05 for FinalizationRegistry / Next.js on Workers
@@ -18,8 +20,9 @@
 	"services": [
 		{
 			// Required for OpenNext caching / revalidation self-calls
+			// service name must match top-level "name"
 			"binding": "WORKER_SELF_REFERENCE",
-			"service": "noorlink-next"
+			"service": "noorlink-next-new"
 		}
 	],
 	"images": {
@@ -29,7 +32,6 @@
 		"enabled": true
 	}
 	// DO NOT add "pages_build_output_dir".
-	// @opennextjs/cloudflare deploys as a Worker with static assets.
-	// Traditional Cloudflare Pages output-dir deploys cause blank/white screens
-	// because they never bind `.open-next/worker.js` + `.open-next/assets`.
+	// DO NOT use `wrangler pages deploy` or Cloudflare Pages Git builds.
+	// @opennextjs/cloudflare requires Workers: `opennextjs-cloudflare deploy`.
 }
