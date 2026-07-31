@@ -60,25 +60,37 @@ Removing the domain from the Netlify **site** is not enough if Cloudflare DNS st
 
 ### If `www` won’t add in the dashboard
 
-After removing `www` from Pages, the Custom Domain UI often stays stuck (“already in use” / fails silently) even when DNS is empty.
+After Pages / a failed Wrangler custom-domain attempt, Cloudflare often leaves an
+**orphaned Workers-managed DNS record** for `www`. Symptoms:
 
-**Option A — deploy via Wrangler (preferred)**  
-`wrangler.jsonc` includes both `noorlink.co` and `www.noorlink.co` as `custom_domain` routes. Push/redeploy Workers Builds so Wrangler creates `www` DNS + cert.
+- UI: “A DNS record managed by Workers already exists on that host.”
+- Search: “No domains or routes match www.noorlink.co”
+- `dig www.noorlink.co` fails / does not resolve
+- You cannot create a manual CNAME for `www`
 
-**Option B — Worker Route (manual)**  
-1. DNS → Add record:  
-   - Type `CNAME`  
-   - Name `www`  
-   - Target `noorlink.co`  
-   - Proxy **on** (orange)  
-2. Worker → Domains & Routes → **Add route** (not Custom Domain):  
-   - `www.noorlink.co/*` → Worker `noorlink-next-new`
+**Fix the orphan**
 
-**Option C — Redirect only**  
-Rules → Redirect Rules:  
-`www.noorlink.co/*` → `https://noorlink.co/${1}` (301). Apex already works.
+1. Worker `noorlink-next-new` → **Settings → Domains & Routes**
+2. Scroll the full list (don’t rely on search) → delete anything for `www.noorlink.co`
+3. DNS → Records → look for `www` with a Workers/managed lock → if Delete is available, remove it
+4. Wait 1–2 minutes
 
-If `workers.dev` shows **error 1042**, redeploy the Worker after DNS is clean (failed custom-domain deploys can leave a bad version).
+**Then use a Redirect Rule (recommended — apex already works)**
+
+Cloudflare dashboard → **Rules → Redirect Rules → Create**:
+
+| Field | Value |
+| --- | --- |
+| If | Hostname equals `www.noorlink.co` |
+| Then | Dynamic redirect → `concat("https://noorlink.co", http.request.uri.path)` |
+| Status | 301 |
+| Preserve query string | On |
+
+That sends all `www` traffic to https://noorlink.co without needing a Worker custom domain for `www`.
+
+**Do not** re-add `www` via `wrangler.jsonc` `custom_domain` — it caused `workers.dev` error **1042**.
+
+If `workers.dev` shows **error 1042**, redeploy after removing wrangler custom-domain routes (apex dashboard domain can stay).
 
 ## Fix for error 8000098 / white screen
 
