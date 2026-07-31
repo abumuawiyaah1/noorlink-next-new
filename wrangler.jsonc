@@ -26,10 +26,11 @@
 	"vars": {
 		"NEXT_PUBLIC_API_URL": "https://api.noorlink.co",
 		"BACKEND_API_URL": "https://api.noorlink.co"
-	}
-	// Do NOT declare custom domains here.
-	// Apex (noorlink.co) is attached in the dashboard.
-	// Declaring www via wrangler created an orphaned Workers-managed DNS
-	// record and broke workers.dev with error 1042.
-	// Use a Cloudflare Redirect Rule for www → https://noorlink.co (see DEPLOY.md).
+	},
+	// Apex already live. Re-declare www so Workers Builds republishes DNS
+	// (dashboard shows Worker-managed www but public DNS is NXDOMAIN).
+	"routes": [
+		{ "pattern": "noorlink.co", "custom_domain": true },
+		{ "pattern": "www.noorlink.co", "custom_domain": true }
+	]
 }
