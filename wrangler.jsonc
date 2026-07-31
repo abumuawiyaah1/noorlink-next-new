@@ -1,36 +1,35 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"main": ".open-next/worker.js",
 	"name": "noorlink-next",
-	// Workers + OpenNext require a recent compatibility date (FinalizationRegistry, etc.)
+	// OpenNext entrypoint (produced by `opennextjs-cloudflare build`)
+	"main": ".open-next/worker.js",
+	// Must be >= 2025-05-05 for FinalizationRegistry / Next.js on Workers
 	"compatibility_date": "2026-06-23",
 	"compatibility_flags": [
-		// Required for Next.js / OpenNext on Cloudflare Workers
 		"nodejs_compat",
-		// Allow fetching public URLs from the Worker
 		"global_fetch_strictly_public"
 	],
-	// Static assets produced by `opennextjs-cloudflare build`
-	// Must stay aligned with `.open-next/assets` (do not point at `.next` or repo root)
+	// Static assets + Next.js chunks from the OpenNext build.
+	// This is the correct "output mapping" — NOT pages_build_output_dir.
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
 	},
 	"services": [
 		{
-			// Self-reference service binding; service name must match worker "name"
-			// see https://opennext.js.org/cloudflare/caching
+			// Required for OpenNext caching / revalidation self-calls
 			"binding": "WORKER_SELF_REFERENCE",
 			"service": "noorlink-next"
 		}
 	],
 	"images": {
-		// Enable image optimization
-		// see https://opennext.js.org/cloudflare/howtos/image
 		"binding": "IMAGES"
+	},
+	"observability": {
+		"enabled": true
 	}
-	// IMPORTANT: Do NOT set `pages_build_output_dir`.
-	// @opennextjs/cloudflare deploys as a Worker with static assets, not as a
-	// traditional Cloudflare Pages project. Mixing Pages output dir with
-	// `main` + `assets` breaks routing and yields a blank page after deploy.
+	// DO NOT add "pages_build_output_dir".
+	// @opennextjs/cloudflare deploys as a Worker with static assets.
+	// Traditional Cloudflare Pages output-dir deploys cause blank/white screens
+	// because they never bind `.open-next/worker.js` + `.open-next/assets`.
 }
