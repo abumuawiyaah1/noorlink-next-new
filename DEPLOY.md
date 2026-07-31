@@ -13,19 +13,19 @@
 
 The FastAPI backend is at **https://api.noorlink.co** (Railway).
 
-This frontend reads:
+Browser calls are **same-origin** (`/api/...`) and proxied by `app/api/[[...path]]/route.ts` to Railway. That avoids CORS blocks between `noorlink.co` and `api.noorlink.co`.
 
 | Variable | Purpose | Production value |
 | --- | --- | --- |
-| `NEXT_PUBLIC_API_URL` | Browser → API (CORS) | `https://api.noorlink.co` |
-| `BACKEND_API_URL` | Worker server → API | `https://api.noorlink.co` |
+| `NEXT_PUBLIC_API_URL` | Browser base (empty = same-origin `/api`) | _(empty)_ |
+| `BACKEND_API_URL` | Worker/proxy → Railway | `https://api.noorlink.co` |
 
 Set in:
 
-- `.env.production` (build-time for `NEXT_PUBLIC_*`)
-- `wrangler.jsonc` → `vars` (runtime for the Worker)
+- `.env.production` (build-time)
+- `wrangler.jsonc` → `vars.BACKEND_API_URL` (runtime)
 
-Local default remains `http://127.0.0.1:8000` when those env vars are unset.
+Local default remains `http://127.0.0.1:8000` when `NEXT_PUBLIC_API_URL` is unset.
 
 ## Attach custom domain (`noorlink.co`)
 
