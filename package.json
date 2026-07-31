@@ -2,13 +2,21 @@
   "name": "noorlink-next",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
-    "build":"next build ",
-    "build:cf": "opennextjs-cloudflare build" ,
+    "build": "next build",
+    "build:cf": "opennextjs-cloudflare build",
     "start": "next start",
-    "lint": "eslint"
-
+    "lint": "eslint",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "tail": "wrangler tail noorlink-next-new",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "pages:deploy": "node -e \"console.error('ERROR: Do not use Cloudflare Pages for this app. Use npm run deploy (Workers + OpenNext). See DEPLOY.md'); process.exit(1)\""
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.19.11",
@@ -27,7 +35,5 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "wrangler": "^4.104.0"
-
-    
   }
 }

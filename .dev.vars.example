@@ -1,0 +1,3 @@
+# Copy to `.dev.vars` for local Workers preview (`npm run preview`).
+# NEXTJS_ENV controls which Next.js `.env*` files are loaded.
+NEXTJS_ENV=development

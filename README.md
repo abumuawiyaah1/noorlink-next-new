@@ -29,11 +29,17 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Deploy on Cloudflare (OpenNext)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This app must deploy as a **Cloudflare Worker** via OpenNext — **not** as a Cloudflare Pages static project.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
- 
- #Noorlink Test.
+If you see Pages error `8000098` (“does not have a Pages Function… cannot tail a static site”) or a blank page, you are still on Pages. Follow the migration steps in [DEPLOY.md](./DEPLOY.md).
+
+```bash
+npm run preview   # local Workers runtime preview
+npm run deploy    # build + deploy to Cloudflare Workers
+npm run tail      # live Worker logs (not pages deployment tail)
+```
+
+#Noorlink Test.
  
