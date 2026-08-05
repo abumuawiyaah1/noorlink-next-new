@@ -161,17 +161,31 @@ export function ModernCheckoutPage() {
               </div>
 
               <div className="card">
+                <h2>
+                  <i className="fas fa-file-contract" style={{ color: "var(--accent)" }} aria-hidden="true" />{" "}
+                  3. Terms &amp; Privacy
+                </h2>
+                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", marginBottom: 12 }}>
+                  Please read our policies before paying. They open in a new tab so you can keep this checkout page open.
+                </p>
+                <div className="policy-links">
+                  <Link href="/terms" target="_blank" rel="noopener noreferrer">
+                    Read Terms of Service
+                  </Link>
+                  <Link href="/privacy" target="_blank" rel="noopener noreferrer">
+                    Read Privacy Policy
+                  </Link>
+                </div>
                 <div className="checkbox-container">
                   <input
                     id="checkout-terms"
                     type="checkbox"
                     checked={termsAccepted}
                     onChange={(event) => setTermsAccepted(event.target.checked)}
+                    required
                   />
                   <label className="checkbox-text" htmlFor="checkout-terms">
-                    I agree to the{" "}
-                    <Link href="/terms">Terms</Link> and{" "}
-                    <Link href="/privacy">Privacy Policy</Link>.
+                    I have read and agree to the Terms of Service and Privacy Policy.
                   </label>
                 </div>
               </div>
