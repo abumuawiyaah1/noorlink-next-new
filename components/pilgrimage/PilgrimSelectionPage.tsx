@@ -30,9 +30,11 @@ function buildCheckoutHref(plan: EsimPlan, price: number): string {
   const params = new URLSearchParams({
     country: "Saudi Arabia",
     price: price.toFixed(2),
+    flag: "🇸🇦",
   });
   if (plan.countryId) params.set("country_id", plan.countryId);
-  return `/checkout?${params.toString()}&flag=${encodeURIComponent("🇸🇦")}`;
+  if (plan.name) params.set("plan", plan.name);
+  return `/checkout?${params.toString()}`;
 }
 
 function tierBadge(tier: PilgrimTierOffer): string | null {

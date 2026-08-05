@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
+import { createCheckoutSession } from "@/lib/checkout-api";
 
 function parsePrice(value: string | null): number {
   if (!value) return 0;
@@ -11,22 +12,23 @@ function parsePrice(value: string | null): number {
 }
 
 export function ModernCheckoutPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const country = searchParams.get("country") ?? "Your destination";
   const flag = searchParams.get("flag") ?? "🌍";
+  const packageId = searchParams.get("packageId") ?? searchParams.get("package_id");
   const price = parsePrice(searchParams.get("price")) || 12;
 
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [travelDate, setTravelDate] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const formattedTotal = useMemo(() => price.toFixed(2), [price]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
 
@@ -40,17 +42,42 @@ export function ModernCheckoutPage() {
       return;
     }
 
+    if (price <= 0) {
+      setError("Invalid plan price. Please go back and select a plan again.");
+      return;
+    }
+
     setSubmitting(true);
 
-    const params = new URLSearchParams({
-      country,
-      price: formattedTotal,
-      email: email.trim(),
-    });
-    if (phone.trim()) params.set("phone", phone.trim());
-    if (flag) params.set("flag", flag);
+    try {
+      const result = await createCheckoutSession({
+        email: email.trim(),
+        country,
+        price,
+        flag: flag || undefined,
+        travelDate: travelDate || undefined,
+        packageId: packageId || undefined,
+      });
 
-    router.push(`/success?${params.toString()}`);
+      if (!result.success || !result.checkoutUrl) {
+        setError(
+          result.error ??
+            "We could not start Stripe checkout. Please try again.",
+        );
+        setSubmitting(false);
+        return;
+      }
+
+      // Hosted Stripe Checkout (external) — full navigation required.
+      window.location.assign(result.checkoutUrl);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unexpected error starting payment.",
+      );
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -88,11 +115,15 @@ export function ModernCheckoutPage() {
                     id="checkout-email"
                     type="email"
                     required
+                    autoComplete="email"
                     className="form-input"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="you@example.com"
                   />
+                  <p style={{ fontSize: "0.8rem", color: "#888", marginTop: 6 }}>
+                    Your eSIM QR code will be delivered here after payment.
+                  </p>
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-phone">
@@ -101,6 +132,7 @@ export function ModernCheckoutPage() {
                   <input
                     id="checkout-phone"
                     type="tel"
+                    autoComplete="tel"
                     className="form-input"
                     value={phone}
                     onChange={(event) => setPhone(event.target.value)}
@@ -110,16 +142,38 @@ export function ModernCheckoutPage() {
               </div>
 
               <div className="card">
-                <label className="checkbox-label">
+                <h2>
+                  <i className="fas fa-calendar-alt" style={{ color: "var(--accent)" }} aria-hidden="true" />{" "}
+                  2. Trip Details
+                </h2>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="checkout-travel-date">
+                    Arrival date (optional)
+                  </label>
                   <input
+                    id="checkout-travel-date"
+                    type="date"
+                    className="form-input"
+                    value={travelDate}
+                    onChange={(event) => setTravelDate(event.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="card">
+                <div className="checkbox-container">
+                  <input
+                    id="checkout-terms"
                     type="checkbox"
                     checked={termsAccepted}
                     onChange={(event) => setTermsAccepted(event.target.checked)}
                   />
-                  I agree to the{" "}
-                  <Link href="/terms">Terms</Link> and{" "}
-                  <Link href="/privacy">Privacy Policy</Link>.
-                </label>
+                  <label className="checkbox-text" htmlFor="checkout-terms">
+                    I agree to the{" "}
+                    <Link href="/terms">Terms</Link> and{" "}
+                    <Link href="/privacy">Privacy Policy</Link>.
+                  </label>
+                </div>
               </div>
 
               {error && (
@@ -145,10 +199,10 @@ export function ModernCheckoutPage() {
                   className={`pay-btn${submitting ? " loading" : ""}`}
                   disabled={submitting}
                 >
-                  Pay ${formattedTotal}
+                  {submitting ? "Redirecting to Stripe…" : `Pay $${formattedTotal}`}
                 </button>
                 <p style={{ fontSize: "0.8rem", textAlign: "center", marginTop: 15, color: "#888" }}>
-                  Secure checkout powered by NoorLink.
+                  You will complete payment securely on Stripe. Card details are never stored on NoorLink.
                 </p>
               </div>
             </aside>
