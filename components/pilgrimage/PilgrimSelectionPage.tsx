@@ -34,6 +34,7 @@ function buildCheckoutHref(plan: EsimPlan, price: number): string {
   });
   if (plan.countryId) params.set("country_id", plan.countryId);
   if (plan.name) params.set("plan", plan.name);
+  if (plan.id) params.set("packageId", plan.id);
   return `/checkout?${params.toString()}`;
 }
 

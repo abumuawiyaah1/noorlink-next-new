@@ -1,6 +1,10 @@
 import "@/styles/destinations.css";
-import { DestinationsPage } from "@/components/legacy/DestinationsPage";
+import { ModernDestinationsPage } from "@/components/destinations/ModernDestinationsPage";
+import { fetchDestinationStartingPrices } from "@/lib/destination-prices";
 
-export default function Page() {
-  return <DestinationsPage />;
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const prices = await fetchDestinationStartingPrices();
+  return <ModernDestinationsPage prices={prices} />;
 }

@@ -62,6 +62,8 @@ function PlanCard({
   });
   if (flag) checkoutParams.set("flag", flag);
   if (plan.name) checkoutParams.set("plan", plan.name);
+  // Real catalog UUIDs link to esim_packages; tmpl-* IDs resolve via country/price.
+  if (plan.id) checkoutParams.set("packageId", plan.id);
   const checkoutHref = `/checkout?${checkoutParams.toString()}`;
 
   return (

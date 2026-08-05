@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import {
+  DESTINATION_CARDS,
   DESTINATION_FILTERS,
   filterDestinationCards,
   type DestinationRegion,
 } from "@/lib/destinations-catalog";
+import type { DestinationPriceMap } from "@/lib/destination-prices";
 
 const DESTINATIONS_NAV = [
   { href: "/about", label: "About" },
@@ -17,7 +19,11 @@ const DESTINATIONS_NAV = [
   { href: "/dashboard", label: "My eSIMs", highlight: true },
 ];
 
-export function ModernDestinationsPage() {
+type Props = {
+  prices?: DestinationPriceMap;
+};
+
+export function ModernDestinationsPage({ prices = {} }: Props) {
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState<"all" | DestinationRegion>("all");
 
@@ -34,7 +40,7 @@ export function ModernDestinationsPage() {
         <div className="container">
           <h1>Find Your Destination</h1>
           <p style={{ opacity: 0.8 }}>
-            Connectivity in 190+ countries and regions.
+            Live eSIM prices, local highlights, and connectivity in 190+ countries.
           </p>
         </div>
       </div>
@@ -71,19 +77,33 @@ export function ModernDestinationsPage() {
         </div>
 
         <div className="dest-grid">
-          {cards.map((card) => (
-            <Link
-              key={card.id}
-              href={card.href}
-              className={`card ${card.className}`}
-              aria-label={`View plans for ${card.title}`}
-            >
-              <div className="card-overlay">
-                <h3>{card.title}</h3>
-                <span className="card-price">{card.priceLabel}</span>
-              </div>
-            </Link>
-          ))}
+          {cards.map((card) => {
+            const priceLabel =
+              prices[card.id] ??
+              DESTINATION_CARDS.find((c) => c.id === card.id)?.priceLabel ??
+              card.priceLabel;
+
+            return (
+              <Link
+                key={card.id}
+                href={card.href}
+                className={`card ${card.className}`}
+                style={{ backgroundImage: `url('${card.image}')` }}
+                aria-label={`View plans for ${card.title}, ${priceLabel}`}
+              >
+                <div className="card-overlay">
+                  <h3>{card.title}</h3>
+                  <p className="card-desc">{card.description}</p>
+                  <ul className="card-tips">
+                    {card.thingsToDo.slice(0, 3).map((tip) => (
+                      <li key={tip}>{tip}</li>
+                    ))}
+                  </ul>
+                  <span className="card-price">{priceLabel}</span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         {cards.length === 0 && (

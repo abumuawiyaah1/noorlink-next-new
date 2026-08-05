@@ -131,27 +131,25 @@ export async function pingPlansApi(
     );
 
     if (planCount === 0) {
-      console.error("[plans-diagnostics] API returned empty plans:", {
+      console.warn("[plans-diagnostics] API returned empty plans:", {
         url,
         countryId,
         status: res.status,
       });
     }
 
+    // HTTP success = ok. Zero plans is a valid empty catalog, not a load failure.
     return {
-      ok: planCount > 0 && hasFormattedPrices,
+      ok: true,
       url,
       countryId,
       status: res.status,
       statusText: res.statusText,
       planCount,
       hasFormattedPrices,
-      error:
-        planCount === 0
-          ? "API reachable but returned zero plans for this country."
-          : hasFormattedPrices
-            ? null
-            : "Plans missing formatted_price_parts.",
+      error: hasFormattedPrices
+        ? null
+        : "Plans missing formatted_price_parts.",
       timestamp,
       data: normalized,
     };
