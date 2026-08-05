@@ -58,8 +58,10 @@ export async function createCheckoutSession(
   }
 
   let data: Record<string, unknown> = {};
+  let rawText = "";
   try {
-    data = (await res.json()) as Record<string, unknown>;
+    rawText = await res.text();
+    data = rawText ? (JSON.parse(rawText) as Record<string, unknown>) : {};
   } catch {
     data = {};
   }
@@ -73,7 +75,9 @@ export async function createCheckoutSession(
           ? data.error
           : typeof data.message === "string"
             ? data.message
-            : `Payment setup failed (${res.status}).`;
+            : rawText && !rawText.startsWith("<")
+              ? rawText.slice(0, 240)
+              : `Payment setup failed (${res.status}).`;
     return { success: false, error: message };
   }
 
