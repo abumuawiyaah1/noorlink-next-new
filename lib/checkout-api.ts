@@ -5,6 +5,7 @@ export type CheckoutSessionPayload = {
   country: string;
   price: number;
   flag?: string;
+  phone?: string;
   travelDate?: string;
   packageId?: string;
 };
@@ -34,6 +35,7 @@ export async function createCheckoutSession(
     price: payload.price,
   };
   if (payload.flag) body.flag = payload.flag;
+  if (payload.phone) body.phone = payload.phone.trim();
   if (payload.travelDate) body.travelDate = payload.travelDate;
   if (payload.packageId) body.packageId = payload.packageId;
 

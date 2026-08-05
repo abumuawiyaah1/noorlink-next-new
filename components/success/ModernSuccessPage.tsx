@@ -27,8 +27,12 @@ function SuccessContent() {
           </div>
           <h1>Payment Successful!</h1>
           <p>
-            Your eSIM for {country} is ready
-            {email ? ` — confirmation sent to ${email}` : ""}.
+            Your eSIM for {country} is being prepared
+            {email ? ` — delivery email goes to ${email}` : ""}.
+          </p>
+          <p style={{ fontSize: "0.95rem", opacity: 0.85 }}>
+            Check your inbox and spam folder for the QR code and install instructions.
+            It usually arrives within a minute after payment confirms.
           </p>
           <p>
             Order total: <strong>${price}</strong>

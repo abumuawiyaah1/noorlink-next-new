@@ -55,6 +55,7 @@ export function ModernCheckoutPage() {
         country,
         price,
         flag: flag || undefined,
+        phone: phone.trim() || undefined,
         travelDate: travelDate || undefined,
         packageId: packageId || undefined,
       });
@@ -122,7 +123,8 @@ export function ModernCheckoutPage() {
                     placeholder="you@example.com"
                   />
                   <p style={{ fontSize: "0.8rem", color: "#888", marginTop: 6 }}>
-                    Your eSIM QR code will be delivered here after payment.
+                    We email a checkout confirmation now. Your eSIM QR code arrives
+                    after payment — check spam/junk if it is missing.
                   </p>
                 </div>
                 <div className="form-group">
@@ -138,6 +140,9 @@ export function ModernCheckoutPage() {
                     onChange={(event) => setPhone(event.target.value)}
                     placeholder="+1 555 000 0000"
                   />
+                  <p style={{ fontSize: "0.8rem", color: "#888", marginTop: 6 }}>
+                    Saved with your order for support. SMS alerts are not sent yet.
+                  </p>
                 </div>
               </div>
 
