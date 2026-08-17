@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import {
   DESTINATION_CARDS,
@@ -33,8 +34,9 @@ function formatFromPrice(price: number, dollars?: string, cents?: string): strin
 }
 
 export function ModernDestinationsPage({ prices = {} }: Props) {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get("q") ?? "";
+  const initialQuery = searchParams.get("q") ?? searchParams.get("country") ?? "";
   const [query, setQuery] = useState(initialQuery);
   const [region, setRegion] = useState<"all" | DestinationRegion>("all");
   const [livePrices, setLivePrices] = useState<DestinationPriceMap>(prices);
@@ -98,7 +100,15 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
       </div>
 
       <div className="search-container">
-        <div className="search-box">
+        <form
+          className="search-box"
+          onSubmit={(event: FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            if (cards[0]) {
+              router.push(cards[0].href);
+            }
+          }}
+        >
           <input
             type="search"
             value={query}
@@ -106,10 +116,10 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
             aria-label="Search destinations"
             onChange={(event) => setQuery(event.target.value)}
           />
-          <span className="search-btn" aria-hidden="true">
+          <button type="submit" className="search-btn" aria-label="Search">
             🔍
-          </span>
-        </div>
+          </button>
+        </form>
       </div>
 
       <div className="container">

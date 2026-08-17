@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
+import { CountrySearch } from "@/components/search/CountrySearch";
 import {
   fetchPlansByCountry,
   type EsimPlan,
@@ -198,6 +199,10 @@ export function TravelerPlansPage({
             Premium data for international travelers — fixed bundles, unlimited
             roaming, or flexible pay-as-you-go, priced live from our catalog.
           </p>
+          <CountrySearch
+            initialQuery={title}
+            placeholder="Search another country..."
+          />
         </header>
 
         {loading && (

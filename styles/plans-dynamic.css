@@ -45,6 +45,71 @@
   margin-inline: auto;
 }
 
+.country-search {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  max-width: 520px;
+  margin: 1.5rem auto 0;
+}
+
+.country-search input {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.country-search input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.country-search button {
+  border: none;
+  border-radius: 999px;
+  background: #ff9500;
+  color: #111827;
+  font-weight: 800;
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+.country-search__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: #05191a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+}
+
+.country-search__dropdown button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.country-search__dropdown button.is-active,
+.country-search__dropdown button:hover {
+  background: rgba(255, 149, 0, 0.18);
+  color: #ff9500;
+}
+
 .plans-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

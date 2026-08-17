@@ -75,13 +75,13 @@ export function HeroSearch() {
     }
   }, [navigateTo, query, router, selected]);
 
-  const selectSuggestion = useCallback((dest: HeroDestination) => {
-    setSelected(dest);
-    setQuery(dest.label);
-    setIsOpen(false);
-    setActivePill(null);
-    inputRef.current?.focus();
-  }, []);
+  const selectSuggestion = useCallback(
+    (dest: HeroDestination) => {
+      logSearch(dest.label);
+      navigateTo(dest);
+    },
+    [navigateTo],
+  );
 
   const handlePillClick = useCallback(
     (pill: HeroPopularPill) => {
@@ -89,6 +89,13 @@ export function HeroSearch() {
       setSelected(null);
       setActivePill(pill.label);
       setIsOpen(false);
+      const dest = resolveDestination(pill.query);
+      if (dest) {
+        logSearch(dest.label);
+        router.push(dest.href);
+        return;
+      }
+      logSearch(pill.query);
       router.push(pill.href);
     },
     [router],
