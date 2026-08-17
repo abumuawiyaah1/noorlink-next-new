@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/landing.css";
 import { LandingPage } from "@/components/legacy/LandingPage";
+import { SITE_IMAGES } from "@/lib/site-images";
 
 export const metadata: Metadata = {
   title: "NoorLink | Instant Travel eSIMs",
@@ -10,5 +11,15 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <LandingPage />;
+  return (
+    <>
+      <link
+        rel="preload"
+        as="image"
+        href={SITE_IMAGES.hero}
+        fetchPriority="high"
+      />
+      <LandingPage />
+    </>
+  );
 }

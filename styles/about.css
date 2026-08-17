@@ -23,7 +23,6 @@
             background-color: var(--bg-body);
             background-image: url('/images/map-texture.jpg'); 
             background-size: cover;
-            background-attachment: fixed;
             background-blend-mode: soft-light;
         }
         a { text-decoration: none; color: inherit; transition: 0.3s ease; }

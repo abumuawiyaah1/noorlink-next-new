@@ -4,6 +4,7 @@ import { DestinationGridMount } from "@/components/landing/DestinationGridMount"
 import { DeviceCheckerBridge } from "@/components/landing/DeviceCheckerBridge";
 import { HeroSearchMount } from "@/components/landing/HeroSearchMount";
 import { LandingTicker } from "@/components/landing/LandingTicker";
+import { TrustStatsBar } from "@/components/landing/TrustStatsBar";
 import { WhatsAppFab } from "@/components/landing/WhatsAppFab";
 import { StaticHtmlContent } from "@/components/content/StaticHtmlContent";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -24,6 +25,7 @@ export function LandingPage() {
         stripWhatsApp
       />
       <HeroSearchMount />
+      <TrustStatsBar />
       <DestinationGridMount />
       <DeviceCheckerBridge />
       <WhatsAppFab />

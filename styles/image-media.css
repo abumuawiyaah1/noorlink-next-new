@@ -1,0 +1,113 @@
+/* Lazy-loaded destination card imagery */
+.card-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a3a3b 0%, #0f3d3e 50%, #05191a 100%);
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.45s ease, transform 0.6s ease;
+}
+
+.card-media.is-loaded img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.card-media-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  background-size: 200% 100%;
+  animation: card-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes card-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.card:hover .card-media.is-loaded img {
+  transform: scale(1.06);
+}
+
+/* Trust stats strip (homepage) */
+.trust-stats-bar {
+  margin-top: -40px;
+  position: relative;
+  z-index: 20;
+  padding: 0 0 20px;
+}
+
+.trust-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 24px 28px;
+  box-shadow: 0 20px 50px rgba(15, 61, 62, 0.12);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+}
+
+.trust-stat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+}
+
+.trust-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(15, 61, 62, 0.1), rgba(255, 149, 0, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.trust-stat strong {
+  display: block;
+  font-size: 1.15rem;
+  color: var(--primary, #0f3d3e);
+  line-height: 1.2;
+}
+
+.trust-stat span {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-muted, #6b7280);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .trust-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .trust-stats-grid {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .trust-stats-bar {
+    margin-top: -20px;
+  }
+}

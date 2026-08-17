@@ -1,5 +1,6 @@
 import { normalizeCountrySlug, plansPathForCountry } from "@/lib/country-slugs";
 import type { DestinationCard, DestinationRegion } from "@/lib/destinations-catalog";
+import { DESTINATION_IMAGES } from "@/lib/site-images";
 
 export type TemplateRegionKey =
   | "north-america"
@@ -85,12 +86,12 @@ const TEMPLATE_REGION: Record<TemplateRegionKey, DestinationRegion> = {
 };
 
 const TEMPLATE_IMAGE: Record<TemplateRegionKey, string> = {
-  "north-america": "/images/destinations/usa.jpg",
-  "south-america": "/images/destinations/brazil.jpg",
-  europe: "/images/destinations/europe-regional.jpg",
-  "asia-pacific": "/images/destinations/asia-regional.jpg",
-  "middle-east": "/images/destinations/middle-east-regional.jpg",
-  africa: "/images/destinations/middle-east-regional.jpg",
+  "north-america": DESTINATION_IMAGES.usa,
+  "south-america": DESTINATION_IMAGES.brazil,
+  europe: DESTINATION_IMAGES.europeRegional,
+  "asia-pacific": DESTINATION_IMAGES.asiaRegional,
+  "middle-east": DESTINATION_IMAGES.middleEastRegional,
+  africa: DESTINATION_IMAGES.middleEastRegional,
 };
 
 const TEMPLATE_STARTING_PRICE: Record<TemplateRegionKey, string> = {

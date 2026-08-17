@@ -12,6 +12,7 @@ import {
   type DestinationRegion,
 } from "@/lib/destinations-catalog";
 import type { DestinationPriceMap } from "@/lib/destination-prices";
+import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
 import { fetchPlansByCountry } from "@/lib/plans-api";
 
 const DESTINATIONS_NAV = [
@@ -139,7 +140,7 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
         </div>
 
         <div className="dest-grid">
-          {cards.map((card) => {
+          {cards.map((card, index) => {
             const priceLabel =
               livePrices[card.id] ??
               prices[card.id] ??
@@ -151,9 +152,13 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
                 key={card.id}
                 href={card.href}
                 className={`card ${card.className}`}
-                style={{ backgroundImage: `url('${card.image}')` }}
                 aria-label={`View plans for ${card.title}, ${priceLabel}`}
               >
+                <DestinationCardMedia
+                  src={card.image}
+                  alt=""
+                  priority={index < 3}
+                />
                 <div className="card-overlay">
                   <h3>{card.title}</h3>
                   <p className="card-desc">{card.description}</p>

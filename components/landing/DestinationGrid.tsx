@@ -1,32 +1,34 @@
 import Link from "next/link";
+import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
+import { DESTINATION_IMAGES } from "@/lib/site-images";
 
 const destinations = [
   {
     id: "americas",
     title: "Americas",
     subtitle: "USA, Canada, Brazil & more",
-    className: "bg-americas",
+    image: DESTINATION_IMAGES.usa,
     href: "/plans/usa",
   },
   {
     id: "europe",
     title: "Europe",
     subtitle: "UK, France, Germany & more",
-    className: "bg-europe",
+    image: DESTINATION_IMAGES.europeRegional,
     href: "/plans/france",
   },
   {
     id: "mea",
     title: "Middle East & Africa",
     subtitle: "UAE, Turkey, Saudi, Egypt…",
-    className: "bg-mea",
+    image: DESTINATION_IMAGES.middleEastRegional,
     href: "/hajj-umrah",
   },
   {
     id: "asia",
     title: "Asia & Oceania",
     subtitle: "Japan, Thailand, Australia…",
-    className: "bg-asia",
+    image: DESTINATION_IMAGES.asiaRegional,
     href: "/plans/japan",
   },
 ] as const;
@@ -36,13 +38,18 @@ export function DestinationGrid() {
     <section className="destinations" id="destinations">
       <div className="container">
         <div className="grid">
-          {destinations.map((dest) => (
+          {destinations.map((dest, index) => (
             <Link
               key={dest.id}
               href={dest.href}
-              className={`card ${dest.className}`}
+              className="card"
               aria-label={`View plans for ${dest.title}`}
             >
+              <DestinationCardMedia
+                src={dest.image}
+                alt=""
+                priority={index < 2}
+              />
               <div className="card-overlay">
                 <div className="region-title">{dest.title}</div>
                 <div className="region-sub">{dest.subtitle}</div>

@@ -1,3 +1,5 @@
+@import "./image-media.css";
+
 /* --- PREMIUM THEME VARIABLES --- */
         :root {
             --primary: #0F3D3E;       /* Deep Midnight Teal */
@@ -22,10 +24,9 @@
             line-height: 1.6;
             overflow-x: hidden;
             padding-top: 40px; /* Space for Ticker */
-            /* PARALLAX BACKGROUND TEXTURE */
+            /* Light map texture — scrolls with page for better mobile perf */
             background-image: url('/images/map-texture.jpg'); 
             background-size: cover;
-            background-attachment: fixed;
             background-blend-mode: soft-light;
         }
         a { text-decoration: none; color: inherit; transition: 0.3s ease; }
@@ -110,7 +111,7 @@
         .steps-section { 
             padding: 100px 0; 
             background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(243, 245, 247, 0.9)), url('/images/map-texture.jpg');
-            background-size: cover; background-attachment: fixed;
+            background-size: cover;
         }
         .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 50px; text-align: center; }
         
@@ -158,6 +159,7 @@
             height: 320px; border-radius: 24px; position: relative; overflow: hidden; cursor: pointer;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: all 0.4s ease;
             border: 2px solid transparent; 
+            background: #05191a;
         }
         a.card {
             display: block;
@@ -166,14 +168,11 @@
         }
         .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); border-color: var(--accent); }
         
-        /* ORGANIZED BACKGROUND IMAGES FOR REGION CARDS */
-        .bg-americas { background: url('/images/destinations/usa.jpg') center/cover; }
-        .bg-europe { background: url('/images/destinations/europe-regional.jpg') center/cover; }
-        .bg-asia { background: url('/images/destinations/asia-regional.jpg') center/cover; }
-        .bg-mea { background: url('/images/destinations/middle-east-regional.jpg') center/cover; }.card-overlay {
+        .card-overlay {
             background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%);
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: flex-end; padding: 25px; color: white; text-align: left;
+            z-index: 2;
         }
         .region-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .region-sub { font-size: 1rem; opacity: 0.9; margin-bottom: 15px; font-weight: 500; }

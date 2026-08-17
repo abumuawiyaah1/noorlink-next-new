@@ -1,3 +1,5 @@
+@import "./image-media.css";
+
 /* --- PREMIUM THEME --- */
         :root {
             --primary: #0F3D3E; --primary-dark: #05191a; --accent: #FF9500; --bg-body: #F3F5F7; --surface: #FFFFFF; --text-main: #111827; --text-muted: #6B7280; --whatsapp: #25D366; --glass: rgba(255, 255, 255, 0.95);
@@ -10,7 +12,6 @@
             background-color: var(--bg-body);
             background-image: url('/images/map-texture.jpg'); 
             background-size: cover;
-            background-attachment: fixed;
             background-blend-mode: soft-light;
         }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
@@ -82,33 +83,16 @@
         
         .card { 
             min-height: 420px; border-radius: 24px; position: relative; overflow: hidden; cursor: pointer;
-            background-size: cover; background-position: center;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: all 0.4s ease;
             border: 2px solid transparent;
             display: block;
+            background: #05191a;
         }
         .card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(0,0,0,0.25); border-color: var(--accent); }
         .card:hover .card-overlay { background: linear-gradient(to top, rgba(15, 61, 62, 0.96) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.1) 100%); }
         .card:hover .flag { transform: scale(1.1); }
         .card:hover .card-price { background: white; color: var(--primary); }
 
-        /* BACKGROUND IMAGES (fallback when inline style not set) */
-        .bg-usa { background-image: url('/images/destinations/usa.jpg'); }
-        .bg-canada { background-image: url('/images/destinations/canada.jpg'); }
-        .bg-mexico { background-image: url('/images/destinations/mexico.jpg'); }
-        .bg-brazil { background-image: url('/images/destinations/brazil.jpg'); }
-        .bg-europe-regional { background-image: url('/images/destinations/europe-regional.jpg'); }
-        .bg-uk { background-image: url('/images/destinations/uk.jpg'); }
-        .bg-france { background-image: url('/images/destinations/france.jpg'); }
-        .bg-germany { background-image: url('/images/destinations/germany.jpg'); }
-        .bg-asia-regional { background-image: url('/images/destinations/asia-regional.jpg'); }
-        .bg-japan { background-image: url('/images/destinations/japan.jpg'); }
-        .bg-thailand { background-image: url('/images/destinations/thailand.jpg'); }
-        .bg-china { background-image: url('/images/destinations/china.jpg'); }
-        .bg-middle-east-regional { background-image: url('/images/destinations/middle-east-regional.jpg'); }
-        .bg-turkey { background-image: url('/images/destinations/turkey.jpg'); }
-        .bg-saudi-arabia { background-image: url('/images/destinations/saudi-arabia.jpg'); }
-        .bg-uae { background-image: url('/images/destinations/uae.jpg'); }
         .bg-dynamic { background: linear-gradient(135deg, #2c3e50, #4ca1af); }
 
         .card-overlay {
@@ -116,6 +100,7 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: flex-end; padding: 22px; color: white; text-align: left;
             transition: 0.4s;
+            z-index: 2;
         }
         .flag { font-size: 4rem; display: block; margin: 0 auto 15px auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); transition: 0.4s; }
         .card h3 { margin: 0 0 8px; font-size: 1.45rem; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
