@@ -196,7 +196,10 @@ export function TravelerPlansPage({
         alt={`${title} travel destination`}
       >
         <header className="plans-page__header">
-          <span className="plans-page__eyebrow">Global Traveler</span>
+          <div className="plans-page__brand">
+            <span className="plans-page__eyebrow">NoorLink</span>
+            <p className="plans-page__tagline">Enjoy hassle-free travel</p>
+          </div>
           <h1 className="plans-page__title">
             {flag ? `${flag} ` : ""}
             {title}
