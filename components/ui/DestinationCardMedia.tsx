@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Props = {
   src: string;
@@ -16,6 +16,16 @@ export function DestinationCardMedia({
   className = "",
 }: Props) {
   const [loaded, setLoaded] = useState(false);
+  const markLoaded = useCallback(() => setLoaded(true), []);
+
+  useEffect(() => {
+    setLoaded(false);
+    const img = new Image();
+    img.src = src;
+    if (img.complete && img.naturalWidth > 0) {
+      setLoaded(true);
+    }
+  }, [src]);
 
   return (
     <div className={`card-media${loaded ? " is-loaded" : ""}${className ? ` ${className}` : ""}`}>
@@ -27,7 +37,8 @@ export function DestinationCardMedia({
         loading={priority ? "eager" : "lazy"}
         decoding="async"
         fetchPriority={priority ? "high" : "auto"}
-        onLoad={() => setLoaded(true)}
+        onLoad={markLoaded}
+        onError={markLoaded}
       />
     </div>
   );

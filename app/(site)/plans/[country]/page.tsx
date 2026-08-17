@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { TravelerPlansPage } from "@/components/plans/TravelerPlansPage";
+import { getCountryImage } from "@/lib/country-image";
 import { normalizeCountrySlug } from "@/lib/country-slugs";
 import { pingPlansApi } from "@/lib/plans-diagnostics";
 import "@/styles/plans-dynamic.css";
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function CountryPlansPage({ params }: PageProps) {
   const { country } = await params;
   const countryId = normalizeCountrySlug(country);
+  const countryImage = getCountryImage(countryId);
 
   let initialData = null;
   let initialError: string | null = null;
@@ -43,10 +45,14 @@ export default async function CountryPlansPage({ params }: PageProps) {
   }
 
   return (
-    <TravelerPlansPage
-      countryId={countryId}
-      initialData={initialData}
-      initialError={initialError}
-    />
+    <>
+      <link rel="preload" as="image" href={countryImage} fetchPriority="high" />
+      <TravelerPlansPage
+        countryId={countryId}
+        countryImage={countryImage}
+        initialData={initialData}
+        initialError={initialError}
+      />
+    </>
   );
 }

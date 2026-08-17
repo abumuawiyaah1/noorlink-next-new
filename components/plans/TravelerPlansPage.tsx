@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { CountryPlansHero } from "@/components/plans/CountryPlansHero";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
 import { CountrySearch } from "@/components/search/CountrySearch";
 import {
@@ -16,6 +17,7 @@ type PlanTab = PlanCategory;
 
 type TravelerPlansPageProps = {
   countryId: string;
+  countryImage: string;
   initialData?: PlansByCountryResponse | null;
   initialError?: string | null;
 };
@@ -129,6 +131,7 @@ function pickInitialTab(data: PlansByCountryResponse): PlanTab {
 
 export function TravelerPlansPage({
   countryId,
+  countryImage,
   initialData = null,
   initialError = null,
 }: TravelerPlansPageProps) {
@@ -188,7 +191,10 @@ export function TravelerPlansPage({
 
   return (
     <main className="plans-page">
-      <div className="plans-page__inner">
+      <CountryPlansHero
+        src={countryImage}
+        alt={`${title} travel destination`}
+      >
         <header className="plans-page__header">
           <span className="plans-page__eyebrow">Global Traveler</span>
           <h1 className="plans-page__title">
@@ -204,7 +210,9 @@ export function TravelerPlansPage({
             placeholder="Search another country..."
           />
         </header>
+      </CountryPlansHero>
 
+      <div className="plans-page__inner">
         {loading && (
           <div className="plans-page__loading" aria-busy="true" aria-live="polite">
             <p className="plans-page__loading-text">Loading plans…</p>
