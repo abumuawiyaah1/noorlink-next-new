@@ -26,6 +26,7 @@ export function LegacyContentPage({
         html={bodyHtml}
         stripHeader={stripHeader}
         stripFooter={stripFooter}
+        stripWhatsApp
       />
     </>
   );

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import { GlobalBackButton } from "@/components/ui/GlobalBackButton";
+import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
 import "./globals.css";
 
 const COOKIEYES_SCRIPT_ID = "961f820e92b5546e026c4c37009d673e";
@@ -49,6 +50,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         <GlobalBackButton />
+        <WhatsAppFab />
         <Script
           id="cookieyes"
           src={`https://cdn-cookieyes.com/client_data/${COOKIEYES_SCRIPT_ID}/script.js`}
