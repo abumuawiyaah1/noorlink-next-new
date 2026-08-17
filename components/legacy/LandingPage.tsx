@@ -2,6 +2,7 @@
 
 import { DestinationGridMount } from "@/components/landing/DestinationGridMount";
 import { DeviceCheckerBridge } from "@/components/landing/DeviceCheckerBridge";
+import { HowItWorksBridge } from "@/components/landing/HowItWorksBridge";
 import { HeroSearchMount } from "@/components/landing/HeroSearchMount";
 import { LandingTicker } from "@/components/landing/LandingTicker";
 import { WhatsAppFab } from "@/components/landing/WhatsAppFab";
@@ -26,6 +27,7 @@ export function LandingPage() {
       <HeroSearchMount />
       <DestinationGridMount />
       <DeviceCheckerBridge />
+      <HowItWorksBridge />
       <WhatsAppFab />
     </>
   );
