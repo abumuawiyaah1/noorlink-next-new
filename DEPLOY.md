@@ -19,6 +19,8 @@ Browser calls are **same-origin** (`/api/...`) and proxied by `app/api/[[...path
 | --- | --- | --- |
 | `NEXT_PUBLIC_API_URL` | Browser base (empty = same-origin `/api`) | _(empty)_ |
 | `BACKEND_API_URL` | Worker/proxy → Railway | `https://api.noorlink.co` |
+| `NEXT_PUBLIC_TAWK_PROPERTY_ID` | Tawk.to property ID (optional live chat) | _(empty until configured)_ |
+| `NEXT_PUBLIC_TAWK_WIDGET_ID` | Tawk.to widget ID (optional live chat) | _(empty until configured)_ |
 
 Set in:
 

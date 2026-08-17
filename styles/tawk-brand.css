@@ -1,0 +1,23 @@
+/* NoorLink brand tweaks for the Tawk bubble (chat panel is inside Tawk’s iframe). */
+:root {
+  --tawk-brand-primary: #0f3d3e;
+  --tawk-brand-accent: #ff9500;
+}
+
+#tawk-bubble-container,
+.tawk-min-container {
+  z-index: 9999 !important;
+}
+
+/* Launcher bubble */
+#tawk-bubble-container .tawk-button,
+.tawk-min-container .tawk-button-circle {
+  background: var(--tawk-brand-primary) !important;
+  border: 2px solid rgba(255, 149, 0, 0.55) !important;
+  box-shadow: 0 10px 25px rgba(15, 61, 62, 0.35) !important;
+}
+
+#tawk-bubble-container .tawk-button:hover,
+.tawk-min-container .tawk-button-circle:hover {
+  background: #1a5557 !important;
+}
