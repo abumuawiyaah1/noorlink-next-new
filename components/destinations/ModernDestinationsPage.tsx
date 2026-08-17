@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import {
   DESTINATION_CARDS,
@@ -10,6 +11,7 @@ import {
   type DestinationRegion,
 } from "@/lib/destinations-catalog";
 import type { DestinationPriceMap } from "@/lib/destination-prices";
+import { fetchPlansByCountry } from "@/lib/plans-api";
 
 const DESTINATIONS_NAV = [
   { href: "/about", label: "About" },
@@ -23,14 +25,64 @@ type Props = {
   prices?: DestinationPriceMap;
 };
 
+function formatFromPrice(price: number, dollars?: string, cents?: string): string {
+  if (dollars != null && cents != null) {
+    return `From $${dollars}.${cents.padStart(2, "0").slice(-2)}`;
+  }
+  return `From $${price.toFixed(2)}`;
+}
+
 export function ModernDestinationsPage({ prices = {} }: Props) {
-  const [query, setQuery] = useState("");
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("q") ?? "";
+  const [query, setQuery] = useState(initialQuery);
   const [region, setRegion] = useState<"all" | DestinationRegion>("all");
+  const [livePrices, setLivePrices] = useState<DestinationPriceMap>(prices);
 
   const cards = useMemo(
     () => filterDestinationCards(query, region),
     [query, region],
   );
+
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
+
+  useEffect(() => {
+    const missing = cards.filter((card) => !livePrices[card.id]);
+    if (missing.length === 0) return;
+
+    let cancelled = false;
+    void Promise.all(
+      missing.map(async (card) => {
+        try {
+          const response = await fetchPlansByCountry(card.priceCountryId);
+          const plans = response.plans ?? [];
+          if (plans.length === 0) return [card.id, card.priceLabel] as const;
+          const cheapest = plans.reduce((best, plan) =>
+            plan.price < best.price ? plan : best,
+          );
+          return [
+            card.id,
+            formatFromPrice(
+              cheapest.price,
+              cheapest.formattedPriceParts?.dollars,
+              cheapest.formattedPriceParts?.cents,
+            ),
+          ] as const;
+        } catch {
+          return [card.id, card.priceLabel] as const;
+        }
+      }),
+    ).then((entries) => {
+      if (cancelled) return;
+      setLivePrices((current) => ({ ...current, ...Object.fromEntries(entries) }));
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [cards, livePrices]);
 
   return (
     <>
@@ -79,6 +131,7 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
         <div className="dest-grid">
           {cards.map((card) => {
             const priceLabel =
+              livePrices[card.id] ??
               prices[card.id] ??
               DESTINATION_CARDS.find((c) => c.id === card.id)?.priceLabel ??
               card.priceLabel;

@@ -1,10 +1,16 @@
 import { plansPathForCountry } from "@/lib/country-slugs";
+import {
+  destinationCardFromHint,
+  destinationCardFromQuery,
+  searchCountryTemplateHints,
+} from "@/lib/country-templates";
 
 export type DestinationRegion =
   | "Americas"
   | "Europe"
   | "Asia"
-  | "Middle East";
+  | "Middle East"
+  | "Africa";
 
 export type DestinationCard = {
   id: string;
@@ -27,6 +33,7 @@ export const DESTINATION_FILTERS: { id: "all" | DestinationRegion; label: string
   { id: "Asia", label: "Asia" },
   { id: "Americas", label: "Americas" },
   { id: "Middle East", label: "Middle East" },
+  { id: "Africa", label: "Africa" },
 ];
 
 export const DESTINATION_CARDS: DestinationCard[] = [
@@ -230,14 +237,32 @@ export function filterDestinationCards(
 ): DestinationCard[] {
   const q = query.trim().toLowerCase();
 
-  return DESTINATION_CARDS.filter((card) => {
+  const featured = DESTINATION_CARDS.filter((card) => {
     const regionMatch = region === "all" || card.region === region;
     const queryMatch =
       !q ||
       card.title.toLowerCase().includes(q) ||
+      card.id.toLowerCase().includes(q) ||
       card.region.toLowerCase().includes(q) ||
       card.description.toLowerCase().includes(q) ||
       card.thingsToDo.some((tip) => tip.toLowerCase().includes(q));
     return regionMatch && queryMatch;
   });
+
+  if (!q) return featured;
+
+  const generated = searchCountryTemplateHints(query)
+    .map(destinationCardFromHint)
+    .filter((card) => region === "all" || card.region === region)
+    .filter((card) => !featured.some((existing) => existing.id === card.id));
+
+  const combined = [...featured, ...generated];
+  if (combined.length > 0) return combined;
+
+  const fallback = destinationCardFromQuery(query);
+  if (fallback && (region === "all" || fallback.region === region)) {
+    return [fallback];
+  }
+
+  return [];
 }

@@ -1,4 +1,8 @@
 import { plansPathForCountry } from "@/lib/country-slugs";
+import {
+  destinationCardFromQuery,
+  searchCountryTemplateHints,
+} from "@/lib/country-templates";
 
 export type HeroDestination = {
   id: string;
@@ -94,11 +98,39 @@ export function filterDestinations(query: string): HeroDestination[] {
   const q = query.trim().toLowerCase();
   if (!q) return heroDestinations.slice(0, 6);
 
-  return heroDestinations.filter(
+  const featured = heroDestinations.filter(
     (dest) =>
       dest.label.toLowerCase().includes(q) ||
       dest.keywords.some((kw) => kw.includes(q) || q.includes(kw)),
   );
+
+  const generated = searchCountryTemplateHints(query)
+    .map((hint) => ({
+      id: hint.slug,
+      label: hint.name,
+      flag: "🌍",
+      type: "country" as const,
+      href: plansPathForCountry(hint.slug),
+      keywords: [hint.slug, hint.name.toLowerCase(), ...(hint.aliases ?? [])],
+    }))
+    .filter((dest) => !featured.some((existing) => existing.id === dest.id));
+
+  const combined = [...featured, ...generated];
+  if (combined.length > 0) return combined.slice(0, 8);
+
+  const fallback = destinationCardFromQuery(query);
+  if (!fallback) return [];
+
+  return [
+    {
+      id: fallback.id,
+      label: fallback.title,
+      flag: "🌍",
+      type: "country",
+      href: fallback.href,
+      keywords: [fallback.id, fallback.title.toLowerCase()],
+    },
+  ];
 }
 
 export function findDestinationById(id: string): HeroDestination | undefined {
