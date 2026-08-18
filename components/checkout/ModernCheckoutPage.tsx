@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { FunnelSteps } from "@/components/layout/FunnelSteps";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { createCheckoutSession } from "@/lib/checkout-api";
@@ -99,6 +100,20 @@ export function ModernCheckoutPage() {
           { label: "Checkout" },
         ]}
       />
+      <FunnelSteps
+        current={2}
+        steps={[
+          { n: 1, label: "Choose plan" },
+          { n: 2, label: "Your details" },
+          { n: 3, label: "Pay securely" },
+          { n: 4, label: "Activate" },
+        ]}
+      />
+      <div className="checkout-trust">
+        <span>Stripe checkout</span>
+        <span>Card details never stored</span>
+        <span>Refund policy available</span>
+      </div>
       <p className="secure-badge" style={{ margin: "12px auto 0", width: "fit-content" }}>
         <i className="fas fa-shield-alt" aria-hidden="true" /> Verified Secure Checkout
       </p>

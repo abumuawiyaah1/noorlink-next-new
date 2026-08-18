@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import "@/styles/support.css";
-import { FaqPage } from "@/components/legacy/FaqPage";
+import { ModernFaqPage } from "@/components/support/ModernFaqPage";
 
 export const metadata: Metadata = {
   title: "FAQ | NoorLink",
@@ -8,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <FaqPage />;
+  return <ModernFaqPage />;
 }

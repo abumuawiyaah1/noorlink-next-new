@@ -9,6 +9,7 @@ const DEFAULT_NAV: NavItem[] = [
   { href: "/about", label: "About" },
   { href: "/destinations", label: "Destinations" },
   { href: "/support", label: "Support" },
+  { href: "/faq", label: "FAQ" },
   { href: "/dashboard", label: "My eSIMs", highlight: true },
 ];
 

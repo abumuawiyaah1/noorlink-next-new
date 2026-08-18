@@ -106,6 +106,9 @@ function PlanCard({
         />
         {plan.planCategory === "flexible" && <small> starting rate</small>}
       </div>
+      <p className="plans-card__includes">
+        Instant email delivery · Hotspot ready · 5G where available
+      </p>
       <Link href={checkoutHref} className="plans-card__cta">
         Select Plan
       </Link>
@@ -195,7 +198,7 @@ export function TravelerPlansPage({
 
   return (
     <>
-      <SiteHeader variant="dark" />
+      <SiteHeader />
       <main className="plans-page">
       <CountryPlansHero
         src={countryImage}

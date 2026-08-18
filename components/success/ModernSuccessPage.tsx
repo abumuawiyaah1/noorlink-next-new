@@ -4,15 +4,18 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { FunnelSteps } from "@/components/layout/FunnelSteps";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { formatCountryLabel } from "@/lib/country-slugs";
+import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const country = formatCountryLabel(searchParams.get("country") ?? "your destination");
   const price = searchParams.get("price") ?? "0.00";
   const email = searchParams.get("email");
+  const plan = searchParams.get("plan");
 
   return (
     <>
@@ -24,38 +27,81 @@ function SuccessContent() {
           { label: "Order confirmed" },
         ]}
       />
+      <FunnelSteps
+        current={4}
+        steps={[
+          { n: 1, label: "Choose plan" },
+          { n: 2, label: "Your details" },
+          { n: 3, label: "Pay securely" },
+          { n: 4, label: "Activate" },
+        ]}
+      />
 
       <div className="container">
         <div className="success-banner">
           <div className="check-icon">
             <i className="fas fa-check-circle" aria-hidden="true" />
           </div>
-          <h1>Payment Successful!</h1>
+          <h1>Payment successful</h1>
           <p>
-            Your eSIM for {country} is being prepared
-            {email ? ` — delivery email goes to ${email}` : ""}.
-          </p>
-          <p style={{ fontSize: "0.95rem", opacity: 0.85 }}>
-            Check your inbox and spam folder for the QR code and install instructions.
-            It usually arrives within a minute after payment confirms.
+            Your eSIM for {country}
+            {plan ? ` (${plan})` : ""} is being prepared
+            {email ? ` — delivery goes to ${email}` : ""}.
           </p>
           <p>
             Order total: <strong>${price}</strong>
           </p>
         </div>
 
+        <div className="ticket-card">
+          <div className="ticket-header">
+            <strong>What happens next</strong>
+            <span className="order-id">Usually within 1–2 minutes</span>
+          </div>
+          <div className="ticket-body">
+            <div className="qr-area">
+              <div className="qr-placeholder" aria-hidden="true">
+                ✉️
+              </div>
+              <p className="scan-instruction">
+                The QR code is not shown here. It arrives in a second email after
+                payment confirms.
+              </p>
+            </div>
+            <div className="details-area">
+              <h3>Install in 3 steps</h3>
+              <ol className="install-steps">
+                <li>Open the delivery email and find the QR code.</li>
+                <li>
+                  On iPhone: Settings → Cellular → Add eSIM. On Android: Settings →
+                  Network → SIMs → Add eSIM.
+                </li>
+                <li>Scan the QR, turn the line on, and enable data roaming.</li>
+              </ol>
+              <p className="email-note">
+                Check inbox and spam/junk. If nothing arrives within 10 minutes,
+                look up the order in{" "}
+                <Link href="/dashboard">My eSIMs</Link> or message{" "}
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp support</a>.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="loyalty-grid">
           <div className="loyalty-card card-gift">
             <div className="gift-title">
-              <i className="fas fa-gift" aria-hidden="true" /> A Gift for You
+              <i className="fas fa-gift" aria-hidden="true" /> A gift for you
             </div>
-            <p style={{ fontSize: "0.9rem" }}>10% OFF your next trip!</p>
+            <p style={{ fontSize: "0.9rem" }}>10% off your next trip</p>
             <div className="coupon-code">NOOR-VIP-10</div>
+            <div className="gift-note">Valid for 1 year · Any destination</div>
           </div>
           <div className="loyalty-card card-refer">
-            <p>Refer a friend and earn travel credit on your next plan.</p>
-            <Link href="/destinations" className="btn-nav">
-              Explore destinations
+            <p className="refer-title">Need the QR now?</p>
+            <p>Use My eSIMs with the email you paid with. Support is available 24/7.</p>
+            <Link href="/dashboard" className="btn-nav">
+              Open My eSIMs
             </Link>
           </div>
         </div>

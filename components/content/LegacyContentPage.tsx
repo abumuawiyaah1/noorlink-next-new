@@ -1,6 +1,7 @@
 "use client";
 
 import { StaticHtmlContent } from "@/components/content/StaticHtmlContent";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader, type NavItem } from "@/components/layout/SiteHeader";
 
 type LegacyContentPageProps = {
@@ -17,7 +18,7 @@ export function LegacyContentPage({
   nav,
   logoClassName,
   stripHeader = true,
-  stripFooter = false,
+  stripFooter = true,
 }: LegacyContentPageProps) {
   return (
     <>
@@ -28,6 +29,7 @@ export function LegacyContentPage({
         stripFooter={stripFooter}
         stripWhatsApp
       />
+      <SiteFooter />
     </>
   );
 }

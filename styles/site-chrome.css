@@ -171,6 +171,77 @@
   flex-wrap: wrap;
 }
 
+.funnel-steps {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 18px auto 8px;
+  padding: 0 24px;
+  max-width: 720px;
+}
+
+.funnel-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  color: var(--text-muted, #6b7280);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.funnel-step.is-current {
+  border-color: var(--accent, #ff9500);
+  color: var(--primary, #0f3d3e);
+  background: rgba(255, 149, 0, 0.1);
+}
+
+.funnel-step.is-done {
+  border-color: #a7f3d0;
+  color: #047857;
+  background: #ecfdf5;
+}
+
+.funnel-step__n {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #f3f4f6;
+  font-size: 0.72rem;
+}
+
+.funnel-step.is-current .funnel-step__n,
+.funnel-step.is-done .funnel-step__n {
+  background: currentColor;
+  color: #fff;
+}
+
+.checkout-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 8px 0 0;
+  padding: 0 24px 8px;
+}
+
+.checkout-trust span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #047857;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
 @media (max-width: 768px) {
   .site-header .mobile-toggle {
     display: block;

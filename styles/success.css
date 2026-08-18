@@ -1,6 +1,6 @@
 /* --- PREMIUM THEME --- */
         :root {
-            --primary: #0F3D3E; --accent: #FFAD5A; --bg-body: #F3F5F7; --surface: #FFFFFF; --text-main: #111827;
+            --primary: #0F3D3E; --accent: #FF9500; --bg-body: #F3F5F7; --surface: #FFFFFF; --text-main: #111827;
             --success: #10B981; --success-bg: #D1FAE5;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,6 +38,8 @@
             font-size: 4rem; color: #333;
         }
         .scan-instruction { font-size: 0.85rem; color: #666; font-weight: 600; }
+        .install-steps { margin: 0 0 16px; padding-left: 18px; color: #444; }
+        .install-steps li { margin-bottom: 8px; }
 
         .details-area h3 { color: var(--primary); margin-bottom: 20px; }
         .field-group { margin-bottom: 20px; }

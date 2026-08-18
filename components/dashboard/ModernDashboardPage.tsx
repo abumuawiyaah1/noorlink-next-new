@@ -1,60 +1,50 @@
 "use client";
 
-import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
-
-type DashboardPlan = {
-  status: string;
-  planName: string;
-  dataTotal: number;
-  dataLeft: number;
-  expiry: string;
-  color: string;
-};
-
-const DEMO_PLANS: Record<string, DashboardPlan> = {
-  "NL-882910": {
-    status: "Active",
-    planName: "USA Travel Pack",
-    dataTotal: 10,
-    dataLeft: 7.5,
-    expiry: "Feb 28, 2026",
-    color: "#10B981",
-  },
-};
+import { lookupOrder, type LookedUpOrder } from "@/lib/orders-api";
+import { formatCountryLabel } from "@/lib/country-slugs";
 
 export function ModernDashboardPage() {
-  const [email, setEmail] = useState("user@demo.com");
-  const [orderId, setOrderId] = useState("NL-882910");
-  const [plan, setPlan] = useState<DashboardPlan | null>(null);
+  const [email, setEmail] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [order, setOrder] = useState<LookedUpOrder | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [qrOpen, setQrOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleLogin(event: FormEvent<HTMLFormElement>) {
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
-
-    const match = DEMO_PLANS[orderId.trim()];
-    if (!match) {
-      setError("Order not found. Check your order ID and try again.");
-      setPlan(null);
+    setLoading(true);
+    const result = await lookupOrder(email, orderId);
+    setLoading(false);
+    if (!result.found || !result.order) {
+      setError(
+        result.error ??
+          "Order not found. Use the email from checkout and the order ID from your confirmation email.",
+      );
+      setOrder(null);
       return;
     }
-
-    setPlan(match);
+    setOrder(result.order);
   }
 
   return (
     <>
-      <SiteHeader logoClassName="logo" />
+      <SiteHeader />
+      <Breadcrumbs items={[{ href: "/", label: "Home" }, { label: "My eSIMs" }]} />
 
-      {!plan ? (
+      {!order ? (
         <div id="login-view">
           <div className="login-card">
             <div style={{ fontSize: "3rem", marginBottom: 20 }}>🔒</div>
             <h1>Manage eSIM</h1>
-            <p>Enter your email and order ID to view your data usage and manage your plan.</p>
+            <p>
+              Enter the email and order ID from your confirmation email to check
+              status and delivery.
+            </p>
 
             <form onSubmit={handleLogin}>
               <div className="input-group">
@@ -89,8 +79,8 @@ export function ModernDashboardPage() {
                 </p>
               )}
 
-              <button type="submit" className="login-btn">
-                View My eSIM
+              <button type="submit" className="login-btn" disabled={loading}>
+                {loading ? "Looking up…" : "View My eSIM"}
               </button>
             </form>
           </div>
@@ -98,51 +88,57 @@ export function ModernDashboardPage() {
       ) : (
         <div className="container" style={{ padding: "2rem 0" }}>
           <div className="login-card">
-            <h1>{plan.planName}</h1>
-            <p style={{ color: plan.color, fontWeight: 700 }}>{plan.status}</p>
-            <p>
-              Data remaining: {plan.dataLeft} GB / {plan.dataTotal} GB
+            <h1>{order.packageName ?? "Your eSIM"}</h1>
+            <p style={{ fontWeight: 700, textTransform: "capitalize" }}>
+              Status: {order.status ?? "unknown"}
             </p>
-            <p>Expires: {plan.expiry}</p>
+            <p>
+              Destination: {order.flag ? `${order.flag} ` : ""}
+              {formatCountryLabel(order.country ?? "")}
+            </p>
+            {order.orderNumber && <p>Order: {order.orderNumber}</p>}
+            {order.dataTotalGb != null && (
+              <p>
+                Data: {order.dataUsedGb ?? 0} GB used of {order.dataTotalGb} GB
+              </p>
+            )}
+            {order.price != null && (
+              <p>
+                Paid: {order.currency ?? "USD"} {Number(order.price).toFixed(2)}
+              </p>
+            )}
 
-            <button
-              type="button"
-              className="login-btn"
-              onClick={() => setQrOpen((open) => !open)}
-            >
-              {qrOpen ? "Hide QR Code" : "Show QR Code"}
-            </button>
+            {order.qrCodeUrl ? (
+              <p>
+                <a href={order.qrCodeUrl} target="_blank" rel="noopener noreferrer">
+                  Open QR / install details
+                </a>
+              </p>
+            ) : (
+              <p>
+                QR delivery is still being prepared. Check the email we sent after
+                payment.
+              </p>
+            )}
 
-            {qrOpen && (
-              <div style={{ marginTop: 20, textAlign: "center" }}>
-                <div
-                  style={{
-                    width: 180,
-                    height: 180,
-                    margin: "0 auto",
-                    background: "#111",
-                    color: "#fff",
-                    display: "grid",
-                    placeItems: "center",
-                    borderRadius: 12,
-                  }}
-                >
-                  QR
-                </div>
-              </div>
+            {order.activationCode && (
+              <p>
+                Activation code: <strong>{order.activationCode}</strong>
+              </p>
             )}
 
             <button
               type="button"
               className="login-btn"
               style={{ marginTop: 16, background: "transparent", color: "inherit" }}
-              onClick={() => setPlan(null)}
+              onClick={() => setOrder(null)}
             >
-              Sign out
+              Look up another order
             </button>
           </div>
         </div>
       )}
+      <SiteFooter />
     </>
   );
 }
