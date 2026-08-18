@@ -73,6 +73,15 @@
         /* FORMS */
         .form-group { margin-bottom: 15px; }
         .form-label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
+        .form-note {
+            margin: -4px 0 16px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(255, 149, 0, 0.08);
+            color: var(--primary);
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
         .form-input, .form-select { 
             width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 10px; 
             font-size: 1rem; outline: none; transition: 0.3s; 
@@ -165,6 +174,18 @@
         .flag-icon { font-size: 2.5rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
 
         .summary-item { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.95rem; }
+        .summary-plan {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #F9FAFB;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+        }
+        .summary-plan__flag { font-size: 1.8rem; }
+        .summary-plan p { font-size: 0.85rem; margin: 4px 0 0; color: var(--text-muted); }
         .summary-total { 
             display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; 
             border-top: 2px solid var(--accent); font-weight: 800; font-size: 1.3rem; color: var(--primary); 
@@ -214,6 +235,27 @@
             padding: 10px; background: rgba(16, 185, 129, 0.05); border-radius: 8px;
         }
         .security-note i { color: var(--success); }
+        .summary-next-step {
+            margin-top: 14px;
+            font-size: 0.84rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+        .summary-checklist {
+            display: grid;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .summary-checklist div {
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: #F9FAFB;
+            border: 1px solid #e5e7eb;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+        }
 
         /* FOOTER */
         footer { 
@@ -243,6 +285,7 @@
             .form-row { flex-direction: column; }
             .secure-badge { font-size: 0.75rem; padding: 6px 12px; }
             .whatsapp-float { width: 56px; height: 56px; line-height: 56px; font-size: 28px; bottom: 20px; right: 20px; }
+            .summary-plan { align-items: flex-start; }
         }
         
         /* ERROR TOAST */

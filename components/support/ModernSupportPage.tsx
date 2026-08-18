@@ -54,7 +54,7 @@ function SupportContent() {
         <div className="help-inner">
           <div className="help-grid">
             <article className="help-card">
-              <h2>Live chat</h2>
+              <h2>Need help right now?</h2>
               <p>
                 Use the chat bubble (bottom-left after a few seconds) to stay on this
                 page, or WhatsApp for mobile.
@@ -66,7 +66,7 @@ function SupportContent() {
               </p>
             </article>
             <article className="help-card">
-              <h2>Orders</h2>
+              <h2>Track an order first</h2>
               <p>
                 Paid orders send a confirmation email first. The QR code arrives in a
                 second email after payment confirms, usually within a few minutes.
@@ -145,7 +145,7 @@ function SupportContent() {
               onChange={(event) => setMessage(event.target.value)}
             />
             <button type="submit" disabled={sending}>
-              {sending ? "Sending…" : "Send"}
+              {sending ? "Sending…" : "Send support message"}
             </button>
             {status && <p className="help-form__status">{status}</p>}
             {error && (

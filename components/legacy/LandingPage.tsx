@@ -4,9 +4,9 @@ import { DestinationGridMount } from "@/components/landing/DestinationGridMount"
 import { DeviceCheckerBridge } from "@/components/landing/DeviceCheckerBridge";
 import { HeroSearchMount } from "@/components/landing/HeroSearchMount";
 import { LandingTicker } from "@/components/landing/LandingTicker";
-import { TrustStatsBar } from "@/components/landing/TrustStatsBar";
-import { WhyNoorLink } from "@/components/landing/WhyNoorLink";
-import { Testimonials } from "@/components/landing/Testimonials";
+import { TestimonialsMount } from "@/components/landing/TestimonialsMount";
+import { TrustStatsBarMount } from "@/components/landing/TrustStatsBarMount";
+import { WhyNoorLinkMount } from "@/components/landing/WhyNoorLinkMount";
 import { StaticHtmlContent } from "@/components/content/StaticHtmlContent";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { bodyHtml } from "@/lib/legacy/pages/landing";
@@ -26,9 +26,9 @@ export function LandingPage() {
         stripWhatsApp
       />
       <HeroSearchMount />
-      <TrustStatsBar />
-      <WhyNoorLink />
-      <Testimonials />
+      <TrustStatsBarMount />
+      <WhyNoorLinkMount />
+      <TestimonialsMount />
       <DestinationGridMount />
       <DeviceCheckerBridge />
     </>

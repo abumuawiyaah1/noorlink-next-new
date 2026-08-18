@@ -104,6 +104,11 @@
         .btn-nav.btn-nav--secondary {
             background: white; color: var(--primary) !important; border: 1px solid #e5e7eb;
         }
+        .success-reassurance {
+            margin-top: 14px;
+            font-size: 0.88rem;
+            color: #666;
+        }
 
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
         @media (max-width: 768px) {

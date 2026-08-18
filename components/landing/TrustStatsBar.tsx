@@ -1,7 +1,7 @@
 const stats = [
   { value: "190+", label: "Countries covered", icon: "🌍" },
   { value: "Instant", label: "QR delivery", icon: "⚡" },
-  { value: "4.8/5", label: "Traveler rating", icon: "⭐" },
+  { value: "Hotspot", label: "Included on plans", icon: "📶" },
   { value: "24/7", label: "WhatsApp support", icon: "💬" },
 ] as const;
 

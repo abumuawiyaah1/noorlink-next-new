@@ -147,7 +147,44 @@
   margin-top: -28px;
 }
 
+.faq-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: -28px;
+  margin-bottom: 20px;
+}
+
+.faq-group {
+  display: grid;
+  gap: 14px;
+}
+
+.faq-group__title {
+  margin: 8px 0 0;
+  color: var(--primary, #0f3d3e);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.faq-group__items {
+  display: grid;
+  gap: 16px;
+}
+
+.faq-item h3 {
+  margin: 0 0 10px;
+  color: var(--primary, #0f3d3e);
+  font-size: 1.1rem;
+}
+
+.faq-help-card {
+  text-align: center;
+}
+
 @media (max-width: 800px) {
+  .faq-quick-grid,
   .help-grid {
     grid-template-columns: 1fr;
   }

@@ -106,11 +106,14 @@ function PlanCard({
         />
         {plan.planCategory === "flexible" && <small> starting rate</small>}
       </div>
+      <p className="plans-card__summary">
+        {formatDataAmount(plan)} for {formatDuration(plan.durationDays)}
+      </p>
       <p className="plans-card__includes">
         Instant email delivery · Hotspot ready · 5G where available
       </p>
       <Link href={checkoutHref} className="plans-card__cta">
-        Select Plan
+        Continue to secure checkout
       </Link>
     </article>
   );
@@ -245,8 +248,8 @@ export function TravelerPlansPage({
             <p className="plans-page__error-title">Could not load plans</p>
             <p className="plans-page__error-detail">{error}</p>
             <p className="plans-page__error-hint">
-              If this persists, the backend may be unreachable. Confirm the API is
-              running and try again shortly.
+              Please try again in a moment, choose another destination, or contact
+              support if you need help placing the order.
             </p>
           </div>
         )}
@@ -263,6 +266,11 @@ export function TravelerPlansPage({
 
         {!loading && !error && data && data.plans.length > 0 && (
           <>
+            <div className="plans-reassurance">
+              <span>QR by email in minutes</span>
+              <span>Refund if technical activation fails</span>
+              <span>24/7 support before and after checkout</span>
+            </div>
             <div className="plans-tabs" role="tablist" aria-label="Plan types">
               {TABS.map((tab) => {
                 const count = data.planGroups[tab.id]?.length ?? 0;

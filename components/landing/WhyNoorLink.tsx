@@ -24,7 +24,7 @@ const BENEFITS = [
   {
     icon: "↩️",
     title: "Refund if it fails",
-    body: "If a technical error prevents activation, we refund or replace — no bureaucracy, no waiting weeks.",
+    body: "If a technical error prevents activation, we review the issue quickly and refund or replace when eligible.",
   },
   {
     icon: "💬",

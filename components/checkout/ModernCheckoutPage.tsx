@@ -22,6 +22,7 @@ export function ModernCheckoutPage() {
   const country = formatCountryLabel(searchParams.get("country") ?? "Your destination");
   const flag = searchParams.get("flag") ?? "🌍";
   const packageId = searchParams.get("packageId") ?? searchParams.get("package_id");
+  const plan = searchParams.get("plan") ?? "Selected plan";
   const price = parsePrice(searchParams.get("price")) || 12;
 
   const [email, setEmail] = useState("");
@@ -127,6 +128,10 @@ export function ModernCheckoutPage() {
                   <i className="fas fa-envelope" style={{ color: "var(--accent)" }} aria-hidden="true" />{" "}
                   1. Contact Information
                 </h2>
+                <div className="form-note">
+                  We use this to send two emails: your payment confirmation first,
+                  then your QR code and install details.
+                </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-email">
                     Email address
@@ -170,6 +175,9 @@ export function ModernCheckoutPage() {
                   <i className="fas fa-calendar-alt" style={{ color: "var(--accent)" }} aria-hidden="true" />{" "}
                   2. Trip Details
                 </h2>
+                <div className="form-note">
+                  These details help support if you need help with setup or timing.
+                </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-travel-date">
                     Arrival date (optional)
@@ -224,9 +232,20 @@ export function ModernCheckoutPage() {
             <aside className="summary-section">
               <div className="card summary-card">
                 <h2>Order Summary</h2>
+                <div className="summary-plan">
+                  <span className="summary-plan__flag">{flag}</span>
+                  <div>
+                    <strong>{plan}</strong>
+                    <p>{country}</p>
+                  </div>
+                </div>
                 <div className="summary-row">
-                  <span>{flag} Destination</span>
-                  <strong>{country}</strong>
+                  <span>Delivery</span>
+                  <strong>QR by email</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Support</span>
+                  <strong>24/7 WhatsApp</strong>
                 </div>
                 <div className="summary-row summary-total">
                   <span>Total</span>
@@ -239,9 +258,15 @@ export function ModernCheckoutPage() {
                 >
                   {submitting ? "Redirecting to Stripe…" : `Pay $${formattedTotal}`}
                 </button>
-                <p style={{ fontSize: "0.8rem", textAlign: "center", marginTop: 15, color: "#888" }}>
-                  You will complete payment securely on Stripe. Card details are never stored on NoorLink.
+                <p className="summary-next-step">
+                  Next step: secure Stripe payment, then we email your order
+                  confirmation immediately.
                 </p>
+                <div className="summary-checklist">
+                  <div>Secure Stripe checkout</div>
+                  <div>Card details never stored on NoorLink</div>
+                  <div>Refund policy available before payment</div>
+                </div>
               </div>
             </aside>
           </form>

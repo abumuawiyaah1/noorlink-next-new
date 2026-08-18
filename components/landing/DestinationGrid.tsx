@@ -37,6 +37,14 @@ export function DestinationGrid() {
   return (
     <section className="destinations" id="destinations">
       <div className="container">
+        <div className="destinations-heading">
+          <span className="why-kicker">Popular regions</span>
+          <h2>Choose where you are going next</h2>
+          <p>
+            Browse fast-moving travel favorites and continue straight to the
+            plan options for that region.
+          </p>
+        </div>
         <div className="grid">
           {destinations.map((dest, index) => (
             <Link

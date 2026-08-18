@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 
 const STATS = [
   { value: "190+", label: "Countries covered" },
-  { value: "50k+", label: "Happy travelers" },
+  { value: "Fast", label: "Digital delivery" },
   { value: "24/7", label: "Global support" },
   { value: "0%", label: "Roaming fees" },
 ];

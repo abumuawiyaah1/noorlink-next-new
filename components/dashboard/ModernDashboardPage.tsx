@@ -18,8 +18,8 @@ function DashboardContent() {
       <Breadcrumbs items={[{ href: "/", label: "Home" }, { label: "My eSIMs" }]} />
       <div id="login-view">
         <OrderLookupCard
-          title="Manage eSIM"
-          description="Enter the email and order ID from your confirmation email to check delivery, QR access, and plan status."
+          title="Track delivery or open your QR"
+          description="Use the email from checkout and your order ID to check delivery status, open install details, or confirm your plan is active."
           submitLabel="View My eSIM"
           initialEmail={initialEmail}
           initialOrderId={initialOrderId}

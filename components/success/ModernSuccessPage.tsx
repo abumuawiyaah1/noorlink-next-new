@@ -44,7 +44,7 @@ function SuccessContent() {
           <div className="check-icon">
             <i className="fas fa-check-circle" aria-hidden="true" />
           </div>
-          <h1>Payment successful</h1>
+          <h1>Payment confirmed</h1>
           <p>
             Your eSIM for {country}
             {plan ? ` (${plan})` : ""} is being prepared
@@ -117,6 +117,10 @@ function SuccessContent() {
                   Contact support
                 </Link>
               </div>
+              <p className="success-reassurance">
+                If the QR email is delayed, support can help 24/7 and your order
+                tracker stays available at any time.
+              </p>
             </div>
           </div>
         </div>
