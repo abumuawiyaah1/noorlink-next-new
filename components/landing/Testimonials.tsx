@@ -1,33 +1,33 @@
-const REVIEWS = [
+const STORIES = [
   {
     title: "Umrah travelers",
-    detail: "Saudi Arabia",
-    text: "Used NoorLink for Umrah and it worked perfectly from the moment I landed in Jeddah. Setup took 2 minutes at home before my trip. Will use again for every trip.",
+    place: "Saudi Arabia",
+    text: "Install at home before you fly. When you land in Jeddah, the plan is ready so you can stay connected in Makkah and Madinah without looking for a SIM shop.",
   },
   {
-    title: "Europe multi-country trips",
-    detail: "France, Italy, Spain",
-    text: "Bought a Europe plan covering 33 countries. Switched between France, Italy and Spain without touching a setting. Honestly the easiest travel purchase I've made.",
+    title: "Europe in one plan",
+    place: "France, Italy, Spain",
+    text: "One eSIM covers multiple countries, so you can cross borders without changing settings or buying a new plan in each city.",
   },
   {
-    title: "Fast support moments",
-    detail: "Installation help",
-    text: "Had a question about installation and the WhatsApp support team replied within minutes. The QR arrived fast and worked first try on my iPhone.",
+    title: "Help when you need it",
+    place: "24/7 support",
+    text: "If install or delivery is unclear, WhatsApp and live chat are available around the clock. Most travelers get an answer in minutes, not days.",
   },
   {
-    title: "North America travel",
-    detail: "US + Canada coverage",
-    text: "Travelling from Mexico to the US and Canada. The NoorLink plan covered both. No roaming surprises on my bill — exactly what I needed.",
+    title: "US and Canada trips",
+    place: "North America",
+    text: "Use one plan across both countries and keep maps, rides, and messages working without surprise roaming on your home bill.",
   },
   {
-    title: "Remote work on the go",
-    detail: "Hotspot-ready plans",
-    text: "Hotspot worked perfectly so I could keep my laptop connected during a long layover. Much cheaper than the airport Wi-Fi option.",
+    title: "Hotspot on the go",
+    place: "Laptops and tablets",
+    text: "Every plan can share data. Keep a laptop online during a layover or hand a connection to a travel companion without an extra fee.",
   },
   {
-    title: "Long-haul arrivals",
-    detail: "Instant activation",
-    text: "Bought a plan for my Europe trip from Lagos. Everything was clear, checkout was quick, and the eSIM activated the second I landed in London.",
+    title: "Ready when you land",
+    place: "Instant activation",
+    text: "Checkout is email-first. After payment, the QR arrives so you can install before takeoff and connect as soon as you reach the destination.",
   },
 ] as const;
 
@@ -36,27 +36,20 @@ export function Testimonials() {
     <section className="reviews-section" aria-labelledby="reviews-heading">
       <div className="container">
         <div className="reviews-header">
-          <span className="why-kicker">Traveler proof points</span>
+          <span className="why-kicker">Made for real trips</span>
           <h2 id="reviews-heading">Why travelers choose NoorLink.</h2>
           <p>
-            Common trip situations where fast eSIM delivery, simple setup, and
-            responsive support matter most.
+            Fast delivery, simple setup, and support that stays with you from
+            checkout to arrival.
           </p>
         </div>
 
         <div className="reviews-grid">
-          {REVIEWS.map((review) => (
-            <article key={review.title} className="review-card">
-              <div className="review-pill">{review.detail}</div>
-              <blockquote className="review-card__text">
-                &ldquo;{review.text}&rdquo;
-              </blockquote>
-              <footer className="review-card__footer">
-                <div>
-                  <strong>{review.title}</strong>
-                  <span>Representative customer scenario</span>
-                </div>
-              </footer>
+          {STORIES.map((story) => (
+            <article key={story.title} className="review-card">
+              <p className="review-card__place">{story.place}</p>
+              <h3 className="review-card__title">{story.title}</h3>
+              <p className="review-card__text">{story.text}</p>
             </article>
           ))}
         </div>
