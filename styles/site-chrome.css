@@ -269,3 +269,32 @@
     display: flex;
   }
 }
+
+/* Shared How It Works gradient border — used by cards site-wide. */
+.why-card,
+.review-card,
+.plans-card,
+.help-card,
+.help-form,
+.faq-item,
+.content-card,
+.content-cta,
+.legal-card,
+.about-story-card,
+.about-stat,
+.newsletter-signup,
+.newsletter-card,
+.login-card,
+.ticket-card,
+.trust-stats-grid,
+.card.summary-card,
+.loyalty-card.card-refer {
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+}
+
+.login-card--compact {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}

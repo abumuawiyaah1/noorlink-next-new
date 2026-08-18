@@ -12,4 +12,7 @@
   --success: #10b981;
   --glass: rgba(255, 255, 255, 0.95);
   --font-brand: var(--font-plus-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --border-gradient: linear-gradient(135deg, var(--primary), var(--accent), var(--success));
+  --card-gradient-border: linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--border-gradient) border-box;
 }

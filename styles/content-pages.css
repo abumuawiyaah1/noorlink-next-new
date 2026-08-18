@@ -94,8 +94,6 @@
 .content-card,
 .newsletter-card,
 .about-stat {
-  background: #fff;
-  border: 1px solid #e5e7eb;
   box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
 }
 
@@ -181,7 +179,6 @@
 .content-card,
 .newsletter-card {
   border-radius: 22px;
-  overflow: hidden;
 }
 
 .content-card {

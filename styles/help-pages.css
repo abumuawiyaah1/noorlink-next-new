@@ -39,8 +39,6 @@
 .help-card,
 .help-form,
 .faq-item {
-  background: #fff;
-  border: 1px solid #e5e7eb;
   border-radius: 20px;
   padding: 24px;
   box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);

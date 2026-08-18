@@ -20,9 +20,8 @@
 
         /* TICKET CARD */
         .ticket-card {
-            background: var(--surface); border-radius: 24px; overflow: hidden;
+            border-radius: 24px; overflow: hidden;
             box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); margin-bottom: 40px;
-            border: 1px solid #e5e7eb;
         }
         .ticket-header {
             background: var(--primary); color: white; padding: 20px 30px;
@@ -80,7 +79,7 @@
         .gift-note { font-size: 0.8rem; opacity: 0.8; }
 
         /* Referral Styling */
-        .card-refer { background: white; border: 1px solid #e5e7eb; color: var(--text-main); }
+        .card-refer { color: var(--text-main); }
         .refer-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
         .refer-link { 
             background: #f3f4f6; padding: 10px; margin: 15px 0; border-radius: 8px;

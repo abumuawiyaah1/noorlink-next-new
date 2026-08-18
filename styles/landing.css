@@ -175,15 +175,17 @@
         a.card {
             height: 320px; border-radius: 24px; position: relative; overflow: hidden; cursor: pointer;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: all 0.4s ease;
-            border: 2px solid transparent; 
-            background: #05191a;
+            border: 3px solid transparent;
+            background:
+                linear-gradient(#05191a, #05191a) padding-box,
+                var(--border-gradient) border-box;
         }
         a.card {
             display: block;
             text-decoration: none;
             color: inherit;
         }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); border-color: var(--accent); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
         
         .card-overlay {
             background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%);
