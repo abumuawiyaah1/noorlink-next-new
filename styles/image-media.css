@@ -353,14 +353,6 @@
   font-weight: 600;
 }
 
-.reviews-disclaimer {
-  margin-top: 28px;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-muted, #6b7280);
-  font-weight: 600;
-}
-
 @media (max-width: 900px) {
   .reviews-grid {
     grid-template-columns: repeat(2, 1fr);

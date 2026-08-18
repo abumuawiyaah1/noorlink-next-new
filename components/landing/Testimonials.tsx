@@ -60,11 +60,6 @@ export function Testimonials() {
             </article>
           ))}
         </div>
-
-        <p className="reviews-disclaimer">
-          Verified third-party reviews can replace this section once Trustpilot
-          and other review profiles are live.
-        </p>
       </div>
     </section>
   );
