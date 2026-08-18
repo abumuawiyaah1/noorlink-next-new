@@ -5,6 +5,7 @@ import { DeviceCheckerBridge } from "@/components/landing/DeviceCheckerBridge";
 import { HeroSearchMount } from "@/components/landing/HeroSearchMount";
 import { LandingTicker } from "@/components/landing/LandingTicker";
 import { TrustStatsBar } from "@/components/landing/TrustStatsBar";
+import { WhyNoorLink } from "@/components/landing/WhyNoorLink";
 import { StaticHtmlContent } from "@/components/content/StaticHtmlContent";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { bodyHtml } from "@/lib/legacy/pages/landing";
@@ -25,6 +26,7 @@ export function LandingPage() {
       />
       <HeroSearchMount />
       <TrustStatsBar />
+      <WhyNoorLink />
       <DestinationGridMount />
       <DeviceCheckerBridge />
     </>
