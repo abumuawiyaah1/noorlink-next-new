@@ -1,19 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { FormEvent, Suspense, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { OrderLookupCard } from "@/components/orders/OrderLookupCard";
 import { submitContactForm } from "@/lib/contact-api";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import "@/styles/help-pages.css";
 
-export function ModernSupportPage() {
+function SupportContent() {
+  const searchParams = useSearchParams();
+  const initialEmail = searchParams.get("email") ?? "";
+  const initialOrderId = searchParams.get("orderId") ?? "";
+  const initialSubject = searchParams.get("subject") ?? "Order help";
+  const defaultMessage = initialOrderId
+    ? `Hi NoorLink, I need help with order ${initialOrderId}.`
+    : "";
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("Order help");
-  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState(initialEmail);
+  const [subject, setSubject] = useState(initialSubject);
+  const [message, setMessage] = useState(defaultMessage);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
@@ -60,7 +69,7 @@ export function ModernSupportPage() {
               <h2>Orders</h2>
               <p>
                 Paid orders send a confirmation email first. The QR code arrives in a
-                second email after payment confirms.
+                second email after payment confirms, usually within a few minutes.
               </p>
               <p style={{ marginTop: 12 }}>
                 <Link href="/dashboard">Look up My eSIMs</Link>
@@ -70,8 +79,36 @@ export function ModernSupportPage() {
             </article>
           </div>
 
+          <section className="help-form help-form--lookup">
+            <h2>Track an order</h2>
+            <p className="help-intro">
+              If your QR email is delayed, check the order here before sending a
+              support message.
+            </p>
+            <OrderLookupCard
+              compact
+              title="Order status and QR access"
+              description="Use the email from checkout and the order ID from your first confirmation email."
+              submitLabel="Check order"
+              initialEmail={initialEmail}
+              initialOrderId={initialOrderId}
+            />
+            <div className="help-checklist">
+              <strong>If your QR email has not arrived yet:</strong>
+              <ul>
+                <li>Check spam, junk, promotions, and social tabs.</li>
+                <li>Look for the first payment confirmation email with your order ID.</li>
+                <li>Use the tracker above or message WhatsApp support with that order ID.</li>
+              </ul>
+            </div>
+          </section>
+
           <form className="help-form" onSubmit={onSubmit}>
             <h2>Send a message</h2>
+            <p className="help-intro">
+              Include your order ID if you have it so we can resolve delivery or
+              install issues faster.
+            </p>
             <label htmlFor="support-name">Name</label>
             <input
               id="support-name"
@@ -121,5 +158,13 @@ export function ModernSupportPage() {
       </main>
       <SiteFooter />
     </>
+  );
+}
+
+export function ModernSupportPage() {
+  return (
+    <Suspense fallback={<main className="help-page" />}>
+      <SupportContent />
+    </Suspense>
   );
 }

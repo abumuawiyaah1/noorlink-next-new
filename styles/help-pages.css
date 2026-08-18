@@ -69,6 +69,11 @@
   margin-top: 20px;
 }
 
+.help-intro {
+  margin: 0 0 10px;
+  color: var(--text-muted, #6b7280);
+}
+
 .help-form label {
   display: block;
   font-weight: 700;
@@ -100,6 +105,40 @@
 .help-form__status {
   margin-top: 12px;
   font-weight: 600;
+}
+
+.help-form--lookup .login-card {
+  max-width: none;
+  width: 100%;
+  margin-top: 16px;
+  text-align: left;
+}
+
+.help-form--lookup .login-card h1 {
+  font-size: 1.35rem;
+}
+
+.help-checklist {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+}
+
+.help-checklist strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.help-checklist ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.help-checklist li {
+  margin-bottom: 6px;
 }
 
 .faq-list {

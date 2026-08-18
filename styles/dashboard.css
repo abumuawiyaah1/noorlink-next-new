@@ -58,6 +58,26 @@
             transition: 0.3s; margin-top: 10px;
         }
         .login-btn:hover { background: var(--accent); color: var(--primary); }
+        .login-btn--ghost { background: transparent; color: var(--text-main); border: 1px solid #e5e7eb; }
+        .login-btn--ghost:hover { background: #f9fafb; color: var(--primary); }
+        .error-message { color: #b91c1c; font-weight: 600; margin-top: 10px; }
+        .order-lookup-note { margin-top: 14px; font-size: 0.86rem; color: var(--text-muted); }
+        .login-card--compact { padding: 0; box-shadow: none; border: none; background: transparent; max-width: none; }
+        .lookup-result { text-align: left; }
+        .lookup-result__head {
+            display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 16px;
+        }
+        .lookup-status {
+            text-transform: capitalize; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0;
+            border-radius: 999px; padding: 6px 12px; font-size: 0.78rem; font-weight: 800; white-space: nowrap;
+        }
+        .lookup-actions {
+            display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0 8px;
+        }
+        .lookup-actions a {
+            color: var(--primary); font-weight: 700; text-decoration: none;
+        }
+        .lookup-actions a:hover { color: var(--accent); }
 
         /* --- VIEW 2: DASHBOARD (HIDDEN BY DEFAULT) --- */
         #dashboard-view { display: none; padding: 40px 0; }
@@ -133,4 +153,5 @@
 
         @media (max-width: 768px) {
             .dash-grid { grid-template-columns: 1fr; }
+            .lookup-result__head { flex-direction: column; }
         }

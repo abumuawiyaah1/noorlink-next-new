@@ -40,6 +40,17 @@
         .scan-instruction { font-size: 0.85rem; color: #666; font-weight: 600; }
         .install-steps { margin: 0 0 16px; padding-left: 18px; color: #444; }
         .install-steps li { margin-bottom: 8px; }
+        .next-timeline { display: grid; gap: 12px; margin-bottom: 18px; }
+        .next-step {
+            display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: flex-start;
+            padding: 12px 14px; border-radius: 14px; background: #F9FAFB; border: 1px solid #E5E7EB;
+        }
+        .next-step span {
+            width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 149, 0, 0.14);
+            color: var(--primary); display: grid; place-items: center; font-weight: 800;
+        }
+        .next-step strong { display: block; margin-bottom: 4px; color: var(--primary); }
+        .next-step p { margin: 0; font-size: 0.92rem; color: #666; }
 
         .details-area h3 { color: var(--primary); margin-bottom: 20px; }
         .field-group { margin-bottom: 20px; }
@@ -89,10 +100,15 @@
         }
         .btn-dashboard:hover { transform: translateY(-2px); background: var(--accent); color: var(--primary); }
         .email-note { margin-top: 20px; font-size: 0.9rem; color: #888; }
+        .success-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+        .btn-nav.btn-nav--secondary {
+            background: white; color: var(--primary) !important; border: 1px solid #e5e7eb;
+        }
 
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
         @media (max-width: 768px) {
             .ticket-body { grid-template-columns: 1fr; border: none; text-align: center; }
             .qr-area { border-right: none; border-bottom: 1px solid #eee; padding-right: 0; padding-bottom: 30px; }
             .loyalty-grid { grid-template-columns: 1fr; }
+            .success-actions { justify-content: center; }
         }

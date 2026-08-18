@@ -16,6 +16,8 @@ function SuccessContent() {
   const price = searchParams.get("price") ?? "0.00";
   const email = searchParams.get("email");
   const plan = searchParams.get("plan");
+  const dashboardHref = `/dashboard${email ? `?email=${encodeURIComponent(email)}` : ""}`;
+  const supportHref = `/support?subject=${encodeURIComponent("Install / QR code")}${email ? `&email=${encodeURIComponent(email)}` : ""}`;
 
   return (
     <>
@@ -70,6 +72,29 @@ function SuccessContent() {
             </div>
             <div className="details-area">
               <h3>Install in 3 steps</h3>
+              <div className="next-timeline">
+                <div className="next-step">
+                  <span>1</span>
+                  <div>
+                    <strong>Payment confirmation</strong>
+                    <p>Your first email confirms the order and shows the order ID.</p>
+                  </div>
+                </div>
+                <div className="next-step">
+                  <span>2</span>
+                  <div>
+                    <strong>QR delivery email</strong>
+                    <p>The second email includes the QR code and install details.</p>
+                  </div>
+                </div>
+                <div className="next-step">
+                  <span>3</span>
+                  <div>
+                    <strong>Track or get help</strong>
+                    <p>If it takes more than 10 minutes, open My eSIMs or contact support.</p>
+                  </div>
+                </div>
+              </div>
               <ol className="install-steps">
                 <li>Open the delivery email and find the QR code.</li>
                 <li>
@@ -81,9 +106,17 @@ function SuccessContent() {
               <p className="email-note">
                 Check inbox and spam/junk. If nothing arrives within 10 minutes,
                 look up the order in{" "}
-                <Link href="/dashboard">My eSIMs</Link> or message{" "}
+                <Link href={dashboardHref}>My eSIMs</Link> or message{" "}
                 <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp support</a>.
               </p>
+              <div className="success-actions">
+                <Link href={dashboardHref} className="btn-nav">
+                  Track this order
+                </Link>
+                <Link href={supportHref} className="btn-nav btn-nav--secondary">
+                  Contact support
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -100,7 +133,7 @@ function SuccessContent() {
           <div className="loyalty-card card-refer">
             <p className="refer-title">Need the QR now?</p>
             <p>Use My eSIMs with the email you paid with. Support is available 24/7.</p>
-            <Link href="/dashboard" className="btn-nav">
+            <Link href={dashboardHref} className="btn-nav">
               Open My eSIMs
             </Link>
           </div>
