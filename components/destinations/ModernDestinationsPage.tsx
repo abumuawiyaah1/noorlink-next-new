@@ -36,13 +36,43 @@ function formatFromPrice(price: number, dollars?: string, cents?: string): strin
   return `From $${price.toFixed(2)}`;
 }
 
+function catalogPrices(): DestinationPriceMap {
+  const prices: DestinationPriceMap = {};
+  for (const card of DESTINATION_CARDS) {
+    prices[card.id] = card.priceLabel;
+  }
+  return prices;
+}
+
+async function cheapestPriceLabel(countryId: string, fallback: string): Promise<string> {
+  try {
+    const response = await fetchPlansByCountry(countryId);
+    const plans = response.plans ?? [];
+    if (plans.length === 0) return fallback;
+    const cheapest = plans.reduce((best, plan) =>
+      plan.price < best.price ? plan : best,
+    );
+    return formatFromPrice(
+      cheapest.price,
+      cheapest.formattedPriceParts?.dollars,
+      cheapest.formattedPriceParts?.cents,
+    );
+  } catch {
+    return fallback;
+  }
+}
+
 export function ModernDestinationsPage({ prices = {} }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") ?? searchParams.get("country") ?? "";
   const [query, setQuery] = useState(initialQuery);
   const [region, setRegion] = useState<"all" | DestinationRegion>("all");
-  const [livePrices, setLivePrices] = useState<DestinationPriceMap>(prices);
+  const [livePrices, setLivePrices] = useState<DestinationPriceMap>(() => ({
+    ...catalogPrices(),
+    ...prices,
+  }));
+  const pricedIds = useMemo(() => ({ current: new Set<string>() }), []);
 
   const cards = useMemo(
     () => filterDestinationCards(query, region),
@@ -54,31 +84,17 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
   }, [initialQuery]);
 
   useEffect(() => {
-    const missing = cards.filter((card) => !livePrices[card.id]);
+    const missing = cards.filter((card) => !pricedIds.current.has(card.id));
     if (missing.length === 0) return;
 
+    missing.forEach((card) => pricedIds.current.add(card.id));
     let cancelled = false;
+
     void Promise.all(
-      missing.map(async (card) => {
-        try {
-          const response = await fetchPlansByCountry(card.priceCountryId);
-          const plans = response.plans ?? [];
-          if (plans.length === 0) return [card.id, card.priceLabel] as const;
-          const cheapest = plans.reduce((best, plan) =>
-            plan.price < best.price ? plan : best,
-          );
-          return [
-            card.id,
-            formatFromPrice(
-              cheapest.price,
-              cheapest.formattedPriceParts?.dollars,
-              cheapest.formattedPriceParts?.cents,
-            ),
-          ] as const;
-        } catch {
-          return [card.id, card.priceLabel] as const;
-        }
-      }),
+      missing.map(async (card) => [
+        card.id,
+        await cheapestPriceLabel(card.priceCountryId, card.priceLabel),
+      ] as const),
     ).then((entries) => {
       if (cancelled) return;
       setLivePrices((current) => ({ ...current, ...Object.fromEntries(entries) }));
@@ -87,7 +103,7 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [cards, livePrices]);
+  }, [cards, pricedIds]);
 
   return (
     <>
