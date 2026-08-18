@@ -316,9 +316,9 @@
   width: fit-content;
   padding: 7px 12px;
   border-radius: 999px;
-  background: rgba(255, 149, 0, 0.1);
-  border: 1px solid rgba(255, 149, 0, 0.24);
-  color: var(--primary, #0f3d3e);
+  background: #ff9500;
+  border: 1px solid #e07d00;
+  color: #1a1208;
   font-size: 0.78rem;
   font-weight: 800;
 }

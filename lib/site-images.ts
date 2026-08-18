@@ -18,6 +18,7 @@ export const DESTINATION_IMAGES = {
   usa: `${DEST}/usa.jpg`,
   canada: `${DEST}/canada.jpg`,
   mexico: `${DEST}/mexico.jpg`,
+  caribbean: `${DEST}/mexico.jpg`,
   brazil: `${DEST}/brazil.jpg`,
   europeRegional: `${DEST}/europe-regional.jpg`,
   uk: `${DEST}/uk.jpg`,

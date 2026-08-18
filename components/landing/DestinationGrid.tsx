@@ -11,6 +11,13 @@ const destinations = [
     href: "/plans/usa",
   },
   {
+    id: "caribbean",
+    title: "Caribbean",
+    subtitle: "Bahamas, Jamaica, Dominican Republic…",
+    image: DESTINATION_IMAGES.caribbean,
+    href: "/plans/bahamas",
+  },
+  {
     id: "europe",
     title: "Europe",
     subtitle: "UK, France, Germany & more",
