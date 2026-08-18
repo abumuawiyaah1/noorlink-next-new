@@ -1,0 +1,15 @@
+:root {
+  --primary: #0f3d3e;
+  --primary-dark: #05191a;
+  --primary-light: #1f6f70;
+  --accent: #ff9500;
+  --accent-light: #ffad5a;
+  --bg-body: #f3f5f7;
+  --surface: #ffffff;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --whatsapp: #25d366;
+  --success: #10b981;
+  --glass: rgba(255, 255, 255, 0.95);
+  --font-brand: var(--font-plus-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}

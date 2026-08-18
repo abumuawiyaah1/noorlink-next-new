@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { TravelerPlansPage } from "@/components/plans/TravelerPlansPage";
 import { getCountryImage } from "@/lib/country-image";
-import { normalizeCountrySlug } from "@/lib/country-slugs";
+import { formatCountryLabel, normalizeCountrySlug } from "@/lib/country-slugs";
 import { pingPlansApi } from "@/lib/plans-diagnostics";
 import "@/styles/plans-dynamic.css";
 
@@ -14,7 +14,7 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { country } = await params;
   const countryId = normalizeCountrySlug(country);
-  const label = countryId.replace(/-/g, " ");
+  const label = formatCountryLabel(countryId);
 
   return {
     title: `${label} eSIM Plans | NoorLink`,

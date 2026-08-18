@@ -1,0 +1,200 @@
+/* Shared header / footer / breadcrumbs — works without per-page CSS. */
+
+.site-header {
+  background: var(--glass, rgba(255, 255, 255, 0.95));
+  backdrop-filter: blur(12px);
+  padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.site-header--dark {
+  background: rgba(5, 25, 26, 0.92);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.site-header .nav-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.site-header .logo-text {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--primary, #0f3d3e);
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  display: flex;
+  align-items: flex-start;
+}
+
+.site-header--dark .logo-text {
+  color: #fff;
+}
+
+.site-header .logo-tm {
+  font-size: 0.75rem;
+  margin-left: 2px;
+  margin-top: 4px;
+  font-weight: 700;
+  color: var(--accent, #ff9500);
+}
+
+.site-header .nav-links {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.site-header .nav-links a {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-main, #111827);
+  text-decoration: none;
+}
+
+.site-header--dark .nav-links a {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.site-header .nav-links a:hover {
+  color: var(--primary, #0f3d3e);
+}
+
+.site-header--dark .nav-links a:hover {
+  color: var(--accent, #ff9500);
+}
+
+.site-header .btn-nav {
+  background: var(--primary, #0f3d3e);
+  color: #fff !important;
+  padding: 9px 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(15, 61, 62, 0.2);
+}
+
+.site-header--dark .btn-nav {
+  background: var(--accent, #ff9500);
+  color: #05191a !important;
+}
+
+.site-header .mobile-toggle {
+  display: none;
+  font-size: 1.4rem;
+  color: var(--primary, #0f3d3e);
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.site-header--dark .mobile-toggle {
+  color: #fff;
+}
+
+.site-crumbs {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted, #6b7280);
+}
+
+.site-crumbs a {
+  color: var(--primary, #0f3d3e);
+  text-decoration: none;
+}
+
+.site-crumbs a:hover {
+  color: var(--accent, #ff9500);
+}
+
+.site-crumbs__sep {
+  opacity: 0.45;
+}
+
+.site-crumbs--on-dark {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.site-crumbs--on-dark a {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.site-footer {
+  background: var(--primary-dark, #05191a);
+  color: #94a3b8;
+  padding: 36px 24px 24px;
+  margin-top: auto;
+  font-size: 0.9rem;
+}
+
+.site-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.site-footer a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.site-footer a:hover {
+  color: var(--accent, #ff9500);
+}
+
+.site-footer__brand {
+  font-weight: 800;
+  color: #fff;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+
+.site-footer__links {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .site-header .mobile-toggle {
+    display: block;
+  }
+
+  .site-header .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    gap: 16px;
+    text-align: center;
+  }
+
+  .site-header--dark .nav-links {
+    background: #05191a;
+  }
+
+  .site-header .nav-links.active {
+    display: flex;
+  }
+}

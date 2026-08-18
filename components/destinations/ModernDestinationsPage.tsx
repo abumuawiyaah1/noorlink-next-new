@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import {
   DESTINATION_CARDS,
   DESTINATION_FILTERS,
@@ -90,6 +92,12 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
   return (
     <>
       <SiteHeader nav={DESTINATIONS_NAV} />
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Home" },
+          { label: "Destinations" },
+        ]}
+      />
 
       <div className="page-header">
         <div className="container">
@@ -180,6 +188,7 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
           </p>
         )}
       </div>
+      <SiteFooter />
     </>
   );
 }

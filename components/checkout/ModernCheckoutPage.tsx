@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { createCheckoutSession } from "@/lib/checkout-api";
+import { formatCountryLabel } from "@/lib/country-slugs";
 
 function parsePrice(value: string | null): number {
   if (!value) return 0;
@@ -14,7 +18,7 @@ function parsePrice(value: string | null): number {
 export function ModernCheckoutPage() {
   const searchParams = useSearchParams();
 
-  const country = searchParams.get("country") ?? "Your destination";
+  const country = formatCountryLabel(searchParams.get("country") ?? "Your destination");
   const flag = searchParams.get("flag") ?? "🌍";
   const packageId = searchParams.get("packageId") ?? searchParams.get("package_id");
   const price = parsePrice(searchParams.get("price")) || 12;
@@ -87,17 +91,17 @@ export function ModernCheckoutPage() {
         Skip to main content
       </a>
 
-      <header>
-        <div className="container nav-flex">
-          <Link href="/" className="logo">
-            Noor<span>Link</span>
-            <sup className="logo-tm">TM</sup>
-          </Link>
-          <div className="secure-badge">
-            <i className="fas fa-shield-alt" aria-hidden="true" /> Verified Secure Checkout
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Home" },
+          { href: "/destinations", label: "Destinations" },
+          { label: "Checkout" },
+        ]}
+      />
+      <p className="secure-badge" style={{ margin: "12px auto 0", width: "fit-content" }}>
+        <i className="fas fa-shield-alt" aria-hidden="true" /> Verified Secure Checkout
+      </p>
 
       <main id="main-content">
         <div className="container">
@@ -228,6 +232,7 @@ export function ModernCheckoutPage() {
           </form>
         </div>
       </main>
+      <SiteFooter />
     </>
   );
 }

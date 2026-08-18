@@ -3,22 +3,27 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { formatCountryLabel } from "@/lib/country-slugs";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
-  const country = searchParams.get("country") ?? "your destination";
+  const country = formatCountryLabel(searchParams.get("country") ?? "your destination");
   const price = searchParams.get("price") ?? "0.00";
   const email = searchParams.get("email");
 
   return (
     <>
-      <header>
-        <div className="container">
-          <Link href="/" className="logo">
-            Noor<span>Link</span>
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Home" },
+          { href: "/destinations", label: "Destinations" },
+          { label: "Order confirmed" },
+        ]}
+      />
 
       <div className="container">
         <div className="success-banner">
@@ -55,6 +60,7 @@ function SuccessContent() {
           </div>
         </div>
       </div>
+      <SiteFooter />
     </>
   );
 }

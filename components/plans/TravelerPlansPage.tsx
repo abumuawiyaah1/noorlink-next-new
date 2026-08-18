@@ -2,9 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { CountryPlansHero } from "@/components/plans/CountryPlansHero";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
 import { CountrySearch } from "@/components/search/CountrySearch";
+import { formatCountryLabel } from "@/lib/country-slugs";
 import {
   fetchPlansByCountry,
   type EsimPlan,
@@ -185,16 +189,26 @@ export function TravelerPlansPage({
     };
   }, [countryId, initialData, initialError]);
 
-  const title = data?.countryName ?? countryId.replace(/-/g, " ");
+  const title = formatCountryLabel(data?.countryName ?? countryId);
   const flag = data?.flag;
   const visiblePlans = data?.planGroups[activeTab] ?? [];
 
   return (
-    <main className="plans-page">
+    <>
+      <SiteHeader variant="dark" />
+      <main className="plans-page">
       <CountryPlansHero
         src={countryImage}
         alt={`${title} travel destination`}
       >
+        <Breadcrumbs
+          onDark
+          items={[
+            { href: "/", label: "Home" },
+            { href: "/destinations", label: "Destinations" },
+            { label: title },
+          ]}
+        />
         <header className="plans-page__header">
           <div className="plans-page__brand">
             <span className="plans-page__eyebrow">NoorLink</span>
@@ -271,7 +285,7 @@ export function TravelerPlansPage({
                 <PlanCard
                   key={plan.id}
                   plan={plan}
-                  countryName={data.countryName ?? title}
+                  countryName={title}
                   flag={flag}
                 />
               ))}
@@ -280,5 +294,7 @@ export function TravelerPlansPage({
         )}
       </div>
     </main>
+      <SiteFooter />
+    </>
   );
 }

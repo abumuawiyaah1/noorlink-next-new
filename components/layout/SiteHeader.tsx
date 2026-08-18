@@ -8,7 +8,6 @@ export type NavItem = { href: string; label: string; highlight?: boolean };
 const DEFAULT_NAV: NavItem[] = [
   { href: "/about", label: "About" },
   { href: "/destinations", label: "Destinations" },
-  { href: "/plans", label: "Plans" },
   { href: "/support", label: "Support" },
   { href: "/dashboard", label: "My eSIMs", highlight: true },
 ];
@@ -16,16 +15,18 @@ const DEFAULT_NAV: NavItem[] = [
 type SiteHeaderProps = {
   nav?: NavItem[];
   logoClassName?: string;
+  variant?: "light" | "dark";
 };
 
 export function SiteHeader({
   nav = DEFAULT_NAV,
   logoClassName = "logo-text",
+  variant = "light",
 }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header>
+    <header className={`site-header${variant === "dark" ? " site-header--dark" : ""}`}>
       <div className="container nav-wrapper">
         <Link href="/" className={logoClassName}>
           Noor<span style={{ color: "var(--accent)" }}>Link</span>

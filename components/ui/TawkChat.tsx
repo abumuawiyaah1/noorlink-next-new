@@ -1,16 +1,26 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Script from "next/script";
 import { getTawkEmbedUrl } from "@/lib/tawk-config";
 import "@/styles/tawk-brand.css";
 
+const TAWK_DELAY_MS = 15000;
+
 /**
- * Tawk.to live chat — bottom-left (WhatsApp stays bottom-right).
- * Set header/button colors in Tawk dashboard → Widget Appearance:
- *   Primary #0F3D3E · Accent #FF9500
+ * Tawk.to live chat — delayed so the first screen stays uncluttered.
+ * Bottom-left (WhatsApp stays bottom-right on desktop).
  */
 export function TawkChat() {
   const embedUrl = getTawkEmbedUrl();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setReady(true), TAWK_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  if (!ready) return null;
 
   return (
     <Script id="tawk-to" strategy="afterInteractive">
@@ -26,7 +36,7 @@ export function TawkChat() {
             mobile: {
               position: "bl",
               xOffset: 16,
-              yOffset: 20,
+              yOffset: 88,
             },
           },
         };
