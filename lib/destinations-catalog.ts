@@ -17,9 +17,12 @@ export type DestinationCard = {
   id: string;
   title: string;
   region: DestinationRegion;
-  /** Country slug used to load live plan prices. */
+  /** Country slug used when the traveler continues to plans/checkout. */
   priceCountryId: string;
-  /** Fallback when the plans API is unavailable. */
+  /**
+   * Starting price shown on Destinations cards.
+   * Edit this for trending countries — the page does not overwrite it from the API.
+   */
   priceLabel: string;
   className: string;
   image: string;
@@ -37,6 +40,7 @@ export const DESTINATION_FILTERS: { id: "all" | DestinationRegion; label: string
   { id: "Africa", label: "Africa" },
 ];
 
+/** Trending destinations. `priceLabel` is the starting price you control. */
 export const DESTINATION_CARDS: DestinationCard[] = [
   {
     id: "usa",

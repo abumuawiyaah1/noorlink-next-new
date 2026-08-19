@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -13,9 +12,7 @@ import {
   filterDestinationCards,
   type DestinationRegion,
 } from "@/lib/destinations-catalog";
-import type { DestinationPriceMap } from "@/lib/destination-prices";
 import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
-import { fetchPlansByCountry } from "@/lib/plans-api";
 
 const DESTINATIONS_NAV = [
   { href: "/about", label: "About" },
@@ -26,84 +23,18 @@ const DESTINATIONS_NAV = [
 ];
 
 type Props = {
-  prices?: DestinationPriceMap;
+  initialQuery?: string;
 };
 
-function formatFromPrice(price: number, dollars?: string, cents?: string): string {
-  if (dollars != null && cents != null) {
-    return `From $${dollars}.${cents.padStart(2, "0").slice(-2)}`;
-  }
-  return `From $${price.toFixed(2)}`;
-}
-
-function catalogPrices(): DestinationPriceMap {
-  const prices: DestinationPriceMap = {};
-  for (const card of DESTINATION_CARDS) {
-    prices[card.id] = card.priceLabel;
-  }
-  return prices;
-}
-
-async function cheapestPriceLabel(countryId: string, fallback: string): Promise<string> {
-  try {
-    const response = await fetchPlansByCountry(countryId);
-    const plans = response.plans ?? [];
-    if (plans.length === 0) return fallback;
-    const cheapest = plans.reduce((best, plan) =>
-      plan.price < best.price ? plan : best,
-    );
-    return formatFromPrice(
-      cheapest.price,
-      cheapest.formattedPriceParts?.dollars,
-      cheapest.formattedPriceParts?.cents,
-    );
-  } catch {
-    return fallback;
-  }
-}
-
-export function ModernDestinationsPage({ prices = {} }: Props) {
+export function ModernDestinationsPage({ initialQuery = "" }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const initialQuery = searchParams.get("q") ?? searchParams.get("country") ?? "";
   const [query, setQuery] = useState(initialQuery);
   const [region, setRegion] = useState<"all" | DestinationRegion>("all");
-  const [livePrices, setLivePrices] = useState<DestinationPriceMap>(() => ({
-    ...catalogPrices(),
-    ...prices,
-  }));
-  const pricedIds = useMemo(() => ({ current: new Set<string>() }), []);
 
   const cards = useMemo(
     () => filterDestinationCards(query, region),
     [query, region],
   );
-
-  useEffect(() => {
-    setQuery(initialQuery);
-  }, [initialQuery]);
-
-  useEffect(() => {
-    const missing = cards.filter((card) => !pricedIds.current.has(card.id));
-    if (missing.length === 0) return;
-
-    missing.forEach((card) => pricedIds.current.add(card.id));
-    let cancelled = false;
-
-    void Promise.all(
-      missing.map(async (card) => [
-        card.id,
-        await cheapestPriceLabel(card.priceCountryId, card.priceLabel),
-      ] as const),
-    ).then((entries) => {
-      if (cancelled) return;
-      setLivePrices((current) => ({ ...current, ...Object.fromEntries(entries) }));
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [cards, pricedIds]);
 
   return (
     <>
@@ -119,7 +50,7 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
         <div className="container">
           <h1>Find Your Destination</h1>
           <p style={{ opacity: 0.8 }}>
-            Live eSIM prices, local highlights, and connectivity in 190+ countries.
+            Browse trending countries, starting prices, and eSIM plans in 190+ destinations.
           </p>
         </div>
       </div>
@@ -164,38 +95,30 @@ export function ModernDestinationsPage({ prices = {} }: Props) {
         </div>
 
         <div className="dest-grid">
-          {cards.map((card, index) => {
-            const priceLabel =
-              livePrices[card.id] ??
-              prices[card.id] ??
-              DESTINATION_CARDS.find((c) => c.id === card.id)?.priceLabel ??
-              card.priceLabel;
-
-            return (
-              <Link
-                key={card.id}
-                href={card.href}
-                className={`card ${card.className}`}
-                aria-label={`View plans for ${card.title}, ${priceLabel}`}
-              >
-                <DestinationCardMedia
-                  src={card.image}
-                  alt=""
-                  priority={index < 3}
-                />
-                <div className="card-overlay">
-                  <h3>{card.title}</h3>
-                  <p className="card-desc">{card.description}</p>
-                  <ul className="card-tips">
-                    {card.thingsToDo.slice(0, 3).map((tip) => (
-                      <li key={tip}>{tip}</li>
-                    ))}
-                  </ul>
-                  <span className="card-price">{priceLabel}</span>
-                </div>
-              </Link>
-            );
-          })}
+          {cards.map((card, index) => (
+            <Link
+              key={card.id}
+              href={card.href}
+              className={`card ${card.className}`}
+              aria-label={`View plans for ${card.title}, ${card.priceLabel}`}
+            >
+              <DestinationCardMedia
+                src={card.image}
+                alt=""
+                priority={index < 3}
+              />
+              <div className="card-overlay">
+                <h3>{card.title}</h3>
+                <p className="card-desc">{card.description}</p>
+                <ul className="card-tips">
+                  {card.thingsToDo.slice(0, 3).map((tip) => (
+                    <li key={tip}>{tip}</li>
+                  ))}
+                </ul>
+                <span className="card-price">{card.priceLabel}</span>
+              </div>
+            </Link>
+          ))}
         </div>
 
         {cards.length === 0 && (
