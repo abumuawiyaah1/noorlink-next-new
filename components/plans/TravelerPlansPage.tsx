@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { CountryPlansHero } from "@/components/plans/CountryPlansHero";
+import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
 import { CountrySearch } from "@/components/search/CountrySearch";
+import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import {
   fetchPlansByCountry,
@@ -25,6 +27,25 @@ type TravelerPlansPageProps = {
   initialData?: PlansByCountryResponse | null;
   initialError?: string | null;
 };
+
+const PLAN_FAQS = [
+  {
+    q: "When should I install?",
+    a: "Install on Wi‑Fi before you fly if you like. The data package typically starts when the eSIM connects to a supported network at the destination — not at checkout.",
+  },
+  {
+    q: "When does the plan start?",
+    a: "Usually when you turn the eSIM on for mobile data in the coverage country. You can keep your main number for WhatsApp and calls.",
+  },
+  {
+    q: "Can I use hotspot?",
+    a: "Yes. Hotspot / tethering is included so a laptop or travel companion can share the same plan.",
+  },
+  {
+    q: "What if my phone is locked?",
+    a: "The device must support eSIM and be carrier-unlocked. Use Check compatibility above. A locked phone is the most common reason an install fails.",
+  },
+] as const;
 
 function formatDataAmount(plan: EsimPlan): string {
   if (plan.planCategory === "unlimited") return "Unlimited";
@@ -47,7 +68,28 @@ function badgeLabel(plan: EsimPlan): string | null {
   return null;
 }
 
-function PlanCard({
+function checkoutHref(plan: EsimPlan, countryName: string, flag?: string): string {
+  const checkoutParams = new URLSearchParams({
+    country: countryName,
+    price: plan.price.toFixed(2),
+  });
+  if (flag) checkoutParams.set("flag", flag);
+  if (plan.name) checkoutParams.set("plan", plan.name);
+  if (plan.id) checkoutParams.set("packageId", plan.id);
+  return `/checkout?${checkoutParams.toString()}`;
+}
+
+function sortPlans(plans: EsimPlan[]): EsimPlan[] {
+  return [...plans].sort((a, b) => {
+    const duration = (a.durationDays ?? 999) - (b.durationDays ?? 999);
+    if (duration !== 0) return duration;
+    const data = (a.dataGb ?? 0) - (b.dataGb ?? 0);
+    if (data !== 0) return data;
+    return a.price - b.price;
+  });
+}
+
+function PlanRow({
   plan,
   countryName,
   flag,
@@ -57,65 +99,68 @@ function PlanCard({
   flag?: string;
 }) {
   const badge = badgeLabel(plan);
-  const highlighted =
-    plan.planCategory !== "fixed" ||
-    plan.displayBadge === "flexible" ||
-    plan.isPayAsYouGo ||
-    plan.isRechargeable;
-
-  const checkoutParams = new URLSearchParams({
-    country: countryName,
-    price: plan.price.toFixed(2),
-  });
-  if (flag) checkoutParams.set("flag", flag);
-  if (plan.name) checkoutParams.set("plan", plan.name);
-  // Real catalog UUIDs link to esim_packages; tmpl-* IDs resolve via country/price.
-  if (plan.id) checkoutParams.set("packageId", plan.id);
-  const checkoutHref = `/checkout?${checkoutParams.toString()}`;
+  const best = plan.displayBadge === "best_choice";
+  const href = checkoutHref(plan, countryName, flag);
 
   return (
-    <article
-      className={`plans-card${highlighted ? " plans-card--payg" : ""}${plan.displayBadge === "best_choice" ? " plans-card--best" : ""}`}
+    <Link
+      href={href}
+      className={`plans-row${best ? " is-best" : ""}`}
+      aria-label={`Buy ${formatDataAmount(plan)} for ${formatDuration(plan.durationDays)}, $${plan.price.toFixed(2)}`}
     >
-      {badge && (
-        <span
-          className={`plans-card__badge${plan.displayBadge === "best_choice" ? " plans-card__badge--best" : ""}`}
-        >
-          {badge}
-        </span>
-      )}
-      <h3 className="plans-card__name">{plan.name}</h3>
-      <div className="plans-card__metrics">
-        <div className="plans-card__metric">
-          <span className="plans-card__metric-label">Data</span>
-          <span className="plans-card__metric-value">
-            {formatDataAmount(plan)}
-          </span>
-        </div>
-        <div className="plans-card__metric">
-          <span className="plans-card__metric-label">Duration</span>
-          <span className="plans-card__metric-value">
-            {formatDuration(plan.durationDays)}
-          </span>
-        </div>
-      </div>
-      <div className="plans-card__price">
+      <span className="plans-row__data">{formatDataAmount(plan)}</span>
+      <span className="plans-row__duration">{formatDuration(plan.durationDays)}</span>
+      <span className="plans-row__price">
         <PsychologicalPrice
           parts={plan.formattedPriceParts}
           currency={plan.currency}
         />
-        {plan.planCategory === "flexible" && <small> starting rate</small>}
+        {plan.planCategory === "flexible" && (
+          <small className="plans-row__from"> starting</small>
+        )}
+      </span>
+      {badge ? <span className="plans-row__badge">{badge}</span> : <span />}
+      <span className="plans-row__cta">Select</span>
+    </Link>
+  );
+}
+
+function PlansFaq({ countryName }: { countryName: string }) {
+  const [open, setOpen] = useState<string | null>(PLAN_FAQS[0].q);
+
+  return (
+    <section className="plans-faq" aria-labelledby="plans-faq-heading">
+      <div className="plans-faq__head">
+        <h2 id="plans-faq-heading">Before you buy</h2>
+        <a
+          className="plans-faq__whatsapp"
+          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi, I have a question about the ${countryName} eSIM.`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Chat on WhatsApp
+        </a>
       </div>
-      <p className="plans-card__summary">
-        {formatDataAmount(plan)} for {formatDuration(plan.durationDays)}
-      </p>
-      <p className="plans-card__includes">
-        Instant email delivery · Hotspot ready · 5G where available
-      </p>
-      <Link href={checkoutHref} className="plans-card__cta">
-        Continue to secure checkout
-      </Link>
-    </article>
+      <div className="plans-faq__list">
+        {PLAN_FAQS.map((item) => {
+          const isOpen = open === item.q;
+          return (
+            <div key={item.q} className="plans-faq__item">
+              <button
+                type="button"
+                className="plans-faq__q"
+                aria-expanded={isOpen}
+                onClick={() => setOpen(isOpen ? null : item.q)}
+              >
+                {item.q}
+                <span aria-hidden="true">{isOpen ? "−" : "+"}</span>
+              </button>
+              {isOpen && <p className="plans-faq__a">{item.a}</p>}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -130,7 +175,7 @@ function SkeletonGrid() {
 }
 
 const TABS: { id: PlanTab; label: string }[] = [
-  { id: "fixed", label: "Fixed Data" },
+  { id: "fixed", label: "Standard" },
   { id: "unlimited", label: "Unlimited" },
   { id: "flexible", label: "Flexible" },
 ];
@@ -151,9 +196,10 @@ export function TravelerPlansPage({
   const [activeTab, setActiveTab] = useState<PlanTab>(
     initialData ? pickInitialTab(initialData) : "fixed",
   );
+  const [compatOpen, setCompatOpen] = useState(false);
 
   useEffect(() => {
-    if (initialData || initialError) return;
+    if (initialData) return;
 
     let cancelled = false;
 
@@ -197,7 +243,15 @@ export function TravelerPlansPage({
 
   const title = formatCountryLabel(data?.countryName ?? countryId);
   const flag = data?.flag;
-  const visiblePlans = data?.planGroups[activeTab] ?? [];
+  const visiblePlans = useMemo(
+    () => sortPlans(data?.planGroups[activeTab] ?? []),
+    [data, activeTab],
+  );
+  const cheapest = useMemo(() => {
+    const all = data?.plans ?? [];
+    if (all.length === 0) return null;
+    return all.reduce((best, plan) => (plan.price < best.price ? plan : best));
+  }, [data]);
 
   return (
     <>
@@ -222,11 +276,11 @@ export function TravelerPlansPage({
           </div>
           <h1 className="plans-page__title">
             {flag ? `${flag} ` : ""}
-            {title}
+            {title} eSIM
           </h1>
           <p className="plans-page__subtitle">
-            Premium data for international travelers — fixed bundles, unlimited
-            roaming, or flexible pay-as-you-go, priced live from our catalog.
+            Pick data and days. The Destinations “From” price is the cheapest
+            plan on this page.
           </p>
           <CountrySearch
             initialQuery={title}
@@ -266,6 +320,27 @@ export function TravelerPlansPage({
 
         {!loading && !error && data && data.plans.length > 0 && (
           <>
+            <div className="plans-trust">
+              <div className="plans-trust__copy">
+                <p className="plans-trust__network">
+                  Local {title} network · 5G where available
+                </p>
+                <p className="plans-trust__meta">
+                  Hotspot included · QR by email in minutes
+                  {cheapest
+                    ? ` · From $${cheapest.price.toFixed(2)}`
+                    : ""}
+                </p>
+              </div>
+              <button
+                type="button"
+                className="plans-trust__compat"
+                onClick={() => setCompatOpen(true)}
+              >
+                Check compatibility
+              </button>
+            </div>
+
             <div className="plans-reassurance">
               <span>QR by email in minutes</span>
               <span>Refund if technical activation fails</span>
@@ -291,9 +366,14 @@ export function TravelerPlansPage({
               })}
             </div>
 
-            <div className="plans-grid" role="tabpanel">
+            <h2 className="plans-picker__title">Choose your package</h2>
+            <p className="plans-picker__hint">
+              Scan data, days, and price — then select. Checkout uses this same
+              live price.
+            </p>
+            <div className="plans-rows" role="tabpanel">
               {visiblePlans.map((plan) => (
-                <PlanCard
+                <PlanRow
                   key={plan.id}
                   plan={plan}
                   countryName={title}
@@ -301,11 +381,17 @@ export function TravelerPlansPage({
                 />
               ))}
             </div>
+
+            <PlansFaq countryName={title} />
           </>
         )}
       </div>
     </main>
       <SiteFooter />
+      <CompatibilityModal
+        isOpen={compatOpen}
+        onClose={() => setCompatOpen(false)}
+      />
     </>
   );
 }

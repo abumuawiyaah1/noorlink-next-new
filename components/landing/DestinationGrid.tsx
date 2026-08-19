@@ -48,8 +48,8 @@ export function DestinationGrid() {
           <span className="why-kicker">Popular regions</span>
           <h2>Choose where you are going next</h2>
           <p>
-            Browse fast-moving travel favorites and continue straight to the
-            plan options for that region.
+            Open a featured country in that region, then switch destinations if
+            you are visiting more than one place.
           </p>
         </div>
         <div className="grid">

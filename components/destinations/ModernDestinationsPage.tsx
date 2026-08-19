@@ -7,12 +7,15 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import {
-  DESTINATION_CARDS,
   DESTINATION_FILTERS,
   filterDestinationCards,
   type DestinationRegion,
 } from "@/lib/destinations-catalog";
 import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
+import {
+  PENDING_PRICE_LABEL,
+  useLiveStartingPrices,
+} from "@/components/destinations/useLiveStartingPrices";
 
 const DESTINATIONS_NAV = [
   { href: "/about", label: "About" },
@@ -24,16 +27,23 @@ const DESTINATIONS_NAV = [
 
 type Props = {
   initialQuery?: string;
+  initialRegion?: "all" | DestinationRegion;
 };
 
-export function ModernDestinationsPage({ initialQuery = "" }: Props) {
+export function ModernDestinationsPage({
+  initialQuery = "",
+  initialRegion = "all",
+}: Props) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
-  const [region, setRegion] = useState<"all" | DestinationRegion>("all");
+  const [region, setRegion] = useState<"all" | DestinationRegion>(initialRegion);
 
   const cards = useMemo(
     () => filterDestinationCards(query, region),
     [query, region],
+  );
+  const livePrices = useLiveStartingPrices(
+    cards.map((card) => card.priceCountryId),
   );
 
   return (
@@ -50,7 +60,7 @@ export function ModernDestinationsPage({ initialQuery = "" }: Props) {
         <div className="container">
           <h1>Find Your Destination</h1>
           <p style={{ opacity: 0.8 }}>
-            Browse trending countries, starting prices, and eSIM plans in 190+ destinations.
+            Browse trending countries, then open live plans — the “From” price is the cheapest plan you can actually buy.
           </p>
         </div>
       </div>
@@ -95,30 +105,40 @@ export function ModernDestinationsPage({ initialQuery = "" }: Props) {
         </div>
 
         <div className="dest-grid">
-          {cards.map((card, index) => (
-            <Link
-              key={card.id}
-              href={card.href}
-              className={`card ${card.className}`}
-              aria-label={`View plans for ${card.title}, ${card.priceLabel}`}
-            >
-              <DestinationCardMedia
-                src={card.image}
-                alt=""
-                priority={index < 3}
-              />
-              <div className="card-overlay">
-                <h3>{card.title}</h3>
-                <p className="card-desc">{card.description}</p>
-                <ul className="card-tips">
-                  {card.thingsToDo.slice(0, 3).map((tip) => (
-                    <li key={tip}>{tip}</li>
-                  ))}
-                </ul>
-                <span className="card-price">{card.priceLabel}</span>
-              </div>
-            </Link>
-          ))}
+          {cards.map((card, index) => {
+            const livePrice = livePrices[card.priceCountryId];
+            const priceLabel = livePrice?.label ?? PENDING_PRICE_LABEL;
+
+            return (
+              <Link
+                key={card.id}
+                href={card.href}
+                className={`card ${card.className}`}
+                aria-label={`View plans for ${card.title}, ${priceLabel}`}
+              >
+                <DestinationCardMedia
+                  src={card.image}
+                  alt=""
+                  priority={index < 3}
+                />
+                <div className="card-overlay">
+                  <h3>{card.title}</h3>
+                  <p className="card-desc">{card.description}</p>
+                  <ul className="card-tips">
+                    {card.thingsToDo.slice(0, 3).map((tip) => (
+                      <li key={tip}>{tip}</li>
+                    ))}
+                  </ul>
+                  <span
+                    className={`card-price${livePrice ? "" : " is-pending"}`}
+                    aria-busy={!livePrice}
+                  >
+                    {priceLabel}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         {cards.length === 0 && (

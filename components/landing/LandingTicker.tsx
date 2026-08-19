@@ -11,13 +11,14 @@ type TickerCity = {
 };
 
 const CITIES: TickerCity[] = [
-  { name: "Mecca", flag: "🇸🇦", tz: "Asia/Riyadh", net: "STC 5G", weather: "32°C 🌙" },
-  { name: "New York", flag: "🇺🇸", tz: "America/New_York", net: "T-Mobile 5G", weather: "18°C ☀️" },
-  { name: "London", flag: "🇬🇧", tz: "Europe/London", net: "EE 5G", weather: "14°C 🌧️" },
-  { name: "Cairo", flag: "🇪🇬", tz: "Africa/Cairo", net: "Vodafone 4G", weather: "29°C ☀️" },
-  { name: "Dubai", flag: "🇦🇪", tz: "Asia/Dubai", net: "Du 5G Ultra", weather: "30°C ☀️" },
-  { name: "Tokyo", flag: "🇯🇵", tz: "Asia/Tokyo", net: "SoftBank 5G", weather: "22°C ☁️" },
-  { name: "Paris", flag: "🇫🇷", tz: "Europe/Paris", net: "Orange 5G", weather: "16°C ☁️" },
+  { name: "Mecca", flag: "🇸🇦", tz: "Asia/Riyadh", net: "STC 5G", weather: "32°C" },
+  { name: "New York", flag: "🇺🇸", tz: "America/New_York", net: "T-Mobile 5G", weather: "18°C" },
+  { name: "London", flag: "🇬🇧", tz: "Europe/London", net: "EE 5G", weather: "14°C" },
+  { name: "Cairo", flag: "🇪🇬", tz: "Africa/Cairo", net: "Vodafone 4G", weather: "29°C" },
+  { name: "Dubai", flag: "🇦🇪", tz: "Asia/Dubai", net: "Du 5G", weather: "30°C" },
+  { name: "Tokyo", flag: "🇯🇵", tz: "Asia/Tokyo", net: "SoftBank 5G", weather: "22°C" },
+  { name: "Paris", flag: "🇫🇷", tz: "Europe/Paris", net: "Orange 5G", weather: "16°C" },
+  { name: "Mexico City", flag: "🇲🇽", tz: "America/Mexico_City", net: "Telcel 5G", weather: "24°C" },
 ];
 
 function formatCityTime(timeZone: string): string {

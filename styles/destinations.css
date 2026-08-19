@@ -146,6 +146,11 @@
             width: fit-content;
             transition: 0.3s;
         }
+        .card-price.is-pending {
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+            font-weight: 700;
+        }
 
         /* SEARCH CARD */
         .search-card-style {

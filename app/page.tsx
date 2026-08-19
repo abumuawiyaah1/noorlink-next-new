@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/landing.css";
-import { LandingPage } from "@/components/legacy/LandingPage";
+import { HomePage } from "@/components/landing/HomePage";
 import { SITE_IMAGES } from "@/lib/site-images";
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default function Home() {
         href={SITE_IMAGES.hero}
         fetchPriority="high"
       />
-      <LandingPage />
+      <HomePage />
     </>
   );
 }

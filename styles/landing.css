@@ -150,7 +150,43 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             transform: rotate(2deg); transition: 0.3s;
         }
-        .promo-feature-img:hover { transform: rotate(0deg) scale(1.02); }
+        .promo-kicker {
+            display: inline-block; background: rgba(255, 149, 0, 0.2); color: #FF9500;
+            padding: 5px 12px; border-radius: 50px; font-weight: 700; font-size: 0.8rem;
+            margin-bottom: 15px; border: 1px solid #FF9500; letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .promo-title { font-size: 2.8rem; margin-bottom: 15px; color: white; line-height: 1.1; }
+        .promo-copy { font-size: 1.1rem; color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; }
+        .promo-cta { background: #FF9500; color: white !important; display: inline-block; padding: 14px 35px; text-decoration: none; }
+        .news-kicker {
+            text-transform: uppercase; color: var(--accent); letter-spacing: 2px;
+            font-weight: 700; font-size: 0.8rem; margin-bottom: 10px;
+        }
+        .news-privacy { text-align: center; font-size: 0.8rem; color: #999; margin-top: 15px; }
+        .news-status { text-align: center; font-size: 0.88rem; font-weight: 600; color: #047857; margin-top: 12px; }
+        .news-status.is-error { color: #b91c1c; }
+        .home-pay-badges { margin-top: 25px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .home-pay-badges span {
+            background: white; padding: 6px 10px; border-radius: 6px;
+            display: flex; align-items: center; font-size: 24px;
+        }
+        .popular-countries { padding: 0 0 80px; }
+        .popular-countries__grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;
+        }
+        .popular-country {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            padding: 16px 18px; border-radius: 16px; background: #fff; text-decoration: none;
+            border: 3px solid transparent;
+            background:
+                linear-gradient(#fff, #fff) padding-box,
+                var(--border-gradient) border-box;
+        }
+        .popular-country:hover { transform: translateY(-2px); }
+        .popular-country__name { font-weight: 800; color: var(--primary); }
+        .popular-country__price { font-weight: 800; color: var(--accent); font-size: 0.92rem; }
+        .popular-country__price.is-pending { color: var(--text-muted); font-weight: 700; }
 
         /* --- DESTINATIONS CARDS (UPDATED WITH ORGANIZED IMAGE SYSTEM) --- */
         .destinations { margin-top: 60px; padding-bottom: 80px; }
@@ -284,5 +320,6 @@
             .promo-content { flex-direction: column-reverse; padding: 30px; }
             .promo-feature-img { width: 100%; height: 250px; transform: rotate(0deg); }
             .newsletter-box { grid-template-columns: 1fr; padding: 30px; }
-            .destinations-heading { margin-bottom: 22px; }
+            .promo-title { font-size: 2.1rem; }
+            .popular-countries { padding-bottom: 48px; }
         }

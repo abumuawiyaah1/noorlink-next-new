@@ -122,6 +122,29 @@ export async function fetchPlansByCountryServer(
   }
 }
 
+/** Cached plans fetch for Destinations "From" prices. Does not block checkout. */
+export async function fetchPlansByCountryCached(
+  countryId: string,
+  options?: { revalidateSeconds?: number; timeoutMs?: number },
+): Promise<PlansByCountryResponse> {
+  const slug = normalizeCountrySlug(countryId);
+  const url = plansApiUrl(slug, SERVER_API_BASE);
+  const revalidateSeconds = options?.revalidateSeconds ?? 300;
+  const timeoutMs = options?.timeoutMs ?? 2500;
+
+  try {
+    const res = await fetch(url, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+      next: { revalidate: revalidateSeconds },
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    return await parsePlansResponse(res, url, slug);
+  } catch (err: unknown) {
+    throw wrapPlansNetworkError(err, url, slug);
+  }
+}
+
 export async function fetchPlansByCountry(
   countryId: string,
 ): Promise<PlansByCountryResponse> {

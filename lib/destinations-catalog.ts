@@ -20,8 +20,8 @@ export type DestinationCard = {
   /** Country slug used when the traveler continues to plans/checkout. */
   priceCountryId: string;
   /**
-   * Starting price shown on Destinations cards.
-   * Edit this for trending countries — the page does not overwrite it from the API.
+   * Editorial starting price only — Destinations shows live cheapest plan
+   * prices from the plans API so visitors are not shown a cheaper teaser.
    */
   priceLabel: string;
   className: string;
@@ -40,7 +40,7 @@ export const DESTINATION_FILTERS: { id: "all" | DestinationRegion; label: string
   { id: "Africa", label: "Africa" },
 ];
 
-/** Trending destinations. `priceLabel` is the starting price you control. */
+/** Editorial notes for trending destinations. Live “From” prices come from the plans API. */
 export const DESTINATION_CARDS: DestinationCard[] = [
   {
     id: "usa",
@@ -98,7 +98,7 @@ export const DESTINATION_CARDS: DestinationCard[] = [
     priceLabel: "From $5.00",
     className: "bg-europe-regional",
     image: DESTINATION_IMAGES.europeRegional,
-    description: "One eSIM for multi-country trips across the continent.",
+    description: "Start with France plans, then browse the UK, Germany, and more.",
     thingsToDo: ["Hop capital cities", "Train between borders", "Café culture days"],
     href: plansPathForCountry("france"),
   },
@@ -146,7 +146,7 @@ export const DESTINATION_CARDS: DestinationCard[] = [
     priceLabel: "From $12.00",
     className: "bg-asia-regional",
     image: DESTINATION_IMAGES.asiaRegional,
-    description: "Stay connected across major Asian hubs on one trip.",
+    description: "Start with Japan plans, then browse Thailand, China, and more.",
     thingsToDo: ["Temple mornings", "Night markets", "Bullet-train hops"],
     href: plansPathForCountry("japan"),
   },
@@ -194,7 +194,7 @@ export const DESTINATION_CARDS: DestinationCard[] = [
     priceLabel: "From $15.00",
     className: "bg-middle-east-regional",
     image: DESTINATION_IMAGES.middleEastRegional,
-    description: "Cross-border travel for business, pilgrimage, and leisure.",
+    description: "Start with Turkey plans, then browse UAE, Saudi Arabia, and more.",
     thingsToDo: ["Desert evenings", "Old-city souks", "Gulf skyline nights"],
     href: plansPathForCountry("turkey"),
   },

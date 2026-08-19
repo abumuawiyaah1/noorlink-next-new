@@ -160,7 +160,7 @@ export function destinationCardFromHint(hint: CountryTemplateHint): DestinationC
     priceLabel: TEMPLATE_STARTING_PRICE[hint.templateKey],
     className: "bg-dynamic",
     image: TEMPLATE_IMAGE[hint.templateKey],
-    description: `Instant eSIM data for ${hint.name}, priced from our regional catalog.`,
+    description: `Instant eSIM data for ${hint.name}. Opening this card shows live plans you can buy.`,
     thingsToDo: ["Stay connected on arrival", "Use maps and rideshares", "Share photos without roaming fees"],
     href: plansPathForCountry(hint.slug),
   };

@@ -14,7 +14,6 @@ import {
   resolveDestination,
   type HeroDestination,
 } from "@/lib/hero-destinations";
-import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import "@/styles/hero-search.css";
 
 const MIN_QUERY_LENGTH = 3;
@@ -41,7 +40,6 @@ export function HeroSearch() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selected, setSelected] = useState<HeroDestination | null>(null);
   const [activePill, setActivePill] = useState<string | null>(null);
-  const [compatibilityOpen, setCompatibilityOpen] = useState(false);
   const [pills, setPills] = useState<HeroPopularPill[]>(defaultPopularPills);
 
   const suggestions = filterDestinations(query);
@@ -131,22 +129,6 @@ export function HeroSearch() {
     };
   }, []);
 
-  useEffect(() => {
-    const openModal = (event: Event) => {
-      event.preventDefault();
-      setCompatibilityOpen(true);
-    };
-
-    const triggers = ["device-check-btn"]
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-
-    triggers.forEach((el) => el.addEventListener("click", openModal));
-    return () => {
-      triggers.forEach((el) => el.removeEventListener("click", openModal));
-    };
-  }, []);
-
   return (
     <div className="hero-search-widget" ref={containerRef}>
       <div className="hero-search">
@@ -229,11 +211,6 @@ export function HeroSearch() {
           </button>
         ))}
       </div>
-
-      <CompatibilityModal
-        isOpen={compatibilityOpen}
-        onClose={() => setCompatibilityOpen(false)}
-      />
     </div>
   );
 }
