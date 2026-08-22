@@ -1,9 +1,24 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { TravelerPlansPage } from "@/components/plans/TravelerPlansPage";
 import { getCountryImage } from "@/lib/country-image";
 import { formatCountryLabel, normalizeCountrySlug } from "@/lib/country-slugs";
 import { pingPlansApi } from "@/lib/plans-diagnostics";
+import {
+  normalizeRegionalRouteSlug,
+  plansPathForRegion,
+} from "@/lib/regional-products";
 import "@/styles/plans-dynamic.css";
+
+const REGIONAL_REDIRECT_SLUGS = new Set([
+  "europe",
+  "eu",
+  "schengen",
+  "asia",
+  "asia-pacific",
+  "middle-east",
+  "north-america",
+]);
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +40,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function CountryPlansPage({ params }: PageProps) {
   const { country } = await params;
   const countryId = normalizeCountrySlug(country);
+
+  if (REGIONAL_REDIRECT_SLUGS.has(countryId)) {
+    const regionalRoute = normalizeRegionalRouteSlug(countryId);
+    if (regionalRoute) {
+      redirect(plansPathForRegion(regionalRoute));
+    }
+  }
+
   const countryImage = getCountryImage(countryId);
 
   let initialData = null;

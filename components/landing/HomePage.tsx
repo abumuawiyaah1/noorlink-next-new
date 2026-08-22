@@ -6,6 +6,7 @@ import { HomeNewsletter } from "@/components/landing/HomeNewsletter";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { LandingTicker } from "@/components/landing/LandingTicker";
 import { PopularCountries } from "@/components/landing/PopularCountries";
+import { RegionalPlansPromo } from "@/components/landing/RegionalPlansPromo";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { TrustStatsBar } from "@/components/landing/TrustStatsBar";
 import { UmrahPromo } from "@/components/landing/UmrahPromo";
@@ -22,6 +23,7 @@ export function HomePage() {
       <HowItWorks />
       <UmrahPromo />
       <WhyNoorLink />
+      <RegionalPlansPromo />
       <Testimonials />
       <DestinationGrid />
       <PopularCountries />

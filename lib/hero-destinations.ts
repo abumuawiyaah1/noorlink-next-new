@@ -3,6 +3,10 @@ import {
   destinationCardFromQuery,
   searchCountryTemplateHints,
 } from "@/lib/country-templates";
+import {
+  plansPathForRegion,
+  regionalSearchMatches,
+} from "@/lib/regional-products";
 
 export type HeroDestination = {
   id: string;
@@ -64,11 +68,27 @@ export const heroDestinations: HeroDestination[] = [
   },
   {
     id: "europe",
-    label: "Europe",
-    flag: "🇪🇺",
+    label: "Europe Regional",
+    flag: "🌍",
     type: "region",
-    href: plansPathForCountry("france"),
-    keywords: ["europe", "eu", "schengen", "uk", "germany"],
+    href: plansPathForRegion("europe"),
+    keywords: ["europe", "eu", "schengen", "uk", "germany", "multi-country"],
+  },
+  {
+    id: "north-america-regional",
+    label: "North America Regional",
+    flag: "🌎",
+    type: "region",
+    href: plansPathForRegion("north-america"),
+    keywords: ["north america", "usa canada mexico", "cross border"],
+  },
+  {
+    id: "asia-regional",
+    label: "Asia Pacific Regional",
+    flag: "🌏",
+    type: "region",
+    href: plansPathForRegion("asia-pacific"),
+    keywords: ["asia pacific", "southeast asia", "multi-country asia"],
   },
   {
     id: "latam",
@@ -77,14 +97,6 @@ export const heroDestinations: HeroDestination[] = [
     type: "region",
     href: plansPathForCountry("colombia"),
     keywords: ["latam", "latin america", "americas", "south america", "mexico", "brazil"],
-  },
-  {
-    id: "asia",
-    label: "Asia",
-    flag: "🌏",
-    type: "region",
-    href: plansPathForCountry("japan"),
-    keywords: ["asia", "japan", "thailand", "dubai", "singapore"],
   },
 ];
 
@@ -108,6 +120,20 @@ export function filterDestinations(query: string): HeroDestination[] {
       ),
   );
 
+  const regionalMatches = regionalSearchMatches(query).map((product) => ({
+    id: product.routeSlug,
+    label: product.displayName,
+    flag: product.flag,
+    type: "region" as const,
+    href: plansPathForRegion(product.routeSlug),
+    keywords: [product.routeSlug, product.shortName.toLowerCase()],
+  }));
+
+  const featuredIds = new Set(featured.map((dest) => dest.id));
+  const regionalFeatured = regionalMatches.filter((dest) => !featuredIds.has(dest.id));
+
+  const combinedFeatured = [...regionalFeatured, ...featured];
+
   const generated = searchCountryTemplateHints(query)
     .map((hint) => ({
       id: hint.slug,
@@ -117,9 +143,9 @@ export function filterDestinations(query: string): HeroDestination[] {
       href: plansPathForCountry(hint.slug),
       keywords: [hint.slug, hint.name.toLowerCase(), ...(hint.aliases ?? [])],
     }))
-    .filter((dest) => !featured.some((existing) => existing.id === dest.id));
+    .filter((dest) => !combinedFeatured.some((existing) => existing.id === dest.id));
 
-  const combined = [...featured, ...generated];
+  const combined = [...combinedFeatured, ...generated];
   if (combined.length > 0) return combined.slice(0, 8);
 
   const fallback = destinationCardFromQuery(query);

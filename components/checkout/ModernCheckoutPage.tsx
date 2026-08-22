@@ -24,6 +24,7 @@ export function ModernCheckoutPage() {
   const packageId = searchParams.get("packageId") ?? searchParams.get("package_id");
   const plan = searchParams.get("plan") ?? "Selected plan";
   const price = parsePrice(searchParams.get("price")) || 12;
+  const isRegional = searchParams.get("productType") === "regional";
 
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -149,6 +150,9 @@ export function ModernCheckoutPage() {
                   <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 6 }}>
                     We email a checkout confirmation now. Your eSIM QR code arrives
                     after payment — check spam/junk if it is missing.
+                    {isRegional
+                      ? " Regional orders include the full covered-country list."
+                      : ""}
                   </p>
                 </div>
                 <div className="form-group">
@@ -237,6 +241,11 @@ export function ModernCheckoutPage() {
                   <div>
                     <strong>{plan}</strong>
                     <p>{country}</p>
+                    {isRegional && (
+                      <p className="summary-plan__regional-note">
+                        Multi-country plan · install once, use across covered countries
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="summary-row">

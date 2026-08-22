@@ -44,6 +44,10 @@ export type PlansByCountryResponse = {
   flag?: string;
   plans: EsimPlan[];
   planGroups: PlanCategoryGroups;
+  productType?: "single" | "regional";
+  coverageCountries?: string[];
+  coverageExclusions?: string[];
+  regionSlug?: string;
 };
 
 export function plansApiUrl(countryId: string, baseUrl: string = API_BASE): string {

@@ -7,11 +7,12 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { CountryPlansHero } from "@/components/plans/CountryPlansHero";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
+import { RegionalCoveragePanel } from "@/components/plans/RegionalCoveragePanel";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
 import { CountrySearch } from "@/components/search/CountrySearch";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { resolveCountryFlag } from "@/lib/country-flags";
-import { formatCountryLabel } from "@/lib/country-slugs";
+import { formatCountryLabel, normalizeCountrySlug } from "@/lib/country-slugs";
 import { formatCountryNetworkLabel } from "@/lib/country-networks";
 import {
   fetchPlansByCountry,
@@ -19,6 +20,11 @@ import {
   type PlanCategory,
   type PlansByCountryResponse,
 } from "@/lib/plans-api";
+import {
+  REGIONAL_FAQS,
+  singleCountryPlansPath,
+  type RegionalProduct,
+} from "@/lib/regional-products";
 import "@/styles/plans-dynamic.css";
 
 type PlanTab = PlanCategory;
@@ -28,6 +34,7 @@ type TravelerPlansPageProps = {
   countryImage: string;
   initialData?: PlansByCountryResponse | null;
   initialError?: string | null;
+  regional?: RegionalProduct;
 };
 
 const PLAN_FAQS = [
@@ -70,7 +77,12 @@ function badgeLabel(plan: EsimPlan): string | null {
   return null;
 }
 
-function checkoutHref(plan: EsimPlan, countryName: string, flag?: string): string {
+function checkoutHref(
+  plan: EsimPlan,
+  countryName: string,
+  flag?: string,
+  isRegional?: boolean,
+): string {
   const checkoutParams = new URLSearchParams({
     country: countryName,
     price: plan.price.toFixed(2),
@@ -78,6 +90,7 @@ function checkoutHref(plan: EsimPlan, countryName: string, flag?: string): strin
   if (flag) checkoutParams.set("flag", flag);
   if (plan.name) checkoutParams.set("plan", plan.name);
   if (plan.id) checkoutParams.set("packageId", plan.id);
+  if (isRegional) checkoutParams.set("productType", "regional");
   return `/checkout?${checkoutParams.toString()}`;
 }
 
@@ -95,14 +108,16 @@ function PlanRow({
   plan,
   countryName,
   flag,
+  isRegional,
 }: {
   plan: EsimPlan;
   countryName: string;
   flag?: string;
+  isRegional?: boolean;
 }) {
   const badge = badgeLabel(plan);
   const best = plan.displayBadge === "best_choice";
-  const href = checkoutHref(plan, countryName, flag);
+  const href = checkoutHref(plan, countryName, flag, isRegional);
 
   return (
     <Link
@@ -127,8 +142,21 @@ function PlanRow({
   );
 }
 
-function PlansFaq({ countryName }: { countryName: string }) {
+function PlansFaq({
+  countryName,
+  regional,
+}: {
+  countryName: string;
+  regional?: RegionalProduct;
+}) {
   const [open, setOpen] = useState<string | null>(null);
+  const faqs = regional
+    ? REGIONAL_FAQS.map((item) =>
+        item.q === "Do I need a new plan when I cross borders?"
+          ? { ...item, a: regional.faqBorder }
+          : item,
+      )
+    : PLAN_FAQS;
 
   return (
     <section className="plans-faq" aria-labelledby="plans-faq-heading">
@@ -150,7 +178,7 @@ function PlansFaq({ countryName }: { countryName: string }) {
         </div>
       </div>
       <div className="plans-faq__list">
-        {PLAN_FAQS.map((item) => {
+        {faqs.map((item) => {
           const isOpen = open === item.q;
           return (
             <div key={item.q} className="plans-faq__item">
@@ -193,11 +221,13 @@ function PlanSection({
   plans,
   countryName,
   flag,
+  isRegional,
 }: {
   label: string;
   plans: EsimPlan[];
   countryName: string;
   flag?: string;
+  isRegional?: boolean;
 }) {
   if (plans.length === 0) return null;
 
@@ -213,6 +243,7 @@ function PlanSection({
             plan={plan}
             countryName={countryName}
             flag={flag}
+            isRegional={isRegional}
           />
         ))}
       </div>
@@ -225,6 +256,7 @@ export function TravelerPlansPage({
   countryImage,
   initialData = null,
   initialError = null,
+  regional,
 }: TravelerPlansPageProps) {
   const [data, setData] = useState<PlansByCountryResponse | null>(initialData);
   const [loading, setLoading] = useState(!initialData && !initialError);
@@ -270,8 +302,9 @@ export function TravelerPlansPage({
     };
   }, [countryId, initialData, initialError]);
 
-  const title = formatCountryLabel(data?.countryName ?? countryId);
-  const flag = resolveCountryFlag(countryId, data?.flag);
+  const title = regional?.displayName ?? formatCountryLabel(data?.countryName ?? countryId);
+  const flag = regional?.flag ?? resolveCountryFlag(countryId, data?.flag);
+  const checkoutCountryName = regional?.displayName ?? title;
   const cheapest = useMemo(() => {
     const all = data?.plans ?? [];
     if (all.length === 0) return null;
@@ -291,13 +324,20 @@ export function TravelerPlansPage({
           items={[
             { href: "/", label: "Home" },
             { href: "/destinations", label: "Destinations" },
+            ...(regional
+              ? [{ href: "/destinations", label: "Regional" }]
+              : []),
             { label: title },
           ]}
         />
         <header className="plans-page__header">
           <div className="plans-page__brand">
-            <span className="plans-page__eyebrow">NoorLink</span>
-            <p className="plans-page__tagline">Enjoy hassle-free travel</p>
+            <span className="plans-page__eyebrow">
+              {regional ? "Multi-country eSIM" : "NoorLink"}
+            </span>
+            <p className="plans-page__tagline">
+              {regional ? regional.heroTagline : "Enjoy hassle-free travel"}
+            </p>
           </div>
           <div className="plans-page__search-wrap">
             <CountrySearch placeholder="Search for another country..." />
@@ -308,6 +348,11 @@ export function TravelerPlansPage({
             </span>
             <span className="plans-page__destination-name">{title}</span>
           </h1>
+          {regional && (
+            <p className="plans-page__regional-sub">
+              One QR · {regional.countries.length} countries · Hotspot included
+            </p>
+          )}
         </header>
       </CountryPlansHero>
 
@@ -345,7 +390,9 @@ export function TravelerPlansPage({
             <div className="plans-trust">
               <div className="plans-trust__copy">
                 <p className="plans-trust__network">
-                  {formatCountryNetworkLabel(countryId)}
+                  {regional
+                    ? `Multi-country coverage · ${regional.countries.length} destinations`
+                    : formatCountryNetworkLabel(countryId)}
                 </p>
                 <p className="plans-trust__meta">
                   Enjoy hassle-free travel
@@ -362,6 +409,24 @@ export function TravelerPlansPage({
                 Check compatibility
               </button>
             </div>
+
+            {regional && (
+              <RegionalCoveragePanel
+                product={regional}
+                coverageCountries={data.coverageCountries}
+                coverageExclusions={data.coverageExclusions}
+              />
+            )}
+
+            {regional && (
+              <p className="plans-regional-single-hint">
+                Only staying in one country?{" "}
+                <Link href={singleCountryPlansPath(regional)}>
+                  See single-country plans
+                </Link>{" "}
+                — often better value for a single stop.
+              </p>
+            )}
 
             <div className="plans-reassurance">
               <span>Ready before you fly</span>
@@ -381,13 +446,14 @@ export function TravelerPlansPage({
                   key={section.id}
                   label={section.label}
                   plans={data.planGroups[section.id] ?? []}
-                  countryName={title}
+                  countryName={checkoutCountryName}
                   flag={flag}
+                  isRegional={Boolean(regional)}
                 />
               ))}
             </div>
 
-            <PlansFaq countryName={title} />
+            <PlansFaq countryName={checkoutCountryName} regional={regional} />
           </>
         )}
       </div>
