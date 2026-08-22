@@ -9,7 +9,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background-color: #25d366;
+  background-color: var(--whatsapp);
   color: #fff;
   font-size: 32px;
   line-height: 1;

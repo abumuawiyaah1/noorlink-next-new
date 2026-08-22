@@ -1,6 +1,6 @@
-:root { --primary: #0F3D3E; --accent: #FF9500; --bg-body: #F3F5F7; --surface: #FFFFFF; --text-main: #111827; --text-muted: #6B7280; --glass: rgba(255, 255, 255, 0.95); }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-main); background: var(--bg-body); line-height: 1.6; }
+        body { font-family: var(--font-brand); color: var(--text-main); background: var(--bg-body); line-height: 1.6; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 

@@ -1,7 +1,7 @@
 /* NoorLink brand tweaks for the Tawk bubble (chat panel is inside Tawk’s iframe). */
 :root {
-  --tawk-brand-primary: #0f3d3e;
-  --tawk-brand-accent: #ff9500;
+  --tawk-brand-primary: var(--primary);
+  --tawk-brand-accent: var(--accent);
 }
 
 #tawk-bubble-container,

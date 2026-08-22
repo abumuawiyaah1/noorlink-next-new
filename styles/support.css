@@ -1,10 +1,7 @@
-/* --- PREMIUM THEME --- */
-        :root {
-            --primary: #0F3D3E; --primary-dark: #05191a; --accent: #FF9500; --bg-body: #F3F5F7; --surface: #FFFFFF; --text-main: #111827; --text-muted: #6B7280; --whatsapp: #25D366; --glass: rgba(255, 255, 255, 0.95);
-        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
+            font-family: var(--font-brand); 
             color: var(--text-main); 
             line-height: 1.6;
             /* PARALLAX BACKGROUND TEXTURE */

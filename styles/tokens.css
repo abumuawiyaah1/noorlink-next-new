@@ -1,18 +1,52 @@
+/**
+ * NoorLink design tokens — single source of truth for the whole site.
+ * Do not redefine these in page CSS. Import via app/globals.css only.
+ */
 :root {
+  /* Brand */
   --primary: #0f3d3e;
   --primary-dark: #05191a;
   --primary-light: #1f6f70;
   --accent: #ff9500;
+  --accent-hover: #e68600;
   --accent-light: #ffad5a;
+  --accent-glow: rgba(255, 149, 0, 0.4);
+  --accent-soft: #fff3e0;
+
+  /* Surfaces */
   --bg-body: #f3f5f7;
   --surface: #ffffff;
+  --glass: rgba(255, 255, 255, 0.95);
+
+  /* Text */
   --text-main: #111827;
   --text-muted: #6b7280;
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: rgba(255, 255, 255, 0.88);
+
+  /* Status */
   --whatsapp: #25d366;
   --success: #10b981;
-  --glass: rgba(255, 255, 255, 0.95);
-  --font-brand: var(--font-plus-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --success-bg: #ecfdf5;
+  --success-text: #047857;
+  --error: #ef4444;
+  --error-bg: #fef2f2;
+
+  /* Typography */
+  --font-brand: var(--font-plus-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui,
+    sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Shape */
+  --radius-pill: 999px;
+  --radius-card: 16px;
+  --radius-control: 12px;
+  --shadow-nav: 0 4px 10px rgba(15, 61, 62, 0.2);
+  --shadow-card: 0 8px 24px rgba(15, 61, 62, 0.08);
+
+  /* Gradients */
   --border-gradient: linear-gradient(135deg, var(--primary), var(--accent), var(--success));
   --card-gradient-border: linear-gradient(var(--surface), var(--surface)) padding-box,
     var(--border-gradient) border-box;
+  --hero-overlay: linear-gradient(rgba(15, 61, 62, 0.92), rgba(5, 25, 26, 0.96));
 }

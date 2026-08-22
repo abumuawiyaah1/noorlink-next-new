@@ -146,7 +146,7 @@ export function ModernCheckoutPage() {
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="you@example.com"
                   />
-                  <p style={{ fontSize: "0.8rem", color: "#888", marginTop: 6 }}>
+                  <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 6 }}>
                     We email a checkout confirmation now. Your eSIM QR code arrives
                     after payment — check spam/junk if it is missing.
                   </p>
@@ -164,7 +164,7 @@ export function ModernCheckoutPage() {
                     onChange={(event) => setPhone(event.target.value)}
                     placeholder="+1 555 000 0000"
                   />
-                  <p style={{ fontSize: "0.8rem", color: "#888", marginTop: 6 }}>
+                  <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 6 }}>
                     Saved with your order for support. SMS alerts are not sent yet.
                   </p>
                 </div>

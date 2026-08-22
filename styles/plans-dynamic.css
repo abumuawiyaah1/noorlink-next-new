@@ -1,7 +1,7 @@
 .plans-page {
   min-height: 100vh;
-  background: var(--bg-body, #f3f5f7);
-  color: var(--text-main, #111827);
+  background: var(--bg-body, var(--bg-body));
+  color: var(--text-main, var(--text-main));
   padding: 0 0 4rem;
 }
 
@@ -17,7 +17,7 @@
 .plans-page__hero-media {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #1a3a3b 0%, #05191a 100%);
+  background: linear-gradient(135deg, #1a3a3b 0%, var(--primary-dark) 100%);
 }
 
 .plans-page__hero-media img {
@@ -152,8 +152,8 @@
 .country-search button {
   border: none;
   border-radius: 999px;
-  background: #ff9500;
-  color: #111827;
+  background: var(--accent);
+  color: var(--text-main);
   font-weight: 800;
   padding: 0 20px;
   cursor: pointer;
@@ -168,7 +168,7 @@
   margin: 0;
   padding: 8px;
   list-style: none;
-  background: #05191a;
+  background: var(--primary-dark);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
 }
@@ -188,7 +188,7 @@
 .country-search__dropdown button.is-active,
 .country-search__dropdown button:hover {
   background: rgba(255, 149, 0, 0.18);
-  color: #ff9500;
+  color: var(--accent);
 }
 
 .plans-reassurance {
@@ -240,21 +240,21 @@
   margin: 0;
   font-size: 1.05rem;
   font-weight: 800;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .plans-trust__meta {
   margin: 4px 0 0;
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
 }
 
 .plans-trust__compat {
   border: none;
   border-radius: 999px;
-  background: #ff9500;
-  color: #05191a;
+  background: var(--accent);
+  color: var(--primary-dark);
   font-weight: 800;
   font-size: 0.92rem;
   padding: 12px 18px;
@@ -270,14 +270,14 @@
   text-align: center;
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .plans-picker__hint {
   margin: 0 0 16px;
   text-align: center;
   font-size: 0.9rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
 }
 
 .plans-rows {
@@ -314,12 +314,12 @@
 .plans-row__data,
 .plans-row__duration {
   font-weight: 800;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .plans-row__price {
   font-weight: 800;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .plans-row__price .psychological-price {
@@ -345,7 +345,7 @@
   margin-left: 4px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
 }
 
 .plans-row__badge {
@@ -364,8 +364,8 @@
   justify-self: end;
   padding: 8px 14px;
   border-radius: 999px;
-  background: #ff9500;
-  color: #05191a;
+  background: var(--accent);
+  color: var(--primary-dark);
   font-size: 0.82rem;
   font-weight: 800;
 }
@@ -391,7 +391,7 @@
   margin: 0;
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .plans-faq__whatsapp {
@@ -418,7 +418,7 @@
   text-align: left;
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
   cursor: pointer;
 }
 
@@ -426,7 +426,7 @@
   margin: 0 0 14px;
   font-size: 0.9rem;
   line-height: 1.5;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
 }
 
 @media (max-width: 640px) {
@@ -484,7 +484,7 @@
   border-radius: 999px;
   border: 1px solid #e5e7eb;
   background: #fff;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
@@ -494,14 +494,14 @@
 .plans-tab.is-active {
   background: rgba(255, 149, 0, 0.12);
   border-color: rgba(255, 149, 0, 0.45);
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .plans-tab__count {
   min-width: 22px;
   padding: 2px 7px;
   border-radius: 999px;
-  background: #f3f5f7;
+  background: var(--bg-body);
   font-size: 0.75rem;
 }
 
@@ -526,7 +526,7 @@
   margin: 0;
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .plans-card__metrics {
@@ -542,12 +542,12 @@
 }
 
 .plans-card__metric-label {
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
 }
 
 .plans-card__metric-value {
   font-weight: 700;
-  color: var(--text-main, #111827);
+  color: var(--text-main, var(--text-main));
 }
 
 .plans-card__price {
@@ -556,13 +556,13 @@
   border-top: 1px solid #eef0f2;
   font-size: 1.65rem;
   font-weight: 800;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .plans-card__price-value {
   font-size: 1.65rem;
   font-weight: 800;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .plans-card__price-cents {
@@ -576,7 +576,7 @@
 .plans-card__price small {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
 }
 
 .plans-card__summary {
@@ -590,7 +590,7 @@
   margin: 0;
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
 }
 
 .plans-card__cta {
@@ -601,8 +601,8 @@
   padding: 12px 16px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #ff9500, #ffad5a);
-  color: #05191a;
+  background: linear-gradient(135deg, var(--accent), #ffad5a);
+  color: var(--primary-dark);
   font-weight: 800;
   font-size: 0.92rem;
   text-decoration: none;
@@ -615,7 +615,7 @@
 }
 
 .plans-card--payg .plans-card__cta {
-  background: var(--primary, #0f3d3e);
+  background: var(--primary, var(--primary));
   color: #fff;
 }
 
@@ -656,7 +656,7 @@
 
 .plans-page__loading-text {
   margin: 0;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
   font-size: 1rem;
   font-weight: 600;
 }
@@ -668,7 +668,7 @@
   border-radius: 16px;
   background: #fff;
   border: 1px solid #e5e7eb;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
 }
 
 .plans-page__error {
@@ -691,12 +691,12 @@
 
 .plans-page__error-hint {
   margin-top: 0.85rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
   font-size: 0.88rem;
 }
 
 .plans-page__inline-link {
-  color: var(--accent, #ff9500);
+  color: var(--accent, var(--accent));
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -715,7 +715,7 @@
 }
 
 .plans-card__price .psychological-price {
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 @media (max-width: 768px) {

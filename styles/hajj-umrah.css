@@ -1,5 +1,5 @@
 .pilgrim-page {
-  --pilgrim-teal: #0f3d3e;
+  --pilgrim-teal: var(--primary);
   --pilgrim-teal-soft: #1a5557;
   --pilgrim-sand: #f7f4ef;
   --pilgrim-gold: #c4a052;
@@ -12,7 +12,7 @@
     radial-gradient(ellipse at top, rgba(196, 160, 82, 0.08), transparent 55%),
     linear-gradient(180deg, #fbf9f6 0%, #f3f0ea 100%);
   color: var(--pilgrim-ink);
-  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-brand);
   padding-bottom: 6rem;
 }
 

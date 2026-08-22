@@ -20,11 +20,11 @@
   padding: 14px 18px 12px;
 
   text-decoration: none;
-  color: #0f3d3e;
+  color: var(--primary);
 
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(135deg, #ff9500 0%, #ffad5a 50%, #0f3d3e 100%) border-box;
+    linear-gradient(135deg, var(--accent) 0%, #ffad5a 50%, var(--primary) 100%) border-box;
   border: 2px solid transparent;
   border-radius: 20px;
 
@@ -51,8 +51,8 @@
   height: 48px;
   border-radius: 50%;
 
-  background: #fff3e0;
-  color: #ff9500;
+  background: var(--accent-soft);
+  color: var(--accent);
 
   box-shadow: 0 3px 10px rgba(255, 149, 0, 0.12);
 }
@@ -64,18 +64,18 @@
 }
 
 .back-button-card__label {
-  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-brand);
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
   text-align: center;
-  color: #0f3d3e;
+  color: var(--primary);
   line-height: 1.2;
 }
 
 .back-button-card:hover .back-button-card__label {
-  color: #ff9500;
+  color: var(--accent);
 }
 
 @media (max-width: 768px) {

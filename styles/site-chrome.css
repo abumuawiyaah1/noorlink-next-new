@@ -27,7 +27,7 @@
 .site-header .logo-text {
   font-size: 1.65rem;
   font-weight: 800;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
   letter-spacing: -0.5px;
   text-decoration: none;
   display: flex;
@@ -43,7 +43,7 @@
   margin-left: 2px;
   margin-top: 4px;
   font-weight: 700;
-  color: var(--accent, #ff9500);
+  color: var(--accent, var(--accent));
 }
 
 .site-header .nav-links {
@@ -55,7 +55,7 @@
 .site-header .nav-links a {
   font-weight: 700;
   font-size: 0.92rem;
-  color: var(--text-main, #111827);
+  color: var(--text-main, var(--text-main));
   text-decoration: none;
 }
 
@@ -64,15 +64,15 @@
 }
 
 .site-header .nav-links a:hover {
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
 }
 
 .site-header--dark .nav-links a:hover {
-  color: var(--accent, #ff9500);
+  color: var(--accent, var(--accent));
 }
 
 .site-header .btn-nav {
-  background: var(--primary, #0f3d3e);
+  background: var(--primary, var(--primary));
   color: #fff !important;
   padding: 9px 20px;
   border-radius: 50px;
@@ -80,14 +80,14 @@
 }
 
 .site-header--dark .btn-nav {
-  background: var(--accent, #ff9500);
-  color: #05191a !important;
+  background: var(--accent, var(--accent));
+  color: var(--primary-dark) !important;
 }
 
 .site-header .mobile-toggle {
   display: none;
   font-size: 1.4rem;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
   cursor: pointer;
   background: none;
   border: none;
@@ -106,16 +106,16 @@
   gap: 6px 8px;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
 }
 
 .site-crumbs a {
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
   text-decoration: none;
 }
 
 .site-crumbs a:hover {
-  color: var(--accent, #ff9500);
+  color: var(--accent, var(--accent));
 }
 
 .site-crumbs__sep {
@@ -131,7 +131,7 @@
 }
 
 .site-footer {
-  background: var(--primary-dark, #05191a);
+  background: var(--primary-dark, var(--primary-dark));
   color: #94a3b8;
   padding: 36px 24px 24px;
   margin-top: auto;
@@ -155,7 +155,7 @@
 }
 
 .site-footer a:hover {
-  color: var(--accent, #ff9500);
+  color: var(--accent, var(--accent));
 }
 
 .site-footer__brand {
@@ -190,14 +190,14 @@
   border-radius: 999px;
   background: #fff;
   border: 1px solid #e5e7eb;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
   font-size: 0.82rem;
   font-weight: 700;
 }
 
 .funnel-step.is-current {
-  border-color: var(--accent, #ff9500);
-  color: var(--primary, #0f3d3e);
+  border-color: var(--accent, var(--accent));
+  color: var(--primary, var(--primary));
   background: rgba(255, 149, 0, 0.1);
 }
 
@@ -262,7 +262,7 @@
   }
 
   .site-header--dark .nav-links {
-    background: #05191a;
+    background: var(--primary-dark);
   }
 
   .site-header .nav-links.active {

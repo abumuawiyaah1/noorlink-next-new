@@ -150,7 +150,7 @@ export function DeviceCheckerBridge() {
                   href="/destinations"
                   style={{
                     display: "inline-block",
-                    background: "#0F3D3E",
+                    background: "var(--primary)",
                     color: "white",
                     padding: "10px 24px",
                     borderRadius: 50,

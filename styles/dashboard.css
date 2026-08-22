@@ -1,18 +1,8 @@
-/* --- PREMIUM THEME VARIABLES --- */
-        :root {
-            --primary: #0F3D3E;       
-            --accent: #FFAD5A;        
-            --bg-body: #F3F5F7;       
-            --surface: #FFFFFF;
-            --text-main: #111827;
-            --text-muted: #6B7280;
-            --success: #10B981;
-            --glass: rgba(255, 255, 255, 0.9);
-        }
+
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
+            font-family: var(--font-brand); 
             color: var(--text-main); 
             background: var(--bg-body); 
             min-height: 100vh;

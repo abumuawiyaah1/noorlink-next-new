@@ -1,30 +1,9 @@
-/* --- PREMIUM THEME VARIABLES --- */
-        :root {
-            --primary: #0F3D3E;       /* Deep Midnight Teal */
-            --primary-dark: #05191a;
-            --primary-light: #1F6F70;
-            --primary-lightest: #E8F4F4;
-            --accent: #FF9500;        /* Vibrant Orange */
-            --accent-light: #FFAD5A;
-            --accent-lighter: #FFE8CC;
-            --accent-glow: rgba(255, 149, 0, 0.4);
-            --bg-body: #F3F5F7;       
-            --surface: #FFFFFF;
-            --text-main: #111827;
-            --text-muted: #6B7280;
-            --text-light: #9CA3AF;
-            --whatsapp: #25D366;
-            --glass: rgba(255, 255, 255, 0.95);
-            --success: #10B981;
-            --border: #E5E7EB;
-            --shadow: 0 10px 30px rgba(15, 61, 62, 0.1);
-            --shadow-light: 0 5px 20px rgba(15, 61, 62, 0.05);
-        }
+
 
         /* --- GLOBAL RESET --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
+            font-family: var(--font-brand); 
             color: var(--text-main); 
             line-height: 1.6;
             background-color: var(--bg-body);
@@ -105,7 +84,7 @@
             border: 2px solid var(--border);
             border-radius: 50px;
             font-size: 1rem;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: var(--font-brand);
             background: white;
             transition: all 0.3s;
         }
@@ -699,7 +678,7 @@
             justify-content: center;
             font-weight: bold;
             font-size: 0.9rem;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: var(--font-brand);
         }
 
         .flex-step:nth-child(1):before { content: '1'; }

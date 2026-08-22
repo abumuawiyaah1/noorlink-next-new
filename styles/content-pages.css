@@ -1,5 +1,5 @@
 .content-page {
-  background: var(--bg-body, #f3f5f7);
+  background: var(--bg-body, var(--bg-body));
   min-height: 60vh;
 }
 
@@ -32,7 +32,7 @@
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent, #ff9500);
+  color: var(--accent, var(--accent));
 }
 
 .content-hero h1,
@@ -42,7 +42,7 @@
 .legal-card h2,
 .newsletter-signup h2 {
   margin: 0;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
   line-height: 1.1;
 }
 
@@ -61,7 +61,7 @@
 .legal-card li,
 .newsletter-signup p,
 .newsletter-card p {
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
   line-height: 1.7;
 }
 
@@ -135,7 +135,7 @@
 
 .about-stat strong {
   display: block;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
   font-size: 2rem;
   font-weight: 800;
 }
@@ -143,7 +143,7 @@
 .about-stat span {
   display: block;
   margin-top: 8px;
-  color: var(--text-muted, #6b7280);
+  color: var(--text-muted, var(--text-muted));
   font-weight: 600;
 }
 
@@ -188,7 +188,7 @@
 .content-card h3,
 .newsletter-card h3 {
   margin: 0 0 10px;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
   font-size: 1.25rem;
 }
 
@@ -215,7 +215,7 @@
   min-height: 46px;
   padding: 0 18px;
   border-radius: 999px;
-  background: var(--primary, #0f3d3e);
+  background: var(--primary, var(--primary));
   color: #fff;
   text-decoration: none;
   font-weight: 800;
@@ -223,7 +223,7 @@
 
 .content-button--ghost {
   background: #fff7ed;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
   border: 1px solid rgba(255, 149, 0, 0.24);
 }
 
@@ -264,7 +264,7 @@
 }
 
 .legal-meta a {
-  color: var(--accent, #ff9500);
+  color: var(--accent, var(--accent));
   font-weight: 700;
 }
 
@@ -301,7 +301,7 @@
   justify-content: space-between;
   gap: 8px;
   margin-bottom: 10px;
-  color: var(--accent, #ff9500);
+  color: var(--accent, var(--accent));
   font-size: 0.82rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -310,7 +310,7 @@
 .newsletter-card__link {
   display: inline-block;
   margin-top: 8px;
-  color: var(--primary, #0f3d3e);
+  color: var(--primary, var(--primary));
   font-weight: 800;
 }
 

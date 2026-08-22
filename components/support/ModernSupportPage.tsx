@@ -149,7 +149,7 @@ function SupportContent() {
             </button>
             {status && <p className="help-form__status">{status}</p>}
             {error && (
-              <p className="help-form__status" style={{ color: "#b91c1c" }}>
+              <p className="help-form__status" style={{ color: "var(--error)" }}>
                 {error}
               </p>
             )}

@@ -1,24 +1,12 @@
 @import "./image-media.css";
 
-/* --- PREMIUM THEME VARIABLES --- */
-        :root {
-            --primary: #0F3D3E;       /* Deep Midnight Teal */
-            --primary-dark: #05191a;
-            --accent: #FF9500;        /* Vibrant Orange */
-            --accent-glow: rgba(255, 149, 0, 0.4);
-            --bg-body: #F3F5F7;       
-            --surface: #FFFFFF;
-            --text-main: #111827;
-            --text-muted: #6B7280;
-            --whatsapp: #25D366;
-            --glass: rgba(255, 255, 255, 0.95);
-        }
+
 
         /* --- GLOBAL RESET --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
+            font-family: var(--font-brand); 
             color: var(--text-main); 
             background: var(--bg-body); 
             line-height: 1.6;
@@ -36,7 +24,7 @@
         /* --- GLOBAL TICKER --- */
         .ticker-wrap {
             position: fixed; top: 0; left: 0; width: 100%; height: 40px;
-            background-color: #05191a; color: #fff; z-index: 9999;
+            background-color: var(--primary-dark); color: #fff; z-index: 9999;
             overflow: hidden; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .ticker { display: inline-block; white-space: nowrap; animation: ticker 80s linear infinite; } 
@@ -46,7 +34,7 @@
             display: inline-block; padding: 0 3rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.5px; 
             border-right: 1px solid rgba(255,255,255,0.1);
         }
-        .ticker-dot { height: 6px; width: 6px; background-color: #10B981; border-radius: 50%; display: inline-block; margin-right: 4px; box-shadow: 0 0 6px #10B981; }
+        .ticker-dot { height: 6px; width: 6px; background-color: var(--success); border-radius: 50%; display: inline-block; margin-right: 4px; box-shadow: 0 0 6px var(--success); }
         .t-sep { color: var(--accent); margin: 0 8px; opacity: 0.6; }
 
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
@@ -92,7 +80,7 @@
         .hero-search input { border: none; flex: 1; padding: 0 24px; font-size: 1.05rem; outline: none; border-radius: 60px; background: transparent; color: white; }
         .hero-search input::placeholder { color: rgba(255,255,255,0.8); }
         .hero-search button { background: var(--accent); color: white; border: none; padding: 14px 36px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .hero-search button:hover { background: #e68600; box-shadow: 0 0 15px var(--accent-glow); }
+        .hero-search button:hover { background: var(--accent-hover); box-shadow: 0 0 15px var(--accent-glow); }
 
         
         /* TRUST BADGES */
@@ -121,20 +109,20 @@
             border-radius: 24px; 
             /* THE GRADIENT BORDER TRICK */
             background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, var(--primary), var(--accent), #10B981) border-box;
+                        linear-gradient(135deg, var(--primary), var(--accent), var(--success)) border-box;
             border: 3px solid transparent;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
             transition: transform 0.3s ease;
         }
         .step-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         
-        .step-icon { width: 70px; height: 70px; background: #FFF3E0; color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 20px auto; }
+        .step-icon { width: 70px; height: 70px; background: var(--accent-soft); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 20px auto; }
         .step-card h3 { margin-bottom: 10px; font-size: 1.25rem; color: var(--primary); }
         .step-card p { color: var(--text-muted); font-size: 0.95rem; }
 
         /* --- RAMADAN PROMO --- */
         .ramadan-promo {
-            background: linear-gradient(90deg, #05191a 0%, rgba(15, 61, 62, 0.9) 100%), 
+            background: linear-gradient(90deg, var(--primary-dark) 0%, rgba(15, 61, 62, 0.9) 100%), 
                         url('/images/ramadan-bg.jpg');
             background-size: cover; background-position: center;
             margin: 60px 20px; border-radius: 24px; color: white;
@@ -151,14 +139,14 @@
             transform: rotate(2deg); transition: 0.3s;
         }
         .promo-kicker {
-            display: inline-block; background: rgba(255, 149, 0, 0.2); color: #FF9500;
+            display: inline-block; background: rgba(255, 149, 0, 0.2); color: var(--accent);
             padding: 5px 12px; border-radius: 50px; font-weight: 700; font-size: 0.8rem;
-            margin-bottom: 15px; border: 1px solid #FF9500; letter-spacing: 0.04em;
+            margin-bottom: 15px; border: 1px solid var(--accent); letter-spacing: 0.04em;
             text-transform: uppercase;
         }
         .promo-title { font-size: 2.8rem; margin-bottom: 15px; color: white; line-height: 1.1; }
         .promo-copy { font-size: 1.1rem; color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; }
-        .promo-cta { background: #FF9500; color: white !important; display: inline-block; padding: 14px 35px; text-decoration: none; }
+        .promo-cta { background: var(--accent); color: white !important; display: inline-block; padding: 14px 35px; text-decoration: none; }
         .news-kicker {
             text-transform: uppercase; color: var(--accent); letter-spacing: 2px;
             font-weight: 700; font-size: 0.8rem; margin-bottom: 10px;
@@ -213,7 +201,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: all 0.4s ease;
             border: 3px solid transparent;
             background:
-                linear-gradient(#05191a, #05191a) padding-box,
+                linear-gradient(var(--primary-dark), var(--primary-dark)) padding-box,
                 var(--border-gradient) border-box;
         }
         a.card {
@@ -243,7 +231,7 @@
         .checker-box { 
             /* GRADIENT BORDER */
             background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, var(--primary), var(--accent), #10B981) border-box;
+                        linear-gradient(135deg, var(--primary), var(--accent), var(--success)) border-box;
             border: 4px solid transparent;
             padding: 50px; border-radius: 24px; max-width: 700px; margin: 30px auto 0; 
             box-shadow: 0 20px 60px -10px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center;
@@ -261,7 +249,7 @@
         /* --- NEWSLETTER SECTION (WITH GRADIENT BORDER) --- */
         .newsletter-section {
             padding: 100px 0;
-            background: linear-gradient(135deg, #05191a 0%, #0F3D3E 100%);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
             position: relative; overflow: hidden;
         }
         /* Added Map Texture */
@@ -274,7 +262,7 @@
         .newsletter-box {
             /* GRADIENT BORDER (Teal -> Orange -> Green) */
             background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, var(--primary), var(--accent), #10B981) border-box;
+                        linear-gradient(135deg, var(--primary), var(--accent), var(--success)) border-box;
             border: 4px solid transparent;
             backdrop-filter: blur(10px);
             border-radius: 24px;
