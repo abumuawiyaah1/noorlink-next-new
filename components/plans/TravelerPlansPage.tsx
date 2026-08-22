@@ -182,14 +182,42 @@ function SkeletonGrid() {
   );
 }
 
-const TABS: { id: PlanTab; label: string }[] = [
+const PLAN_SECTIONS: { id: PlanTab; label: string }[] = [
   { id: "fixed", label: "Standard" },
   { id: "unlimited", label: "Unlimited" },
   { id: "flexible", label: "Flexible" },
 ];
 
-function pickInitialTab(data: PlansByCountryResponse): PlanTab {
-  return TABS.find((tab) => (data.planGroups[tab.id]?.length ?? 0) > 0)?.id ?? "fixed";
+function PlanSection({
+  label,
+  plans,
+  countryName,
+  flag,
+}: {
+  label: string;
+  plans: EsimPlan[];
+  countryName: string;
+  flag?: string;
+}) {
+  if (plans.length === 0) return null;
+
+  return (
+    <section className="plans-section" aria-labelledby={`plans-section-${label}`}>
+      <h3 className="plans-section__title" id={`plans-section-${label}`}>
+        {label}
+      </h3>
+      <div className="plans-rows">
+        {sortPlans(plans).map((plan) => (
+          <PlanRow
+            key={plan.id}
+            plan={plan}
+            countryName={countryName}
+            flag={flag}
+          />
+        ))}
+      </div>
+    </section>
+  );
 }
 
 export function TravelerPlansPage({
@@ -201,9 +229,6 @@ export function TravelerPlansPage({
   const [data, setData] = useState<PlansByCountryResponse | null>(initialData);
   const [loading, setLoading] = useState(!initialData && !initialError);
   const [error, setError] = useState<string | null>(initialError);
-  const [activeTab, setActiveTab] = useState<PlanTab>(
-    initialData ? pickInitialTab(initialData) : "fixed",
-  );
   const [compatOpen, setCompatOpen] = useState(false);
 
   useEffect(() => {
@@ -220,10 +245,6 @@ export function TravelerPlansPage({
         if (cancelled) return;
 
         setData(response);
-        const firstTab = TABS.find(
-          (tab) => (response.planGroups[tab.id]?.length ?? 0) > 0,
-        );
-        if (firstTab) setActiveTab(firstTab.id);
       } catch (err: unknown) {
         console.error("[TravelerPlansPage] Load failed:", {
           countryId,
@@ -251,10 +272,6 @@ export function TravelerPlansPage({
 
   const title = formatCountryLabel(data?.countryName ?? countryId);
   const flag = resolveCountryFlag(countryId, data?.flag);
-  const visiblePlans = useMemo(
-    () => sortPlans(data?.planGroups[activeTab] ?? []),
-    [data, activeTab],
-  );
   const cheapest = useMemo(() => {
     const all = data?.plans ?? [];
     if (all.length === 0) return null;
@@ -351,25 +368,6 @@ export function TravelerPlansPage({
               <span>We&apos;ve got you covered</span>
               <span>24/7 support when you need it</span>
             </div>
-            <div className="plans-tabs" role="tablist" aria-label="Plan types">
-              {TABS.map((tab) => {
-                const count = data.planGroups[tab.id]?.length ?? 0;
-                if (count === 0) return null;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={activeTab === tab.id}
-                    className={`plans-tab${activeTab === tab.id ? " is-active" : ""}`}
-                    onClick={() => setActiveTab(tab.id)}
-                  >
-                    {tab.label}
-                    <span className="plans-tab__count">{count}</span>
-                  </button>
-                );
-              })}
-            </div>
 
             <h2 className="plans-picker__title">Choose your package</h2>
             <p className="plans-picker__hint">
@@ -377,11 +375,12 @@ export function TravelerPlansPage({
               you&apos;ll be connected before you know it — the price you see here
               is the price you pay.
             </p>
-            <div className="plans-rows" role="tabpanel">
-              {visiblePlans.map((plan) => (
-                <PlanRow
-                  key={plan.id}
-                  plan={plan}
+            <div className="plans-sections">
+              {PLAN_SECTIONS.map((section) => (
+                <PlanSection
+                  key={section.id}
+                  label={section.label}
+                  plans={data.planGroups[section.id] ?? []}
                   countryName={title}
                   flag={flag}
                 />
