@@ -88,14 +88,14 @@
 .trust-stat strong {
   display: block;
   font-size: 1.15rem;
-  color: var(--primary, var(--primary));
+  color: var(--primary);
   line-height: 1.2;
 }
 
 .trust-stat span {
   display: block;
   font-size: 0.82rem;
-  color: var(--text-muted, var(--text-muted));
+  color: var(--text-muted);
   font-weight: 600;
 }
 
@@ -137,20 +137,20 @@
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent, var(--accent));
+  color: var(--accent);
 }
 
 .why-header h2 {
   margin: 0;
   font-size: clamp(1.9rem, 3.5vw, 2.7rem);
   font-weight: 800;
-  color: var(--primary, var(--primary));
+  color: var(--primary);
   line-height: 1.1;
 }
 
 .why-header p {
   margin: 14px 0 0;
-  color: var(--text-muted, var(--text-muted));
+  color: var(--text-muted);
   font-size: 1.04rem;
   line-height: 1.65;
 }
@@ -187,13 +187,13 @@
   margin: 0 0 8px;
   font-size: 1.08rem;
   font-weight: 800;
-  color: var(--primary, var(--primary));
+  color: var(--primary);
 }
 
 .why-card p {
   margin: 0;
   font-size: 0.92rem;
-  color: var(--text-muted, var(--text-muted));
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
@@ -212,7 +212,7 @@
   height: 48px;
   padding: 0 24px;
   border-radius: 999px;
-  background: var(--primary, var(--primary));
+  background: var(--primary);
   color: #fff;
   font-weight: 800;
   text-decoration: none;
@@ -220,18 +220,18 @@
 }
 
 .why-cta__btn:hover {
-  background: var(--accent, var(--accent));
+  background: var(--accent);
   transform: translateY(-2px);
 }
 
 .why-cta__link {
   font-weight: 700;
-  color: var(--primary, var(--primary));
+  color: var(--primary);
   text-decoration: none;
 }
 
 .why-cta__link:hover {
-  color: var(--accent, var(--accent));
+  color: var(--accent);
 }
 
 @media (max-width: 900px) {
@@ -258,7 +258,7 @@
 /* ── Testimonials section ─────────────────────────────────── */
 .reviews-section {
   padding: 72px 0 80px;
-  background: var(--bg-body, var(--bg-body));
+  background: var(--bg-body);
 }
 
 .reviews-header {
@@ -271,13 +271,13 @@
   margin: 0;
   font-size: clamp(1.9rem, 3.5vw, 2.7rem);
   font-weight: 800;
-  color: var(--primary, var(--primary));
+  color: var(--primary);
   line-height: 1.1;
 }
 
 .reviews-header p {
   margin: 12px 0 0;
-  color: var(--text-muted, var(--text-muted));
+  color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.6;
 }
@@ -307,7 +307,7 @@
   bottom: 22px;
   width: 4px;
   border-radius: 999px;
-  background: var(--accent, var(--accent));
+  background: var(--accent);
 }
 
 .review-card:hover {
@@ -318,7 +318,7 @@
 .review-card__place {
   margin: 0;
   padding-left: 10px;
-  color: var(--accent, var(--accent));
+  color: var(--accent);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -328,7 +328,7 @@
 .review-card__title {
   margin: 0;
   padding-left: 10px;
-  color: var(--primary, var(--primary));
+  color: var(--primary);
   font-size: 1.18rem;
   font-weight: 800;
   line-height: 1.25;
@@ -339,7 +339,7 @@
   margin: 0;
   padding-left: 10px;
   font-size: 0.95rem;
-  color: var(--text-muted, var(--text-muted));
+  color: var(--text-muted);
   line-height: 1.65;
 }
 

@@ -1,5 +1,5 @@
 .help-page {
-  background: var(--bg-body, var(--bg-body));
+  background: var(--bg-body);
   min-height: 60vh;
 }
 
@@ -48,18 +48,18 @@
 .help-form h2,
 .faq-item h2 {
   margin: 0 0 10px;
-  color: var(--primary, var(--primary));
+  color: var(--primary);
   font-size: 1.2rem;
 }
 
 .help-card p,
 .faq-item p {
   margin: 0;
-  color: var(--text-muted, var(--text-muted));
+  color: var(--text-muted);
 }
 
 .help-card a {
-  color: var(--accent, var(--accent));
+  color: var(--accent);
   font-weight: 700;
 }
 
@@ -69,7 +69,7 @@
 
 .help-intro {
   margin: 0 0 10px;
-  color: var(--text-muted, var(--text-muted));
+  color: var(--text-muted);
 }
 
 .help-form label {
@@ -91,7 +91,7 @@
 
 .help-form button {
   margin-top: 16px;
-  background: var(--primary, var(--primary));
+  background: var(--primary);
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -160,7 +160,7 @@
 
 .faq-group__title {
   margin: 8px 0 0;
-  color: var(--primary, var(--primary));
+  color: var(--primary);
   font-size: 1.05rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -173,7 +173,7 @@
 
 .faq-item h3 {
   margin: 0 0 10px;
-  color: var(--primary, var(--primary));
+  color: var(--primary);
   font-size: 1.1rem;
 }
 
