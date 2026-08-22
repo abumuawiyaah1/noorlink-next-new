@@ -149,8 +149,10 @@
 }
 
 .plans-page__destination-flag {
-  font-size: 1.35em;
+  display: inline-block;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
   line-height: 1;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
 }
 
 .plans-page__destination-name {

@@ -10,6 +10,7 @@ import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
 import { CountrySearch } from "@/components/search/CountrySearch";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
+import { resolveCountryFlag } from "@/lib/country-flags";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { formatCountryNetworkLabel } from "@/lib/country-networks";
 import {
@@ -249,7 +250,7 @@ export function TravelerPlansPage({
   }, [countryId, initialData, initialError]);
 
   const title = formatCountryLabel(data?.countryName ?? countryId);
-  const flag = data?.flag;
+  const flag = resolveCountryFlag(countryId, data?.flag);
   const visiblePlans = useMemo(
     () => sortPlans(data?.planGroups[activeTab] ?? []),
     [data, activeTab],
@@ -285,18 +286,11 @@ export function TravelerPlansPage({
             <CountrySearch placeholder="Search for another country..." />
           </div>
           <h1 className="plans-page__destination">
-            {flag ? (
-              <span className="plans-page__destination-flag" aria-hidden="true">
-                {flag}
-              </span>
-            ) : null}
+            <span className="plans-page__destination-flag" aria-hidden="true">
+              {flag}
+            </span>
             <span className="plans-page__destination-name">{title}</span>
-            <span className="plans-page__destination-label">eSIM plans</span>
           </h1>
-          <p className="plans-page__subtitle">
-            Pick data and days. The Destinations “From” price is the cheapest
-            plan on this page.
-          </p>
         </header>
       </CountryPlansHero>
 
@@ -337,7 +331,7 @@ export function TravelerPlansPage({
                   {formatCountryNetworkLabel(countryId)}
                 </p>
                 <p className="plans-trust__meta">
-                  Enjoy hassle-free travel · Hotspot ready · Land connected
+                  Enjoy hassle-free travel
                   {cheapest
                     ? ` · From $${cheapest.price.toFixed(2)}`
                     : ""}
@@ -379,8 +373,9 @@ export function TravelerPlansPage({
 
             <h2 className="plans-picker__title">Choose your package</h2>
             <p className="plans-picker__hint">
-              Pick your plan, check out in minutes, and you&apos;ll be connected
-              before you know it — the price you see here is the price you pay.
+              Pick your plan, check out in minutes on secure Stripe checkout, and
+              you&apos;ll be connected before you know it — the price you see here
+              is the price you pay.
             </p>
             <div className="plans-rows" role="tabpanel">
               {visiblePlans.map((plan) => (
