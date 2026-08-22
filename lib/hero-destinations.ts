@@ -92,11 +92,27 @@ export const heroDestinations: HeroDestination[] = [
   },
   {
     id: "latam",
-    label: "Latin America",
+    label: "South America Regional",
     flag: "🌎",
     type: "region",
-    href: plansPathForCountry("colombia"),
-    keywords: ["latam", "latin america", "americas", "south america", "mexico", "brazil"],
+    href: plansPathForRegion("south-america"),
+    keywords: ["latam", "latin america", "south america", "brazil", "argentina"],
+  },
+  {
+    id: "africa-regional",
+    label: "Africa Regional",
+    flag: "🌍",
+    type: "region",
+    href: plansPathForRegion("africa"),
+    keywords: ["africa", "safari", "south africa", "morocco"],
+  },
+  {
+    id: "global-regional",
+    label: "Global Regional",
+    flag: "🌐",
+    type: "region",
+    href: plansPathForRegion("global"),
+    keywords: ["global", "worldwide", "world", "multi-region"],
   },
 ];
 

@@ -20,6 +20,15 @@ function regionalImageSrc(product: RegionalProduct): string {
   if (product.routeSlug === "north-america") {
     return getCountryImage("usa");
   }
+  if (product.routeSlug === "global") {
+    return getCountryImage("europe");
+  }
+  if (product.routeSlug === "africa") {
+    return getCountryImage("africa");
+  }
+  if (product.routeSlug === "south-america") {
+    return getCountryImage("brazil");
+  }
   return getCountryImage(product.routeSlug);
 }
 

@@ -18,6 +18,13 @@ const REGIONAL_REDIRECT_SLUGS = new Set([
   "asia-pacific",
   "middle-east",
   "north-america",
+  "africa",
+  "south-america",
+  "latam",
+  "latin-america",
+  "global",
+  "worldwide",
+  "world",
 ]);
 
 export const dynamic = "force-dynamic";

@@ -4,7 +4,10 @@ export type RegionalRouteSlug =
   | "europe"
   | "north-america"
   | "asia-pacific"
-  | "middle-east";
+  | "middle-east"
+  | "africa"
+  | "south-america"
+  | "global";
 
 export type RegionalProduct = {
   routeSlug: RegionalRouteSlug;
@@ -122,6 +125,80 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
     faqBorder:
       "No. One regional plan covers every country listed on this page.",
   },
+  africa: {
+    routeSlug: "africa",
+    apiCountryId: "regional-africa",
+    displayName: "Africa Regional",
+    shortName: "Africa",
+    flag: "🌍",
+    heroTagline: "Safaris, cities, and coastlines — one plan across African destinations.",
+    countries: [
+      "South Africa",
+      "Nigeria",
+      "Morocco",
+      "Kenya",
+      "Ghana",
+      "Egypt",
+      "Tanzania",
+      "Tunisia",
+    ],
+    exclusions: [],
+    singleCountrySlug: "south-africa",
+    faqBorder:
+      "No. Use the same eSIM as you travel between covered African destinations.",
+  },
+  "south-america": {
+    routeSlug: "south-america",
+    apiCountryId: "regional-south-america",
+    displayName: "South America Regional",
+    shortName: "South America",
+    flag: "🌎",
+    heroTagline: "Brazil to Patagonia — one eSIM for multi-country South America trips.",
+    countries: [
+      "Brazil",
+      "Argentina",
+      "Chile",
+      "Colombia",
+      "Peru",
+      "Uruguay",
+      "Ecuador",
+    ],
+    exclusions: [],
+    singleCountrySlug: "brazil",
+    faqBorder:
+      "No. Cross borders within South America on one install and one data pool.",
+  },
+  global: {
+    routeSlug: "global",
+    apiCountryId: "regional-global",
+    displayName: "Global Regional",
+    shortName: "Global",
+    flag: "🌐",
+    heroTagline: "100+ countries on one plan — for long-haul and multi-region journeys.",
+    countries: [
+      "United States",
+      "Canada",
+      "United Kingdom",
+      "France",
+      "Germany",
+      "Italy",
+      "Spain",
+      "Japan",
+      "Australia",
+      "Singapore",
+      "United Arab Emirates",
+      "Turkey",
+      "Mexico",
+      "Brazil",
+      "South Africa",
+      "Thailand",
+      "Saudi Arabia",
+    ],
+    exclusions: [],
+    singleCountrySlug: "usa",
+    faqBorder:
+      "No. Your global plan follows you across every covered country on your itinerary.",
+  },
 };
 
 const ROUTE_ALIASES: Record<string, RegionalRouteSlug> = {
@@ -135,6 +212,14 @@ const ROUTE_ALIASES: Record<string, RegionalRouteSlug> = {
   asia: "asia-pacific",
   "middle-east": "middle-east",
   "middle east": "middle-east",
+  africa: "africa",
+  "south-america": "south-america",
+  "south america": "south-america",
+  latam: "south-america",
+  "latin-america": "south-america",
+  global: "global",
+  worldwide: "global",
+  world: "global",
 };
 
 export const REGIONAL_ROUTE_SLUGS = Object.keys(
@@ -178,6 +263,15 @@ export function regionalSearchMatches(query: string): RegionalProduct[] {
     if (q.includes("europe") && product.routeSlug === "europe") return true;
     if (q.includes("schengen") && product.routeSlug === "europe") return true;
     if (q.includes("asia") && product.routeSlug === "asia-pacific") return true;
+    if (q.includes("global") && product.routeSlug === "global") return true;
+    if (q.includes("world") && product.routeSlug === "global") return true;
+    if (q.includes("africa") && product.routeSlug === "africa") return true;
+    if (
+      (q.includes("south america") || q.includes("latam")) &&
+      product.routeSlug === "south-america"
+    ) {
+      return true;
+    }
     if (
       (q.includes("usa") || q.includes("canada") || q.includes("mexico")) &&
       product.routeSlug === "north-america"
