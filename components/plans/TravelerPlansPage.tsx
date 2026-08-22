@@ -126,7 +126,7 @@ function PlanRow({
 }
 
 function PlansFaq({ countryName }: { countryName: string }) {
-  const [open, setOpen] = useState<string | null>(PLAN_FAQS[0].q);
+  const [open, setOpen] = useState<string | null>(null);
 
   return (
     <section className="plans-faq" aria-labelledby="plans-faq-heading">
