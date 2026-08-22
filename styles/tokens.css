@@ -37,10 +37,37 @@
     sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Shape */
-  --radius-pill: 999px;
-  --radius-card: 16px;
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 72px;
+
+  /* Radius */
+  --radius-sm: 8px;
   --radius-control: 12px;
+  --radius-card: 16px;
+  --radius-card-lg: 20px;
+  --radius-pill: 999px;
+
+  /* Buttons */
+  --btn-pad-y: 12px;
+  --btn-pad-x: 24px;
+  --btn-pad-y-lg: 14px;
+  --btn-pad-x-lg: 32px;
+  --btn-font-weight: 700;
+
+  /* Cards */
+  --card-pad: 24px;
+  --card-gap: 16px;
+
+  /* Shadows */
   --shadow-nav: 0 4px 10px rgba(15, 61, 62, 0.2);
   --shadow-card: 0 8px 24px rgba(15, 61, 62, 0.08);
 

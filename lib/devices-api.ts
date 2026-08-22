@@ -1,4 +1,5 @@
 import { API_BASE } from "@/lib/api-client";
+import { debug, debugError } from "@/lib/debug";
 
 export type DeviceModel = {
   id: string;
@@ -18,6 +19,7 @@ export type CompatibleDevicesResponse = {
 
 export async function fetchCompatibleDevices(): Promise<DeviceBrand[]> {
   const url = `${API_BASE}/api/v1/devices/compatible`;
+  debug("devices", "fetchCompatibleDevices →", url);
 
   try {
     const res = await fetch(url, {
@@ -30,9 +32,11 @@ export async function fetchCompatibleDevices(): Promise<DeviceBrand[]> {
     }
 
     const data = (await res.json()) as CompatibleDevicesResponse;
-    return data.brands ?? [];
+    const brands = data.brands ?? [];
+    debug("devices", "loaded brands", { count: brands.length });
+    return brands;
   } catch (err) {
-    console.error("[CompatibilityModal] Device list fetch failed:", err);
+    debugError("devices", "Device list fetch failed", err);
     throw err;
   }
 }

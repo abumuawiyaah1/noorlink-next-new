@@ -1,6 +1,7 @@
 import { API_BASE } from "@/lib/api-client";
 import { SERVER_API_BASE } from "@/lib/api-server";
 import { normalizeCountrySlug } from "@/lib/country-slugs";
+import { debug, debugError } from "@/lib/debug";
 import { normalizePlansResponse } from "@/lib/plans-diagnostics";
 
 export type PricingStrategy = "MANUAL" | "AUTOMATED";
@@ -65,7 +66,7 @@ async function parsePlansResponse(
     }
 
     const message = `Plans API error (${res.status})${detail}`;
-    console.error("[plans-api] Fetch failed:", {
+    debugError("plans-api", "Fetch failed", {
       url,
       countryId,
       status: res.status,
@@ -76,6 +77,10 @@ async function parsePlansResponse(
   }
 
   const payload = (await res.json()) as PlansByCountryResponse;
+  debug("plans-api", "parsed response", {
+    countryId,
+    planCount: payload.plans?.length ?? 0,
+  });
   return normalizePlansResponse(payload);
 }
 
@@ -95,7 +100,7 @@ function wrapPlansNetworkError(
         ? err.message
         : "Unable to load plans.";
 
-  console.error("[plans-api] Network or unexpected error:", {
+  debugError("plans-api", "Network or unexpected error", {
     url,
     countryId,
     error: err,
@@ -109,6 +114,7 @@ export async function fetchPlansByCountryServer(
 ): Promise<PlansByCountryResponse> {
   const slug = normalizeCountrySlug(countryId);
   const url = plansApiUrl(slug, SERVER_API_BASE);
+  debug("plans-api", "fetchPlansByCountryServer →", { slug, url });
 
   try {
     const res = await fetch(url, {
@@ -131,6 +137,11 @@ export async function fetchPlansByCountryCached(
   const url = plansApiUrl(slug, SERVER_API_BASE);
   const revalidateSeconds = options?.revalidateSeconds ?? 300;
   const timeoutMs = options?.timeoutMs ?? 2500;
+  debug("plans-api", "fetchPlansByCountryCached →", {
+    slug,
+    revalidateSeconds,
+    timeoutMs,
+  });
 
   try {
     const res = await fetch(url, {
@@ -150,6 +161,7 @@ export async function fetchPlansByCountry(
 ): Promise<PlansByCountryResponse> {
   const slug = normalizeCountrySlug(countryId);
   const url = plansApiUrl(slug);
+  debug("plans-api", "fetchPlansByCountry (client) →", { slug, url });
 
   try {
     const res = await fetch(url, {

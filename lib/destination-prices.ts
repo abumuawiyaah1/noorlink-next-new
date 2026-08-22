@@ -1,4 +1,5 @@
 import { DESTINATION_CARDS } from "@/lib/destinations-catalog";
+import { debug, debugError } from "@/lib/debug";
 import { fetchPlansByCountryCached } from "@/lib/plans-api";
 import type { EsimPlan } from "@/lib/plans-api";
 
@@ -59,6 +60,8 @@ export async function fetchDestinationStartingPrices(
     ...new Set((countryIds ?? featuredDestinationCountryIds()).filter(Boolean)),
   ].slice(0, MAX_DESTINATION_PRICE_COUNTRIES);
 
+  debug("destination-prices", "fetching starting prices", { count: ids.length });
+
   const entries = await Promise.all(
     ids.map(async (countryId) => {
       try {
@@ -70,7 +73,7 @@ export async function fetchDestinationStartingPrices(
         if (!price) return null;
         return [countryId, price] as const;
       } catch (error) {
-        console.error("[destination-prices] Failed for", countryId, error);
+        debugError("destination-prices", "Failed for", countryId, error);
         return null;
       }
     }),
@@ -81,5 +84,9 @@ export async function fetchDestinationStartingPrices(
     if (!entry) continue;
     prices[entry[0]] = entry[1];
   }
+  debug("destination-prices", "resolved", {
+    requested: ids.length,
+    resolved: Object.keys(prices).length,
+  });
   return prices;
 }

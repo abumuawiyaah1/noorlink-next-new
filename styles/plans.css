@@ -35,7 +35,7 @@
         .nav-links { display: flex; gap: 32px; align-items: center; }
         .nav-links a { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
         .nav-links a:hover { color: var(--primary); }
-        .btn-nav { background: var(--primary); color: white !important; padding: 10px 24px; border-radius: 50px; opacity: 1 !important; box-shadow: 0 4px 10px rgba(15, 61, 62, 0.2); }
+        .btn-nav { background: var(--primary); color: white !important; padding: 10px 24px; border-radius: var(--radius-pill); opacity: 1 !important; box-shadow: 0 4px 10px rgba(15, 61, 62, 0.2); }
         .btn-nav:hover { background: var(--primary-light); transform: translateY(-2px); }
         .mobile-toggle { display: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; }
 
@@ -82,7 +82,7 @@
             width: 100%;
             padding: 18px 50px 18px 20px;
             border: 2px solid var(--border);
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             font-size: 1rem;
             font-family: var(--font-brand);
             background: white;
@@ -114,7 +114,7 @@
             right: 0;
             background: white;
             border: 1px solid var(--border);
-            border-radius: 15px;
+            border-radius: var(--radius-card);
             margin-top: 10px;
             max-height: 300px;
             overflow-y: auto;
@@ -124,7 +124,7 @@
         }
 
         .search-result-item {
-            padding: 12px 20px;
+            padding: var(--btn-pad-y) var(--btn-pad-x);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -160,7 +160,7 @@
             background: var(--accent);
             color: white;
             padding: 3px 8px;
-            border-radius: 20px;
+            border-radius: var(--radius-card-lg);
             font-size: 0.7rem;
             font-weight: 700;
             margin-left: 10px;
@@ -196,7 +196,7 @@
             padding: 15px 30px;
             background: var(--surface);
             border: 2px solid var(--border);
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
@@ -230,7 +230,7 @@
             margin-bottom: 40px;
             padding: 30px;
             background: var(--surface);
-            border-radius: 20px;
+            border-radius: var(--radius-card-lg);
             box-shadow: var(--shadow-light);
             border-left: 5px solid var(--accent);
         }
@@ -272,7 +272,7 @@
 
         .plan-card {
             background: var(--surface);
-            border-radius: 20px;
+            border-radius: var(--radius-card-lg);
             padding: 30px;
             text-align: center;
             position: relative;
@@ -311,7 +311,7 @@
             left: 50%;
             transform: translateX(-50%);
             padding: 6px 20px;
-            border-radius: 20px;
+            border-radius: var(--radius-card-lg);
             font-size: 0.85rem;
             font-weight: 700;
             color: white;
@@ -323,7 +323,7 @@
             background: var(--accent) !important;
             color: white;
             padding: 8px 20px;
-            border-radius: 20px;
+            border-radius: var(--radius-card-lg);
             font-size: 0.9rem;
             font-weight: 700;
             display: inline-block;
@@ -389,7 +389,7 @@
             margin: 10px 0;
             background: var(--accent-lighter);
             padding: 8px 15px;
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             display: inline-block;
         }
 
@@ -426,7 +426,7 @@
             color: white;
             border: none;
             padding: 18px 30px;
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             font-weight: 800;
             font-size: 1rem;
             cursor: pointer;
@@ -447,7 +447,7 @@
         /* ====== FAMILY BUNDLE DETAILS CARD ====== */
         .family-details-card {
             background: linear-gradient(135deg, var(--surface) 0%, var(--primary-lightest) 100%);
-            border-radius: 20px;
+            border-radius: var(--radius-card-lg);
             padding: 40px;
             margin: 60px 0;
             border: 2px solid var(--accent-light);
@@ -514,7 +514,7 @@
             gap: 15px;
             padding: 20px;
             background: white;
-            border-radius: 15px;
+            border-radius: var(--radius-card);
             box-shadow: var(--shadow-light);
             transition: transform 0.3s;
         }
@@ -547,7 +547,7 @@
         .family-use-cases {
             background: white;
             padding: 30px;
-            border-radius: 15px;
+            border-radius: var(--radius-card);
             box-shadow: var(--shadow-light);
             border-left: 5px solid var(--accent);
         }
@@ -582,7 +582,7 @@
         /* ====== FLEX DATA OPTION ====== */
         .flex-data-card {
             background: linear-gradient(135deg, var(--surface) 0%, var(--accent-lighter) 100%);
-            border-radius: 20px;
+            border-radius: var(--radius-card-lg);
             padding: 40px;
             margin: 60px 0;
             border: 2px dashed var(--accent);
@@ -642,7 +642,7 @@
         .flex-how-it-works {
             background: white;
             padding: 30px;
-            border-radius: 15px;
+            border-radius: var(--radius-card);
             box-shadow: var(--shadow-light);
         }
 
@@ -702,7 +702,7 @@
         .flex-highlight {
             background: white;
             padding: 30px;
-            border-radius: 15px;
+            border-radius: var(--radius-card);
             box-shadow: var(--shadow-light);
             border: 2px solid var(--accent);
             text-align: center;
@@ -746,7 +746,7 @@
             color: white;
             border: none;
             padding: 16px 30px;
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             font-weight: 800;
             font-size: 1rem;
             cursor: pointer;
@@ -779,7 +779,7 @@
         
         .step-card { 
             padding: 40px 30px; 
-            border-radius: 24px; 
+            border-radius: var(--radius-card-lg); 
             background: linear-gradient(white, white) padding-box,
                         linear-gradient(135deg, var(--primary), var(--accent), var(--success)) border-box;
             border: 3px solid transparent;

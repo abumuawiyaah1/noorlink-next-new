@@ -1,6 +1,6 @@
 import { normalizeCountrySlug, plansPathForCountry } from "@/lib/country-slugs";
+import { getCountryImageUrl } from "@/lib/country-images";
 import type { DestinationCard, DestinationRegion } from "@/lib/destinations-catalog";
-import { DESTINATION_IMAGES } from "@/lib/site-images";
 
 export type TemplateRegionKey =
   | "north-america"
@@ -47,6 +47,7 @@ export const COUNTRY_TEMPLATE_HINTS: CountryTemplateHint[] = [
   { slug: "finland", name: "Finland", templateKey: "europe" },
   { slug: "iceland", name: "Iceland", templateKey: "europe" },
   { slug: "malta", name: "Malta", templateKey: "europe" },
+  { slug: "russia", name: "Russia", templateKey: "europe", aliases: ["rusia", "russian-federation"] },
   { slug: "europe", name: "Europe", templateKey: "europe", aliases: ["eu", "schengen"] },
   { slug: "japan", name: "Japan", templateKey: "asia-pacific" },
   { slug: "china", name: "China", templateKey: "asia-pacific" },
@@ -90,15 +91,6 @@ const TEMPLATE_REGION: Record<TemplateRegionKey, DestinationRegion> = {
   africa: "Africa",
 };
 
-const TEMPLATE_IMAGE: Record<TemplateRegionKey, string> = {
-  "north-america": DESTINATION_IMAGES.usa,
-  "south-america": DESTINATION_IMAGES.brazil,
-  europe: DESTINATION_IMAGES.europeRegional,
-  "asia-pacific": DESTINATION_IMAGES.asiaRegional,
-  "middle-east": DESTINATION_IMAGES.middleEastRegional,
-  africa: DESTINATION_IMAGES.middleEastRegional,
-};
-
 const TEMPLATE_STARTING_PRICE: Record<TemplateRegionKey, string> = {
   "north-america": "From $16.99",
   "south-america": "From $13.99",
@@ -116,22 +108,31 @@ function titleCaseCountry(slug: string): string {
     .join(" ");
 }
 
+function matchesCountryQuery(
+  hint: CountryTemplateHint,
+  raw: string,
+  slug: string,
+): boolean {
+  const names = [hint.slug, hint.name.toLowerCase(), ...(hint.aliases ?? [])];
+
+  for (const value of names) {
+    if (value === slug || value === raw) return true;
+
+    // Prefix match for longer tokens only (never "us" ⊂ "rus…").
+    const canPrefix = raw.length >= 3 && value.length >= 3;
+    if (canPrefix && (value.startsWith(raw) || raw.startsWith(value))) return true;
+    if (slug.length >= 3 && value.startsWith(slug)) return true;
+    if (raw.length >= 3 && hint.name.toLowerCase().startsWith(raw)) return true;
+  }
+  return false;
+}
+
 export function findCountryTemplateHint(query: string): CountryTemplateHint | undefined {
   const slug = normalizeCountrySlug(query);
   const raw = query.trim().toLowerCase();
   if (!slug && !raw) return undefined;
 
-  return COUNTRY_TEMPLATE_HINTS.find((hint) => {
-    const names = [hint.slug, hint.name.toLowerCase(), ...(hint.aliases ?? [])];
-    return names.some(
-      (value) =>
-        value === slug ||
-        value === raw ||
-        value.includes(raw) ||
-        raw.includes(value) ||
-        hint.name.toLowerCase().includes(raw),
-    );
-  });
+  return COUNTRY_TEMPLATE_HINTS.find((hint) => matchesCountryQuery(hint, raw, slug));
 }
 
 export function searchCountryTemplateHints(query: string): CountryTemplateHint[] {
@@ -139,15 +140,7 @@ export function searchCountryTemplateHints(query: string): CountryTemplateHint[]
   const slug = normalizeCountrySlug(query);
   if (!raw) return [];
 
-  return COUNTRY_TEMPLATE_HINTS.filter((hint) => {
-    const names = [hint.slug, hint.name.toLowerCase(), ...(hint.aliases ?? [])];
-    return names.some((value) => {
-      if (value === slug || value === raw) return true;
-      if (value.startsWith(raw) || value.startsWith(slug)) return true;
-      if (raw.length >= 3 && hint.name.toLowerCase().startsWith(raw)) return true;
-      return false;
-    });
-  });
+  return COUNTRY_TEMPLATE_HINTS.filter((hint) => matchesCountryQuery(hint, raw, slug));
 }
 
 export function destinationCardFromHint(hint: CountryTemplateHint): DestinationCard {
@@ -159,7 +152,7 @@ export function destinationCardFromHint(hint: CountryTemplateHint): DestinationC
     priceCountryId: hint.slug,
     priceLabel: TEMPLATE_STARTING_PRICE[hint.templateKey],
     className: "bg-dynamic",
-    image: TEMPLATE_IMAGE[hint.templateKey],
+    image: getCountryImageUrl(hint.slug),
     description: `Instant eSIM data for ${hint.name}. Opening this card shows live plans you can buy.`,
     thingsToDo: ["Stay connected on arrival", "Use maps and rideshares", "Share photos without roaming fees"],
     href: plansPathForCountry(hint.slug),
@@ -174,6 +167,7 @@ export function destinationCardFromQuery(query: string): DestinationCard | null 
   const hint = findCountryTemplateHint(query);
   if (hint) return destinationCardFromHint(hint);
 
+  // Unknown country: route to /plans/{slug}; backend generates from regional template.
   const name = titleCaseCountry(slug);
   return {
     id: slug,
@@ -182,8 +176,8 @@ export function destinationCardFromQuery(query: string): DestinationCard | null 
     priceCountryId: slug,
     priceLabel: TEMPLATE_STARTING_PRICE.europe,
     className: "bg-dynamic",
-    image: TEMPLATE_IMAGE.europe,
-    description: `eSIM plans for ${name}. We’ll generate coverage from our regional catalog.`,
+    image: getCountryImageUrl(slug),
+    description: `eSIM plans for ${name}. Live plans are generated from our regional catalog.`,
     thingsToDo: ["Stay connected on arrival", "Use maps and rideshares", "Share photos without roaming fees"],
     href: plansPathForCountry(slug),
   };

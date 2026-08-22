@@ -101,7 +101,11 @@ export function filterDestinations(query: string): HeroDestination[] {
   const featured = heroDestinations.filter(
     (dest) =>
       dest.label.toLowerCase().includes(q) ||
-      dest.keywords.some((kw) => kw.includes(q) || q.includes(kw)),
+      dest.keywords.some(
+        (kw) =>
+          kw.includes(q) ||
+          (q.length >= 3 && q.includes(kw) && kw.length >= 3),
+      ),
   );
 
   const generated = searchCountryTemplateHints(query)

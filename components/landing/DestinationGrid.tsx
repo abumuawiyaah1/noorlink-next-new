@@ -1,41 +1,41 @@
 import Link from "next/link";
 import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
-import { DESTINATION_IMAGES } from "@/lib/site-images";
+import { getCountryImageUrl } from "@/lib/country-images";
 
 const destinations = [
   {
     id: "americas",
     title: "Americas",
     subtitle: "USA, Canada, Brazil & more",
-    image: DESTINATION_IMAGES.usa,
+    image: getCountryImageUrl("americas"),
     href: "/plans/usa",
   },
   {
     id: "caribbean",
     title: "Caribbean",
     subtitle: "Bahamas, Jamaica, Dominican Republic…",
-    image: DESTINATION_IMAGES.caribbean,
+    image: getCountryImageUrl("caribbean"),
     href: "/plans/bahamas",
   },
   {
     id: "europe",
     title: "Europe",
     subtitle: "UK, France, Germany & more",
-    image: DESTINATION_IMAGES.europeRegional,
+    image: getCountryImageUrl("europe"),
     href: "/plans/france",
   },
   {
     id: "mea",
     title: "Middle East & Africa",
     subtitle: "UAE, Turkey, Saudi, Egypt…",
-    image: DESTINATION_IMAGES.middleEastRegional,
+    image: getCountryImageUrl("middle-east"),
     href: "/hajj-umrah",
   },
   {
     id: "asia",
     title: "Asia & Oceania",
     subtitle: "Japan, Thailand, Australia…",
-    image: DESTINATION_IMAGES.asiaRegional,
+    image: getCountryImageUrl("asia"),
     href: "/plans/japan",
   },
 ] as const;

@@ -76,7 +76,7 @@
   width: fit-content;
   margin: 18px auto 0;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(255, 149, 0, 0.14);
   border: 1px solid rgba(255, 149, 0, 0.32);
   color: #fff;
@@ -101,7 +101,7 @@
 .legal-card,
 .newsletter-signup {
   margin-top: -36px;
-  border-radius: 28px;
+  border-radius: var(--radius-card-lg);
 }
 
 .about-story-card {
@@ -114,7 +114,7 @@
 
 .about-story-card__media {
   min-height: 320px;
-  border-radius: 22px;
+  border-radius: var(--radius-card-lg);
   background:
     linear-gradient(rgba(255, 149, 0, 0.14), rgba(255, 149, 0, 0.14)),
     url("/images/team.jpg") center/cover;
@@ -128,7 +128,7 @@
 }
 
 .about-stat {
-  border-radius: 20px;
+  border-radius: var(--radius-card-lg);
   padding: 24px 18px;
   text-align: center;
 }
@@ -178,7 +178,7 @@
 
 .content-card,
 .newsletter-card {
-  border-radius: 22px;
+  border-radius: var(--radius-card-lg);
 }
 
 .content-card {
@@ -199,7 +199,7 @@
   gap: 20px;
   margin-top: 32px;
   padding: 28px 30px;
-  border-radius: 24px;
+  border-radius: var(--radius-card-lg);
 }
 
 .content-cta__actions {
@@ -214,7 +214,7 @@
   justify-content: center;
   min-height: 46px;
   padding: 0 18px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--primary);
   color: #fff;
   text-decoration: none;
@@ -235,7 +235,7 @@
 .legal-alert {
   margin-bottom: 18px;
   padding: 16px 18px;
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   background: #fff7ed;
   border: 1px solid #fed7aa;
   color: #9a3412;

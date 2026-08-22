@@ -1,4 +1,5 @@
 import { API_BASE } from "@/lib/api-client";
+import { debug, debugError } from "@/lib/debug";
 
 export type CheckoutSessionPayload = {
   email: string;
@@ -39,6 +40,14 @@ export async function createCheckoutSession(
   if (payload.travelDate) body.travelDate = payload.travelDate;
   if (payload.packageId) body.packageId = payload.packageId;
 
+  debug("checkout", "createCheckoutSession →", {
+    url,
+    country: body.country,
+    price: body.price,
+    packageId: body.packageId,
+    email: typeof body.email === "string" ? `${String(body.email).slice(0, 3)}…` : undefined,
+  });
+
   let res: Response;
   try {
     res = await fetch(url, {
@@ -50,6 +59,7 @@ export async function createCheckoutSession(
       body: JSON.stringify(body),
     });
   } catch (err) {
+    debugError("checkout", "network error", err);
     return {
       success: false,
       error:
@@ -80,6 +90,7 @@ export async function createCheckoutSession(
             : rawText && !rawText.startsWith("<")
               ? rawText.slice(0, 240)
               : `Payment setup failed (${res.status}).`;
+    debugError("checkout", "session failed", { status: res.status, message });
     return { success: false, error: message };
   }
 
@@ -88,7 +99,7 @@ export async function createCheckoutSession(
     (typeof data.checkout_url === "string" && data.checkout_url) ||
     undefined;
 
-  return {
+  const result = {
     success: Boolean(data.success ?? true),
     sessionId:
       (typeof data.sessionId === "string" && data.sessionId) ||
@@ -101,4 +112,10 @@ export async function createCheckoutSession(
       undefined,
     message: typeof data.message === "string" ? data.message : undefined,
   };
+  debug("checkout", "session created", {
+    sessionId: result.sessionId,
+    orderId: result.orderId,
+    hasCheckoutUrl: Boolean(result.checkoutUrl),
+  });
+  return result;
 }

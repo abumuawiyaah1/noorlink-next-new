@@ -32,7 +32,7 @@
   display: inline-block;
   margin-bottom: 0.85rem;
   padding: 0.35rem 0.9rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(15, 61, 62, 0.06);
   border: 1px solid rgba(15, 61, 62, 0.12);
   color: var(--pilgrim-teal);
@@ -100,7 +100,7 @@
   left: 50%;
   transform: translateX(-50%);
   padding: 0.35rem 0.85rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: linear-gradient(135deg, var(--pilgrim-teal), var(--pilgrim-teal-soft));
   color: #fff;
   font-size: 0.72rem;
@@ -477,7 +477,7 @@
 .pilgrim-page__error {
   text-align: center;
   padding: 2rem;
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   background: #fff;
   border: 1px solid rgba(220, 38, 38, 0.25);
   color: #7f1d1d;

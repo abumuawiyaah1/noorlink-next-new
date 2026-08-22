@@ -1,7 +1,12 @@
 /**
- * Central image paths — all destination/card assets live under /images/destinations/.
- * Run `node scripts/optimize-images.mjs` after adding new photos.
+ * Central image paths — destination photos managed in lib/country-images.ts.
+ * Run `node scripts/sync-country-images.mjs` after adding new country photos.
  */
+import {
+  COUNTRY_IMAGE_PLACEHOLDER,
+  getCountryImageUrl,
+} from "@/lib/country-images";
+import { REGIONAL_IMAGE_REGISTRY } from "@/lib/country-images.registry";
 
 const DEST = "/images/destinations";
 
@@ -14,29 +19,32 @@ export const SITE_IMAGES = {
   ramadanFeature: "/images/ramadan-feature.jpg",
 } as const;
 
+/** @deprecated Prefer getCountryImageUrl() — kept for legacy imports. */
 export const DESTINATION_IMAGES = {
-  usa: `${DEST}/usa.jpg`,
-  canada: `${DEST}/canada.jpg`,
-  mexico: `${DEST}/mexico.jpg`,
-  caribbean: `${DEST}/mexico.jpg`,
-  brazil: `${DEST}/brazil.jpg`,
-  europeRegional: `${DEST}/europe-regional.jpg`,
-  uk: `${DEST}/uk.jpg`,
-  france: `${DEST}/france.jpg`,
-  germany: `${DEST}/germany.jpg`,
-  asiaRegional: `${DEST}/asia-regional.jpg`,
-  japan: `${DEST}/japan.jpg`,
-  thailand: `${DEST}/thailand.jpg`,
-  china: `${DEST}/china.jpg`,
-  middleEastRegional: `${DEST}/middle-east-regional.jpg`,
-  turkey: `${DEST}/turkey.jpg`,
-  saudiArabia: `${DEST}/saudi-arabia.jpg`,
-  uae: `${DEST}/uae.jpg`,
+  usa: getCountryImageUrl("usa"),
+  canada: getCountryImageUrl("canada"),
+  mexico: getCountryImageUrl("mexico"),
+  caribbean: COUNTRY_IMAGE_PLACEHOLDER,
+  brazil: getCountryImageUrl("brazil"),
+  europeRegional: REGIONAL_IMAGE_REGISTRY.europe,
+  uk: getCountryImageUrl("uk"),
+  france: getCountryImageUrl("france"),
+  germany: getCountryImageUrl("germany"),
+  italy: getCountryImageUrl("italy"),
+  spain: getCountryImageUrl("spain"),
+  asiaRegional: REGIONAL_IMAGE_REGISTRY["asia-pacific"],
+  japan: getCountryImageUrl("japan"),
+  thailand: getCountryImageUrl("thailand"),
+  china: getCountryImageUrl("china"),
+  middleEastRegional: REGIONAL_IMAGE_REGISTRY["middle-east"],
+  turkey: getCountryImageUrl("turkey"),
+  saudiArabia: getCountryImageUrl("saudi-arabia"),
+  uae: getCountryImageUrl("uae"),
+  placeholder: COUNTRY_IMAGE_PLACEHOLDER,
 } as const;
 
 export type DestinationImageKey = keyof typeof DESTINATION_IMAGES;
 
-/** Resolve a catalog/card image path, falling back to regional template art. */
 export function destinationImage(src: string, priority = false): {
   src: string;
   loading: "eager" | "lazy";
@@ -48,3 +56,5 @@ export function destinationImage(src: string, priority = false): {
     fetchPriority: priority ? "high" : undefined,
   };
 }
+
+export { DEST };

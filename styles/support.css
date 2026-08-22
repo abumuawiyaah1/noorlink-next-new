@@ -27,7 +27,7 @@
         .nav-links { display: flex; gap: 32px; align-items: center; }
         .nav-links a { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
         .nav-links a:hover { color: var(--primary); }
-        .btn-nav { background: var(--primary); color: white !important; padding: 10px 24px; border-radius: 50px; opacity: 1 !important; box-shadow: 0 4px 10px rgba(15, 61, 62, 0.2); }
+        .btn-nav { background: var(--primary); color: white !important; padding: 10px 24px; border-radius: var(--radius-pill); opacity: 1 !important; box-shadow: 0 4px 10px rgba(15, 61, 62, 0.2); }
         .mobile-toggle { display: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; }
 
         /* HERO */
@@ -42,23 +42,23 @@
         /* CARDS */
         .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; margin-top: -60px; margin-bottom: 80px; }
         
-        .card { background: var(--surface); padding: 40px; border-radius: 20px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .card { background: var(--surface); padding: 40px; border-radius: var(--radius-card-lg); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
         .info-card { background: var(--primary); color: white; }
         .info-item { margin-bottom: 25px; }
         .info-label { font-size: 0.85rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 1px; display: block; margin-bottom: 5px; }
         .info-value { font-size: 1.1rem; font-weight: 600; }
         
         .form-group { margin-bottom: 20px; }
-        .form-control { width: 100%; padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; font-family: inherit; background: #f9fafb; font-size: 1rem; }
+        .form-control { width: 100%; padding: 14px; border: 1px solid #e5e7eb; border-radius: var(--radius-control); font-family: inherit; background: #f9fafb; font-size: 1rem; }
         .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(255, 149, 0, 0.1); }
-        .submit-btn { background: var(--primary); color: white; padding: 16px; width: 100%; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .submit-btn { background: var(--primary); color: white; padding: 16px; width: 100%; border: none; border-radius: var(--radius-control); font-weight: 700; cursor: pointer; transition: 0.3s; }
         .submit-btn:hover { background: var(--accent); color: var(--primary); }
 
         /* FAQ SECTION */
         .faq-section { margin-bottom: 80px; }
         .faq-title { text-align: center; margin-bottom: 40px; color: var(--primary); font-size: 2rem; font-weight: 800; }
         .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .faq-item { background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); padding: 25px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); }
+        .faq-item { background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); padding: 25px; border-radius: var(--radius-card); border: 1px solid rgba(0,0,0,0.05); }
         .faq-item h4 { color: var(--primary); margin-bottom: 10px; font-size: 1.1rem; }
         .faq-item p { font-size: 0.95rem; color: #555; margin: 0; }
 

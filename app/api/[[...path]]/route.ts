@@ -1,4 +1,5 @@
 import { SERVER_API_BASE } from "@/lib/api-server";
+import { debug, debugError } from "@/lib/debug";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ async function proxyToBackend(req: Request, ctx: Ctx): Promise<Response> {
 
   const incoming = new URL(req.url);
   const target = `${SERVER_API_BASE}/api/${path.join("/")}${incoming.search}`;
+  debug("api-proxy", `${req.method} →`, target);
 
   const headers = new Headers();
   req.headers.forEach((value, key) => {
@@ -51,12 +53,18 @@ async function proxyToBackend(req: Request, ctx: Ctx): Promise<Response> {
   try {
     upstream = await fetch(target, init);
   } catch (err) {
-    console.error("[api-proxy] upstream fetch failed", target, err);
+    debugError("api-proxy", "upstream fetch failed", target, err);
     return Response.json(
       { error: "Backend unreachable", target },
       { status: 502 },
     );
   }
+
+  debug("api-proxy", "upstream status", {
+    method: req.method,
+    path: path.join("/"),
+    status: upstream.status,
+  });
 
   const outHeaders = new Headers();
   upstream.headers.forEach((value, key) => {

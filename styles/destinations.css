@@ -28,7 +28,7 @@
         .nav-links { display: flex; gap: 32px; align-items: center; }
         .nav-links a { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
         .nav-links a:hover { color: var(--primary); }
-        .btn-nav { background: var(--primary); color: white !important; padding: 10px 24px; border-radius: 50px; opacity: 1 !important; box-shadow: 0 4px 10px rgba(15, 61, 62, 0.2); }
+        .btn-nav { background: var(--primary); color: white !important; padding: 10px 24px; border-radius: var(--radius-pill); opacity: 1 !important; box-shadow: 0 4px 10px rgba(15, 61, 62, 0.2); }
         .mobile-toggle { display: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; }
 
         /* HERO AREA */
@@ -48,7 +48,7 @@
         .search-box { 
             background: linear-gradient(white, white) padding-box, linear-gradient(135deg, var(--primary), var(--accent)) border-box;
             border: 3px solid transparent;
-            padding: 8px; border-radius: 50px; display: flex; 
+            padding: 8px; border-radius: var(--radius-pill); display: flex; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
             transition: 0.3s;
         }
@@ -59,7 +59,7 @@
             border-color: var(--accent);
         }
 
-        .search-box input { border: none; flex: 1; padding: 12px 24px; font-size: 1rem; outline: none; border-radius: 50px; background: transparent; }
+        .search-box input { border: none; flex: 1; padding: var(--btn-pad-y) var(--btn-pad-x); font-size: 1rem; outline: none; border-radius: var(--radius-pill); background: transparent; }
         .search-btn { background: var(--accent); border: none; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.3s; color: white; }
         .search-btn:hover { transform: scale(1.05); background: var(--primary); }
 
@@ -67,7 +67,7 @@
         .filter-btn { 
             background: linear-gradient(white, white) padding-box, linear-gradient(90deg, #e5e7eb, #e5e7eb) border-box;
             border: 2px solid transparent;
-            padding: 10px 25px; border-radius: 30px; 
+            padding: 10px 25px; border-radius: var(--radius-pill); 
             cursor: pointer; font-weight: 700; color: var(--text-muted); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .filter-btn:hover, .filter-btn.active { 
@@ -79,7 +79,7 @@
         .dest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; padding-bottom: 100px; }
         
         .card { 
-            min-height: 420px; border-radius: 24px; position: relative; overflow: hidden; cursor: pointer;
+            min-height: 420px; border-radius: var(--radius-card-lg); position: relative; overflow: hidden; cursor: pointer;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: all 0.4s ease;
             border: 3px solid transparent;
             display: block;
@@ -137,7 +137,7 @@
             color: var(--text-main);
             font-weight: 800;
             padding: 6px 16px;
-            border-radius: 20px;
+            border-radius: var(--radius-card-lg);
             font-size: 0.9rem;
             display: inline-block;
             width: fit-content;
@@ -154,14 +154,14 @@
             width: 100%; grid-column: 1 / -1; 
             background: linear-gradient(to right, rgba(15, 61, 62, 0.9), rgba(5, 25, 26, 0.7)), url('/images/world-hands.jpg');
             background-size: cover; background-position: center;
-            border-radius: 24px; padding: 60px; text-align: center; color: white;
+            border-radius: var(--radius-card-lg); padding: 60px; text-align: center; color: white;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 1px solid rgba(255, 149, 0, 0.2);
             margin-top: 40px; cursor: pointer; transition: 0.3s;
         }
         .search-card-style:hover { transform: scale(1.01); border-color: var(--accent); }
         .search-text { font-weight: 800; font-size: 2.5rem; margin-bottom: 15px; }
         .search-sub { font-size: 1.2rem; color: #cbd5e1; margin-bottom: 30px; }
-        .glow-btn { background: var(--accent); color: var(--text-main); padding: 15px 40px; border-radius: 50px; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 20px rgba(255, 149, 0, 0.4); display: inline-block; }
+        .glow-btn { background: var(--accent); color: var(--text-main); padding: 15px 40px; border-radius: var(--radius-pill); font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 20px rgba(255, 149, 0, 0.4); display: inline-block; }
 
         /* FOOTER */
         footer { background: var(--primary-dark); color: #94a3b8; padding: 60px 0; text-align: center; font-size: 0.9rem; }

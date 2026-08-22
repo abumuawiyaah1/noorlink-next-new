@@ -1,0 +1,47 @@
+/**
+ * Shared button + card shape rules (built on tokens.css).
+ * Only normalizes radius + padding — colors/layout stay in page CSS.
+ */
+
+/* Buttons: pill + consistent padding */
+.btn-nav,
+.check-btn,
+.glow-btn,
+.content-button,
+.promo-cta,
+.search-btn,
+.news-btn,
+.plans-page__cta,
+.help-form button[type="submit"],
+.nl-btn {
+  border-radius: var(--radius-pill);
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  font-weight: var(--btn-font-weight);
+}
+
+.nl-btn--lg,
+.glow-btn {
+  padding: var(--btn-pad-y-lg) var(--btn-pad-x-lg);
+}
+
+/* Cards: shared radius + shadow */
+.card,
+.help-card,
+.help-form,
+.content-panel,
+.about-story-card,
+.popular-country,
+.plans-page__plan-card,
+.search-card-style,
+.nl-card {
+  border-radius: var(--radius-card-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.help-card,
+.help-form,
+.content-panel,
+.about-story-card,
+.nl-card {
+  padding: var(--card-pad);
+}

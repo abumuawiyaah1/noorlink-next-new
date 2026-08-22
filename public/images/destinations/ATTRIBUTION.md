@@ -1,0 +1,47 @@
+# Destination photo credits (Wikimedia Commons)
+
+- **argentina.jpg** — Florida, Buenos Aires Province skyline.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Florida%2C_Buenos_Aires_Province_skyline.jpg)) — CC BY-SA 4.0
+- **australia.jpg** — Sydney Opera House 01.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Sydney_Opera_House_01.jpg)) — CC BY-SA 3.0
+- **austria.jpg** — Moll – Elisabethbrücke, Vienna, 1897.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Moll_%E2%80%93_Elisabethbr%C3%BCcke%2C_Vienna%2C_1897.jpg)) — Public domain
+- **bahamas.jpg** — Bahamas 1988 (061) New Providence Cable Beach (22771247373).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Bahamas_1988_(061)_New_Providence_Cable_Beach_(22771247373).jpg)) — CC BY-SA 2.0
+- **bahrain.jpg** — Manama Bahrain Bay 04.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Manama_Bahrain_Bay_04.jpg)) — CC BY-SA 4.0
+- **barbados.jpg** — Bridgetown aerial.JPG ([Commons](https://commons.wikimedia.org/wiki/File:Bridgetown_aerial.JPG)) — CC0
+- **belgium.jpg** — Brussels, townhall oeg2043-00090 foto3 2015-06-07 08.38.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Brussels%2C_townhall_oeg2043-00090_foto3_2015-06-07_08.38.jpg)) — CC BY-SA 4.0
+- **chile.jpg** — Andes mountains chile.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Andes_mountains_chile.jpg)) — CC BY-SA 4.0
+- **colombia.jpg** — Foto panorámica de Monserrate.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Foto_panor%C3%A1mica_de_Monserrate.jpg)) — CC BY-SA 4.0
+- **costa-rica.jpg** — Arenal volcano from the northeast - Costa Rica - panoramio.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Arenal_volcano_from_the_northeast_-_Costa_Rica_-_panoramio.jpg)) — CC BY 3.0
+- **denmark.jpg** — Nyhavn, Copenhagen, 20220618 1720 7346.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Nyhavn%2C_Copenhagen%2C_20220618_1720_7346.jpg)) — CC BY-SA 4.0
+- **dominican-republic.jpg** — Punta Cana, Dominican Republic.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Punta_Cana%2C_Dominican_Republic.jpg)) — CC BY-SA 4.0
+- **egypt.jpg** — Lepsius-Expedition-Cheops-Pyramide (full).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Lepsius-Expedition-Cheops-Pyramide_(full).jpg)) — Public domain
+- **fiji.jpg** — Beach, Matamanoa Fiji.jpeg ([Commons](https://commons.wikimedia.org/wiki/File:Beach%2C_Matamanoa_Fiji.jpeg)) — CC BY-SA 3.0
+- **finland.jpg** — Puerto de Helsinki, Finlandia, 2012-08-14, DD 05.JPG ([Commons](https://commons.wikimedia.org/wiki/File:Puerto_de_Helsinki%2C_Finlandia%2C_2012-08-14%2C_DD_05.JPG)) — CC BY-SA 3.0
+- **iceland.jpg** — Dómkirkjan í Reykjavík 2023.jpg ([Commons](https://commons.wikimedia.org/wiki/File:D%C3%B3mkirkjan_%C3%AD_Reykjav%C3%ADk_2023.jpg)) — CC BY-SA 4.0
+- **india.jpg** — El Taj Mahal-Agra India0023.JPG ([Commons](https://commons.wikimedia.org/wiki/File:El_Taj_Mahal-Agra_India0023.JPG)) — CC BY-SA 4.0
+- **indonesia.jpg** — Gianyar-Regency Bali Indonesia A-rice-farmer-working-in-his-paddy-01.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Gianyar-Regency_Bali_Indonesia_A-rice-farmer-working-in-his-paddy-01.jpg)) — CC BY-SA 3.0
+- **ireland.jpg** — Dublin Wheel, Ireland - geograph.org.uk - 2561487.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Dublin_Wheel%2C_Ireland_-_geograph.org.uk_-_2561487.jpg)) — CC BY-SA 2.0
+- **jamaica.jpg** — Rose Hall Spillway Montego Bay Jamaica Photo Don Ramey Logan.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Rose_Hall_Spillway_Montego_Bay_Jamaica_Photo_Don_Ramey_Logan.jpg)) — CC BY-SA 3.0
+- **jordan.jpg** — The Treasury, Petra, Jordan5.jpg ([Commons](https://commons.wikimedia.org/wiki/File:The_Treasury%2C_Petra%2C_Jordan5.jpg)) — CC BY-SA 3.0
+- **kuwait.jpg** — Kuwait towers through the eyes of the Palace.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Kuwait_towers_through_the_eyes_of_the_Palace.jpg)) — CC BY-SA 4.0
+- **lebanon.jpg** — Streets of Beirut, Lebanon.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Streets_of_Beirut%2C_Lebanon.jpg)) — CC BY 4.0
+- **malaysia.jpg** — 2016 Kuala Lumpur, Petronas Towers (18).jpg ([Commons](https://commons.wikimedia.org/wiki/File:2016_Kuala_Lumpur%2C_Petronas_Towers_(18).jpg)) — CC BY-SA 4.0
+- **maldives.jpg** — Diamonds Thudufushi Beach and Water Villas, May 2017 -04.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Diamonds_Thudufushi_Beach_and_Water_Villas%2C_May_2017_-04.jpg)) — CC BY-SA 4.0
+- **malta.jpg** — Saint Patrick's Street Valletta (70394).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Saint_Patrick's_Street_Valletta_(70394).jpg)) — CC BY-SA 4.0
+- **morocco.jpg** — Oriental hanging lanterns. Souk Haddadine, Marrakech Medina, Morocco.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Oriental_hanging_lanterns._Souk_Haddadine%2C_Marrakech_Medina%2C_Morocco.jpg)) — CC BY-SA 4.0
+- **netherlands.jpg** — Amsterdam (NL), Brücke an der Keizersgracht -- 2015 -- 7175.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Amsterdam_(NL)%2C_Br%C3%BCcke_an_der_Keizersgracht_--_2015_--_7175.jpg)) — CC BY-SA 4.0
+- **nigeria.jpg** — The midnight sky from Oshodi Isolo Lagos Nigeria IMG 20240609 195031.jpg ([Commons](https://commons.wikimedia.org/wiki/File:The_midnight_sky_from_Oshodi_Isolo_Lagos_Nigeria_IMG_20240609_195031.jpg)) — CC BY-SA 4.0
+- **norway.jpg** — General view towards Merok, Geiranger Fjord, Norway LOC 3175013846.jpg ([Commons](https://commons.wikimedia.org/wiki/File:General_view_towards_Merok%2C_Geiranger_Fjord%2C_Norway_LOC_3175013846.jpg)) — No restrictions
+- **oman.jpg** — Muscat, moschea del sultano qaboos, interno, grande sala di preghiera, nicchia mihrab 06.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Muscat%2C_moschea_del_sultano_qaboos%2C_interno%2C_grande_sala_di_preghiera%2C_nicchia_mihrab_06.jpg)) — CC BY-SA 4.0
+- **panama.jpg** — Panama skyline.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Panama_skyline.jpg)) — CC BY-SA 4.0
+- **peru.jpg** — Machu-picchu-c12.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Machu-picchu-c12.jpg)) — CC BY-SA 2.5 es
+- **philippines.jpg** — As a volunteer at the ESEAP Strategy Summit 2025 in Manila, Philippines.jpg ([Commons](https://commons.wikimedia.org/wiki/File:As_a_volunteer_at_the_ESEAP_Strategy_Summit_2025_in_Manila%2C_Philippines.jpg)) — CC BY-SA 4.0
+- **portugal.jpg** — Number 28 tram, Calçada de São Francisco, Lisbon, Portugal julesvernex2.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Number_28_tram%2C_Cal%C3%A7ada_de_S%C3%A3o_Francisco%2C_Lisbon%2C_Portugal_julesvernex2.jpg)) — CC BY-SA 4.0
+- **puerto-rico.jpg** — USA-2016-Puerto Rico-San Juan-Castillo San Felipe del Morro 07.jpg ([Commons](https://commons.wikimedia.org/wiki/File:USA-2016-Puerto_Rico-San_Juan-Castillo_San_Felipe_del_Morro_07.jpg)) — CC BY-SA 4.0
+- **qatar.jpg** — Doha skyline in the morning (12544910974).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Doha_skyline_in_the_morning_(12544910974).jpg)) — CC BY 2.0
+- **russia.jpg** — Saint Peter and Paul Cathedral in Saint Petersburg main facade.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Saint_Peter_and_Paul_Cathedral_in_Saint_Petersburg_main_facade.jpg)) — CC BY-SA 3.0
+- **singapore.jpg** — Cricket match and Marina Bay Sands Hotel in Singapore.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Cricket_match_and_Marina_Bay_Sands_Hotel_in_Singapore.jpg)) — CC BY-SA 4.0
+- **south-africa.jpg** — Cape Town (ZA), Table Mountain, Seilbahn -- 2024 -- 2846.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Cape_Town_(ZA)%2C_Table_Mountain%2C_Seilbahn_--_2024_--_2846.jpg)) — CC BY-SA 4.0
+- **south-korea.jpg** — Seoul Skyline Night 2018.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Seoul_Skyline_Night_2018.jpg)) — CC0
+- **sweden.jpg** — Stockholm Sweden Radsalen-of-Stockholm-City-Hall-01.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Stockholm_Sweden_Radsalen-of-Stockholm-City-Hall-01.jpg)) — CC BY-SA 3.0
+- **switzerland.jpg** — 008 Milky way aligned with the Matterhorn reflecting in Stellisee Photo by Giles Laurent.jpg ([Commons](https://commons.wikimedia.org/wiki/File:008_Milky_way_aligned_with_the_Matterhorn_reflecting_in_Stellisee_Photo_by_Giles_Laurent.jpg)) — CC BY-SA 4.0
+- **trinidad-and-tobago.jpg** — Maracas beachTrinidad 03 2012 966.JPG ([Commons](https://commons.wikimedia.org/wiki/File:Maracas_beachTrinidad_03_2012_966.JPG)) — CC BY-SA 3.0
+- **vietnam.jpg** — Halong Bay in Vietnam.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Halong_Bay_in_Vietnam.jpg)) — CC BY-SA 3.0

@@ -1,4 +1,5 @@
 import { API_BASE } from "@/lib/api-client";
+import { debug, debugError } from "@/lib/debug";
 
 export type LookedUpOrder = {
   id?: string;
@@ -26,6 +27,7 @@ export async function lookupOrder(
     orderId: orderId.trim(),
   });
   const url = `${API_BASE}/api/orders/lookup?${params.toString()}`;
+  debug("orders", "lookupOrder →", { orderId: orderId.trim() });
 
   try {
     const response = await fetch(url, { method: "GET" });
@@ -35,14 +37,17 @@ export async function lookupOrder(
       detail?: string;
     };
     if (!response.ok) {
-      return {
-        found: false,
-        order: null,
-        error: data.detail ?? "Could not look up this order.",
-      };
+      const error = data.detail ?? "Could not look up this order.";
+      debugError("orders", "lookup failed", { status: response.status, error });
+      return { found: false, order: null, error };
     }
+    debug("orders", "lookup result", {
+      found: Boolean(data.found),
+      status: data.order?.status,
+    });
     return { found: Boolean(data.found), order: data.order ?? null };
   } catch (err) {
+    debugError("orders", "network error", err);
     return {
       found: false,
       order: null,

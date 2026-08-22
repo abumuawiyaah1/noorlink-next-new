@@ -93,7 +93,7 @@
 .plans-page__eyebrow {
   display: inline-block;
   padding: 0.35rem 0.85rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(255, 149, 0, 0.12);
   border: 1px solid rgba(255, 149, 0, 0.35);
   color: #ffad5a;
@@ -139,8 +139,8 @@
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
-  border-radius: 999px;
-  padding: 12px 18px;
+  border-radius: var(--radius-pill);
+  padding: var(--btn-pad-y) var(--btn-pad-x);
   font-size: 0.95rem;
   outline: none;
 }
@@ -151,7 +151,7 @@
 
 .country-search button {
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--accent);
   color: var(--text-main);
   font-weight: 800;
@@ -170,7 +170,7 @@
   list-style: none;
   background: var(--primary-dark);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
+  border-radius: var(--radius-card);
 }
 
 .country-search__dropdown button {
@@ -179,7 +179,7 @@
   background: transparent;
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   padding: 10px 12px;
   cursor: pointer;
   font-weight: 600;
@@ -205,7 +205,7 @@
   flex-direction: column;
   gap: 14px;
   padding: 22px 20px 20px;
-  border-radius: 20px;
+  border-radius: var(--radius-card-lg);
   box-shadow: 0 10px 25px rgba(15, 61, 62, 0.08);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
@@ -231,7 +231,7 @@
   gap: 16px;
   margin: 0 0 18px;
   padding: 18px 20px;
-  border-radius: 20px;
+  border-radius: var(--radius-card-lg);
   background: #fff;
   border: 1px solid #e5e7eb;
 }
@@ -252,12 +252,12 @@
 
 .plans-trust__compat {
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--accent);
   color: var(--primary-dark);
   font-weight: 800;
   font-size: 0.92rem;
-  padding: 12px 18px;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
   cursor: pointer;
 }
 
@@ -293,7 +293,7 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   background: #fff;
   border: 1px solid #e5e7eb;
   text-decoration: none;
@@ -351,7 +351,7 @@
 .plans-row__badge {
   justify-self: start;
   padding: 0.25rem 0.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(16, 185, 129, 0.14);
   color: #047857;
   font-size: 0.7rem;
@@ -363,7 +363,7 @@
 .plans-row__cta {
   justify-self: end;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--accent);
   color: var(--primary-dark);
   font-size: 0.82rem;
@@ -373,7 +373,7 @@
 .plans-faq {
   margin: 8px 0 0;
   padding: 22px 22px 8px;
-  border-radius: 20px;
+  border-radius: var(--radius-card-lg);
   background: #fff;
   border: 1px solid #e5e7eb;
 }
@@ -468,7 +468,7 @@
 
 .plans-reassurance span {
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: #ecfdf5;
   border: 1px solid #a7f3d0;
   color: #047857;
@@ -481,7 +481,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid #e5e7eb;
   background: #fff;
   color: var(--text-muted);
@@ -500,7 +500,7 @@
 .plans-tab__count {
   min-width: 22px;
   padding: 2px 7px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--bg-body);
   font-size: 0.75rem;
 }
@@ -508,7 +508,7 @@
 .plans-card__badge {
   align-self: flex-start;
   padding: 0.3rem 0.65rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(255, 149, 0, 0.14);
   color: #c2410c;
   font-size: 0.72rem;
@@ -600,7 +600,7 @@
   width: 100%;
   padding: 12px 16px;
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-control);
   background: linear-gradient(135deg, var(--accent), #ffad5a);
   color: var(--primary-dark);
   font-weight: 800;
@@ -627,7 +627,7 @@
 
 .plans-skeleton-card {
   height: 260px;
-  border-radius: 20px;
+  border-radius: var(--radius-card-lg);
   background: linear-gradient(
     90deg,
     #f3f4f6 25%,
@@ -665,7 +665,7 @@
 .plans-page__error {
   text-align: center;
   padding: 2rem;
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   background: #fff;
   border: 1px solid #e5e7eb;
   color: var(--text-muted);

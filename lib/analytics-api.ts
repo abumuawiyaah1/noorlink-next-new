@@ -1,4 +1,5 @@
 import { API_BASE } from "@/lib/api-client";
+import { debug } from "@/lib/debug";
 
 export type PopularDestinationItem = {
   destination: string;
@@ -39,6 +40,7 @@ export function logSearch(destination: string): void {
   const trimmed = destination.trim();
   if (!trimmed) return;
 
+  debug("analytics", "logSearch", trimmed);
   fetch(`${API_BASE}/api/v1/analytics/search-log`, {
     method: "POST",
     headers: {
@@ -52,6 +54,7 @@ export function logSearch(destination: string): void {
 }
 
 export async function fetchPopularPills(): Promise<HeroPopularPill[]> {
+  debug("analytics", "fetchPopularPills →");
   const res = await fetch(`${API_BASE}/api/v1/analytics/popular`, {
     method: "GET",
     headers: { Accept: "application/json" },
@@ -66,6 +69,7 @@ export async function fetchPopularPills(): Promise<HeroPopularPill[]> {
     data.trending.length > 0 ? data.trending : (data.fallback ?? []);
 
   if (source.length === 0 && data.fallbackLabels?.length) {
+    debug("analytics", "using fallbackLabels", data.fallbackLabels.length);
     return data.fallbackLabels.map((label) => ({
       label,
       query: label,
@@ -74,5 +78,7 @@ export async function fetchPopularPills(): Promise<HeroPopularPill[]> {
     }));
   }
 
-  return source.map(toPopularPill);
+  const pills = source.map(toPopularPill);
+  debug("analytics", "popular pills", { count: pills.length });
+  return pills;
 }

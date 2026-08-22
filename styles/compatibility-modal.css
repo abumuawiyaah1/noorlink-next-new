@@ -15,7 +15,7 @@
   width: 100%;
   max-width: 480px;
   padding: 28px 24px 24px;
-  border-radius: 20px;
+  border-radius: var(--radius-card-lg);
   background: rgba(5, 25, 26, 0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -50,7 +50,7 @@
   width: 36px;
   height: 36px;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.06);
   color: #fff;
   font-size: 1.25rem;
@@ -78,7 +78,7 @@
 .compatibility-modal__select {
   width: 100%;
   padding: 12px 14px;
-  border-radius: 12px;
+  border-radius: var(--radius-control);
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(0, 0, 0, 0.25);
   color: #fff;
@@ -101,7 +101,7 @@
 .compatibility-modal__status {
   margin-top: 20px;
   padding: 16px;
-  border-radius: 14px;
+  border-radius: var(--radius-control);
   background: rgba(0, 180, 160, 0.12);
   border: 1px solid rgba(0, 200, 180, 0.35);
 }
@@ -132,7 +132,7 @@
 .compatibility-modal__error {
   margin: 0;
   padding: 12px 14px;
-  border-radius: 12px;
+  border-radius: var(--radius-control);
   background: rgba(220, 38, 38, 0.12);
   border: 1px solid rgba(248, 113, 113, 0.35);
   color: #fca5a5;
