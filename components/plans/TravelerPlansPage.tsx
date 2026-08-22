@@ -11,6 +11,7 @@ import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
 import { CountrySearch } from "@/components/search/CountrySearch";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { formatCountryLabel } from "@/lib/country-slugs";
+import { formatCountryNetworkLabel } from "@/lib/country-networks";
 import {
   fetchPlansByCountry,
   type EsimPlan,
@@ -131,15 +132,21 @@ function PlansFaq({ countryName }: { countryName: string }) {
   return (
     <section className="plans-faq" aria-labelledby="plans-faq-heading">
       <div className="plans-faq__head">
-        <h2 id="plans-faq-heading">Before you buy</h2>
-        <a
-          className="plans-faq__whatsapp"
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi, I have a question about the ${countryName} eSIM.`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Chat on WhatsApp
-        </a>
+        <div className="plans-faq__intro-block">
+          <h2 id="plans-faq-heading">Quick questions &amp; answers</h2>
+          <p className="plans-faq__intro">
+            Contact us if you have questions —{" "}
+            <a
+              className="plans-faq__contact-link"
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi, I have a question about the ${countryName} eSIM.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              message us on WhatsApp
+            </a>
+            .
+          </p>
+        </div>
       </div>
       <div className="plans-faq__list">
         {PLAN_FAQS.map((item) => {
@@ -274,18 +281,22 @@ export function TravelerPlansPage({
             <span className="plans-page__eyebrow">NoorLink</span>
             <p className="plans-page__tagline">Enjoy hassle-free travel</p>
           </div>
-          <h1 className="plans-page__title">
-            {flag ? `${flag} ` : ""}
-            {title} eSIM
+          <div className="plans-page__search-wrap">
+            <CountrySearch placeholder="Search for another country..." />
+          </div>
+          <h1 className="plans-page__destination">
+            {flag ? (
+              <span className="plans-page__destination-flag" aria-hidden="true">
+                {flag}
+              </span>
+            ) : null}
+            <span className="plans-page__destination-name">{title}</span>
+            <span className="plans-page__destination-label">eSIM plans</span>
           </h1>
           <p className="plans-page__subtitle">
             Pick data and days. The Destinations “From” price is the cheapest
             plan on this page.
           </p>
-          <CountrySearch
-            initialQuery={title}
-            placeholder="Search another country..."
-          />
         </header>
       </CountryPlansHero>
 
@@ -323,10 +334,10 @@ export function TravelerPlansPage({
             <div className="plans-trust">
               <div className="plans-trust__copy">
                 <p className="plans-trust__network">
-                  Local {title} network · 5G where available
+                  {formatCountryNetworkLabel(countryId)}
                 </p>
                 <p className="plans-trust__meta">
-                  Hotspot included · QR by email in minutes
+                  Enjoy hassle-free travel · Hotspot ready · Land connected
                   {cheapest
                     ? ` · From $${cheapest.price.toFixed(2)}`
                     : ""}
@@ -342,9 +353,9 @@ export function TravelerPlansPage({
             </div>
 
             <div className="plans-reassurance">
-              <span>QR by email in minutes</span>
-              <span>Refund if technical activation fails</span>
-              <span>24/7 support before and after checkout</span>
+              <span>Ready before you fly</span>
+              <span>We&apos;ve got you covered</span>
+              <span>24/7 support when you need it</span>
             </div>
             <div className="plans-tabs" role="tablist" aria-label="Plan types">
               {TABS.map((tab) => {
@@ -368,8 +379,8 @@ export function TravelerPlansPage({
 
             <h2 className="plans-picker__title">Choose your package</h2>
             <p className="plans-picker__hint">
-              Scan data, days, and price — then select. Checkout uses this same
-              live price.
+              Pick your plan, check out in minutes, and you&apos;ll be connected
+              before you know it — the price you see here is the price you pay.
             </p>
             <div className="plans-rows" role="tabpanel">
               {visiblePlans.map((plan) => (

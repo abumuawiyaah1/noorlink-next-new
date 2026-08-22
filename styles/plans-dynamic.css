@@ -7,9 +7,10 @@
 
 .plans-page__hero {
   position: relative;
-  min-height: clamp(260px, 38vw, 340px);
+  min-height: clamp(280px, 40vw, 360px);
   display: flex;
   align-items: flex-end;
+  justify-content: center;
   overflow: hidden;
   margin-bottom: 2rem;
 }
@@ -63,9 +64,22 @@
   );
 }
 
+.plans-page__hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 24px 2.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .plans-page__hero-content .site-crumbs {
   padding: 0 0 1rem;
   max-width: none;
+  width: 100%;
   justify-content: center;
 }
 
@@ -76,6 +90,10 @@
 }
 
 .plans-page__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   text-align: center;
   margin-bottom: 0;
   background: transparent !important;
@@ -111,6 +129,42 @@
   letter-spacing: 0.01em;
 }
 
+.plans-page__search-wrap {
+  width: 100%;
+  max-width: 520px;
+  margin: 0.25rem auto 0;
+}
+
+.plans-page__destination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.65rem;
+  margin: 1.1rem 0 0.65rem;
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.plans-page__destination-flag {
+  font-size: 1.35em;
+  line-height: 1;
+}
+
+.plans-page__destination-name {
+  letter-spacing: -0.02em;
+}
+
+.plans-page__destination-label {
+  font-size: 0.72em;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .plans-page__title {
   margin: 0 0 0.75rem;
   font-size: clamp(2rem, 4vw, 2.75rem);
@@ -130,8 +184,9 @@
   position: relative;
   display: flex;
   gap: 8px;
+  width: 100%;
   max-width: 520px;
-  margin: 1.5rem auto 0;
+  margin: 0;
 }
 
 .country-search input {
@@ -379,26 +434,36 @@
 }
 
 .plans-faq__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
   margin-bottom: 8px;
 }
 
+.plans-faq__intro-block {
+  max-width: 42rem;
+}
+
 .plans-faq__head h2 {
-  margin: 0;
+  margin: 0 0 6px;
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--primary);
 }
 
-.plans-faq__whatsapp {
-  font-weight: 800;
-  font-size: 0.88rem;
+.plans-faq__intro {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.plans-faq__contact-link {
+  font-weight: 700;
   color: #047857;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.plans-faq__contact-link:hover {
+  color: #065f46;
 }
 
 .plans-faq__item {
