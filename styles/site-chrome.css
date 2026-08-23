@@ -288,7 +288,9 @@
 .ticket-card,
 .trust-stats-grid,
 .card.summary-card,
-.loyalty-card.card-refer {
+.loyalty-card.card-refer,
+.regional-promo__card,
+.regional-map__panel {
   border: 3px solid transparent;
   background: var(--card-gradient-border);
 }

@@ -23,14 +23,19 @@ const MAP_REGIONS = [
   "asia-pacific",
 ] as const satisfies readonly MapRegionSlug[];
 
-/** Classic world-regions palette (readable, not brand-purple). */
 const REGION_FILL: Record<MapRegionSlug, string> = {
-  "north-america": "#e8a090",
-  "south-america": "#5f9e6e",
-  europe: "#6b5b95",
-  africa: "#c4a35a",
-  "middle-east": "#d9786a",
-  "asia-pacific": "#4a9e9a",
+  "north-america": "#0f3d3e",
+  "south-america": "#1f6f70",
+  europe: "#148a8c",
+  africa: "#ffad5a",
+  "middle-east": "#ff9500",
+  "asia-pacific": "#e68600",
+};
+
+/** Shared with regional plan cards so map + squares stay in sync. */
+export const REGION_BRAND_COLORS: Record<MapRegionSlug | "global", string> = {
+  ...REGION_FILL,
+  global: "linear-gradient(135deg, #0f3d3e, #ff9500)",
 };
 
 const REGION_LABELS: Record<

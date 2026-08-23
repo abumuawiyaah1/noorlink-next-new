@@ -1,10 +1,13 @@
+import Link from "next/link";
 import {
   plansPathForRegion,
   REGIONAL_ROUTE_SLUGS,
   REGIONAL_PRODUCTS,
 } from "@/lib/regional-products";
-import { RegionalWorldMap } from "@/components/landing/RegionalWorldMap";
-import Link from "next/link";
+import {
+  RegionalWorldMap,
+  REGION_BRAND_COLORS,
+} from "@/components/landing/RegionalWorldMap";
 
 export function RegionalPlansPromo() {
   return (
@@ -24,15 +27,23 @@ export function RegionalPlansPromo() {
         <div className="regional-promo__grid" aria-label="All regional plans">
           {REGIONAL_ROUTE_SLUGS.map((routeSlug) => {
             const product = REGIONAL_PRODUCTS[routeSlug];
+            const swatch = REGION_BRAND_COLORS[routeSlug];
             return (
               <Link
                 key={routeSlug}
                 href={plansPathForRegion(routeSlug)}
                 className="regional-promo__card"
               >
-                <span className="regional-promo__flag" aria-hidden="true">
-                  {product.flag}
-                </span>
+                <div className="regional-promo__card-top">
+                  <span
+                    className="regional-promo__card-swatch"
+                    style={{ background: swatch }}
+                    aria-hidden="true"
+                  />
+                  <span className="regional-promo__flag" aria-hidden="true">
+                    {product.flag}
+                  </span>
+                </div>
                 <strong>{product.displayName}</strong>
                 <span>{product.countries.length} countries</span>
                 <span className="regional-promo__cta">See plans →</span>
