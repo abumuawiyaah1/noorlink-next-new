@@ -166,6 +166,197 @@
   font-size: 1rem;
 }
 
+/* ── Interactive regional world map ───────────────────────── */
+.regional-map {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(240px, 0.9fr);
+  gap: 20px;
+  align-items: stretch;
+  margin: 0 0 28px;
+}
+
+.regional-map__canvas {
+  min-width: 0;
+}
+
+.regional-map__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-card-lg);
+  box-shadow: 0 16px 40px rgba(15, 61, 62, 0.1);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  background: #f7fafb;
+}
+
+.regional-map__hit {
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+}
+
+.regional-map__shape {
+  fill: rgba(15, 61, 62, 0.55);
+  stroke: #fff;
+  stroke-width: 2.5;
+  transition: fill 0.2s ease, transform 0.2s ease;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.regional-map__hit:hover .regional-map__shape,
+.regional-map__hit:focus-visible .regional-map__shape,
+.regional-map__hit.is-active .regional-map__shape {
+  fill: var(--accent);
+}
+
+.regional-map__label {
+  fill: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--font-brand);
+  pointer-events: none;
+  letter-spacing: 0.01em;
+  paint-order: stroke;
+  stroke: rgba(15, 61, 62, 0.35);
+  stroke-width: 3px;
+}
+
+.regional-map__global {
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+}
+
+.regional-map__global-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  opacity: 0.55;
+  transition: opacity 0.2s ease, stroke-width 0.2s ease;
+}
+
+.regional-map__global-core {
+  fill: var(--primary);
+  transition: fill 0.2s ease;
+}
+
+.regional-map__global:hover .regional-map__global-core,
+.regional-map__global:focus-visible .regional-map__global-core,
+.regional-map__global.is-active .regional-map__global-core {
+  fill: var(--accent);
+}
+
+.regional-map__global:hover .regional-map__global-ring,
+.regional-map__global:focus-visible .regional-map__global-ring,
+.regional-map__global.is-active .regional-map__global-ring {
+  opacity: 1;
+  stroke-width: 4;
+}
+
+.regional-map__global-title,
+.regional-map__global-sub {
+  fill: #fff;
+  font-family: var(--font-brand);
+  pointer-events: none;
+}
+
+.regional-map__global-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.regional-map__global-sub {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.regional-map__panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 28px 24px;
+  border-radius: var(--radius-card-lg);
+  background: #fff;
+  border: 2px solid rgba(15, 61, 62, 0.1);
+  box-shadow: 0 12px 30px rgba(15, 61, 62, 0.08);
+}
+
+.regional-map__panel-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-hover);
+}
+
+.regional-map__panel h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--primary);
+  line-height: 1.25;
+}
+
+.regional-map__panel p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.regional-map__panel-meta {
+  font-weight: 700 !important;
+  color: var(--primary) !important;
+  font-size: 0.9rem !important;
+}
+
+.regional-map__panel-cta {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 12px 18px;
+  border-radius: var(--radius-control);
+  background: var(--primary);
+  color: #fff !important;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.regional-map__panel-cta:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .regional-map {
+    grid-template-columns: 1fr;
+  }
+
+  .regional-map__panel {
+    order: -1;
+  }
+
+  .regional-promo__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .regional-promo__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -211,12 +402,6 @@
   margin-top: 8px;
   color: var(--accent-hover) !important;
   font-weight: 700 !important;
-}
-
-@media (max-width: 900px) {
-  .regional-promo__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (max-width: 520px) {
