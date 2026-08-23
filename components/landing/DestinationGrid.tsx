@@ -1,44 +1,54 @@
 import Link from "next/link";
 import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
 import { getCountryImageUrl } from "@/lib/country-images";
+import {
+  plansPathForRegion,
+  type RegionalRouteSlug,
+} from "@/lib/regional-products";
 
-const destinations = [
+const destinations: {
+  id: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  routeSlug: RegionalRouteSlug;
+}[] = [
   {
     id: "americas",
     title: "Americas",
-    subtitle: "USA, Canada, Brazil & more",
+    subtitle: "USA, Canada, Mexico & more",
     image: getCountryImageUrl("americas"),
-    href: "/plans/usa",
+    routeSlug: "north-america",
   },
   {
     id: "caribbean",
     title: "Caribbean",
-    subtitle: "Bahamas, Jamaica, Dominican Republic…",
+    subtitle: "Bahamas, Panama, Costa Rica & more",
     image: getCountryImageUrl("caribbean"),
-    href: "/plans/bahamas",
+    routeSlug: "north-america",
   },
   {
     id: "europe",
     title: "Europe",
     subtitle: "UK, France, Germany & more",
     image: getCountryImageUrl("europe"),
-    href: "/plans/france",
+    routeSlug: "europe",
   },
   {
     id: "mea",
-    title: "Middle East & Africa",
+    title: "Middle East",
     subtitle: "UAE, Turkey, Saudi, Egypt…",
     image: getCountryImageUrl("middle-east"),
-    href: "/hajj-umrah",
+    routeSlug: "middle-east",
   },
   {
     id: "asia",
     title: "Asia & Oceania",
     subtitle: "Japan, Thailand, Australia…",
     image: getCountryImageUrl("asia"),
-    href: "/plans/japan",
+    routeSlug: "asia-pacific",
   },
-] as const;
+];
 
 export function DestinationGrid() {
   return (
@@ -48,17 +58,17 @@ export function DestinationGrid() {
           <span className="why-kicker">Popular regions</span>
           <h2>Choose where you are going next</h2>
           <p>
-            Open a featured country in that region, then switch destinations if
-            you are visiting more than one place.
+            Pick a region to see every covered country and regional eSIM plans
+            in one place.
           </p>
         </div>
         <div className="grid">
           {destinations.map((dest, index) => (
             <Link
               key={dest.id}
-              href={dest.href}
+              href={plansPathForRegion(dest.routeSlug)}
               className="card"
-              aria-label={`View plans for ${dest.title}`}
+              aria-label={`View ${dest.title} regional plans and covered countries`}
             >
               <DestinationCardMedia
                 src={dest.image}
