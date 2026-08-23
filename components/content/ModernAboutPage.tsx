@@ -21,7 +21,7 @@ const VALUES = [
   },
   {
     title: "Support that stays with you",
-    body: "Travel can be unpredictable, so we keep support close by with live chat, WhatsApp, and fast order follow-up.",
+    body: "Travel can be unpredictable, so we keep support close by with WhatsApp and fast order follow-up.",
   },
 ];
 

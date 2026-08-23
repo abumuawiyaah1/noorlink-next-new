@@ -12,7 +12,7 @@ const STORIES = [
   {
     title: "Help when you need it",
     place: "24/7 support",
-    text: "If install or delivery is unclear, WhatsApp and live chat are available around the clock. Most travelers get an answer in minutes, not days.",
+    text: "If install or delivery is unclear, WhatsApp support is available around the clock. Most travelers get an answer in minutes, not days.",
   },
   {
     title: "US and Canada trips",

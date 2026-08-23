@@ -14,8 +14,8 @@ export function RegionalPlansPromo() {
           <span className="why-kicker">Crossing borders?</span>
           <h2 id="regional-promo-heading">One eSIM for the whole region</h2>
           <p>
-            Tap a region on the map — install once and stay connected across
-            every covered country.
+            Tap a colored region on the real world map — install once and stay
+            connected across every covered country.
           </p>
         </div>
 

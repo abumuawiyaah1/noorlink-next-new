@@ -56,8 +56,8 @@ function SupportContent() {
             <article className="help-card">
               <h2>Need help right now?</h2>
               <p>
-                Use the chat bubble (bottom-left after a few seconds) to stay on this
-                page, or WhatsApp for mobile.
+                Message us on WhatsApp anytime — we reply around the clock for
+                delivery, install, and checkout questions.
               </p>
               <p style={{ marginTop: 12 }}>
                 <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>Open WhatsApp</a>

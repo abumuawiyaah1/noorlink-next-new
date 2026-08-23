@@ -64,7 +64,7 @@ export function ModernFaqPage() {
             </article>
             <article className="help-card">
               <h2>Need a human?</h2>
-              <p>Live chat and WhatsApp support are available around the clock.</p>
+              <p>WhatsApp support is available around the clock.</p>
             </article>
           </div>
           <div className="faq-list">
@@ -84,7 +84,7 @@ export function ModernFaqPage() {
             <div className="help-card faq-help-card">
               <h2>Need more help?</h2>
               <p>
-                Visit the <Link href="/support">Support page</Link>, use live chat,
+                Visit the <Link href="/support">Support page</Link>, use WhatsApp,
                 or track your order before contacting us.
               </p>
             </div>

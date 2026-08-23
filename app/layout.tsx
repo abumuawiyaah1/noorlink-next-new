@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import { CookieYesBannerFix } from "@/components/ui/CookieYesBannerFix";
 import { GlobalBackButton } from "@/components/ui/GlobalBackButton";
-import { TawkChat } from "@/components/ui/TawkChat";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
 import "./globals.css";
 
@@ -53,7 +52,6 @@ export default function RootLayout({
         {children}
         <GlobalBackButton />
         <WhatsAppFab />
-        <TawkChat />
         <CookieYesBannerFix />
         <Script
           id="cookieyes"

@@ -23,7 +23,7 @@ export default function CookiePolicyPage() {
           bullets: [
             "Essential cookies needed for core site functions.",
             "Analytics cookies that help us understand site performance and usage.",
-            "Support and messaging cookies used by tools such as live chat.",
+            "Support and messaging cookies used by tools such as WhatsApp deep links when you open chat.",
             "Consent cookies that remember your privacy choices.",
           ],
         },

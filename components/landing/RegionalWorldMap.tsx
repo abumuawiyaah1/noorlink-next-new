@@ -7,8 +7,13 @@ import {
   REGIONAL_PRODUCTS,
   type RegionalRouteSlug,
 } from "@/lib/regional-products";
+import {
+  WORLD_MAP_OTHER_PATHS,
+  WORLD_MAP_REGION_PATHS,
+  WORLD_MAP_VIEWBOX,
+  type MapRegionSlug,
+} from "@/components/landing/world-map-paths";
 
-/** Map-facing regions (Global is a separate CTA). */
 const MAP_REGIONS = [
   "north-america",
   "south-america",
@@ -16,39 +21,28 @@ const MAP_REGIONS = [
   "africa",
   "middle-east",
   "asia-pacific",
-] as const satisfies readonly RegionalRouteSlug[];
+] as const satisfies readonly MapRegionSlug[];
 
-type MapRegionSlug = (typeof MAP_REGIONS)[number];
-
-/**
- * Simplified continent silhouettes for a brand-first 2D map.
- * Paths are stylized for recognition, not geographic precision.
- */
-const REGION_PATHS: Record<MapRegionSlug, string> = {
-  "north-america":
-    "M148 72 L210 58 L268 72 L292 98 L278 138 L248 168 L218 188 L188 208 L158 228 L138 248 L112 228 L98 188 L108 148 L128 108 Z M188 228 L208 248 L198 268 L168 258 L158 238 Z",
-  "south-america":
-    "M218 278 L248 268 L268 298 L278 348 L258 408 L228 448 L208 428 L198 378 L188 328 L198 298 Z",
-  europe:
-    "M448 78 L498 68 L538 88 L548 118 L528 148 L498 158 L468 148 L448 128 L438 98 Z M468 148 L478 168 L458 178 L448 158 Z",
-  africa:
-    "M458 188 L508 178 L548 198 L568 248 L558 318 L528 368 L488 388 L458 358 L448 298 L448 238 Z",
-  "middle-east":
-    "M548 148 L588 138 L618 158 L628 198 L608 228 L568 218 L548 188 Z",
-  "asia-pacific":
-    "M628 78 L718 58 L808 78 L868 118 L888 168 L868 208 L808 228 L748 218 L688 198 L648 168 L628 128 Z M788 248 L838 238 L868 268 L848 298 L808 288 L788 268 Z M808 328 L848 318 L868 348 L848 368 L818 358 Z",
+/** Classic world-regions palette (readable, not brand-purple). */
+const REGION_FILL: Record<MapRegionSlug, string> = {
+  "north-america": "#e8a090",
+  "south-america": "#5f9e6e",
+  europe: "#6b5b95",
+  africa: "#c4a35a",
+  "middle-east": "#d9786a",
+  "asia-pacific": "#4a9e9a",
 };
 
 const REGION_LABELS: Record<
   MapRegionSlug,
   { x: number; y: number; short: string }
 > = {
-  "north-america": { x: 188, y: 148, short: "N. America" },
-  "south-america": { x: 228, y: 358, short: "S. America" },
-  europe: { x: 488, y: 108, short: "Europe" },
-  africa: { x: 508, y: 278, short: "Africa" },
-  "middle-east": { x: 588, y: 178, short: "Middle East" },
-  "asia-pacific": { x: 758, y: 148, short: "Asia Pacific" },
+  "north-america": { x: 190, y: 200, short: "North America" },
+  "south-america": { x: 270, y: 420, short: "South America" },
+  europe: { x: 490, y: 165, short: "Europe" },
+  africa: { x: 505, y: 330, short: "Africa" },
+  "middle-east": { x: 575, y: 245, short: "Middle East" },
+  "asia-pacific": { x: 740, y: 230, short: "Asia Pacific" },
 };
 
 export function RegionalWorldMap() {
@@ -65,56 +59,47 @@ export function RegionalWorldMap() {
     <div className="regional-map">
       <div className="regional-map__canvas" role="group" aria-labelledby={titleId}>
         <p id={titleId} className="sr-only">
-          Interactive map of NoorLink regional eSIM plans. Select a region to
-          view multi-country coverage.
+          Interactive world regions map for NoorLink eSIM plans. Select a
+          colored region to view multi-country coverage.
         </p>
         <svg
-          className="regional-map__svg"
-          viewBox="0 0 1000 500"
+          className="regional-map__svg regional-map__svg--geo"
+          viewBox={WORLD_MAP_VIEWBOX}
           role="img"
-          aria-label="World map of regional eSIM coverage"
+          aria-label="World regions map of regional eSIM coverage"
         >
           <defs>
-            <linearGradient id={`${reactId}-ocean`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#e8f2f2" />
-              <stop offset="100%" stopColor="#f7fafb" />
-            </linearGradient>
-            <filter id={`${reactId}-glow`} x="-20%" y="-20%" width="140%" height="140%">
+            <filter id={`${reactId}-glow`} x="-10%" y="-10%" width="120%" height="120%">
               <feDropShadow
                 dx="0"
-                dy="4"
-                stdDeviation="6"
-                floodColor="#0f3d3e"
-                floodOpacity="0.18"
+                dy="2"
+                stdDeviation="3"
+                floodColor="#05191a"
+                floodOpacity="0.25"
               />
             </filter>
           </defs>
 
-          <rect
-            x="0"
-            y="0"
-            width="1000"
-            height="500"
-            rx="28"
-            fill={`url(#${reactId}-ocean)`}
-          />
+          <rect x="0" y="0" width="950" height="620" fill="#f4f7f8" rx="0" />
 
-          <g opacity="0.18" stroke="#0f3d3e" strokeWidth="1" fill="none">
-            <path d="M40 120 H960" />
-            <path d="M40 250 H960" />
-            <path d="M40 380 H960" />
+          {/* Unassigned land (muted) */}
+          <g className="regional-map__other" aria-hidden="true">
+            {WORLD_MAP_OTHER_PATHS.map((path) => (
+              <path key={path.id} d={path.d} className="regional-map__other-shape" />
+            ))}
           </g>
 
           {MAP_REGIONS.map((slug) => {
             const product = REGIONAL_PRODUCTS[slug];
             const label = REGION_LABELS[slug];
             const isActive = active === slug;
+            const fill = REGION_FILL[slug];
 
             return (
               <a
                 key={slug}
                 href={plansPathForRegion(slug)}
-                className={`regional-map__hit${isActive ? " is-active" : ""}`}
+                className={`regional-map__hit regional-map__hit--geo${isActive ? " is-active" : ""}`}
                 aria-label={`${product.displayName} — ${product.countries.length} countries`}
                 onMouseEnter={() => setActive(slug)}
                 onFocus={() => setActive(slug)}
@@ -125,15 +110,20 @@ export function RegionalWorldMap() {
                   setActive((current) => (current === slug ? null : current))
                 }
               >
-                <path
-                  d={REGION_PATHS[slug]}
-                  className="regional-map__shape"
-                  filter={isActive ? `url(#${reactId}-glow)` : undefined}
-                />
+                <g filter={isActive ? `url(#${reactId}-glow)` : undefined}>
+                  {WORLD_MAP_REGION_PATHS[slug].map((path) => (
+                    <path
+                      key={path.id}
+                      d={path.d}
+                      className="regional-map__geo-shape"
+                      fill={isActive ? "var(--accent)" : fill}
+                    />
+                  ))}
+                </g>
                 <text
                   x={label.x}
                   y={label.y}
-                  className="regional-map__label"
+                  className="regional-map__geo-label"
                   textAnchor="middle"
                 >
                   {label.short}
@@ -155,19 +145,19 @@ export function RegionalWorldMap() {
               setActive((current) => (current === "global" ? null : current))
             }
           >
-            <circle cx="900" cy="420" r="48" className="regional-map__global-ring" />
-            <circle cx="900" cy="420" r="36" className="regional-map__global-core" />
+            <circle cx="860" cy="545" r="48" className="regional-map__global-ring" />
+            <circle cx="860" cy="545" r="36" className="regional-map__global-core" />
             <text
-              x="900"
-              y="416"
+              x="860"
+              y="541"
               textAnchor="middle"
               className="regional-map__global-title"
             >
               Global
             </text>
             <text
-              x="900"
-              y="434"
+              x="860"
+              y="559"
               textAnchor="middle"
               className="regional-map__global-sub"
             >
@@ -196,7 +186,7 @@ export function RegionalWorldMap() {
         ) : (
           <>
             <span className="regional-map__panel-kicker">
-              {active ? "Selected region" : "Start with a region"}
+              {active ? "Selected region" : "Tap a region on the map"}
             </span>
             <h3>
               {preview.flag} {preview.displayName}

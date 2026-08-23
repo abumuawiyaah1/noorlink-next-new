@@ -29,7 +29,7 @@ const BENEFITS = [
   {
     icon: "💬",
     title: "Real 24/7 support",
-    body: "WhatsApp and live chat are staffed around the clock. Reach a human in minutes, not days.",
+    body: "WhatsApp support is staffed around the clock. Reach a human in minutes, not days.",
   },
 ] as const;
 

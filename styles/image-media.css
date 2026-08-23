@@ -186,7 +186,11 @@
   border-radius: var(--radius-card-lg);
   box-shadow: 0 16px 40px rgba(15, 61, 62, 0.1);
   border: 1px solid rgba(15, 61, 62, 0.08);
-  background: #f7fafb;
+  background: #f4f7f8;
+}
+
+.regional-map__svg--geo {
+  background: #f4f7f8;
 }
 
 .regional-map__hit {
@@ -210,6 +214,24 @@
   fill: var(--accent);
 }
 
+.regional-map__geo-shape {
+  stroke: #fff;
+  stroke-width: 0.6;
+  transition: fill 0.2s ease, opacity 0.2s ease;
+}
+
+.regional-map__hit--geo:hover .regional-map__geo-shape,
+.regional-map__hit--geo:focus-visible .regional-map__geo-shape {
+  fill: var(--accent) !important;
+}
+
+.regional-map__other-shape {
+  fill: #d5dce0;
+  stroke: #fff;
+  stroke-width: 0.4;
+  pointer-events: none;
+}
+
 .regional-map__label {
   fill: #fff;
   font-size: 18px;
@@ -220,6 +242,18 @@
   paint-order: stroke;
   stroke: rgba(15, 61, 62, 0.35);
   stroke-width: 3px;
+}
+
+.regional-map__geo-label {
+  fill: #0f3d3e;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: var(--font-brand);
+  pointer-events: none;
+  letter-spacing: 0.02em;
+  paint-order: stroke fill;
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 4px;
 }
 
 .regional-map__global {
