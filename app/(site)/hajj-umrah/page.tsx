@@ -1,4 +1,5 @@
 import { PilgrimSelectionPage } from "@/components/pilgrimage/PilgrimSelectionPage";
+import { getCountryImage } from "@/lib/country-image";
 import { pingPlansApi } from "@/lib/plans-diagnostics";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +13,8 @@ export const metadata = {
 };
 
 export default async function HajjUmrahPage() {
+  const countryImage = getCountryImage(SAUDI_COUNTRY_ID);
+
   let initialData = null;
   let initialError: string | null = null;
 
@@ -30,9 +33,13 @@ export default async function HajjUmrahPage() {
   }
 
   return (
-    <PilgrimSelectionPage
-      initialData={initialData}
-      initialError={initialError}
-    />
+    <>
+      <link rel="preload" as="image" href={countryImage} fetchPriority="high" />
+      <PilgrimSelectionPage
+        countryImage={countryImage}
+        initialData={initialData}
+        initialError={initialError}
+      />
+    </>
   );
 }

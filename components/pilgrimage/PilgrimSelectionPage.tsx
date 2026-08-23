@@ -2,8 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { CountryPlansHero } from "@/components/plans/CountryPlansHero";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
+import { CountrySearch } from "@/components/search/CountrySearch";
+import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import {
   fetchPlansByCountry,
   type EsimPlan,
@@ -17,11 +23,13 @@ import {
   splitPricePerPerson,
 } from "@/lib/pilgrim-tiers";
 import "@/styles/hajj-umrah.css";
+import "@/styles/plans-dynamic.css";
 
 const SAUDI_COUNTRY_ID = "saudi-arabia";
 const GROUP_SIZES = [2, 3, 4, 5, 6, 7, 8];
 
 type PilgrimSelectionPageProps = {
+  countryImage: string;
   initialData?: PlansByCountryResponse | null;
   initialError?: string | null;
 };
@@ -142,6 +150,7 @@ function resolveInitialTiers(
 }
 
 export function PilgrimSelectionPage({
+  countryImage,
   initialData = null,
   initialError = null,
 }: PilgrimSelectionPageProps) {
@@ -155,7 +164,7 @@ export function PilgrimSelectionPage({
   const [compatibilityOpen, setCompatibilityOpen] = useState(false);
 
   useEffect(() => {
-    if (initialData || initialError) return;
+    if (initialData?.plans?.length) return;
 
     let cancelled = false;
 
@@ -196,7 +205,7 @@ export function PilgrimSelectionPage({
     return () => {
       cancelled = true;
     };
-  }, [initialData, initialError]);
+  }, [initialData]);
 
   const connectedTier = useMemo(
     () => tiers.find((tier) => tier.key === "connected") ?? null,
@@ -238,192 +247,267 @@ export function PilgrimSelectionPage({
     return activePlan.formattedPriceParts;
   }, [activePlan, activeTier?.hasGroupCalculator, groupSize]);
 
-  return (
-    <main className="pilgrim-page">
-      <div className="pilgrim-page__inner">
-        <header className="pilgrim-hero">
-          <span className="pilgrim-hero__eyebrow">Hajj & Umrah</span>
-          <h1 className="pilgrim-hero__title">Connectivity for your Pilgrimage</h1>
-          <p className="pilgrim-hero__subtitle">
-            Install at home, stay connected the moment you arrive in Saudi Arabia.
-          </p>
-        </header>
+  const cheapest = useMemo(() => {
+    const prices = tiers
+      .map((tier) => tier.plan?.price)
+      .filter((price): price is number => typeof price === "number");
+    if (prices.length === 0) return null;
+    return Math.min(...prices);
+  }, [tiers]);
 
-        {loading && (
-          <div className="pilgrim-page__loading" aria-busy="true" aria-live="polite">
-            <p className="pilgrim-page__loading-text">Loading plans…</p>
-            <div className="pilgrim-grid pilgrim-grid--skeleton" aria-hidden="true">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="pilgrim-card pilgrim-card--skeleton"
+  return (
+    <>
+      <SiteHeader />
+      <main className="pilgrim-page plans-page">
+        <CountryPlansHero src={countryImage} alt="Saudi Arabia pilgrimage destination">
+          <Breadcrumbs
+            onDark
+            items={[
+              { href: "/", label: "Home" },
+              { href: "/destinations", label: "Destinations" },
+              { label: "Hajj & Umrah" },
+            ]}
+          />
+          <header className="plans-page__header">
+            <div className="plans-page__brand">
+              <span className="plans-page__eyebrow">Hajj &amp; Umrah</span>
+              <p className="plans-page__tagline">
+                Install at home, stay connected the moment you arrive in Saudi
+                Arabia.
+              </p>
+            </div>
+            <div className="plans-page__search-wrap">
+              <CountrySearch placeholder="Search for another country..." />
+            </div>
+            <h1 className="plans-page__destination">
+              <span className="plans-page__destination-flag" aria-hidden="true">
+                🇸🇦
+              </span>
+              <span className="plans-page__destination-name">
+                Connectivity for your Pilgrimage
+              </span>
+            </h1>
+            <p className="plans-page__regional-sub">
+              Pilgrimage eSIM · Hotspot included · 24/7 WhatsApp support
+            </p>
+          </header>
+        </CountryPlansHero>
+
+        <div className="pilgrim-page__inner plans-page__inner">
+          {!loading && !error && tiers.length > 0 && (
+            <>
+              <div className="plans-trust">
+                <div className="plans-trust__copy">
+                  <p className="plans-trust__network">
+                    Saudi Arabia coverage · Makkah &amp; Madinah ready
+                  </p>
+                  <p className="plans-trust__meta">
+                    Enjoy hassle-free travel
+                    {cheapest != null ? ` · From $${cheapest.toFixed(2)}` : ""}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="plans-trust__compat"
+                  onClick={() => setCompatibilityOpen(true)}
+                >
+                  Check compatibility
+                </button>
+              </div>
+
+              <div className="plans-reassurance">
+                <span>Ready before you fly</span>
+                <span>We&apos;ve got you covered</span>
+                <span>24/7 WhatsApp support</span>
+              </div>
+
+              <h2 className="plans-picker__title">Choose your pilgrimage plan</h2>
+              <p className="plans-picker__hint">
+                Pick a profile that matches your trip, then continue to secure Stripe
+                checkout — the price you see is the price you pay.
+              </p>
+            </>
+          )}
+
+          {loading && (
+            <div className="pilgrim-page__loading" aria-busy="true" aria-live="polite">
+              <p className="pilgrim-page__loading-text">Loading plans…</p>
+              <div className="pilgrim-grid pilgrim-grid--skeleton" aria-hidden="true">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div key={index} className="pilgrim-card pilgrim-card--skeleton" />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!loading && error && (
+            <div className="pilgrim-page__error" role="alert">
+              <p className="pilgrim-page__error-title">Could not load plans</p>
+              <p className="pilgrim-page__error-detail">{error}</p>
+              <p className="pilgrim-page__error-hint">
+                Please try again shortly, or{" "}
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>message us on WhatsApp</a>.
+              </p>
+            </div>
+          )}
+
+          {!loading && !error && tiers.length > 0 && (
+            <section className="pilgrim-grid" aria-label="Travel profile plans">
+              {tiers.map((tier) => (
+                <TierCard
+                  key={tier.key}
+                  tier={tier}
+                  selected={selectedTier === tier.key}
+                  groupSize={groupSize}
+                  individualReferencePrice={individualReferencePrice}
+                  onSelect={() => setSelectedTier(tier.key)}
+                  onGroupSizeChange={setGroupSize}
                 />
               ))}
+            </section>
+          )}
+
+          {activePlan && (
+            <div className="pilgrim-desktop-cta">
+              <div>
+                <p className="pilgrim-desktop-cta__label">Your selection</p>
+                <p className="pilgrim-desktop-cta__plan">{activeTier?.title}</p>
+              </div>
+              <div className="pilgrim-desktop-cta__price">
+                <PsychologicalPrice
+                  parts={stickyParts}
+                  currency={activePlan.currency}
+                />
+              </div>
+              <Link
+                href={buildCheckoutHref(activePlan, checkoutPrice)}
+                className="pilgrim-desktop-cta__button"
+              >
+                Continue to checkout
+              </Link>
             </div>
-          </div>
-        )}
+          )}
 
-        {!loading && error && (
-          <div className="pilgrim-page__error" role="alert">
-            <p className="pilgrim-page__error-title">Could not load plans</p>
-            <p className="pilgrim-page__error-detail">{error}</p>
-            <p className="pilgrim-page__error-hint">
-              If this persists, the backend may be unreachable. Confirm the API is
-              running and try again shortly.
+          <section className="pilgrim-essentials" aria-labelledby="pilgrim-essentials-title">
+            <h2 id="pilgrim-essentials-title" className="pilgrim-essentials__title">
+              Pilgrim essentials
+            </h2>
+            <p className="pilgrim-essentials__text">
+              Prepare your devices before travel. Official apps and our compatibility
+              check help ensure a smooth arrival in the Kingdom.
             </p>
-          </div>
-        )}
-
-        {!loading && !error && tiers.length > 0 && (
-          <section className="pilgrim-grid" aria-label="Travel profile plans">
-            {tiers.map((tier) => (
-              <TierCard
-                key={tier.key}
-                tier={tier}
-                selected={selectedTier === tier.key}
-                groupSize={groupSize}
-                individualReferencePrice={individualReferencePrice}
-                onSelect={() => setSelectedTier(tier.key)}
-                onGroupSizeChange={setGroupSize}
-              />
-            ))}
+            <div className="pilgrim-essentials__links">
+              <a
+                className="pilgrim-essentials__link"
+                href="https://www.nusuk.sa/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Nusuk installation guide
+              </a>
+              <a
+                className="pilgrim-essentials__link"
+                href="https://ta.sdaia.gov.sa/home"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Tawakkalna setup guide
+              </a>
+              <button
+                type="button"
+                className="pilgrim-essentials__button"
+                onClick={() => setCompatibilityOpen(true)}
+              >
+                Compatibility Checker
+              </button>
+            </div>
           </section>
-        )}
+
+          <section className="pilgrim-compare" aria-labelledby="pilgrim-compare-title">
+            <h2 id="pilgrim-compare-title" className="pilgrim-compare__title">
+              Benefits comparison
+            </h2>
+            <p className="pilgrim-compare__subtitle">
+              Congestion-resilient access and group coordination matter most during
+              peak pilgrimage periods.
+            </p>
+            <div className="pilgrim-compare__table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Benefit</th>
+                    <th scope="col">Basic</th>
+                    <th scope="col">Connected</th>
+                    <th scope="col">Unlimited</th>
+                    <th scope="col">Family Share</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Congestion-resilient access</td>
+                    <td>Standard</td>
+                    <td>Enhanced</td>
+                    <td>Priority</td>
+                    <td>Shared priority</td>
+                  </tr>
+                  <tr>
+                    <td>Group coordination</td>
+                    <td>Individual</td>
+                    <td>Individual</td>
+                    <td>Individual</td>
+                    <td>Hotspot for full group</td>
+                  </tr>
+                  <tr>
+                    <td>Video calls &amp; live updates</td>
+                    <td>Limited</td>
+                    <td>Reliable</td>
+                    <td>Unlimited</td>
+                    <td>Shared unlimited use</td>
+                  </tr>
+                  <tr>
+                    <td>Cost efficiency (4+ travelers)</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>Lowest per-user cost</td>
+                  </tr>
+                  <tr>
+                    <td>Best for</td>
+                    <td>Short stays</td>
+                    <td>First-time pilgrims</td>
+                    <td>Extended devotion</td>
+                    <td>Families &amp; groups</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
 
         {activePlan && (
-          <div className="pilgrim-desktop-cta">
-            <div>
-              <p className="pilgrim-desktop-cta__label">Your selection</p>
-              <p className="pilgrim-desktop-cta__plan">{activeTier?.title}</p>
-            </div>
-            <div className="pilgrim-desktop-cta__price">
-              <PsychologicalPrice parts={stickyParts} currency={activePlan.currency} />
+          <div className="pilgrim-sticky-cta" role="region" aria-label="Purchase">
+            <div className="pilgrim-sticky-cta__meta">
+              <span className="pilgrim-sticky-cta__label">Selected plan</span>
+              <span className="pilgrim-sticky-cta__plan">{activeTier?.title}</span>
+              <PsychologicalPrice
+                parts={stickyParts}
+                currency={activePlan.currency}
+              />
             </div>
             <Link
               href={buildCheckoutHref(activePlan, checkoutPrice)}
-              className="pilgrim-desktop-cta__button"
+              className="pilgrim-sticky-cta__button"
             >
-              Continue to checkout
+              Continue
             </Link>
           </div>
         )}
-
-        <section className="pilgrim-essentials" aria-labelledby="pilgrim-essentials-title">
-          <h2 id="pilgrim-essentials-title" className="pilgrim-essentials__title">
-            Pilgrim Essentials
-          </h2>
-          <p className="pilgrim-essentials__text">
-            Prepare your devices before travel. These official apps and our
-            compatibility check help ensure a smooth arrival in the Kingdom.
-          </p>
-          <div className="pilgrim-essentials__links">
-            <a
-              className="pilgrim-essentials__link"
-              href="https://www.nusuk.sa/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Nusuk installation guide
-            </a>
-            <a
-              className="pilgrim-essentials__link"
-              href="https://taawakkalna.sdaia.gov.sa/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Tawakkalna setup guide
-            </a>
-            <button
-              type="button"
-              className="pilgrim-essentials__button"
-              onClick={() => setCompatibilityOpen(true)}
-            >
-              Compatibility Checker
-            </button>
-          </div>
-        </section>
-
-        <section className="pilgrim-compare" aria-labelledby="pilgrim-compare-title">
-          <h2 id="pilgrim-compare-title" className="pilgrim-compare__title">
-            Benefits Comparison
-          </h2>
-          <p className="pilgrim-compare__subtitle">
-            Congestion-resilient access and group coordination matter most during
-            peak pilgrimage periods.
-          </p>
-          <div className="pilgrim-compare__table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Benefit</th>
-                  <th scope="col">Basic</th>
-                  <th scope="col">Connected</th>
-                  <th scope="col">Unlimited</th>
-                  <th scope="col">Family Share</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Congestion-resilient access</td>
-                  <td>Standard</td>
-                  <td>Enhanced</td>
-                  <td>Priority</td>
-                  <td>Shared priority</td>
-                </tr>
-                <tr>
-                  <td>Group coordination</td>
-                  <td>Individual</td>
-                  <td>Individual</td>
-                  <td>Individual</td>
-                  <td>Hotspot for full group</td>
-                </tr>
-                <tr>
-                  <td>Video calls & live updates</td>
-                  <td>Limited</td>
-                  <td>Reliable</td>
-                  <td>Unlimited</td>
-                  <td>Shared unlimited use</td>
-                </tr>
-                <tr>
-                  <td>Cost efficiency (4+ travelers)</td>
-                  <td>—</td>
-                  <td>—</td>
-                  <td>—</td>
-                  <td>Lowest per-user cost</td>
-                </tr>
-                <tr>
-                  <td>Best for</td>
-                  <td>Short stays</td>
-                  <td>First-time pilgrims</td>
-                  <td>Extended devotion</td>
-                  <td>Families & groups</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-
-      {activePlan && (
-        <div className="pilgrim-sticky-cta" role="region" aria-label="Purchase">
-          <div className="pilgrim-sticky-cta__meta">
-            <span className="pilgrim-sticky-cta__label">Selected plan</span>
-            <span className="pilgrim-sticky-cta__plan">{activeTier.title}</span>
-            <PsychologicalPrice parts={stickyParts} currency={activePlan.currency} />
-          </div>
-          <Link
-            href={buildCheckoutHref(activePlan, checkoutPrice)}
-            className="pilgrim-sticky-cta__button"
-          >
-            Continue
-          </Link>
-        </div>
-      )}
-
+      </main>
+      <SiteFooter />
       <CompatibilityModal
         isOpen={compatibilityOpen}
         onClose={() => setCompatibilityOpen(false)}
       />
-    </main>
+    </>
   );
 }
