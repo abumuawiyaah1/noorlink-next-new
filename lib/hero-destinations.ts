@@ -1,4 +1,5 @@
 import { plansPathForCountry } from "@/lib/country-slugs";
+import { getCountryFlag } from "@/lib/country-flags";
 import {
   destinationCardFromQuery,
   searchCountryTemplateHints,
@@ -154,7 +155,7 @@ export function filterDestinations(query: string): HeroDestination[] {
     .map((hint) => ({
       id: hint.slug,
       label: hint.name,
-      flag: "🌍",
+      flag: getCountryFlag(hint.slug),
       type: "country" as const,
       href: plansPathForCountry(hint.slug),
       keywords: [hint.slug, hint.name.toLowerCase(), ...(hint.aliases ?? [])],
@@ -171,7 +172,7 @@ export function filterDestinations(query: string): HeroDestination[] {
     {
       id: fallback.id,
       label: fallback.title,
-      flag: "🌍",
+      flag: getCountryFlag(fallback.id),
       type: "country",
       href: fallback.href,
       keywords: [fallback.id, fallback.title.toLowerCase()],

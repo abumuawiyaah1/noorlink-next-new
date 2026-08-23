@@ -86,7 +86,10 @@ export function CountrySearch({
                   goToQuery(dest.label);
                 }}
               >
-                {dest.label}
+                <span className="country-search__flag" aria-hidden="true">
+                  {dest.flag}
+                </span>
+                <span className="country-search__label">{dest.label}</span>
               </button>
             </li>
           ))}

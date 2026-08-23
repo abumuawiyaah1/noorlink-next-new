@@ -182,13 +182,15 @@ export function HeroSearch() {
                 onMouseEnter={() => setActiveIndex(index)}
                 onClick={() => selectSuggestion(dest)}
               >
-                <span className="hero-search-dropdown__flag" aria-hidden="true">
-                  {dest.flag}
-                </span>
-                <span>
-                  {dest.label}
-                  <span className="hero-search-dropdown__meta">
-                    {dest.type === "region" ? "Region" : "Country"} · View plans
+                <span className="hero-search-dropdown__pair">
+                  <span className="hero-search-dropdown__flag" aria-hidden="true">
+                    {dest.flag}
+                  </span>
+                  <span className="hero-search-dropdown__text">
+                    <span className="hero-search-dropdown__label">{dest.label}</span>
+                    <span className="hero-search-dropdown__meta">
+                      {dest.type === "region" ? "Region" : "Country"} · View plans
+                    </span>
                   </span>
                 </span>
               </button>
