@@ -379,12 +379,12 @@ export function PilgrimSelectionPage({
                   currency={activePlan.currency}
                 />
               </div>
-              <Link
+              <a
                 href={buildCheckoutHref(activePlan, checkoutPrice)}
                 className="pilgrim-desktop-cta__button"
               >
                 Continue to checkout
-              </Link>
+              </a>
             </div>
           )}
 
@@ -494,12 +494,12 @@ export function PilgrimSelectionPage({
                 currency={activePlan.currency}
               />
             </div>
-            <Link
+            <a
               href={buildCheckoutHref(activePlan, checkoutPrice)}
               className="pilgrim-sticky-cta__button"
             >
               Continue
-            </Link>
+            </a>
           </div>
         )}
       </main>

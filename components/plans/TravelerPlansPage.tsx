@@ -120,7 +120,7 @@ function PlanRow({
   const href = checkoutHref(plan, countryName, flag, isRegional);
 
   return (
-    <Link
+    <a
       href={href}
       className={`plans-row${best ? " is-best" : ""}`}
       aria-label={`Buy ${formatDataAmount(plan)} for ${formatDuration(plan.durationDays)}, $${plan.price.toFixed(2)}`}
@@ -138,7 +138,7 @@ function PlanRow({
       </span>
       {badge ? <span className="plans-row__badge">{badge}</span> : <span />}
       <span className="plans-row__cta">Select</span>
-    </Link>
+    </a>
   );
 }
 

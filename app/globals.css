@@ -2,6 +2,7 @@
 @import "../styles/tokens.css";
 @import "../styles/site-chrome.css";
 @import "../styles/ui-primitives.css";
+@import "../styles/checkout.css";
 
 :root {
   --background: var(--bg-body);

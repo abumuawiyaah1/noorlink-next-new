@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { FunnelSteps } from "@/components/layout/FunnelSteps";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -34,6 +34,11 @@ export function ModernCheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
 
   const formattedTotal = useMemo(() => price.toFixed(2), [price]);
+  const payLabel = submitting ? "Redirecting to Stripe…" : `Pay $${formattedTotal}`;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -89,7 +94,7 @@ export function ModernCheckoutPage() {
   }
 
   return (
-    <>
+    <div className="nl-checkout">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
@@ -224,6 +229,13 @@ export function ModernCheckoutPage() {
                     I have read and agree to the Terms of Service and Privacy Policy.
                   </label>
                 </div>
+                <button
+                  type="submit"
+                  className={`pay-btn pay-btn--inline${submitting ? " loading" : ""}`}
+                  disabled={submitting}
+                >
+                  {payLabel}
+                </button>
               </div>
 
               {error && (
@@ -265,7 +277,7 @@ export function ModernCheckoutPage() {
                   className={`pay-btn${submitting ? " loading" : ""}`}
                   disabled={submitting}
                 >
-                  {submitting ? "Redirecting to Stripe…" : `Pay $${formattedTotal}`}
+                  {payLabel}
                 </button>
                 <p className="summary-next-step">
                   Next step: secure Stripe payment, then we email your order
@@ -282,6 +294,6 @@ export function ModernCheckoutPage() {
         </div>
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

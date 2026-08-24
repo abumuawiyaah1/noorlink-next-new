@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import "@/styles/checkout.css";
 import { CheckoutPage } from "@/components/legacy/CheckoutPage";
 
 function CheckoutPageFallback() {
