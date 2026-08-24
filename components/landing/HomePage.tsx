@@ -21,11 +21,11 @@ export function HomePage() {
       <TrustStatsBar />
       <PopularCountries />
       <HowItWorks />
+      <DeviceChecker />
       <UmrahPromo />
       <WhyNoorLink />
       <RegionalPlansPromo />
       <Testimonials />
-      <DeviceChecker />
       <HomeNewsletter />
       <HomeFooter />
     </>
