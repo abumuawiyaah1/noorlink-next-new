@@ -230,6 +230,29 @@
   opacity: 0.92;
 }
 
+.pilgrim-card--coming-soon {
+  opacity: 0.92;
+  border-style: dashed;
+}
+
+.pilgrim-card--coming-soon .pilgrim-card__badge {
+  background: var(--text-muted);
+  color: #fff;
+}
+
+.pilgrim-card__coming-soon-note {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.pilgrim-card__cta:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  background: #9ca3af;
+}
+
 .pilgrim-card.is-recommended .pilgrim-card__cta,
 .pilgrim-card.is-selected .pilgrim-card__cta {
   background: linear-gradient(135deg, var(--accent), var(--accent-light));

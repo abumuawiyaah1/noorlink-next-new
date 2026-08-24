@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -73,6 +72,30 @@ function TierCard({
   onGroupSizeChange: (size: number) => void;
   onConnectedDataGbChange: (gb: ConnectedPilgrimDataGb) => void;
 }) {
+  if (tier.comingSoon) {
+    return (
+      <article className="pilgrim-card pilgrim-card--coming-soon">
+        <span className="pilgrim-card__badge">Coming soon</span>
+        <p className="pilgrim-card__tier">{tier.subtitle}</p>
+        <h2 className="pilgrim-card__title">{tier.title}</h2>
+        <p className="pilgrim-card__desc">{tier.description}</p>
+        <ul className="pilgrim-card__highlights">
+          {tier.highlights.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        <div className="pilgrim-price-wrap">
+          <p className="pilgrim-card__coming-soon-note">
+            Group hotspot plans are on the way — WhatsApp us for early access.
+          </p>
+        </div>
+        <button type="button" className="pilgrim-card__cta" disabled>
+          Coming soon
+        </button>
+      </article>
+    );
+  }
+
   const isConnected = tier.key === "connected" && tier.connectedVariants;
   const plan = isConnected
     ? resolveConnectedPilgrimPlan(tier, connectedDataGb)
@@ -255,14 +278,16 @@ export function PilgrimSelectionPage({
     connectedTier?.plan?.price ??
     0;
 
-  const activeTier = useMemo(
-    () =>
-      tiers.find((tier) => tier.key === selectedTier) ??
-      tiers.find((tier) => tier.recommended) ??
-      tiers[0] ??
-      null,
-    [tiers, selectedTier],
-  );
+  const activeTier = useMemo(() => {
+    const selected =
+      tiers.find((tier) => tier.key === selectedTier && !tier.comingSoon) ?? null;
+    return (
+      selected ??
+      tiers.find((tier) => tier.recommended && !tier.comingSoon) ??
+      tiers.find((tier) => !tier.comingSoon && tier.plan) ??
+      null
+    );
+  }, [tiers, selectedTier]);
 
   const activePlan = useMemo(() => {
     if (!activeTier) return null;
@@ -421,7 +446,10 @@ export function PilgrimSelectionPage({
                   groupSize={groupSize}
                   connectedDataGb={connectedDataGb}
                   individualReferencePrice={individualReferencePrice}
-                  onSelect={() => setSelectedTier(tier.key)}
+                  onSelect={() => {
+                    if (tier.comingSoon) return;
+                    setSelectedTier(tier.key);
+                  }}
                   onGroupSizeChange={setGroupSize}
                   onConnectedDataGbChange={setConnectedDataGb}
                 />
@@ -500,7 +528,7 @@ export function PilgrimSelectionPage({
                     <th scope="col">Benefit</th>
                     <th scope="col">Basic</th>
                     <th scope="col">Connected</th>
-                    <th scope="col">Unlimited</th>
+                    <th scope="col">Full Devotion</th>
                     <th scope="col">Family Share</th>
                   </tr>
                 </thead>
@@ -523,22 +551,22 @@ export function PilgrimSelectionPage({
                     <td>Video calls &amp; live updates</td>
                     <td>Limited</td>
                     <td>Reliable</td>
-                    <td>Unlimited</td>
-                    <td>Shared unlimited use</td>
+                    <td>Heavy 50GB use</td>
+                    <td>Coming soon</td>
                   </tr>
                   <tr>
                     <td>Cost efficiency (4+ travelers)</td>
                     <td>—</td>
                     <td>—</td>
                     <td>—</td>
-                    <td>Lowest per-user cost</td>
+                    <td>Coming soon</td>
                   </tr>
                   <tr>
                     <td>Best for</td>
                     <td>Short stays</td>
                     <td>First-time pilgrims</td>
                     <td>Extended devotion</td>
-                    <td>Families &amp; groups</td>
+                    <td>Coming soon</td>
                   </tr>
                 </tbody>
               </table>

@@ -14,6 +14,7 @@ export type PilgrimTierMeta = {
   highlights: string[];
   recommended?: boolean;
   hasGroupCalculator?: boolean;
+  comingSoon?: boolean;
 };
 
 export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
@@ -43,28 +44,29 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
   },
   {
     key: "unlimited",
-    title: "Unlimited Devotion",
+    title: "Full Devotion",
     subtitle: "Premium · 50GB",
     description:
       "High-capacity 50GB for live streams, video calls, and full itinerary apps.",
     highlights: [
       "50GB high-speed data (30 days)",
       "Best for extended stays",
-      "Superior value under network congestion",
+      "Heavy use without upgrading mid-trip",
     ],
   },
   {
     key: "family",
     title: "Family Share",
-    subtitle: "Efficiency / Hotspot · 50GB",
+    subtitle: "Efficiency / Hotspot",
     description:
-      "One 50GB plan, shared connectivity — coordinate your group with a single hotspot.",
+      "One plan, shared connectivity — coordinate your group with a single hotspot.",
     highlights: [
       "Hotspot-ready for group devices",
       "Split cost across travelers",
       "Group coordination in crowded areas",
     ],
     hasGroupCalculator: true,
+    comingSoon: true,
   },
 ];
 
@@ -119,34 +121,34 @@ export const PILGRIM_FALLBACK_PLANS: Record<PilgrimTierKey, EsimPlan> = {
     displayBadge: "best_choice",
   },
   unlimited: {
-    id: "pilgrim-unlimited",
+    id: "pilgrim-devotion-50",
     countryId: "saudi-arabia",
-    name: "Unlimited Devotion 50GB",
+    name: "Full Devotion 50GB",
     dataGb: 50,
     durationDays: 30,
-    price: 96.77,
-    formattedPriceParts: fallbackParts(96.77),
+    price: 59.9,
+    formattedPriceParts: fallbackParts(59.9),
     currency: "USD",
     isRechargeable: false,
     isPayAsYouGo: false,
-    pricingStrategy: "AUTOMATED",
-    marginStatus: "automated",
-    planCategory: "unlimited",
+    pricingStrategy: "MANUAL",
+    marginStatus: "manual",
+    planCategory: "fixed",
     displayBadge: null,
   },
   family: {
     id: "pilgrim-family",
     countryId: "saudi-arabia",
-    name: "Family Share 50GB",
+    name: "Family Share",
     dataGb: 50,
     durationDays: 30,
-    price: 96.77,
-    formattedPriceParts: fallbackParts(96.77),
+    price: 0,
+    formattedPriceParts: fallbackParts(0),
     currency: "USD",
     isRechargeable: false,
     isPayAsYouGo: false,
-    pricingStrategy: "AUTOMATED",
-    marginStatus: "automated",
+    pricingStrategy: "MANUAL",
+    marginStatus: "manual",
     planCategory: "flexible",
     displayBadge: "flexible",
   },
@@ -187,9 +189,11 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
   const fixed = plans
     .filter((p) => p.planCategory === "fixed")
     .sort((a, b) => a.price - b.price);
-  const unlimited = plans.find((p) => p.planCategory === "unlimited") ?? null;
-  const flexible =
-    plans.find((p) => p.planCategory === "flexible" || p.isRechargeable) ?? null;
+  const devotion =
+    plans.find((p) => /full devotion|devotion 50/i.test(p.name)) ??
+    plans.find((p) => p.dataGb === 50 && p.planCategory === "fixed") ??
+    plans.find((p) => p.planCategory === "unlimited") ??
+    null;
   const connectedGb10 =
     pickConnectedPlan(plans, 10) ?? fixed.find((p) => p.dataGb === 10) ?? null;
   const connectedGb20 =
@@ -200,7 +204,14 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
     fixed[1] ??
     null;
   const basic =
-    fixed.find((p) => p.id !== connected?.id && p.dataGb !== 10 && p.dataGb !== 20) ??
+    fixed.find(
+      (p) =>
+        p.id !== connected?.id &&
+        p.id !== devotion?.id &&
+        p.dataGb !== 10 &&
+        p.dataGb !== 20 &&
+        p.dataGb !== 50,
+    ) ??
     fixed.find((p) => p.id !== connectedGb10?.id && p.id !== connectedGb20?.id) ??
     fixed[0] ??
     null;
@@ -208,11 +219,14 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
   const byKey: Record<PilgrimTierKey, EsimPlan | null> = {
     basic,
     connected,
-    unlimited,
-    family: flexible,
+    unlimited: devotion,
+    family: null,
   };
 
   return PILGRIM_TIER_META.map((meta) => {
+    if (meta.comingSoon) {
+      return { ...meta, plan: null };
+    }
     const plan = byKey[meta.key] ?? PILGRIM_FALLBACK_PLANS[meta.key];
     const offer: PilgrimTierOffer = { ...meta, plan };
     if (meta.key === "connected") {
