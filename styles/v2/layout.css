@@ -1,0 +1,238 @@
+.v2-preview-banner {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: linear-gradient(90deg, #0a4d4e, #1a6b6c);
+  color: #fff;
+  font-size: 0.8125rem;
+  border-bottom: 2px solid var(--v2-accent);
+}
+
+.v2-preview-banner__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.v2-preview-banner__label {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.6875rem;
+}
+
+.v2-preview-banner__hint {
+  opacity: 0.9;
+  flex: 1;
+  min-width: 180px;
+}
+
+.v2-preview-banner__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.v2-preview-banner__link {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+}
+
+.v2-preview-banner__link--ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.v2-header {
+  background: var(--v2-surface);
+  border-bottom: 1px solid rgba(10, 77, 78, 0.08);
+  position: sticky;
+  top: 2.5rem;
+  z-index: 100;
+}
+
+.v2-header__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.v2-header__logo {
+  font-weight: 800;
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: var(--v2-primary);
+  white-space: nowrap;
+}
+
+.v2-header__logo span {
+  color: var(--v2-accent);
+}
+
+.v2-header__tag {
+  font-style: normal;
+  font-size: 0.625rem;
+  vertical-align: super;
+  margin-left: 0.25rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.v2-header__nav {
+  display: none;
+  gap: 1rem;
+  flex: 1;
+}
+
+.v2-header__nav.is-open {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: var(--v2-surface);
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.v2-header__link {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--v2-primary);
+}
+
+.v2-header__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.v2-header__menu {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 1.25rem;
+}
+
+.v2-header__cta {
+  display: none;
+}
+
+.v2-main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.v2-main--narrow {
+  max-width: 920px;
+}
+
+.v2-hero {
+  background: linear-gradient(145deg, #0a4d4e 0%, #062829 100%);
+  color: #fff;
+  border-radius: 0 0 24px 24px;
+  margin: -1.5rem -1rem 2rem;
+  padding: 2.5rem 1rem 2rem;
+}
+
+.v2-hero__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.v2-hero__title {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  line-height: 1.15;
+  margin: 0.5rem 0 1rem;
+  font-weight: 800;
+}
+
+.v2-hero__sub {
+  opacity: 0.92;
+  max-width: 42rem;
+  margin-bottom: 1.25rem;
+}
+
+.v2-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.v2-section {
+  margin-bottom: 2.5rem;
+}
+
+.v2-section--muted {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.v2-section__title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--v2-primary);
+}
+
+.v2-footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--v2-muted);
+  font-size: 0.875rem;
+}
+
+.v2-breadcrumbs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  color: var(--v2-muted);
+  margin-bottom: 1rem;
+}
+
+.v2-breadcrumbs a {
+  color: var(--v2-primary);
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .v2-header__nav {
+    display: flex;
+    flex-direction: row;
+    position: static;
+    border: none;
+    padding: 0;
+  }
+
+  .v2-header__menu {
+    display: none;
+  }
+
+  .v2-header__cta {
+    display: inline-flex;
+  }
+}

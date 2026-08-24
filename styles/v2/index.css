@@ -1,0 +1,15 @@
+@import "./tokens.css";
+@import "./layout.css";
+@import "./components.css";
+@import "./activation.css";
+@import "./plans-cards.css";
+
+.v2-skin {
+  --v2-primary: #0a4d4e;
+  --v2-accent: #c8922a;
+  --v2-surface: #ffffff;
+  --v2-muted: #64748b;
+  --v2-bg: #f8faf9;
+  background: var(--v2-bg);
+  min-height: 100vh;
+}

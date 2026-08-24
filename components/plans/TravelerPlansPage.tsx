@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { V2SiteHeader } from "@/components/v2/V2SiteHeader";
 import { CountryPlansHero } from "@/components/plans/CountryPlansHero";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import { RegionalCoveragePanel } from "@/components/plans/RegionalCoveragePanel";
@@ -36,6 +37,10 @@ type TravelerPlansPageProps = {
   initialData?: PlansByCountryResponse | null;
   initialError?: string | null;
   regional?: RegionalProduct;
+  /** e.g. "/preview" — prefixes checkout and in-funnel links */
+  siteBase?: string;
+  /** Replace default site header/footer when previewing v2 */
+  headerVariant?: "default" | "v2";
 };
 
 const PLAN_FAQS = [
@@ -83,6 +88,7 @@ function checkoutHref(
   countryName: string,
   flag?: string,
   isRegional?: boolean,
+  siteBase = "",
 ): string {
   const checkoutParams = new URLSearchParams({
     country: countryName,
@@ -92,7 +98,7 @@ function checkoutHref(
   if (plan.name) checkoutParams.set("plan", plan.name);
   if (plan.id) checkoutParams.set("packageId", plan.id);
   if (isRegional) checkoutParams.set("productType", "regional");
-  return `/checkout?${checkoutParams.toString()}`;
+  return `${siteBase}/checkout?${checkoutParams.toString()}`;
 }
 
 function sortPlans(plans: EsimPlan[]): EsimPlan[] {
@@ -112,6 +118,7 @@ function PlanRow({
   isRegional,
   selected,
   onSelect,
+  siteBase = "",
 }: {
   plan: EsimPlan;
   countryName: string;
@@ -119,10 +126,11 @@ function PlanRow({
   isRegional?: boolean;
   selected: boolean;
   onSelect: (planId: string) => void;
+  siteBase?: string;
 }) {
   const badge = badgeLabel(plan);
   const best = plan.displayBadge === "best_choice";
-  const href = checkoutHref(plan, countryName, flag, isRegional);
+  const href = checkoutHref(plan, countryName, flag, isRegional, siteBase);
   const copy = describeEsimPlan(plan, {
     countryLabel: countryName,
     isRegional,
@@ -283,6 +291,7 @@ function PlanSection({
   isRegional,
   selectedPlanId,
   onSelectPlan,
+  siteBase = "",
 }: {
   label: string;
   plans: EsimPlan[];
@@ -291,6 +300,7 @@ function PlanSection({
   isRegional?: boolean;
   selectedPlanId: string | null;
   onSelectPlan: (planId: string) => void;
+  siteBase?: string;
 }) {
   if (plans.length === 0) return null;
 
@@ -309,6 +319,7 @@ function PlanSection({
             isRegional={isRegional}
             selected={selectedPlanId === plan.id}
             onSelect={onSelectPlan}
+            siteBase={siteBase}
           />
         ))}
       </div>
@@ -322,6 +333,8 @@ export function TravelerPlansPage({
   initialData = null,
   initialError = null,
   regional,
+  siteBase = "",
+  headerVariant = "default",
 }: TravelerPlansPageProps) {
   const [data, setData] = useState<PlansByCountryResponse | null>(initialData);
   const [loading, setLoading] = useState(!initialData && !initialError);
@@ -377,10 +390,13 @@ export function TravelerPlansPage({
     return all.reduce((best, plan) => (plan.price < best.price ? plan : best));
   }, [data]);
 
+  const homeHref = siteBase || "/";
+  const destinationsHref = `${siteBase}/destinations`;
+
   return (
     <>
-      <SiteHeader />
-      <main className="plans-page">
+      {headerVariant === "v2" ? <V2SiteHeader /> : <SiteHeader />}
+      <main className={`plans-page${headerVariant === "v2" ? " v2-plans-shell" : ""}`}>
       <CountryPlansHero
         src={countryImage}
         alt={`${title} travel destination`}
@@ -388,10 +404,10 @@ export function TravelerPlansPage({
         <Breadcrumbs
           onDark
           items={[
-            { href: "/", label: "Home" },
-            { href: "/destinations", label: "Destinations" },
+            { href: homeHref, label: "Home" },
+            { href: destinationsHref, label: "Destinations" },
             ...(regional
-              ? [{ href: "/destinations", label: "Regional" }]
+              ? [{ href: destinationsHref, label: "Regional" }]
               : []),
             { label: title },
           ]}
@@ -444,7 +460,7 @@ export function TravelerPlansPage({
         {!loading && !error && data?.plans.length === 0 && (
           <p className="plans-page__empty">
             No plans found for this destination yet. Browse more from{" "}
-            <Link href="/destinations" className="plans-page__inline-link">
+            <Link href={destinationsHref} className="plans-page__inline-link">
               Destinations
             </Link>
             .
@@ -516,6 +532,7 @@ export function TravelerPlansPage({
                   isRegional={Boolean(regional)}
                   selectedPlanId={selectedPlanId}
                   onSelectPlan={setSelectedPlanId}
+                  siteBase={siteBase}
                 />
               ))}
             </div>
@@ -525,7 +542,7 @@ export function TravelerPlansPage({
         )}
       </div>
     </main>
-      <SiteFooter />
+      {headerVariant === "default" ? <SiteFooter /> : null}
       <CompatibilityModal
         isOpen={compatOpen}
         onClose={() => setCompatOpen(false)}

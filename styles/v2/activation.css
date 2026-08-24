@@ -1,0 +1,121 @@
+.v2-activation-hub {
+  background: #fff;
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.v2-activation-hub__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.v2-activation-hub__demo {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.v2-activation-hub__tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.v2-activation-hub__tab {
+  min-height: 44px;
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #f8fafc;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.v2-activation-hub__tab.is-active {
+  background: var(--v2-primary);
+  color: #fff;
+  border-color: var(--v2-primary);
+}
+
+.v2-activation-hub__panel {
+  text-align: center;
+}
+
+.v2-activation-hub__qr {
+  border-radius: 12px;
+  border: 8px solid #f1f5f9;
+}
+
+.v2-activation-hub__placeholder {
+  padding: 3rem 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  color: var(--v2-muted);
+}
+
+.v2-activation-hub__hint {
+  font-size: 0.875rem;
+  color: var(--v2-muted);
+  margin-top: 1rem;
+}
+
+.v2-activation-hub__ios-btn {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.v2-activation-hub__field {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.v2-activation-hub__field label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  color: var(--v2-muted);
+}
+
+.v2-activation-hub__code {
+  display: block;
+  word-break: break-all;
+  background: #f8fafc;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  margin-bottom: 0.5rem;
+}
+
+.v2-activation-hub__field button {
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.v2-activation-hub__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  justify-content: center;
+}

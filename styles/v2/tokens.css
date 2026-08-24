@@ -1,0 +1,5 @@
+/* v2 design tokens extend global tokens */
+:root {
+  --v2-primary: #0a4d4e;
+  --v2-accent: #c8922a;
+}

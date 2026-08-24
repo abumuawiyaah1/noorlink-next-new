@@ -1,0 +1,89 @@
+/* Card-style plan rows inside v2 preview shell */
+.v2-plans-shell .plans-rows {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+.v2-plans-shell .plans-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "data duration"
+    "price badge"
+    "cta cta"
+    "details details";
+  gap: 0.5rem 1rem;
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border: 2px solid transparent;
+}
+
+.v2-plans-shell .plans-row.is-best {
+  border-color: var(--v2-accent);
+}
+
+.v2-plans-shell .plans-row.is-selected {
+  border-color: var(--v2-primary);
+}
+
+.v2-plans-shell .plans-row__data {
+  grid-area: data;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.v2-plans-shell .plans-row__duration {
+  grid-area: duration;
+  text-align: right;
+  color: var(--v2-muted);
+}
+
+.v2-plans-shell .plans-row__price {
+  grid-area: price;
+}
+
+.v2-plans-shell .plans-row__badge {
+  grid-area: badge;
+  text-align: right;
+}
+
+.v2-plans-shell .plans-row__cta {
+  grid-area: cta;
+  display: flex;
+  justify-content: center;
+  min-height: 44px;
+  align-items: center;
+  border-radius: 12px;
+  background: var(--v2-primary);
+  color: #fff !important;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.v2-plans-shell .plans-row__details {
+  grid-area: details;
+}
+
+.v2-plans-shell .pilgrim-card {
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 768px) {
+  .v2-plans-shell .plans-rows {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .v2-plans-shell .pilgrim-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .v2-plans-shell .plans-rows {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

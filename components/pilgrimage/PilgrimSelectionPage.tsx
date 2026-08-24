@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { V2SiteHeader } from "@/components/v2/V2SiteHeader";
+import { CarrierBadgeRow } from "@/components/v2/CarrierBadgeRow";
 import { CountryPlansHero } from "@/components/plans/CountryPlansHero";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
@@ -34,9 +36,11 @@ type PilgrimSelectionPageProps = {
   countryImage: string;
   initialData?: PlansByCountryResponse | null;
   initialError?: string | null;
+  siteBase?: string;
+  headerVariant?: "default" | "v2";
 };
 
-function buildCheckoutHref(plan: EsimPlan, price: number): string {
+function buildCheckoutHref(plan: EsimPlan, price: number, siteBase = ""): string {
   const params = new URLSearchParams({
     country: "Saudi Arabia",
     price: price.toFixed(2),
@@ -45,7 +49,7 @@ function buildCheckoutHref(plan: EsimPlan, price: number): string {
   if (plan.countryId) params.set("country_id", plan.countryId);
   if (plan.name) params.set("plan", plan.name);
   if (plan.id) params.set("packageId", plan.id);
-  return `/checkout?${params.toString()}`;
+  return `${siteBase}/checkout?${params.toString()}`;
 }
 
 function tierBadge(tier: PilgrimTierOffer): string | null {
@@ -221,6 +225,8 @@ export function PilgrimSelectionPage({
   countryImage,
   initialData = null,
   initialError = null,
+  siteBase = "",
+  headerVariant = "default",
 }: PilgrimSelectionPageProps) {
   const [tiers, setTiers] = useState<PilgrimTierOffer[]>(() =>
     resolveInitialTiers(initialData),
@@ -349,14 +355,14 @@ export function PilgrimSelectionPage({
 
   return (
     <>
-      <SiteHeader />
-      <main className="pilgrim-page plans-page">
+      {headerVariant === "v2" ? <V2SiteHeader /> : <SiteHeader />}
+      <main className={`pilgrim-page plans-page${headerVariant === "v2" ? " v2-plans-shell" : ""}`}>
         <CountryPlansHero src={countryImage} alt="Saudi Arabia pilgrimage destination">
           <Breadcrumbs
             onDark
             items={[
-              { href: "/", label: "Home" },
-              { href: "/destinations", label: "Destinations" },
+              { href: siteBase || "/", label: "Home" },
+              { href: `${siteBase}/destinations`, label: "Destinations" },
               { label: "Hajj & Umrah" },
             ]}
           />
@@ -382,6 +388,11 @@ export function PilgrimSelectionPage({
             <p className="plans-page__regional-sub">
               Pilgrimage eSIM · Hotspot included · 24/7 WhatsApp support
             </p>
+            {headerVariant === "v2" ? (
+              <div className="v2-hajj-carrier-wrap">
+                <CarrierBadgeRow compact />
+              </div>
+            ) : null}
           </header>
         </CountryPlansHero>
 
@@ -478,7 +489,7 @@ export function PilgrimSelectionPage({
                 />
               </div>
               <a
-                href={buildCheckoutHref(activePlan, checkoutPrice)}
+                href={buildCheckoutHref(activePlan, checkoutPrice, siteBase)}
                 className="pilgrim-desktop-cta__button"
               >
                 Continue to checkout
@@ -593,7 +604,7 @@ export function PilgrimSelectionPage({
               />
             </div>
             <a
-              href={buildCheckoutHref(activePlan, checkoutPrice)}
+              href={buildCheckoutHref(activePlan, checkoutPrice, siteBase)}
               className="pilgrim-sticky-cta__button"
             >
               Continue
@@ -601,7 +612,7 @@ export function PilgrimSelectionPage({
           </div>
         )}
       </main>
-      <SiteFooter />
+      {headerVariant === "default" ? <SiteFooter /> : null}
       <CompatibilityModal
         isOpen={compatibilityOpen}
         onClose={() => setCompatibilityOpen(false)}
