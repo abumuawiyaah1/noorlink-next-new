@@ -22,6 +22,8 @@ const REGIONAL_REDIRECT_SLUGS = new Set([
   "south-america",
   "latam",
   "latin-america",
+  "caribbean",
+  "carribean",
   "global",
   "worldwide",
   "world",

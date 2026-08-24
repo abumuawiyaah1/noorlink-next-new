@@ -68,6 +68,22 @@ export const heroDestinations: HeroDestination[] = [
     keywords: ["umrah", "hajj", "saudi", "saudi arabia", "mecca", "medina", "jeddah"],
   },
   {
+    id: "caribbean",
+    label: "Caribbean Regional",
+    flag: "🏝️",
+    type: "region",
+    href: plansPathForRegion("caribbean"),
+    keywords: [
+      "caribbean",
+      "bahamas",
+      "jamaica",
+      "barbados",
+      "dominican republic",
+      "island",
+      "cruise",
+    ],
+  },
+  {
     id: "europe",
     label: "Europe Regional",
     flag: "🌍",

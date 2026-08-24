@@ -17,6 +17,9 @@ type PageProps = {
 };
 
 function regionalImageSrc(product: RegionalProduct): string {
+  if (product.routeSlug === "caribbean") {
+    return getCountryImage("caribbean");
+  }
   if (product.routeSlug === "north-america") {
     return getCountryImage("usa");
   }

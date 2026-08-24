@@ -212,6 +212,18 @@ export const DESTINATION_CARDS: DestinationCard[] = [
     href: plansPathForRegion("middle-east"),
   },
   {
+    id: "caribbean",
+    title: "Caribbean (Multi-country)",
+    region: "Americas",
+    priceCountryId: "regional-caribbean",
+    priceLabel: "From $14.99",
+    className: "bg-caribbean-regional",
+    image: getCountryImageUrl("caribbean"),
+    description: "Bahamas, Jamaica, Dominican Republic and 20+ islands on one eSIM.",
+    thingsToDo: ["Island hopping", "Beach resorts", "Cruise stopovers"],
+    href: plansPathForRegion("caribbean"),
+  },
+  {
     id: "turkey",
     title: "Turkey",
     region: "Middle East",

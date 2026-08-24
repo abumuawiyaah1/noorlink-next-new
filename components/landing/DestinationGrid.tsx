@@ -14,17 +14,17 @@ const destinations: {
   routeSlug: RegionalRouteSlug;
 }[] = [
   {
+    id: "caribbean",
+    title: "Caribbean",
+    subtitle: "Bahamas, Jamaica, Dominican Republic & more",
+    image: getCountryImageUrl("caribbean"),
+    routeSlug: "caribbean",
+  },
+  {
     id: "americas",
     title: "Americas",
     subtitle: "USA, Canada, Mexico & more",
     image: getCountryImageUrl("americas"),
-    routeSlug: "north-america",
-  },
-  {
-    id: "caribbean",
-    title: "Caribbean",
-    subtitle: "Bahamas, Panama, Costa Rica & more",
-    image: getCountryImageUrl("caribbean"),
     routeSlug: "north-america",
   },
   {

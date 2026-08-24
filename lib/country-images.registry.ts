@@ -69,6 +69,7 @@ export const COUNTRY_IMAGE_REGISTRY: Record<string, string> = {
 
 /** Regional multi-country products only — never used as a stand-in for a single country. */
 export const REGIONAL_IMAGE_REGISTRY: Record<string, string> = {
+  caribbean: "/images/destinations/caribbean-regional.jpg",
   africa: "/images/destinations/africa-regional.jpg",
   americas: "/images/destinations/north-america-regional.jpg",
   "north-america": "/images/destinations/north-america-regional.jpg",
@@ -77,5 +78,4 @@ export const REGIONAL_IMAGE_REGISTRY: Record<string, string> = {
   "middle-east": "/images/destinations/middle-east-regional.jpg",
   "south-america": "/images/destinations/south-america-regional.jpg",
   global: "/images/destinations/global-regional.jpg",
-  caribbean: "/images/destinations/bahamas.jpg",
 };

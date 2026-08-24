@@ -41,12 +41,13 @@ export function RegionalPlansPromo() {
               livePrices[product.apiCountryId]?.label ?? PENDING_PRICE_LABEL;
             const hasPrice = Boolean(livePrices[product.apiCountryId]);
             const image = getRegionalImageUrl(routeSlug);
+            const featured = Boolean(product.featured);
 
             return (
               <Link
                 key={routeSlug}
                 href={plansPathForRegion(routeSlug)}
-                className="regional-promo__card"
+                className={`regional-promo__card${featured ? " is-featured" : ""}`}
                 aria-label={`View ${product.displayName} plans, ${price}`}
               >
                 <div className="regional-promo__media">
@@ -55,6 +56,9 @@ export function RegionalPlansPromo() {
                     alt=""
                     priority={index < 3}
                   />
+                  {featured && (
+                    <span className="regional-promo__badge">Island escape</span>
+                  )}
                   <span className="regional-promo__flag" aria-hidden="true">
                     {product.flag}
                   </span>
@@ -62,7 +66,7 @@ export function RegionalPlansPromo() {
                 <div className="regional-promo__body">
                   <strong>{product.shortName}</strong>
                   <span className="regional-promo__meta">
-                    {product.countries.length} countries
+                    {product.countries.length} destinations
                   </span>
                   <span
                     className={`regional-promo__price${hasPrice ? "" : " is-pending"}`}

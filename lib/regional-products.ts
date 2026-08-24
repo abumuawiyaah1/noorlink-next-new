@@ -1,6 +1,7 @@
 import { plansPathForCountry } from "@/lib/country-slugs";
 
 export type RegionalRouteSlug =
+  | "caribbean"
   | "europe"
   | "north-america"
   | "asia-pacific"
@@ -20,9 +21,50 @@ export type RegionalProduct = {
   exclusions: readonly string[];
   singleCountrySlug: string;
   faqBorder: string;
+  /** Homepage grid: show first / with spotlight badge */
+  featured?: boolean;
 };
 
 export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
+  caribbean: {
+    routeSlug: "caribbean",
+    apiCountryId: "regional-caribbean",
+    displayName: "Caribbean Regional",
+    shortName: "Caribbean",
+    flag: "🏝️",
+    heroTagline:
+      "Island-hop on one eSIM — Bahamas, Jamaica, Dominican Republic and 20+ Caribbean destinations.",
+    countries: [
+      "Anguilla",
+      "Antigua and Barbuda",
+      "Aruba",
+      "Bahamas",
+      "Barbados",
+      "British Virgin Islands",
+      "Cayman Islands",
+      "Curacao",
+      "Dominica",
+      "Dominican Republic",
+      "Grenada",
+      "Guadeloupe",
+      "Jamaica",
+      "Martinique",
+      "Montserrat",
+      "Puerto Rico",
+      "Saint Kitts and Nevis",
+      "Saint Lucia",
+      "Saint Maarten",
+      "Saint Martin",
+      "Saint Vincent and the Grenadines",
+      "Turks and Caicos Islands",
+      "U.S. Virgin Islands",
+    ],
+    exclusions: [],
+    singleCountrySlug: "jamaica",
+    faqBorder:
+      "No. One Caribbean plan covers every island listed on this page — install once and hop freely.",
+    featured: true,
+  },
   europe: {
     routeSlug: "europe",
     apiCountryId: "regional-europe",
@@ -201,6 +243,9 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
 };
 
 const ROUTE_ALIASES: Record<string, RegionalRouteSlug> = {
+  caribbean: "caribbean",
+  carribean: "caribbean",
+  "west-indies": "caribbean",
   europe: "europe",
   eu: "europe",
   schengen: "europe",
@@ -221,9 +266,17 @@ const ROUTE_ALIASES: Record<string, RegionalRouteSlug> = {
   world: "global",
 };
 
-export const REGIONAL_ROUTE_SLUGS = Object.keys(
-  REGIONAL_PRODUCTS,
-) as RegionalRouteSlug[];
+/** Display order — Caribbean first (leisure spotlight under the map). */
+export const REGIONAL_ROUTE_SLUGS: RegionalRouteSlug[] = [
+  "caribbean",
+  "europe",
+  "middle-east",
+  "north-america",
+  "asia-pacific",
+  "africa",
+  "south-america",
+  "global",
+];
 
 export function normalizeRegionalRouteSlug(input: string): RegionalRouteSlug | null {
   const key = input.trim().toLowerCase().replace(/_/g, "-").replace(/\s+/g, "-");
@@ -265,6 +318,15 @@ export function regionalSearchMatches(query: string): RegionalProduct[] {
     if (q.includes("global") && product.routeSlug === "global") return true;
     if (q.includes("world") && product.routeSlug === "global") return true;
     if (q.includes("africa") && product.routeSlug === "africa") return true;
+    if (
+      (q.includes("caribbean") ||
+        q.includes("bahamas") ||
+        q.includes("jamaica") ||
+        q.includes("barbados")) &&
+      product.routeSlug === "caribbean"
+    ) {
+      return true;
+    }
     if (
       (q.includes("south america") || q.includes("latam")) &&
       product.routeSlug === "south-america"
