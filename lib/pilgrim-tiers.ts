@@ -44,11 +44,11 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
   {
     key: "unlimited",
     title: "Unlimited Devotion",
-    subtitle: "Premium / Unlimited",
+    subtitle: "Premium · 50GB",
     description:
-      "Unlimited peace of mind for live streams, video calls, and full itinerary apps.",
+      "High-capacity 50GB for live streams, video calls, and full itinerary apps.",
     highlights: [
-      "Unlimited high-speed data",
+      "50GB high-speed data (30 days)",
       "Best for extended stays",
       "Superior value under network congestion",
     ],
@@ -56,9 +56,9 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
   {
     key: "family",
     title: "Family Share",
-    subtitle: "Efficiency / Hotspot",
+    subtitle: "Efficiency / Hotspot · 50GB",
     description:
-      "One plan, shared connectivity — coordinate your group with a single hotspot.",
+      "One 50GB plan, shared connectivity — coordinate your group with a single hotspot.",
     highlights: [
       "Hotspot-ready for group devices",
       "Split cost across travelers",
@@ -121,11 +121,11 @@ export const PILGRIM_FALLBACK_PLANS: Record<PilgrimTierKey, EsimPlan> = {
   unlimited: {
     id: "pilgrim-unlimited",
     countryId: "saudi-arabia",
-    name: "Unlimited Devotion",
-    dataGb: undefined,
-    durationDays: 21,
-    price: 34.95,
-    formattedPriceParts: fallbackParts(34.95),
+    name: "Unlimited Devotion 50GB",
+    dataGb: 50,
+    durationDays: 30,
+    price: 69.95,
+    formattedPriceParts: fallbackParts(69.95),
     currency: "USD",
     isRechargeable: false,
     isPayAsYouGo: false,
@@ -137,11 +137,11 @@ export const PILGRIM_FALLBACK_PLANS: Record<PilgrimTierKey, EsimPlan> = {
   family: {
     id: "pilgrim-family",
     countryId: "saudi-arabia",
-    name: "Family Share",
-    dataGb: 30,
-    durationDays: 21,
-    price: 39.95,
-    formattedPriceParts: fallbackParts(39.95),
+    name: "Family Share 50GB",
+    dataGb: 50,
+    durationDays: 30,
+    price: 74.95,
+    formattedPriceParts: fallbackParts(74.95),
     currency: "USD",
     isRechargeable: false,
     isPayAsYouGo: false,
