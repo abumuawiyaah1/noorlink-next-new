@@ -20,6 +20,7 @@ import {
   type PilgrimTierOffer,
   computeGroupSavings,
   resolveConnectedPilgrimPlan,
+  resolvePilgrimPlanCopy,
   resolvePilgrimTiers,
   splitPricePerPerson,
 } from "@/lib/pilgrim-tiers";
@@ -73,14 +74,15 @@ function TierCard({
   onConnectedDataGbChange: (gb: ConnectedPilgrimDataGb) => void;
 }) {
   if (tier.comingSoon) {
+    const copy = resolvePilgrimPlanCopy(tier, null);
     return (
       <article className="pilgrim-card pilgrim-card--coming-soon">
         <span className="pilgrim-card__badge">Coming soon</span>
         <p className="pilgrim-card__tier">{tier.subtitle}</p>
         <h2 className="pilgrim-card__title">{tier.title}</h2>
-        <p className="pilgrim-card__desc">{tier.description}</p>
+        <p className="pilgrim-card__desc">{copy.description}</p>
         <ul className="pilgrim-card__highlights">
-          {tier.highlights.map((item) => (
+          {copy.highlights.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
@@ -101,6 +103,8 @@ function TierCard({
     ? resolveConnectedPilgrimPlan(tier, connectedDataGb)
     : tier.plan;
   if (!plan) return null;
+
+  const copy = resolvePilgrimPlanCopy(tier, plan, connectedDataGb);
 
   const display = tier.hasGroupCalculator
     ? splitPricePerPerson(plan.price, plan.formattedPriceParts, groupSize)
@@ -125,10 +129,10 @@ function TierCard({
 
       <p className="pilgrim-card__tier">{tier.subtitle}</p>
       <h2 className="pilgrim-card__title">{tier.title}</h2>
-      <p className="pilgrim-card__desc">{tier.description}</p>
+      <p className="pilgrim-card__desc">{copy.description}</p>
 
       <ul className="pilgrim-card__highlights">
-        {tier.highlights.map((item) => (
+        {copy.highlights.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
@@ -408,8 +412,9 @@ export function PilgrimSelectionPage({
 
               <h2 className="plans-picker__title">Choose your pilgrimage plan</h2>
               <p className="plans-picker__hint">
-                Pick a profile that matches your trip, then continue to secure Stripe
-                checkout — the price you see is the price you pay.
+                Each plan matches an Access Saudi fixed pack (data, days, and
+                3G/4G/5G). Pick the profile that fits your trip, then continue to
+                secure Stripe checkout — the price you see is the price you pay.
               </p>
             </>
           )}

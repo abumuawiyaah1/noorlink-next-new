@@ -79,7 +79,77 @@ export type PilgrimTierOffer = PilgrimTierMeta & {
   };
 };
 
-export type ConnectedPilgrimDataGb = 10 | 20;
+export type PilgrimPlanCopy = {
+  description: string;
+  highlights: string[];
+};
+
+/** Customer-facing copy derived from Access fixed-pack specs (data, days, speed). */
+export function resolvePilgrimPlanCopy(
+  tier: PilgrimTierOffer,
+  plan: EsimPlan | null,
+  connectedDataGb: ConnectedPilgrimDataGb = 10,
+): PilgrimPlanCopy {
+  if (tier.comingSoon) {
+    return {
+      description: tier.description,
+      highlights: tier.highlights,
+    };
+  }
+
+  const days = plan?.durationDays ?? 30;
+  const gb = plan?.dataGb;
+  const speed = "3G / 4G / 5G";
+
+  if (tier.key === "basic") {
+    return {
+      description: `Access Saudi fixed pack: ${gb ?? 5}GB for ${days} days on ${speed}. Built for maps, WhatsApp, and arrival coordination without overbuying data.`,
+      highlights: [
+        `${gb ?? 5}GB high-speed data · ${days} days`,
+        `${speed} on Saudi networks`,
+        "Best for short Umrah or light daily use",
+      ],
+    };
+  }
+
+  if (tier.key === "connected") {
+    const selectedGb = connectedDataGb;
+    if (selectedGb === 20) {
+      return {
+        description: `Access Saudi fixed pack: 20GB for ${days} days on ${speed}. Extra headroom for photos, navigation, and regular video calls during a fuller pilgrimage.`,
+        highlights: [
+          `20GB high-speed data · ${days} days`,
+          `${speed} · hotspot supported on most devices`,
+          "Best when you share updates and stream more often",
+        ],
+      };
+    }
+    return {
+      description: `Access Saudi fixed pack: 10GB for ${days} days on ${speed}. The balanced pick for daily worship apps, family messaging, and maps across Makkah & Madinah.`,
+      highlights: [
+        `10GB high-speed data · ${days} days`,
+        `${speed} · Saudi Arabia coverage`,
+        "Recommended for most first-time pilgrims",
+      ],
+    };
+  }
+
+  if (tier.key === "unlimited") {
+    return {
+      description: `Access Saudi fixed pack: ${gb ?? 50}GB for ${days} days on ${speed}. High-capacity plan for heavy video, live updates, and longer stays — not a true unlimited line.`,
+      highlights: [
+        `${gb ?? 50}GB high-speed data · ${days} days`,
+        `${speed} · Saudi Arabia coverage`,
+        "Choose when 20GB is not enough for your trip",
+      ],
+    };
+  }
+
+  return {
+    description: tier.description,
+    highlights: tier.highlights,
+  };
+}
 
 function fallbackParts(price: number): FormattedPriceParts {
   const dollars = Math.floor(price);
@@ -93,8 +163,7 @@ export const PILGRIM_FALLBACK_PLANS: Record<PilgrimTierKey, EsimPlan> = {
     countryId: "saudi-arabia",
     name: "Lite Explorer",
     dataGb: 5,
-    durationDays: 10,
-    price: 15.77,
+    durationDays: 30,
     formattedPriceParts: fallbackParts(15.77),
     currency: "USD",
     isRechargeable: false,
