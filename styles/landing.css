@@ -159,21 +159,92 @@
             background: white; padding: 6px 10px; border-radius: var(--radius-sm);
             display: flex; align-items: center; font-size: 24px;
         }
-        .popular-countries { padding: 0 0 80px; }
-        .popular-countries__grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;
+        .popular-countries {
+            padding: 12px 0 56px;
+        }
+        .popular-countries__header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px 24px;
+            margin-bottom: 18px;
+        }
+        .popular-countries__header h2 {
+            margin: 0.15rem 0 0;
+            font-size: clamp(1.5rem, 2.4vw, 2rem);
+            color: var(--primary);
+        }
+        .popular-countries__hint {
+            margin: 0;
+            max-width: 360px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+        .popular-countries__track {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px 2px 8px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .popular-countries__track::-webkit-scrollbar {
+            height: 6px;
+        }
+        .popular-countries__track::-webkit-scrollbar-thumb {
+            background: rgba(15, 61, 62, 0.18);
+            border-radius: 999px;
         }
         .popular-country {
-            display: flex; align-items: center; justify-content: space-between; gap: 12px;
-            padding: 16px 18px; border-radius: var(--radius-card); background: #fff; text-decoration: none;
+            flex: 1 1 0;
+            min-width: 132px;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 16px 14px 14px;
+            border-radius: var(--radius-card);
+            background: #fff;
+            text-decoration: none;
+            text-align: center;
             border: 3px solid transparent;
             background:
                 linear-gradient(#fff, #fff) padding-box,
                 var(--border-gradient) border-box;
+            box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .popular-country:hover { transform: translateY(-2px); }
-        .popular-country__name { font-weight: 800; color: var(--primary); }
-        .popular-country__price { font-weight: 800; color: var(--accent); font-size: 0.92rem; }
+        .popular-country:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px rgba(15, 61, 62, 0.1);
+        }
+        .popular-country__flag {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.25rem;
+            height: 3.25rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.14), rgba(15, 61, 62, 0.06));
+            font-size: 1.85rem;
+            line-height: 1;
+        }
+        .popular-country__name {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+        .popular-country__price {
+            font-weight: 800;
+            color: var(--accent);
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
         .popular-country__price.is-pending { color: var(--text-muted); font-weight: 700; }
 
         /* --- DESTINATIONS CARDS (UPDATED WITH ORGANIZED IMAGE SYSTEM) --- */
@@ -309,5 +380,13 @@
             .promo-feature-img { width: 100%; height: 250px; transform: rotate(0deg); }
             .newsletter-box { grid-template-columns: 1fr; padding: 30px; }
             .promo-title { font-size: 2.1rem; }
-            .popular-countries { padding-bottom: 48px; }
+            .popular-countries { padding: 8px 0 40px; }
+            .popular-countries__header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .popular-country {
+                min-width: 118px;
+                flex: 0 0 118px;
+            }
         }

@@ -20,13 +20,13 @@ export function HomePage() {
       <LandingTicker />
       <HomeHero />
       <TrustStatsBar />
+      <PopularCountries />
       <HowItWorks />
       <UmrahPromo />
       <WhyNoorLink />
       <RegionalPlansPromo />
       <Testimonials />
       <DestinationGrid />
-      <PopularCountries />
       <DeviceChecker />
       <HomeNewsletter />
       <HomeFooter />
