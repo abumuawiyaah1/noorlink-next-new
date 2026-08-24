@@ -1,15 +1,25 @@
+"use client";
+
 import Link from "next/link";
 import {
   plansPathForRegion,
   REGIONAL_ROUTE_SLUGS,
   REGIONAL_PRODUCTS,
 } from "@/lib/regional-products";
+import { RegionalWorldMap } from "@/components/landing/RegionalWorldMap";
+import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
+import { getRegionalImageUrl } from "@/lib/country-images";
 import {
-  RegionalWorldMap,
-  REGION_BRAND_COLORS,
-} from "@/components/landing/RegionalWorldMap";
+  PENDING_PRICE_LABEL,
+  useLiveStartingPrices,
+} from "@/components/destinations/useLiveStartingPrices";
 
 export function RegionalPlansPromo() {
+  const priceIds = REGIONAL_ROUTE_SLUGS.map(
+    (slug) => REGIONAL_PRODUCTS[slug].apiCountryId,
+  );
+  const livePrices = useLiveStartingPrices(priceIds);
+
   return (
     <section className="regional-promo" aria-labelledby="regional-promo-heading">
       <div className="container">
@@ -17,36 +27,49 @@ export function RegionalPlansPromo() {
           <span className="why-kicker">Crossing borders?</span>
           <h2 id="regional-promo-heading">One eSIM for the whole region</h2>
           <p>
-            Tap a colored region on the real world map — install once and stay
-            connected across every covered country.
+            Tap a colored region on the map — or pick a card below. Install once
+            and stay connected across every covered country.
           </p>
         </div>
 
         <RegionalWorldMap />
 
         <div className="regional-promo__grid" aria-label="All regional plans">
-          {REGIONAL_ROUTE_SLUGS.map((routeSlug) => {
+          {REGIONAL_ROUTE_SLUGS.map((routeSlug, index) => {
             const product = REGIONAL_PRODUCTS[routeSlug];
-            const swatch = REGION_BRAND_COLORS[routeSlug];
+            const price =
+              livePrices[product.apiCountryId]?.label ?? PENDING_PRICE_LABEL;
+            const hasPrice = Boolean(livePrices[product.apiCountryId]);
+            const image = getRegionalImageUrl(routeSlug);
+
             return (
               <Link
                 key={routeSlug}
                 href={plansPathForRegion(routeSlug)}
                 className="regional-promo__card"
+                aria-label={`View ${product.displayName} plans, ${price}`}
               >
-                <div className="regional-promo__card-top">
-                  <span
-                    className="regional-promo__card-swatch"
-                    style={{ background: swatch }}
-                    aria-hidden="true"
+                <div className="regional-promo__media">
+                  <DestinationCardMedia
+                    src={image}
+                    alt=""
+                    priority={index < 3}
                   />
                   <span className="regional-promo__flag" aria-hidden="true">
                     {product.flag}
                   </span>
                 </div>
-                <strong>{product.displayName}</strong>
-                <span>{product.countries.length} countries</span>
-                <span className="regional-promo__cta">See plans →</span>
+                <div className="regional-promo__body">
+                  <strong>{product.shortName}</strong>
+                  <span className="regional-promo__meta">
+                    {product.countries.length} countries
+                  </span>
+                  <span
+                    className={`regional-promo__price${hasPrice ? "" : " is-pending"}`}
+                  >
+                    {price}
+                  </span>
+                </div>
               </Link>
             );
           })}

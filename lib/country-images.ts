@@ -44,6 +44,9 @@ const REGIONAL_PRODUCT_SLUGS = new Set([
   "middle-east",
   "africa",
   "americas",
+  "north-america",
+  "south-america",
+  "global",
   "latam",
   "caribbean",
 ]);
@@ -51,7 +54,8 @@ const REGIONAL_PRODUCT_SLUGS = new Set([
 const REGIONAL_SLUG_ALIASES: Record<string, string> = {
   asia: "asia-pacific",
   mea: "middle-east",
-  latam: "americas",
+  latam: "south-america",
+  americas: "north-america",
 };
 
 export function getCountryImage(countryId: string): CountryImageResult {
@@ -92,6 +96,16 @@ export function getCountryImage(countryId: string): CountryImageResult {
 
 export function getCountryImageUrl(countryId: string): string {
   return getCountryImage(countryId).src;
+}
+
+/** Image for a regional storefront product (map cards, plans hero). */
+export function getRegionalImageUrl(routeSlug: string): string {
+  const key = REGIONAL_SLUG_ALIASES[routeSlug] ?? routeSlug;
+  return (
+    REGIONAL_IMAGE_REGISTRY[key] ??
+    REGIONAL_IMAGE_REGISTRY[routeSlug] ??
+    COUNTRY_IMAGE_PLACEHOLDER
+  );
 }
 
 export function hasCountryPhoto(countryId: string): boolean {

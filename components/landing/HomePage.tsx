@@ -1,4 +1,3 @@
-import { DestinationGrid } from "@/components/landing/DestinationGrid";
 import { DeviceChecker } from "@/components/landing/DeviceChecker";
 import { HomeFooter } from "@/components/landing/HomeFooter";
 import { HomeHero } from "@/components/landing/HomeHero";
@@ -26,7 +25,6 @@ export function HomePage() {
       <WhyNoorLink />
       <RegionalPlansPromo />
       <Testimonials />
-      <DestinationGrid />
       <DeviceChecker />
       <HomeNewsletter />
       <HomeFooter />
