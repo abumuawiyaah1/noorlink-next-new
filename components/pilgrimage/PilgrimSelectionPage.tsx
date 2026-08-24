@@ -9,6 +9,7 @@ import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
 import { CountrySearch } from "@/components/search/CountrySearch";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
+import { PilgrimCarrierRow } from "@/components/pilgrimage/PilgrimCarrierRow";
 import {
   fetchPlansByCountry,
   type EsimPlan,
@@ -29,6 +30,8 @@ import "@/styles/plans-dynamic.css";
 
 const SAUDI_COUNTRY_ID = "saudi-arabia";
 const GROUP_SIZES = [2, 3, 4, 5, 6, 7, 8];
+const HAJJ_WHATSAPP_MESSAGE =
+  "Hi NoorLink — I have a question about Hajj & Umrah eSIM plans before I buy.";
 
 type PilgrimSelectionPageProps = {
   countryImage: string;
@@ -119,7 +122,18 @@ function TierCard({
 
   return (
     <article
-      className={`pilgrim-card${tier.recommended ? " is-recommended" : ""}${selected ? " is-selected" : ""}${badge === "Best Choice" ? " is-best-choice" : ""}`}
+      className={`pilgrim-card pilgrim-card--selectable${tier.recommended ? " is-recommended" : ""}${selected ? " is-selected" : ""}${badge === "Best Choice" ? " is-best-choice" : ""}`}
+      onClick={onSelect}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-pressed={selected}
+      aria-label={`Select ${tier.title}`}
     >
       {badge && (
         <span
@@ -156,7 +170,10 @@ function TierCard({
                   type="button"
                   className={`pilgrim-data-picker__option${active ? " is-active" : ""}`}
                   aria-pressed={active}
-                  onClick={() => onConnectedDataGbChange(gb)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onConnectedDataGbChange(gb);
+                  }}
                 >
                   <span className="pilgrim-data-picker__gb">{gb} GB</span>
                   <span className="pilgrim-data-picker__meta">
@@ -203,7 +220,14 @@ function TierCard({
         )}
       </div>
 
-      <button type="button" className="pilgrim-card__cta" onClick={onSelect}>
+      <button
+        type="button"
+        className="pilgrim-card__cta"
+        onClick={(event) => {
+          event.stopPropagation();
+          onSelect();
+        }}
+      >
         {selected ? "Selected" : "Select plan"}
       </button>
     </article>
@@ -413,11 +437,32 @@ export function PilgrimSelectionPage({
                 <span>24/7 WhatsApp support</span>
               </div>
 
+              <PilgrimCarrierRow />
+
+              <div className="pilgrim-trip-guide" aria-labelledby="pilgrim-trip-guide-title">
+                <h2 id="pilgrim-trip-guide-title" className="pilgrim-trip-guide__title">
+                  Which plan fits your trip?
+                </h2>
+                <ul className="pilgrim-trip-guide__list">
+                  <li>
+                    <strong>3–7 day Umrah</strong>
+                    <span>Lite Explorer · 5GB</span>
+                  </li>
+                  <li>
+                    <strong>First pilgrimage · 10–14 days</strong>
+                    <span>Connected · 10GB</span>
+                  </li>
+                  <li>
+                    <strong>Long stay or heavy video use</strong>
+                    <span>Full Devotion · 50GB</span>
+                  </li>
+                </ul>
+              </div>
+
               <h2 className="plans-picker__title">Choose your pilgrimage plan</h2>
               <p className="plans-picker__hint">
-                Each plan matches an Access Saudi fixed pack (data, days, and
-                3G/4G/5G). Pick the profile that fits your trip, then continue to
-                secure Stripe checkout — the price you see is the price you pay.
+                Fixed Saudi data plans — the price you see is the price you pay at
+                secure checkout. Hotspot sharing is included on all live plans below.
               </p>
             </>
           )}
@@ -459,10 +504,36 @@ export function PilgrimSelectionPage({
                     setSelectedTier(tier.key);
                   }}
                   onGroupSizeChange={setGroupSize}
-                  onConnectedDataGbChange={setConnectedDataGb}
+                  onConnectedDataGbChange={(gb) => {
+                    setConnectedDataGb(gb);
+                    setSelectedTier("connected");
+                  }}
                 />
               ))}
             </section>
+          )}
+
+          {!loading && !error && tiers.length > 0 && (
+            <div className="pilgrim-support-cta">
+              <p className="pilgrim-support-cta__text">
+                Not sure which plan to pick? Our team helps pilgrims every day.
+              </p>
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(HAJJ_WHATSAPP_MESSAGE)}`}
+                className="pilgrim-support-cta__button"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ask on WhatsApp
+              </a>
+            </div>
+          )}
+
+          {activePlan && (
+            <p className="pilgrim-install-note">
+              Install on Wi‑Fi before you fly. Your data package typically starts when
+              the eSIM connects to a Saudi network — not at checkout.
+            </p>
           )}
 
           {activePlan && (
@@ -526,8 +597,8 @@ export function PilgrimSelectionPage({
               Benefits comparison
             </h2>
             <p className="pilgrim-compare__subtitle">
-              Congestion-resilient access and group coordination matter most during
-              peak pilgrimage periods.
+              Compare data, hotspot, and support across our pilgrimage profiles.
+              Family Share group plans are coming soon.
             </p>
             <div className="pilgrim-compare__table-wrap">
               <table>
@@ -542,37 +613,44 @@ export function PilgrimSelectionPage({
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Congestion-resilient access</td>
-                    <td>Standard</td>
-                    <td>Enhanced</td>
-                    <td>Priority</td>
-                    <td>Shared priority</td>
-                  </tr>
-                  <tr>
-                    <td>Group coordination</td>
-                    <td>Individual</td>
-                    <td>Individual</td>
-                    <td>Individual</td>
-                    <td>Hotspot for full group</td>
-                  </tr>
-                  <tr>
-                    <td>Video calls &amp; live updates</td>
-                    <td>Limited</td>
-                    <td>Reliable</td>
-                    <td>Heavy 50GB use</td>
+                    <td>Coverage</td>
+                    <td>Makkah &amp; Madinah</td>
+                    <td>Makkah &amp; Madinah</td>
+                    <td>Makkah &amp; Madinah</td>
                     <td>Coming soon</td>
                   </tr>
                   <tr>
-                    <td>Cost efficiency (4+ travelers)</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
+                    <td>Data allowance</td>
+                    <td>5GB · 30 days</td>
+                    <td>10GB or 20GB</td>
+                    <td>50GB · 30 days</td>
+                    <td>Coming soon</td>
+                  </tr>
+                  <tr>
+                    <td>Hotspot sharing</td>
+                    <td>Included</td>
+                    <td>Included</td>
+                    <td>Included</td>
+                    <td>Coming soon</td>
+                  </tr>
+                  <tr>
+                    <td>WhatsApp support</td>
+                    <td>24/7</td>
+                    <td>24/7</td>
+                    <td>24/7</td>
+                    <td>Coming soon</td>
+                  </tr>
+                  <tr>
+                    <td>Video calls &amp; live updates</td>
+                    <td>Light use</td>
+                    <td>Regular use</td>
+                    <td>Heavy use</td>
                     <td>Coming soon</td>
                   </tr>
                   <tr>
                     <td>Best for</td>
                     <td>Short stays</td>
-                    <td>First-time pilgrims</td>
+                    <td>Most first-time pilgrims</td>
                     <td>Extended devotion</td>
                     <td>Coming soon</td>
                   </tr>
