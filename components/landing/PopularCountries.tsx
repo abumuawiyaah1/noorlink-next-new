@@ -17,15 +17,9 @@ export function PopularCountries() {
   return (
     <section className="popular-countries" aria-labelledby="popular-countries-heading">
       <div className="container">
-        <div className="popular-countries__header">
-          <div>
-            <span className="why-kicker">Live starting prices</span>
-            <h2 id="popular-countries-heading">Popular countries</h2>
-          </div>
-          <p className="popular-countries__hint">
-            Tap a destination — the price shown is the cheapest plan you can select today.
-          </p>
-        </div>
+        <h2 id="popular-countries-heading" className="sr-only">
+          Popular countries
+        </h2>
 
         <div className="popular-countries__track" role="list">
           {cards.map((card) => {
