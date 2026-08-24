@@ -16,9 +16,11 @@ import {
   type PlansByCountryResponse,
 } from "@/lib/plans-api";
 import {
+  type ConnectedPilgrimDataGb,
   type PilgrimTierKey,
   type PilgrimTierOffer,
   computeGroupSavings,
+  resolveConnectedPilgrimPlan,
   resolvePilgrimTiers,
   splitPricePerPerson,
 } from "@/lib/pilgrim-tiers";
@@ -56,18 +58,25 @@ function TierCard({
   tier,
   selected,
   groupSize,
+  connectedDataGb,
   individualReferencePrice,
   onSelect,
   onGroupSizeChange,
+  onConnectedDataGbChange,
 }: {
   tier: PilgrimTierOffer;
   selected: boolean;
   groupSize: number;
+  connectedDataGb: ConnectedPilgrimDataGb;
   individualReferencePrice: number;
   onSelect: () => void;
   onGroupSizeChange: (size: number) => void;
+  onConnectedDataGbChange: (gb: ConnectedPilgrimDataGb) => void;
 }) {
-  const plan = tier.plan;
+  const isConnected = tier.key === "connected" && tier.connectedVariants;
+  const plan = isConnected
+    ? resolveConnectedPilgrimPlan(tier, connectedDataGb)
+    : tier.plan;
   if (!plan) return null;
 
   const display = tier.hasGroupCalculator
@@ -100,6 +109,35 @@ function TierCard({
           <li key={item}>{item}</li>
         ))}
       </ul>
+
+      {isConnected && (
+        <div className="pilgrim-data-picker" role="group" aria-label="Data allowance">
+          <span className="pilgrim-data-picker__label">Data allowance</span>
+          <div className="pilgrim-data-picker__options">
+            {([10, 20] as const).map((gb) => {
+              const variant =
+                gb === 10
+                  ? tier.connectedVariants!.gb10
+                  : tier.connectedVariants!.gb20;
+              const active = connectedDataGb === gb;
+              return (
+                <button
+                  key={gb}
+                  type="button"
+                  className={`pilgrim-data-picker__option${active ? " is-active" : ""}`}
+                  aria-pressed={active}
+                  onClick={() => onConnectedDataGbChange(gb)}
+                >
+                  <span className="pilgrim-data-picker__gb">{gb} GB</span>
+                  <span className="pilgrim-data-picker__meta">
+                    {variant.durationDays ?? 30} days
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="pilgrim-price-wrap">
         <PsychologicalPrice
@@ -160,6 +198,7 @@ export function PilgrimSelectionPage({
   const [loading, setLoading] = useState(!initialData && !initialError);
   const [error, setError] = useState<string | null>(initialError);
   const [selectedTier, setSelectedTier] = useState<PilgrimTierKey>("connected");
+  const [connectedDataGb, setConnectedDataGb] = useState<ConnectedPilgrimDataGb>(10);
   const [groupSize, setGroupSize] = useState(4);
   const [compatibilityOpen, setCompatibilityOpen] = useState(false);
 
@@ -211,7 +250,10 @@ export function PilgrimSelectionPage({
     () => tiers.find((tier) => tier.key === "connected") ?? null,
     [tiers],
   );
-  const individualReferencePrice = connectedTier?.plan?.price ?? 0;
+  const individualReferencePrice =
+    connectedTier?.connectedVariants?.gb10.price ??
+    connectedTier?.plan?.price ??
+    0;
 
   const activeTier = useMemo(
     () =>
@@ -222,7 +264,21 @@ export function PilgrimSelectionPage({
     [tiers, selectedTier],
   );
 
-  const activePlan = activeTier?.plan;
+  const activePlan = useMemo(() => {
+    if (!activeTier) return null;
+    if (activeTier.key === "connected") {
+      return resolveConnectedPilgrimPlan(activeTier, connectedDataGb);
+    }
+    return activeTier.plan;
+  }, [activeTier, connectedDataGb]);
+
+  const activePlanLabel = useMemo(() => {
+    if (!activeTier) return "";
+    if (activeTier.key === "connected") {
+      return `${activeTier.title} · ${connectedDataGb}GB`;
+    }
+    return activeTier.title;
+  }, [activeTier, connectedDataGb]);
   const checkoutPrice = useMemo(() => {
     if (!activePlan) return 0;
     if (activeTier?.hasGroupCalculator) {
@@ -248,9 +304,13 @@ export function PilgrimSelectionPage({
   }, [activePlan, activeTier?.hasGroupCalculator, groupSize]);
 
   const cheapest = useMemo(() => {
-    const prices = tiers
-      .map((tier) => tier.plan?.price)
-      .filter((price): price is number => typeof price === "number");
+    const prices = tiers.flatMap((tier) => {
+      if (tier.key === "connected" && tier.connectedVariants) {
+        return [tier.connectedVariants.gb10.price, tier.connectedVariants.gb20.price];
+      }
+      if (typeof tier.plan?.price === "number") return [tier.plan.price];
+      return [];
+    });
     if (prices.length === 0) return null;
     return Math.min(...prices);
   }, [tiers]);
@@ -359,9 +419,11 @@ export function PilgrimSelectionPage({
                   tier={tier}
                   selected={selectedTier === tier.key}
                   groupSize={groupSize}
+                  connectedDataGb={connectedDataGb}
                   individualReferencePrice={individualReferencePrice}
                   onSelect={() => setSelectedTier(tier.key)}
                   onGroupSizeChange={setGroupSize}
+                  onConnectedDataGbChange={setConnectedDataGb}
                 />
               ))}
             </section>
@@ -371,7 +433,7 @@ export function PilgrimSelectionPage({
             <div className="pilgrim-desktop-cta">
               <div>
                 <p className="pilgrim-desktop-cta__label">Your selection</p>
-                <p className="pilgrim-desktop-cta__plan">{activeTier?.title}</p>
+                <p className="pilgrim-desktop-cta__plan">{activePlanLabel}</p>
               </div>
               <div className="pilgrim-desktop-cta__price">
                 <PsychologicalPrice
@@ -488,7 +550,7 @@ export function PilgrimSelectionPage({
           <div className="pilgrim-sticky-cta" role="region" aria-label="Purchase">
             <div className="pilgrim-sticky-cta__meta">
               <span className="pilgrim-sticky-cta__label">Selected plan</span>
-              <span className="pilgrim-sticky-cta__plan">{activeTier?.title}</span>
+              <span className="pilgrim-sticky-cta__plan">{activePlanLabel}</span>
               <PsychologicalPrice
                 parts={stickyParts}
                 currency={activePlan.currency}

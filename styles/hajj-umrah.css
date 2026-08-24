@@ -154,6 +154,65 @@
   color: var(--success-text);
 }
 
+.pilgrim-data-picker {
+  margin-top: 0.5rem;
+}
+
+.pilgrim-data-picker__label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pilgrim-data-picker__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.pilgrim-data-picker__option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-control);
+  border: 1.5px solid #e5e7eb;
+  background: var(--surface);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.pilgrim-data-picker__option:hover {
+  border-color: var(--accent);
+}
+
+.pilgrim-data-picker__option.is-active {
+  border-color: var(--accent);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.pilgrim-card.is-recommended .pilgrim-data-picker__option.is-active {
+  border-color: var(--accent);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.pilgrim-data-picker__gb {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.pilgrim-data-picker__meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
 .pilgrim-card__cta {
   width: 100%;
   padding: 0.8rem 1rem;

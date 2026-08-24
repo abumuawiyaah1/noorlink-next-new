@@ -33,7 +33,7 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
     title: "Connected Pilgrim",
     subtitle: "Best Choice",
     description:
-      "Balanced data for daily worship, family updates, and navigation.",
+      "Choose 10GB or 20GB — balanced data for daily worship, family updates, and navigation.",
     highlights: [
       "Congestion-resilient access",
       "Priority routing in holy sites",
@@ -70,7 +70,14 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
 
 export type PilgrimTierOffer = PilgrimTierMeta & {
   plan: EsimPlan | null;
+  /** Connected Pilgrim: traveler picks 10GB or 20GB (Access fixed packs). */
+  connectedVariants?: {
+    gb10: EsimPlan;
+    gb20: EsimPlan;
+  };
 };
+
+export type ConnectedPilgrimDataGb = 10 | 20;
 
 function fallbackParts(price: number): FormattedPriceParts {
   const dollars = Math.floor(price);
@@ -96,18 +103,18 @@ export const PILGRIM_FALLBACK_PLANS: Record<PilgrimTierKey, EsimPlan> = {
     displayBadge: null,
   },
   connected: {
-    id: "pilgrim-connected",
+    id: "pilgrim-connected-10",
     countryId: "saudi-arabia",
-    name: "Connected Pilgrim",
-    dataGb: 15,
-    durationDays: 15,
+    name: "Connected Pilgrim 10GB",
+    dataGb: 10,
+    durationDays: 30,
     price: 34.95,
     formattedPriceParts: fallbackParts(34.95),
     currency: "USD",
     isRechargeable: false,
     isPayAsYouGo: false,
-    pricingStrategy: "MANUAL",
-    marginStatus: "manual",
+    pricingStrategy: "AUTOMATED",
+    marginStatus: "automated",
     planCategory: "fixed",
     displayBadge: "best_choice",
   },
@@ -145,6 +152,37 @@ export const PILGRIM_FALLBACK_PLANS: Record<PilgrimTierKey, EsimPlan> = {
   },
 };
 
+const CONNECTED_FALLBACK_20: EsimPlan = {
+  ...PILGRIM_FALLBACK_PLANS.connected,
+  id: "pilgrim-connected-20",
+  name: "Connected Pilgrim 20GB",
+  dataGb: 20,
+  durationDays: 30,
+  price: 49.95,
+  formattedPriceParts: fallbackParts(49.95),
+};
+
+function pickConnectedPlan(plans: EsimPlan[], dataGb: ConnectedPilgrimDataGb): EsimPlan | null {
+  const named = plans.filter((p) => /connected pilgrim/i.test(p.name));
+  const match =
+    named.find((p) => p.dataGb === dataGb) ??
+    plans.find((p) => p.planCategory === "fixed" && p.dataGb === dataGb) ??
+    null;
+  return match;
+}
+
+export function resolveConnectedPilgrimPlan(
+  tier: PilgrimTierOffer,
+  dataGb: ConnectedPilgrimDataGb,
+): EsimPlan {
+  if (tier.connectedVariants) {
+    return dataGb === 20 ? tier.connectedVariants.gb20 : tier.connectedVariants.gb10;
+  }
+  if (tier.plan && tier.plan.dataGb === dataGb) return tier.plan;
+  if (dataGb === 20) return CONNECTED_FALLBACK_20;
+  return tier.plan ?? PILGRIM_FALLBACK_PLANS.connected;
+}
+
 export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
   const fixed = plans
     .filter((p) => p.planCategory === "fixed")
@@ -152,13 +190,20 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
   const unlimited = plans.find((p) => p.planCategory === "unlimited") ?? null;
   const flexible =
     plans.find((p) => p.planCategory === "flexible" || p.isRechargeable) ?? null;
+  const connectedGb10 =
+    pickConnectedPlan(plans, 10) ?? fixed.find((p) => p.dataGb === 10) ?? null;
+  const connectedGb20 =
+    pickConnectedPlan(plans, 20) ?? fixed.find((p) => p.dataGb === 20) ?? null;
   const connected =
+    connectedGb10 ??
     plans.find((p) => p.displayBadge === "best_choice") ??
-    fixed.find((p) => p.displayBadge === "best_choice") ??
     fixed[1] ??
     null;
   const basic =
-    fixed.find((p) => p.id !== connected?.id) ?? fixed[0] ?? null;
+    fixed.find((p) => p.id !== connected?.id && p.dataGb !== 10 && p.dataGb !== 20) ??
+    fixed.find((p) => p.id !== connectedGb10?.id && p.id !== connectedGb20?.id) ??
+    fixed[0] ??
+    null;
 
   const byKey: Record<PilgrimTierKey, EsimPlan | null> = {
     basic,
@@ -167,10 +212,18 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
     family: flexible,
   };
 
-  return PILGRIM_TIER_META.map((meta) => ({
-    ...meta,
-    plan: byKey[meta.key] ?? PILGRIM_FALLBACK_PLANS[meta.key],
-  }));
+  return PILGRIM_TIER_META.map((meta) => {
+    const plan = byKey[meta.key] ?? PILGRIM_FALLBACK_PLANS[meta.key];
+    const offer: PilgrimTierOffer = { ...meta, plan };
+    if (meta.key === "connected") {
+      offer.connectedVariants = {
+        gb10: connectedGb10 ?? PILGRIM_FALLBACK_PLANS.connected,
+        gb20: connectedGb20 ?? CONNECTED_FALLBACK_20,
+      };
+      offer.plan = offer.connectedVariants.gb10;
+    }
+    return offer;
+  });
 }
 
 export function splitPricePerPerson(
