@@ -386,10 +386,26 @@
   background: #fffaf3;
 }
 
-.plans-row.is-selected {
-  border-color: var(--accent);
-  background: #fff7ed;
-  box-shadow: 0 0 0 1px rgba(255, 149, 0, 0.25);
+.plans-row--coming-soon {
+  opacity: 0.85;
+  border-style: dashed;
+  cursor: default;
+}
+
+.plans-row--coming-soon:hover,
+.plans-row--coming-soon:focus-visible {
+  border-color: #d1d5db;
+  background: #f9fafb;
+}
+
+.plans-row--coming-soon .plans-row__details {
+  display: block;
+}
+
+.plans-row__cta--disabled {
+  background: #9ca3af !important;
+  color: #fff !important;
+  pointer-events: none;
 }
 
 .plans-row.is-best {

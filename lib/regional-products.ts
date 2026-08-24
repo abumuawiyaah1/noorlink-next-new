@@ -65,11 +65,8 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
       "United States",
       "Canada",
       "Mexico",
-      "Panama",
-      "Costa Rica",
-      "Bahamas",
     ],
-    exclusions: [],
+    exclusions: ["Panama", "Costa Rica", "Bahamas"],
     singleCountrySlug: "usa",
     faqBorder:
       "No. Keep the same eSIM line for mobile data across the USA, Canada, and Mexico.",
@@ -93,10 +90,8 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
       "Malaysia",
       "Philippines",
       "Vietnam",
-      "Fiji",
-      "Maldives",
     ],
-    exclusions: [],
+    exclusions: ["Fiji", "Maldives"],
     singleCountrySlug: "japan",
     faqBorder:
       "No. Use the same install when you hop between covered countries in Asia Pacific.",
@@ -107,7 +102,8 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
     displayName: "Middle East Regional",
     shortName: "Middle East",
     flag: "🕌",
-    heroTagline: "Gulf, Turkey, and more — one plan for multi-stop Middle East trips.",
+    heroTagline:
+      "Saudi, Gulf, Turkey, Egypt and more — one Access MENA pack for multi-stop trips.",
     countries: [
       "Saudi Arabia",
       "United Arab Emirates",
@@ -118,12 +114,14 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
       "Turkey",
       "Egypt",
       "Jordan",
-      "Lebanon",
+      "Israel",
+      "Morocco",
+      "Tunisia",
     ],
-    exclusions: [],
+    exclusions: ["Lebanon"],
     singleCountrySlug: "turkey",
     faqBorder:
-      "No. One regional plan covers every country listed on this page.",
+      "No. One regional plan covers every country listed on this page (Lebanon not included yet).",
   },
   africa: {
     routeSlug: "africa",
@@ -153,7 +151,8 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
     displayName: "South America Regional",
     shortName: "South America",
     flag: "🌎",
-    heroTagline: "Brazil to Patagonia — one eSIM for multi-country South America trips.",
+    heroTagline:
+      "South America regional packs are coming soon while we lock Access LatAm SKUs.",
     countries: [
       "Brazil",
       "Argentina",
@@ -166,7 +165,7 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
     exclusions: [],
     singleCountrySlug: "brazil",
     faqBorder:
-      "No. Cross borders within South America on one install and one data pool.",
+      "Regional South America coverage will use one install once Access LatAm packs are live.",
   },
   global: {
     routeSlug: "global",

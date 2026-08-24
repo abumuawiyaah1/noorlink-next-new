@@ -29,6 +29,7 @@ export type EsimPlan = {
   marginStatus: MarginStatus;
   planCategory: PlanCategory;
   displayBadge?: DisplayBadge | null;
+  comingSoon?: boolean;
 };
 
 export type PlanCategoryGroups = {

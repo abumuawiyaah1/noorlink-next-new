@@ -127,6 +127,33 @@ function PlanRow({
     countryLabel: countryName,
     isRegional,
   });
+  const comingSoon = Boolean(plan.comingSoon);
+
+  if (comingSoon) {
+    return (
+      <div
+        className={`plans-row plans-row--coming-soon${best ? " is-best" : ""}`}
+        aria-label={`${formatDataAmount(plan)} for ${formatDuration(plan.durationDays)} — coming soon`}
+      >
+        <span className="plans-row__data">{formatDataAmount(plan)}</span>
+        <span className="plans-row__duration">{formatDuration(plan.durationDays)}</span>
+        <span className="plans-row__price">
+          <PsychologicalPrice
+            parts={plan.formattedPriceParts}
+            currency={plan.currency}
+          />
+        </span>
+        <span className="plans-row__badge">Coming soon</span>
+        <span className="plans-row__cta plans-row__cta--disabled">Coming soon</span>
+        <div className="plans-row__details">
+          <p className="plans-row__desc">
+            This pack is listed for planning, but it is not wired to a live provider
+            SKU yet. WhatsApp us if you need an alternative for {countryName}.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
