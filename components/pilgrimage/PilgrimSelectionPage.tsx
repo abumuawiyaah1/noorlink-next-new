@@ -80,12 +80,14 @@ function TierCard({
         <span className="pilgrim-card__badge">Coming soon</span>
         <p className="pilgrim-card__tier">{tier.subtitle}</p>
         <h2 className="pilgrim-card__title">{tier.title}</h2>
-        <p className="pilgrim-card__desc">{copy.description}</p>
-        <ul className="pilgrim-card__highlights">
-          {copy.highlights.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
+        <div className="pilgrim-card__details">
+          <p className="pilgrim-card__desc">{copy.description}</p>
+          <ul className="pilgrim-card__highlights">
+            {copy.highlights.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
         <div className="pilgrim-price-wrap">
           <p className="pilgrim-card__coming-soon-note">
             Group hotspot plans are on the way — WhatsApp us for early access.
@@ -129,13 +131,14 @@ function TierCard({
 
       <p className="pilgrim-card__tier">{tier.subtitle}</p>
       <h2 className="pilgrim-card__title">{tier.title}</h2>
-      <p className="pilgrim-card__desc">{copy.description}</p>
-
-      <ul className="pilgrim-card__highlights">
-        {copy.highlights.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
+      <div className="pilgrim-card__details">
+        <p className="pilgrim-card__desc">{copy.description}</p>
+        <ul className="pilgrim-card__highlights">
+          {copy.highlights.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
 
       {isConnected && (
         <div className="pilgrim-data-picker" role="group" aria-label="Data allowance">

@@ -1,3 +1,4 @@
+import { describeEsimPlan } from "@/lib/plan-descriptions";
 import type { EsimPlan, FormattedPriceParts } from "@/lib/plans-api";
 
 export type PilgrimTierKey =
@@ -79,12 +80,14 @@ export type PilgrimTierOffer = PilgrimTierMeta & {
   };
 };
 
+export type ConnectedPilgrimDataGb = 10 | 20;
+
 export type PilgrimPlanCopy = {
   description: string;
   highlights: string[];
 };
 
-/** Customer-facing copy derived from Access fixed-pack specs (data, days, speed). */
+/** Pilgrim-specific copy; falls back to shared provider-style descriptions. */
 export function resolvePilgrimPlanCopy(
   tier: PilgrimTierOffer,
   plan: EsimPlan | null,
@@ -113,8 +116,7 @@ export function resolvePilgrimPlanCopy(
   }
 
   if (tier.key === "connected") {
-    const selectedGb = connectedDataGb;
-    if (selectedGb === 20) {
+    if (connectedDataGb === 20) {
       return {
         description: `Access Saudi fixed pack: 20GB for ${days} days on ${speed}. Extra headroom for photos, navigation, and regular video calls during a fuller pilgrimage.`,
         highlights: [
@@ -134,15 +136,16 @@ export function resolvePilgrimPlanCopy(
     };
   }
 
-  if (tier.key === "unlimited") {
+  if (tier.key === "unlimited" && plan) {
+    const shared = describeEsimPlan(plan, { countryLabel: "Saudi Arabia" });
     return {
       description: `Access Saudi fixed pack: ${gb ?? 50}GB for ${days} days on ${speed}. High-capacity plan for heavy video, live updates, and longer stays — not a true unlimited line.`,
-      highlights: [
-        `${gb ?? 50}GB high-speed data · ${days} days`,
-        `${speed} · Saudi Arabia coverage`,
-        "Choose when 20GB is not enough for your trip",
-      ],
+      highlights: shared.highlights,
     };
+  }
+
+  if (plan) {
+    return describeEsimPlan(plan, { countryLabel: "Saudi Arabia" });
   }
 
   return {
@@ -164,6 +167,7 @@ export const PILGRIM_FALLBACK_PLANS: Record<PilgrimTierKey, EsimPlan> = {
     name: "Lite Explorer",
     dataGb: 5,
     durationDays: 30,
+    price: 15.77,
     formattedPriceParts: fallbackParts(15.77),
     currency: "USD",
     isRechargeable: false,

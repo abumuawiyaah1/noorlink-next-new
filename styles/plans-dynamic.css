@@ -376,6 +376,8 @@
   border: 1px solid #e5e7eb;
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
 .plans-row:hover,
@@ -384,9 +386,84 @@
   background: #fffaf3;
 }
 
+.plans-row.is-selected {
+  border-color: var(--accent);
+  background: #fff7ed;
+  box-shadow: 0 0 0 1px rgba(255, 149, 0, 0.25);
+}
+
 .plans-row.is-best {
   border-color: #6ee7b7;
   background: #f0fdf4;
+}
+
+.plans-row.is-best.is-selected,
+.plans-row.is-best:hover,
+.plans-row.is-best:focus-visible {
+  border-color: #34d399;
+  background: #ecfdf5;
+}
+
+.plans-row__details {
+  display: none;
+  grid-column: 1 / -1;
+  padding-top: 4px;
+  border-top: 1px solid #eef0f2;
+  margin-top: 2px;
+}
+
+.plans-row:hover .plans-row__details,
+.plans-row:focus-within .plans-row__details,
+.plans-row.is-selected .plans-row__details {
+  display: block;
+}
+
+.plans-row__desc {
+  margin: 8px 0 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.plans-row__highlights {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+
+.plans-row__highlights li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: 0.82rem;
+  color: var(--text-main);
+}
+
+.plans-row__highlights li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.plans-row__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-control);
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.plans-row__cta:hover {
+  opacity: 0.92;
 }
 
 .plans-row__data,
@@ -523,7 +600,8 @@
     grid-template-areas:
       "data duration"
       "price badge"
-      "cta cta";
+      "cta cta"
+      "details details";
   }
 
   .plans-row__data { grid-area: data; }
@@ -534,6 +612,9 @@
     grid-area: cta;
     justify-self: stretch;
     text-align: center;
+  }
+  .plans-row__details {
+    grid-area: details;
   }
 
   .plans-trust {

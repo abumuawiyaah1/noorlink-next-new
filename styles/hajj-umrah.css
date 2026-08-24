@@ -77,6 +77,18 @@
   color: var(--primary);
 }
 
+.pilgrim-card__details {
+  display: none;
+}
+
+.pilgrim-card:hover .pilgrim-card__details,
+.pilgrim-card:focus-within .pilgrim-card__details,
+.pilgrim-card.is-selected .pilgrim-card__details,
+.pilgrim-card--coming-soon .pilgrim-card__details {
+  display: grid;
+  gap: 0.65rem;
+}
+
 .pilgrim-card__desc {
   margin: 0;
   font-size: 0.92rem;

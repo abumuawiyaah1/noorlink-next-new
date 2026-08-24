@@ -20,6 +20,7 @@ import {
   type PlanCategory,
   type PlansByCountryResponse,
 } from "@/lib/plans-api";
+import { describeEsimPlan } from "@/lib/plan-descriptions";
 import {
   REGIONAL_FAQS,
   singleCountryPlansPath,
@@ -109,21 +110,38 @@ function PlanRow({
   countryName,
   flag,
   isRegional,
+  selected,
+  onSelect,
 }: {
   plan: EsimPlan;
   countryName: string;
   flag?: string;
   isRegional?: boolean;
+  selected: boolean;
+  onSelect: (planId: string) => void;
 }) {
   const badge = badgeLabel(plan);
   const best = plan.displayBadge === "best_choice";
   const href = checkoutHref(plan, countryName, flag, isRegional);
+  const copy = describeEsimPlan(plan, {
+    countryLabel: countryName,
+    isRegional,
+  });
 
   return (
-    <a
-      href={href}
-      className={`plans-row${best ? " is-best" : ""}`}
-      aria-label={`Buy ${formatDataAmount(plan)} for ${formatDuration(plan.durationDays)}, $${plan.price.toFixed(2)}`}
+    <div
+      role="button"
+      tabIndex={0}
+      className={`plans-row${best ? " is-best" : ""}${selected ? " is-selected" : ""}`}
+      aria-pressed={selected}
+      aria-label={`${formatDataAmount(plan)} for ${formatDuration(plan.durationDays)}, $${plan.price.toFixed(2)}. ${copy.description}`}
+      onClick={() => onSelect(plan.id)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect(plan.id);
+        }
+      }}
     >
       <span className="plans-row__data">{formatDataAmount(plan)}</span>
       <span className="plans-row__duration">{formatDuration(plan.durationDays)}</span>
@@ -137,8 +155,22 @@ function PlanRow({
         )}
       </span>
       {badge ? <span className="plans-row__badge">{badge}</span> : <span />}
-      <span className="plans-row__cta">Select</span>
-    </a>
+      <a
+        href={href}
+        className="plans-row__cta"
+        onClick={(event) => event.stopPropagation()}
+      >
+        {selected ? "Continue" : "Select"}
+      </a>
+      <div className="plans-row__details">
+        <p className="plans-row__desc">{copy.description}</p>
+        <ul className="plans-row__highlights">
+          {copy.highlights.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }
 
@@ -222,12 +254,16 @@ function PlanSection({
   countryName,
   flag,
   isRegional,
+  selectedPlanId,
+  onSelectPlan,
 }: {
   label: string;
   plans: EsimPlan[];
   countryName: string;
   flag?: string;
   isRegional?: boolean;
+  selectedPlanId: string | null;
+  onSelectPlan: (planId: string) => void;
 }) {
   if (plans.length === 0) return null;
 
@@ -244,6 +280,8 @@ function PlanSection({
             countryName={countryName}
             flag={flag}
             isRegional={isRegional}
+            selected={selectedPlanId === plan.id}
+            onSelect={onSelectPlan}
           />
         ))}
       </div>
@@ -262,6 +300,7 @@ export function TravelerPlansPage({
   const [loading, setLoading] = useState(!initialData && !initialError);
   const [error, setError] = useState<string | null>(initialError);
   const [compatOpen, setCompatOpen] = useState(false);
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialData) return;
@@ -436,9 +475,8 @@ export function TravelerPlansPage({
 
             <h2 className="plans-picker__title">Choose your package</h2>
             <p className="plans-picker__hint">
-              Pick your plan, check out in minutes on secure Stripe checkout, and
-              you&apos;ll be connected before you know it — the price you see here
-              is the price you pay.
+              Hover or tap a plan to see what is included. Then continue to secure
+              Stripe checkout — the price you see is the price you pay.
             </p>
             <div className="plans-sections">
               {PLAN_SECTIONS.map((section) => (
@@ -449,6 +487,8 @@ export function TravelerPlansPage({
                   countryName={checkoutCountryName}
                   flag={flag}
                   isRegional={Boolean(regional)}
+                  selectedPlanId={selectedPlanId}
+                  onSelectPlan={setSelectedPlanId}
                 />
               ))}
             </div>
