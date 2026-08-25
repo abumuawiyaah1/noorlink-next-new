@@ -9,6 +9,7 @@ export type CheckoutSessionPayload = {
   phone?: string;
   travelDate?: string;
   packageId?: string;
+  promoCode?: string;
 };
 
 export type CheckoutSessionResult = {
@@ -18,6 +19,9 @@ export type CheckoutSessionResult = {
   orderId?: string;
   message?: string;
   error?: string;
+  discountAmount?: number;
+  finalPrice?: number;
+  promoCode?: string;
 };
 
 /**
@@ -39,6 +43,7 @@ export async function createCheckoutSession(
   if (payload.phone) body.phone = payload.phone.trim();
   if (payload.travelDate) body.travelDate = payload.travelDate;
   if (payload.packageId) body.packageId = payload.packageId;
+  if (payload.promoCode) body.promoCode = payload.promoCode.trim().toUpperCase();
 
   debug("checkout", "createCheckoutSession →", {
     url,
@@ -111,6 +116,24 @@ export async function createCheckoutSession(
       (typeof data.order_id === "string" && data.order_id) ||
       undefined,
     message: typeof data.message === "string" ? data.message : undefined,
+    discountAmount:
+      typeof data.discountAmount === "number"
+        ? data.discountAmount
+        : typeof data.discount_amount === "number"
+          ? data.discount_amount
+          : undefined,
+    finalPrice:
+      typeof data.finalPrice === "number"
+        ? data.finalPrice
+        : typeof data.final_price === "number"
+          ? data.final_price
+          : undefined,
+    promoCode:
+      typeof data.promoCode === "string"
+        ? data.promoCode
+        : typeof data.promo_code === "string"
+          ? data.promo_code
+          : undefined,
   };
   debug("checkout", "session created", {
     sessionId: result.sessionId,

@@ -9,6 +9,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { createCheckoutSession } from "@/lib/checkout-api";
 import { formatCountryLabel } from "@/lib/country-slugs";
+import { validatePromoCode } from "@/lib/promo-api";
 
 function parsePrice(value: string | null): number {
   if (!value) return 0;
@@ -25,20 +26,80 @@ export function ModernCheckoutPage() {
   const plan = searchParams.get("plan") ?? "Selected plan";
   const price = parsePrice(searchParams.get("price")) || 12;
   const isRegional = searchParams.get("productType") === "regional";
+  const initialPromo = searchParams.get("promo") ?? searchParams.get("code") ?? "";
 
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [travelDate, setTravelDate] = useState("");
+  const [promoInput, setPromoInput] = useState(initialPromo);
+  const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [promoMessage, setPromoMessage] = useState<string | null>(null);
+  const [promoError, setPromoError] = useState<string | null>(null);
+  const [validatingPromo, setValidatingPromo] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const formattedTotal = useMemo(() => price.toFixed(2), [price]);
+  const finalPrice = useMemo(
+    () => Math.max(0.01, price - discountAmount),
+    [price, discountAmount],
+  );
+  const formattedTotal = useMemo(() => finalPrice.toFixed(2), [finalPrice]);
   const payLabel = submitting ? "Redirecting to Stripe…" : `Pay $${formattedTotal}`;
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
+
+  useEffect(() => {
+    if (!initialPromo.trim()) return;
+    void applyPromo(initialPromo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function applyPromo(codeOverride?: string) {
+    const code = (codeOverride ?? promoInput).trim();
+    if (!code) {
+      setPromoError("Enter a promo code.");
+      return;
+    }
+
+    setValidatingPromo(true);
+    setPromoError(null);
+    setPromoMessage(null);
+
+    const result = await validatePromoCode({
+      code,
+      price,
+      packageId: packageId || undefined,
+    });
+
+    setValidatingPromo(false);
+
+    if (!result.valid) {
+      setAppliedPromo(null);
+      setDiscountAmount(0);
+      setPromoError(result.error ?? result.message ?? "Invalid promo code.");
+      return;
+    }
+
+    setAppliedPromo(result.code ?? code.toUpperCase());
+    setDiscountAmount(result.discountAmount ?? 0);
+    setPromoMessage(
+      result.percentOff
+        ? `${result.percentOff}% off applied${result.endsAt ? ` · ends ${result.endsAt.slice(0, 10)}` : ""}`
+        : "Promo applied.",
+    );
+  }
+
+  function clearPromo() {
+    setAppliedPromo(null);
+    setDiscountAmount(0);
+    setPromoInput("");
+    setPromoMessage(null);
+    setPromoError(null);
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -70,6 +131,7 @@ export function ModernCheckoutPage() {
         phone: phone.trim() || undefined,
         travelDate: travelDate || undefined,
         packageId: packageId || undefined,
+        promoCode: appliedPromo || undefined,
       });
 
       if (!result.success || !result.checkoutUrl) {
@@ -81,7 +143,6 @@ export function ModernCheckoutPage() {
         return;
       }
 
-      // Hosted Stripe Checkout (external) — full navigation required.
       window.location.assign(result.checkoutUrl);
     } catch (err) {
       setError(
@@ -152,13 +213,6 @@ export function ModernCheckoutPage() {
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="you@example.com"
                   />
-                  <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 6 }}>
-                    We email a checkout confirmation now. Your eSIM QR code arrives
-                    after payment — check spam/junk if it is missing.
-                    {isRegional
-                      ? " Regional orders include the full covered-country list."
-                      : ""}
-                  </p>
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-phone">
@@ -173,9 +227,6 @@ export function ModernCheckoutPage() {
                     onChange={(event) => setPhone(event.target.value)}
                     placeholder="+1 555 000 0000"
                   />
-                  <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 6 }}>
-                    Saved with your order for support. SMS alerts are not sent yet.
-                  </p>
                 </div>
               </div>
 
@@ -184,9 +235,6 @@ export function ModernCheckoutPage() {
                   <i className="fas fa-calendar-alt" style={{ color: "var(--accent)" }} aria-hidden="true" />{" "}
                   2. Trip Details
                 </h2>
-                <div className="form-note">
-                  These details help support if you need help with setup or timing.
-                </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-travel-date">
                     Arrival date (optional)
@@ -201,14 +249,53 @@ export function ModernCheckoutPage() {
                 </div>
               </div>
 
+              <div className="card checkout-promo-card">
+                <h2>
+                  <i className="fas fa-tag" style={{ color: "var(--accent)" }} aria-hidden="true" />{" "}
+                  3. Promo code
+                </h2>
+                <div className="checkout-promo-row">
+                  <input
+                    id="checkout-promo"
+                    type="text"
+                    className="form-input"
+                    value={promoInput}
+                    onChange={(event) => setPromoInput(event.target.value.toUpperCase())}
+                    placeholder="INSIDER-SEP26"
+                    disabled={Boolean(appliedPromo)}
+                  />
+                  {appliedPromo ? (
+                    <button type="button" className="checkout-promo-btn checkout-promo-btn--ghost" onClick={clearPromo}>
+                      Remove
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="checkout-promo-btn"
+                      disabled={validatingPromo}
+                      onClick={() => void applyPromo()}
+                    >
+                      {validatingPromo ? "Checking…" : "Apply"}
+                    </button>
+                  )}
+                </div>
+                {promoMessage && (
+                  <p className="checkout-promo-note checkout-promo-note--ok" role="status">
+                    {promoMessage}
+                  </p>
+                )}
+                {promoError && (
+                  <p className="checkout-promo-note checkout-promo-note--error" role="alert">
+                    {promoError}
+                  </p>
+                )}
+              </div>
+
               <div className="card">
                 <h2>
                   <i className="fas fa-file-contract" style={{ color: "var(--accent)" }} aria-hidden="true" />{" "}
-                  3. Terms &amp; Privacy
+                  4. Terms &amp; Privacy
                 </h2>
-                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", marginBottom: 12 }}>
-                  Please read our policies before paying. They open in a new tab so you can keep this checkout page open.
-                </p>
                 <div className="policy-links">
                   <Link href="/terms" target="_blank" rel="noopener noreferrer">
                     Read Terms of Service
@@ -253,20 +340,21 @@ export function ModernCheckoutPage() {
                   <div>
                     <strong>{plan}</strong>
                     <p>{country}</p>
-                    {isRegional && (
-                      <p className="summary-plan__regional-note">
-                        Multi-country plan · install once, use across covered countries
-                      </p>
-                    )}
                   </div>
                 </div>
                 <div className="summary-row">
+                  <span>Subtotal</span>
+                  <strong>${price.toFixed(2)}</strong>
+                </div>
+                {discountAmount > 0 && (
+                  <div className="summary-row summary-row--discount">
+                    <span>Insider discount{appliedPromo ? ` (${appliedPromo})` : ""}</span>
+                    <strong>- ${discountAmount.toFixed(2)}</strong>
+                  </div>
+                )}
+                <div className="summary-row">
                   <span>Delivery</span>
                   <strong>QR by email</strong>
-                </div>
-                <div className="summary-row">
-                  <span>Support</span>
-                  <strong>24/7 WhatsApp</strong>
                 </div>
                 <div className="summary-row summary-total">
                   <span>Total</span>
@@ -279,15 +367,6 @@ export function ModernCheckoutPage() {
                 >
                   {payLabel}
                 </button>
-                <p className="summary-next-step">
-                  Next step: secure Stripe payment, then we email your order
-                  confirmation immediately.
-                </p>
-                <div className="summary-checklist">
-                  <div>Secure Stripe checkout</div>
-                  <div>Card details never stored on NoorLink</div>
-                  <div>Refund policy available before payment</div>
-                </div>
               </div>
             </aside>
           </form>

@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { submitContactForm } from "@/lib/contact-api";
+import { subscribeInsider } from "@/lib/newsletter-api";
 
 export function HomeNewsletter() {
   const [email, setEmail] = useState("");
@@ -16,18 +16,17 @@ export function HomeNewsletter() {
     setStatus("sending");
     setMessage(null);
 
-    const result = await submitContactForm({
-      name: "Insider signup",
+    const result = await subscribeInsider({
       email: email.trim(),
-      subject: "Join NoorLink Insider",
-      message: destination
-        ? `Please add this email to the Insider list. Destination interest: ${destination}.`
-        : "Please add this email to the Insider list.",
+      dreamDestination: destination || undefined,
     });
 
     if (result.success) {
       setStatus("sent");
-      setMessage("You’re on the list. We’ll send destination guides and plan updates.");
+      setMessage(
+        result.message ??
+          "You’re on the Insider list. Monthly guides and timed deals — no spam.",
+      );
       setEmail("");
       setDestination("");
       return;
