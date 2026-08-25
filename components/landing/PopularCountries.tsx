@@ -6,7 +6,6 @@ import {
   PENDING_PRICE_LABEL,
   useLiveStartingPrices,
 } from "@/components/destinations/useLiveStartingPrices";
-import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
 import { getCountryFlag } from "@/lib/country-flags";
 import type { DestinationCard } from "@/lib/destinations-catalog";
 import { fetchTrendingCountrySignals } from "@/lib/analytics-api";
@@ -70,24 +69,28 @@ export function PopularCountries() {
                 role="listitem"
                 aria-label={`View ${card.title} plans, ${price}`}
               >
-                <span className="popular-country__media">
-                  <DestinationCardMedia
+                <div className="popular-country__media">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className="popular-country__img"
                     src={card.image}
                     alt=""
-                    priority={index < 3}
+                    loading={index < 3 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={index < 3 ? "high" : "auto"}
                   />
                   <span className="popular-country__flag" aria-hidden="true">
                     {flag}
                   </span>
-                </span>
-                <span className="popular-country__body">
+                </div>
+                <div className="popular-country__body">
                   <span className="popular-country__name">{card.title}</span>
                   <span
                     className={`popular-country__price${livePrices[card.priceCountryId] ? "" : " is-pending"}`}
                   >
                     {price}
                   </span>
-                </span>
+                </div>
               </Link>
             );
           })}
