@@ -6,6 +6,7 @@ import {
   PENDING_PRICE_LABEL,
   useLiveStartingPrices,
 } from "@/components/destinations/useLiveStartingPrices";
+import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
 import { getCountryFlag } from "@/lib/country-flags";
 import type { DestinationCard } from "@/lib/destinations-catalog";
 import { fetchTrendingCountrySignals } from "@/lib/analytics-api";
@@ -58,7 +59,7 @@ export function PopularCountries() {
         </p>
 
         <div className="popular-countries__track" role="list">
-          {cards.map((card) => {
+          {cards.map((card, index) => {
             const price = livePrices[card.priceCountryId]?.label ?? PENDING_PRICE_LABEL;
             const flag = getCountryFlag(card.priceCountryId);
             return (
@@ -69,14 +70,23 @@ export function PopularCountries() {
                 role="listitem"
                 aria-label={`View ${card.title} plans, ${price}`}
               >
-                <span className="popular-country__flag" aria-hidden="true">
-                  {flag}
+                <span className="popular-country__media">
+                  <DestinationCardMedia
+                    src={card.image}
+                    alt=""
+                    priority={index < 3}
+                  />
+                  <span className="popular-country__flag" aria-hidden="true">
+                    {flag}
+                  </span>
                 </span>
-                <span className="popular-country__name">{card.title}</span>
-                <span
-                  className={`popular-country__price${livePrices[card.priceCountryId] ? "" : " is-pending"}`}
-                >
-                  {price}
+                <span className="popular-country__body">
+                  <span className="popular-country__name">{card.title}</span>
+                  <span
+                    className={`popular-country__price${livePrices[card.priceCountryId] ? "" : " is-pending"}`}
+                  >
+                    {price}
+                  </span>
                 </span>
               </Link>
             );
