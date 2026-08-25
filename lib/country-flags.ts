@@ -60,7 +60,6 @@ const COUNTRY_FLAGS: Record<string, string> = {
   uae: "🇦🇪",
   caribbean: "🏝️",
   "regional-caribbean": "🏝️",
-  europe: "🇪🇺",
   "regional-europe": "🇪🇺",
   "middle-east": "🕌",
   "regional-middle-east": "🕌",
