@@ -98,10 +98,18 @@
 
         /* --- HOW IT WORKS (UPDATED WITH GRADIENT BORDER) --- */
         .steps-section { 
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
             padding: 100px 0; 
-            background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(243, 245, 247, 0.9)), url('/images/map-texture.jpg');
+            background-color: #fff;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.95), rgba(250, 251, 252, 0.96)),
+                url('/images/map-texture.jpg');
             background-size: cover;
+            background-position: center;
         }
+        .steps-section > * { position: relative; z-index: 1; }
         .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 50px; text-align: center; }
         
         .step-card { 
@@ -120,14 +128,25 @@
         .step-card h3 { margin-bottom: 10px; font-size: 1.25rem; color: var(--primary); }
         .step-card p { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* --- RAMADAN PROMO --- */
+        /* --- HAJJ / UMRAH PROMO --- */
+        .umrah-promo-section {
+            background: #fff;
+            padding: 8px 0 24px;
+        }
         .ramadan-promo {
             background: linear-gradient(90deg, var(--primary-dark) 0%, rgba(15, 61, 62, 0.9) 100%), 
                         url('/images/ramadan-bg.jpg');
             background-size: cover; background-position: center;
-            margin: 60px 20px; border-radius: var(--radius-card-lg); color: white;
+            margin: 40px 20px; border-radius: var(--radius-card-lg); color: white;
             position: relative; overflow: hidden; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
             border: 1px solid rgba(255, 173, 90, 0.3);
+        }
+        .umrah-promo-section::before,
+        .umrah-promo-section::after,
+        .ramadan-promo::before {
+            content: none !important;
+            display: none !important;
+            background: none !important;
         }
         .promo-content { display: flex; align-items: center; justify-content: space-between; padding: 60px; position: relative; z-index: 2; gap: 50px; flex-wrap: wrap; }
         .promo-text { flex: 1; min-width: 300px; }
@@ -315,7 +334,20 @@
         .card:hover .arrow-btn { background: var(--accent); color: white; }
 
         /* --- DEVICE CHECKER --- */
-        .checker-section { padding: 100px 0; background: var(--bg-body); text-align: center; }
+        .checker-section {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            padding: 100px 0;
+            text-align: center;
+            background-color: #fff;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.96)),
+                url('/images/map-texture.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .checker-section > * { position: relative; z-index: 1; }
         .checker-box { 
             /* GRADIENT BORDER */
             background: linear-gradient(white, white) padding-box,
@@ -387,6 +419,38 @@
         
         .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background-color: var(--whatsapp); color: white; width: 64px; height: 64px; border-radius: 50%; text-align: center; font-size: 32px; line-height: 64px; box-shadow: 0 10px 25px rgba(37,211,102,0.4); z-index: 10000; text-decoration: none; }
         .whatsapp-float::before { content: "💬"; }
+
+        /* Soft map + logo wash — quieter sections only */
+        .steps-section::before,
+        .checker-section::before,
+        .reviews-section::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: min(400px, 62vw);
+            height: min(400px, 62vw);
+            background: url('/images/logo.png') center / contain no-repeat;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .reviews-section {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            background-color: #fff !important;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.96)),
+                url('/images/map-texture.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+        }
+        .reviews-section > * {
+            position: relative;
+            z-index: 1;
+        }
 
         @media (max-width: 768px) {
             .mobile-toggle { display: block; }
