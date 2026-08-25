@@ -5,30 +5,17 @@ import { useRouter } from "next/navigation";
 import {
   fetchPopularPills,
   logSearch,
+  seasonalHeroPills,
   type HeroPopularPill,
 } from "@/lib/analytics-api";
 import {
   filterDestinations,
-  findDestinationById,
-  popularPills,
   resolveDestination,
   type HeroDestination,
 } from "@/lib/hero-destinations";
 import "@/styles/hero-search.css";
 
 const MIN_QUERY_LENGTH = 3;
-
-function defaultPopularPills(): HeroPopularPill[] {
-  return popularPills.map((pill) => {
-    const dest = findDestinationById(pill.destinationId);
-    return {
-      label: pill.label,
-      query: pill.query,
-      href: dest?.href ?? "/destinations",
-      flag: dest?.flag ?? "🌍",
-    };
-  });
-}
 
 export function HeroSearch() {
   const router = useRouter();
@@ -40,7 +27,7 @@ export function HeroSearch() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selected, setSelected] = useState<HeroDestination | null>(null);
   const [activePill, setActivePill] = useState<string | null>(null);
-  const [pills, setPills] = useState<HeroPopularPill[]>(defaultPopularPills);
+  const [pills, setPills] = useState<HeroPopularPill[]>(() => seasonalHeroPills());
 
   const suggestions = filterDestinations(query);
   const trimmedQuery = query.trim();
@@ -121,7 +108,7 @@ export function HeroSearch() {
         if (!cancelled && hydrated.length > 0) setPills(hydrated);
       })
       .catch(() => {
-        if (!cancelled) setPills(defaultPopularPills());
+        if (!cancelled) setPills(seasonalHeroPills());
       });
 
     return () => {
