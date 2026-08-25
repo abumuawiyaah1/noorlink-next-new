@@ -1,18 +1,51 @@
 "use client";
 
 import Link from "next/link";
-import { DESTINATION_CARDS } from "@/lib/destinations-catalog";
+import { useEffect, useState } from "react";
 import {
   PENDING_PRICE_LABEL,
   useLiveStartingPrices,
 } from "@/components/destinations/useLiveStartingPrices";
 import { getCountryFlag } from "@/lib/country-flags";
-
-const FEATURED_IDS = ["usa", "turkey", "japan", "uk", "uae", "france"];
+import type { DestinationCard } from "@/lib/destinations-catalog";
+import { fetchTrendingCountrySignals } from "@/lib/analytics-api";
+import {
+  buildHybridPopularCountryIds,
+  cardsForPopularIds,
+  defaultPopularCountryCards,
+  resolvePopularSeason,
+} from "@/lib/popular-countries";
 
 export function PopularCountries() {
-  const cards = DESTINATION_CARDS.filter((card) => FEATURED_IDS.includes(card.id));
+  const [cards, setCards] = useState<DestinationCard[]>(() =>
+    defaultPopularCountryCards(),
+  );
+  const [seasonLabel, setSeasonLabel] = useState(
+    () => resolvePopularSeason().label,
+  );
   const livePrices = useLiveStartingPrices(cards.map((card) => card.priceCountryId));
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function hydrate() {
+      const season = resolvePopularSeason();
+      const trending = await fetchTrendingCountrySignals();
+      if (cancelled) return;
+
+      const ids = buildHybridPopularCountryIds({
+        season,
+        trending,
+      });
+      setSeasonLabel(season.label);
+      setCards(cardsForPopularIds(ids));
+    }
+
+    void hydrate();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section className="popular-countries" aria-labelledby="popular-countries-heading">
@@ -20,6 +53,9 @@ export function PopularCountries() {
         <h2 id="popular-countries-heading" className="sr-only">
           Popular countries
         </h2>
+        <p className="sr-only">
+          Showing {seasonLabel} picks mixed with live traveler interest.
+        </p>
 
         <div className="popular-countries__track" role="list">
           {cards.map((card) => {

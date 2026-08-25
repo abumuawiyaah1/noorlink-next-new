@@ -102,17 +102,7 @@ export async function fetchPopularPills(): Promise<HeroPopularPill[]> {
   debug("analytics", "fetchPopularPills →");
 
   try {
-    const res = await fetch(`${API_BASE}/api/v1/analytics/popular`, {
-      method: "GET",
-      headers: { Accept: "application/json" },
-    });
-
-    if (!res.ok) {
-      debug("analytics", "popular fetch failed; using seasonal", res.status);
-      return seasonal.slice(0, 3);
-    }
-
-    const data = (await res.json()) as PopularAnalyticsResponse;
+    const data = await fetchPopularAnalytics();
     const trendingSource =
       data.trending.length > 0 ? data.trending : (data.fallback ?? []);
     const trending = trendingSource.map(toPopularPill);
@@ -126,5 +116,34 @@ export async function fetchPopularPills(): Promise<HeroPopularPill[]> {
     return merged;
   } catch {
     return seasonal.slice(0, 3);
+  }
+}
+
+export async function fetchPopularAnalytics(): Promise<PopularAnalyticsResponse> {
+  debug("analytics", "fetchPopularAnalytics →");
+  const res = await fetch(`${API_BASE}/api/v1/analytics/popular`, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to load popular destinations (${res.status})`);
+  }
+
+  return (await res.json()) as PopularAnalyticsResponse;
+}
+
+/** Trending labels + counts for the hybrid Popular countries row. */
+export async function fetchTrendingCountrySignals(): Promise<
+  { label: string; count: number }[]
+> {
+  try {
+    const data = await fetchPopularAnalytics();
+    return (data.trending ?? []).map((item) => ({
+      label: item.destination,
+      count: item.count,
+    }));
+  } catch {
+    return [];
   }
 }
