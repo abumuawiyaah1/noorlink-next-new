@@ -25,6 +25,12 @@ import {
   resolvePilgrimTiers,
   splitPricePerPerson,
 } from "@/lib/pilgrim-tiers";
+import {
+  getRememberedPromo,
+  normalizePromoCode,
+  rememberPromo,
+  withPromo,
+} from "@/lib/promo-link";
 import "@/styles/hajj-umrah.css";
 import "@/styles/plans-dynamic.css";
 
@@ -37,9 +43,10 @@ type PilgrimSelectionPageProps = {
   countryImage: string;
   initialData?: PlansByCountryResponse | null;
   initialError?: string | null;
+  initialPromo?: string;
 };
 
-function buildCheckoutHref(plan: EsimPlan, price: number): string {
+function buildCheckoutHref(plan: EsimPlan, price: number, promo?: string): string {
   const params = new URLSearchParams({
     country: "Saudi Arabia",
     price: price.toFixed(2),
@@ -48,7 +55,7 @@ function buildCheckoutHref(plan: EsimPlan, price: number): string {
   if (plan.countryId) params.set("country_id", plan.countryId);
   if (plan.name) params.set("plan", plan.name);
   if (plan.id) params.set("packageId", plan.id);
-  return `/checkout?${params.toString()}`;
+  return withPromo(`/checkout?${params.toString()}`, promo);
 }
 
 function tierBadge(tier: PilgrimTierOffer): string | null {
@@ -245,7 +252,9 @@ export function PilgrimSelectionPage({
   countryImage,
   initialData = null,
   initialError = null,
+  initialPromo = "",
 }: PilgrimSelectionPageProps) {
+  const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
   const [tiers, setTiers] = useState<PilgrimTierOffer[]>(() =>
     resolveInitialTiers(initialData),
   );
@@ -255,6 +264,17 @@ export function PilgrimSelectionPage({
   const [connectedDataGb, setConnectedDataGb] = useState<ConnectedPilgrimDataGb>(10);
   const [groupSize, setGroupSize] = useState(4);
   const [compatibilityOpen, setCompatibilityOpen] = useState(false);
+
+  useEffect(() => {
+    const fromProp = normalizePromoCode(initialPromo);
+    if (fromProp) {
+      rememberPromo(fromProp);
+      setPromo(fromProp);
+      return;
+    }
+    const remembered = getRememberedPromo();
+    if (remembered) setPromo(remembered);
+  }, [initialPromo]);
 
   useEffect(() => {
     if (initialData?.plans?.length) return;
@@ -549,7 +569,7 @@ export function PilgrimSelectionPage({
                 />
               </div>
               <a
-                href={buildCheckoutHref(activePlan, checkoutPrice)}
+                href={buildCheckoutHref(activePlan, checkoutPrice, promo)}
                 className="pilgrim-desktop-cta__button"
               >
                 Continue to checkout
@@ -671,7 +691,7 @@ export function PilgrimSelectionPage({
               />
             </div>
             <a
-              href={buildCheckoutHref(activePlan, checkoutPrice)}
+              href={buildCheckoutHref(activePlan, checkoutPrice, promo)}
               className="pilgrim-sticky-cta__button"
             >
               Continue

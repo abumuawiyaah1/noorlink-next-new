@@ -112,7 +112,8 @@ export function HomeNewsletter() {
                 </p>
               )}
               <p className="news-privacy">
-                We respect your privacy. Unsubscribe anytime.
+                We respect your privacy.{" "}
+                <a href="/unsubscribe">Unsubscribe</a> anytime.
               </p>
             </form>
           </div>

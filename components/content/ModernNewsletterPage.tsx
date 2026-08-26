@@ -4,9 +4,15 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { InsiderIssueCard } from "@/components/insider/InsiderIssueCard";
 import { InsiderSignupForm } from "@/components/insider/InsiderSignupForm";
-import { INSIDER_ISSUES } from "@/lib/insider-issues";
+import {
+  getPublishedInsiderIssues,
+  getUpcomingInsiderIssues,
+} from "@/lib/insider-issues";
 
 export function ModernNewsletterPage() {
+  const published = getPublishedInsiderIssues();
+  const upcoming = getUpcomingInsiderIssues();
+
   return (
     <>
       <SiteHeader />
@@ -45,11 +51,37 @@ export function ModernNewsletterPage() {
                 ends. Emails release on the first Tuesday of each month.
               </p>
             </div>
-            <div className="insider-grid">
-              {INSIDER_ISSUES.map((issue) => (
-                <InsiderIssueCard key={issue.slug} issue={issue} />
-              ))}
-            </div>
+
+            {published.length > 0 ? (
+              <div className="insider-grid">
+                {published.map((issue) => (
+                  <InsiderIssueCard key={issue.slug} issue={issue} />
+                ))}
+              </div>
+            ) : (
+              <p className="insider-archive-empty">
+                The first issue lands in September 2026. Join Insider above to
+                get it by email when it goes live.
+              </p>
+            )}
+
+            {upcoming.length > 0 && (
+              <div className="insider-upcoming">
+                <div className="insider-section-head">
+                  <p className="insider-kicker">Coming up</p>
+                  <h2>Scheduled issues</h2>
+                </div>
+                <div className="insider-grid">
+                  {upcoming.map((issue) => (
+                    <InsiderIssueCard
+                      key={issue.slug}
+                      issue={issue}
+                      comingSoon
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
 
           <section className="insider-promise">

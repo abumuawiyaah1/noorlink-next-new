@@ -14,6 +14,7 @@ export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ region: string }>;
+  searchParams: Promise<{ promo?: string; code?: string }>;
 };
 
 function regionalImageSrc(product: RegionalProduct): string {
@@ -48,8 +49,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function RegionalPlansPage({ params }: PageProps) {
+export default async function RegionalPlansPage({ params, searchParams }: PageProps) {
   const { region } = await params;
+  const query = await searchParams;
+  const initialPromo = query.promo ?? query.code ?? "";
   const routeSlug = normalizeRegionalRouteSlug(region);
   const product = routeSlug ? getRegionalProduct(routeSlug) : null;
 
@@ -85,6 +88,7 @@ export default async function RegionalPlansPage({ params }: PageProps) {
         initialData={initialData}
         initialError={initialError}
         regional={product}
+        initialPromo={initialPromo}
       />
     </>
   );

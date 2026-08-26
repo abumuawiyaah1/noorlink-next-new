@@ -33,6 +33,7 @@ export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ country: string }>;
+  searchParams: Promise<{ promo?: string; code?: string }>;
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -46,9 +47,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function CountryPlansPage({ params }: PageProps) {
+export default async function CountryPlansPage({ params, searchParams }: PageProps) {
   const { country } = await params;
+  const query = await searchParams;
   const countryId = normalizeCountrySlug(country);
+  const initialPromo = query.promo ?? query.code ?? "";
 
   if (REGIONAL_REDIRECT_SLUGS.has(countryId)) {
     const regionalRoute = normalizeRegionalRouteSlug(countryId);
@@ -84,6 +87,7 @@ export default async function CountryPlansPage({ params }: PageProps) {
         countryImage={countryImage}
         initialData={initialData}
         initialError={initialError}
+        initialPromo={initialPromo}
       />
     </>
   );

@@ -26,6 +26,12 @@ import {
   singleCountryPlansPath,
   type RegionalProduct,
 } from "@/lib/regional-products";
+import {
+  getRememberedPromo,
+  normalizePromoCode,
+  rememberPromo,
+  withPromo,
+} from "@/lib/promo-link";
 import "@/styles/plans-dynamic.css";
 
 type PlanTab = PlanCategory;
@@ -36,6 +42,7 @@ type TravelerPlansPageProps = {
   initialData?: PlansByCountryResponse | null;
   initialError?: string | null;
   regional?: RegionalProduct;
+  initialPromo?: string;
 };
 
 const PLAN_FAQS = [
@@ -83,6 +90,7 @@ function checkoutHref(
   countryName: string,
   flag?: string,
   isRegional?: boolean,
+  promo?: string,
 ): string {
   const checkoutParams = new URLSearchParams({
     country: countryName,
@@ -92,7 +100,8 @@ function checkoutHref(
   if (plan.name) checkoutParams.set("plan", plan.name);
   if (plan.id) checkoutParams.set("packageId", plan.id);
   if (isRegional) checkoutParams.set("productType", "regional");
-  return `/checkout?${checkoutParams.toString()}`;
+  const href = `/checkout?${checkoutParams.toString()}`;
+  return withPromo(href, promo);
 }
 
 function sortPlans(plans: EsimPlan[]): EsimPlan[] {
@@ -110,6 +119,7 @@ function PlanRow({
   countryName,
   flag,
   isRegional,
+  promo,
   selected,
   onSelect,
 }: {
@@ -117,12 +127,13 @@ function PlanRow({
   countryName: string;
   flag?: string;
   isRegional?: boolean;
+  promo?: string;
   selected: boolean;
   onSelect: (planId: string) => void;
 }) {
   const badge = badgeLabel(plan);
   const best = plan.displayBadge === "best_choice";
-  const href = checkoutHref(plan, countryName, flag, isRegional);
+  const href = checkoutHref(plan, countryName, flag, isRegional, promo);
   const copy = describeEsimPlan(plan, {
     countryLabel: countryName,
     isRegional,
@@ -281,6 +292,7 @@ function PlanSection({
   countryName,
   flag,
   isRegional,
+  promo,
   selectedPlanId,
   onSelectPlan,
 }: {
@@ -289,6 +301,7 @@ function PlanSection({
   countryName: string;
   flag?: string;
   isRegional?: boolean;
+  promo?: string;
   selectedPlanId: string | null;
   onSelectPlan: (planId: string) => void;
 }) {
@@ -307,6 +320,7 @@ function PlanSection({
             countryName={countryName}
             flag={flag}
             isRegional={isRegional}
+            promo={promo}
             selected={selectedPlanId === plan.id}
             onSelect={onSelectPlan}
           />
@@ -322,12 +336,25 @@ export function TravelerPlansPage({
   initialData = null,
   initialError = null,
   regional,
+  initialPromo = "",
 }: TravelerPlansPageProps) {
+  const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
   const [data, setData] = useState<PlansByCountryResponse | null>(initialData);
   const [loading, setLoading] = useState(!initialData && !initialError);
   const [error, setError] = useState<string | null>(initialError);
   const [compatOpen, setCompatOpen] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fromProp = normalizePromoCode(initialPromo);
+    if (fromProp) {
+      rememberPromo(fromProp);
+      setPromo(fromProp);
+      return;
+    }
+    const remembered = getRememberedPromo();
+    if (remembered) setPromo(remembered);
+  }, [initialPromo]);
 
   useEffect(() => {
     if (initialData) return;
@@ -514,6 +541,7 @@ export function TravelerPlansPage({
                   countryName={checkoutCountryName}
                   flag={flag}
                   isRegional={Boolean(regional)}
+                  promo={promo}
                   selectedPlanId={selectedPlanId}
                   onSelectPlan={setSelectedPlanId}
                 />

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -16,6 +16,12 @@ import {
   PENDING_PRICE_LABEL,
   useLiveStartingPrices,
 } from "@/components/destinations/useLiveStartingPrices";
+import {
+  getRememberedPromo,
+  normalizePromoCode,
+  rememberPromo,
+  withPromo,
+} from "@/lib/promo-link";
 
 const DESTINATIONS_NAV = [
   { href: "/about", label: "About" },
@@ -28,15 +34,27 @@ const DESTINATIONS_NAV = [
 type Props = {
   initialQuery?: string;
   initialRegion?: "all" | DestinationRegion;
+  initialPromo?: string;
 };
 
 export function ModernDestinationsPage({
   initialQuery = "",
   initialRegion = "all",
+  initialPromo = "",
 }: Props) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
   const [region, setRegion] = useState<"all" | DestinationRegion>(initialRegion);
+  const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
+
+  useEffect(() => {
+    const resolved =
+      normalizePromoCode(initialPromo) || getRememberedPromo();
+    if (resolved) {
+      rememberPromo(resolved);
+      setPromo(resolved);
+    }
+  }, [initialPromo]);
 
   const cards = useMemo(
     () => filterDestinationCards(query, region),
@@ -71,7 +89,7 @@ export function ModernDestinationsPage({
           onSubmit={(event: FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             if (cards[0]) {
-              router.push(cards[0].href);
+              router.push(withPromo(cards[0].href, promo));
             }
           }}
         >
@@ -112,7 +130,7 @@ export function ModernDestinationsPage({
             return (
               <Link
                 key={card.id}
-                href={card.href}
+                href={withPromo(card.href, promo)}
                 className={`card ${card.className}`}
                 aria-label={`View plans for ${card.title}, ${priceLabel}`}
               >

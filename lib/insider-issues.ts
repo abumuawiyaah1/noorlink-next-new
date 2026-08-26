@@ -447,11 +447,23 @@ export function getInsiderIssue(slug: string): InsiderIssue | undefined {
   return INSIDER_ISSUES.find((issue) => issue.slug === slug);
 }
 
+export function getInsiderIssuePublishAt(issue: InsiderIssue): Date {
+  const [year, month] = issue.slug.split("-").map(Number);
+  return new Date(Date.UTC(year, month - 1, 1));
+}
+
+export function isInsiderIssuePublished(
+  issue: InsiderIssue,
+  now = new Date(),
+): boolean {
+  return getInsiderIssuePublishAt(issue) <= now;
+}
+
 export function getPublishedInsiderIssues(now = new Date()): InsiderIssue[] {
   // Publish on the site from the first of each issue month (UTC).
-  return INSIDER_ISSUES.filter((issue) => {
-    const [year, month] = issue.slug.split("-").map(Number);
-    const publishAt = new Date(Date.UTC(year, month - 1, 1));
-    return publishAt <= now;
-  });
+  return INSIDER_ISSUES.filter((issue) => isInsiderIssuePublished(issue, now));
+}
+
+export function getUpcomingInsiderIssues(now = new Date()): InsiderIssue[] {
+  return INSIDER_ISSUES.filter((issue) => !isInsiderIssuePublished(issue, now));
 }

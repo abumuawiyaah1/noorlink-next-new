@@ -105,11 +105,33 @@
   gap: 1.5rem;
 }
 
+.insider-archive-empty {
+  margin: 0 0 2rem;
+  padding: 1.25rem 1.35rem;
+  max-width: 40rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(15, 61, 62, 0.1);
+  color: var(--insider-muted);
+  line-height: 1.55;
+}
+
+.insider-upcoming {
+  margin-top: 3.25rem;
+}
+
 .insider-card {
   background: rgba(255, 255, 255, 0.78);
   border: 1px solid rgba(15, 61, 62, 0.08);
   overflow: hidden;
   backdrop-filter: blur(8px);
+}
+
+.insider-card--soon {
+  opacity: 0.82;
+}
+
+.insider-card--soon:hover .insider-card__media img {
+  transform: none;
 }
 
 .insider-card__media {
@@ -124,6 +146,10 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+}
+
+.insider-card--soon .insider-card__media img {
+  filter: saturate(0.85);
 }
 
 .insider-card:hover .insider-card__media img {
@@ -189,6 +215,11 @@
   font-weight: 700;
   color: var(--insider-teal);
   text-decoration: none;
+}
+
+.insider-card__read--muted {
+  font-weight: 600;
+  color: var(--insider-muted);
 }
 
 .insider-card__deal {
@@ -517,6 +548,39 @@
 
 .insider-issue-join h2 {
   margin: 0 0 1rem;
+}
+
+.insider-unsub {
+  padding-top: 3rem;
+  max-width: 34rem;
+}
+
+.insider-unsub h1 {
+  margin: 0 0 0.75rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.85rem, 3.5vw, 2.5rem);
+  font-weight: 500;
+}
+
+.insider-unsub__lead {
+  margin: 0 0 1.75rem;
+  color: var(--insider-muted);
+  line-height: 1.55;
+}
+
+.insider-unsub__done {
+  padding: 1.25rem 0;
+}
+
+.insider-unsub__done p {
+  margin: 0 0 1.25rem;
+  font-size: 1.05rem;
+}
+
+.insider-signup__privacy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .sr-only {

@@ -4,7 +4,11 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { InsiderSignupForm } from "@/components/insider/InsiderSignupForm";
-import { getInsiderIssue, INSIDER_ISSUES } from "@/lib/insider-issues";
+import {
+  getInsiderIssue,
+  getPublishedInsiderIssues,
+} from "@/lib/insider-issues";
+import { withPromo } from "@/lib/promo-link";
 
 type Props = {
   slug: string;
@@ -14,12 +18,16 @@ export function InsiderIssuePage({ slug }: Props) {
   const issue = getInsiderIssue(slug);
   if (!issue) notFound();
 
-  const index = INSIDER_ISSUES.findIndex((item) => item.slug === slug);
-  const prev = index > 0 ? INSIDER_ISSUES[index - 1] : null;
+  const published = getPublishedInsiderIssues();
+  const index = published.findIndex((item) => item.slug === slug);
+  const prev = index > 0 ? published[index - 1] : null;
   const next =
-    index >= 0 && index < INSIDER_ISSUES.length - 1
-      ? INSIDER_ISSUES[index + 1]
-      : null;
+    index >= 0 && index < published.length - 1 ? published[index + 1] : null;
+  const primaryHref = withPromo(issue.ctaPrimary.href, issue.promoCode);
+  const browseHref = withPromo("/destinations", issue.promoCode);
+  const secondaryHref = issue.ctaSecondary
+    ? withPromo(issue.ctaSecondary.href, issue.promoCode)
+    : null;
 
   return (
     <>
@@ -81,18 +89,15 @@ export function InsiderIssuePage({ slug }: Props) {
             </p>
             <p className="insider-deal__hint">{issue.sections.dealBody}</p>
             <div className="insider-deal__actions">
-              <Link href={issue.ctaPrimary.href} className="insider-btn">
+              <Link href={primaryHref} className="insider-btn">
                 {issue.ctaPrimary.label}
               </Link>
-              <Link
-                href={`/destinations?promo=${issue.promoCode}`}
-                className="insider-btn insider-btn--ghost"
-              >
+              <Link href={browseHref} className="insider-btn insider-btn--ghost">
                 Use {issue.promoCode} at checkout
               </Link>
-              {issue.ctaSecondary && (
+              {issue.ctaSecondary && secondaryHref && (
                 <Link
-                  href={issue.ctaSecondary.href}
+                  href={secondaryHref}
                   className="insider-btn insider-btn--ghost"
                 >
                   {issue.ctaSecondary.label}

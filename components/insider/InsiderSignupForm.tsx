@@ -85,7 +85,8 @@ export function InsiderSignupForm({ variant = "page" }: Props) {
         </p>
       )}
       <p className="insider-signup__privacy">
-        One email a month. Unsubscribe anytime.
+        One email a month.{" "}
+        <a href="/unsubscribe">Unsubscribe</a> anytime.
       </p>
     </form>
   );

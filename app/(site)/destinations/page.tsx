@@ -3,7 +3,13 @@ import { ModernDestinationsPage } from "@/components/destinations/ModernDestinat
 import { DESTINATION_FILTERS, type DestinationRegion } from "@/lib/destinations-catalog";
 
 type DestinationsPageProps = {
-  searchParams: Promise<{ q?: string; country?: string; region?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    country?: string;
+    region?: string;
+    promo?: string;
+    code?: string;
+  }>;
 };
 
 function parseRegion(value?: string): "all" | DestinationRegion {
@@ -18,11 +24,13 @@ export default async function Page({ searchParams }: DestinationsPageProps) {
   const params = await searchParams;
   const initialQuery = params.q ?? params.country ?? "";
   const initialRegion = parseRegion(params.region);
+  const initialPromo = params.promo ?? params.code ?? "";
 
   return (
     <ModernDestinationsPage
       initialQuery={initialQuery}
       initialRegion={initialRegion}
+      initialPromo={initialPromo}
     />
   );
 }

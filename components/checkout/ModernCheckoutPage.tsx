@@ -10,6 +10,11 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { createCheckoutSession } from "@/lib/checkout-api";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { validatePromoCode } from "@/lib/promo-api";
+import {
+  clearRememberedPromo,
+  rememberPromo,
+  resolvePromo,
+} from "@/lib/promo-link";
 
 function parsePrice(value: string | null): number {
   if (!value) return 0;
@@ -26,7 +31,7 @@ export function ModernCheckoutPage() {
   const plan = searchParams.get("plan") ?? "Selected plan";
   const price = parsePrice(searchParams.get("price")) || 12;
   const isRegional = searchParams.get("productType") === "regional";
-  const initialPromo = searchParams.get("promo") ?? searchParams.get("code") ?? "";
+  const initialPromo = resolvePromo(searchParams);
 
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -86,6 +91,7 @@ export function ModernCheckoutPage() {
 
     setAppliedPromo(result.code ?? code.toUpperCase());
     setDiscountAmount(result.discountAmount ?? 0);
+    rememberPromo(result.code ?? code);
     setPromoMessage(
       result.percentOff
         ? `${result.percentOff}% off applied${result.endsAt ? ` · ends ${result.endsAt.slice(0, 10)}` : ""}`
@@ -99,6 +105,7 @@ export function ModernCheckoutPage() {
     setPromoInput("");
     setPromoMessage(null);
     setPromoError(null);
+    clearRememberedPromo();
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {

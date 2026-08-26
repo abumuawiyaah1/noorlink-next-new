@@ -12,7 +12,13 @@ export const metadata = {
     "Premium connectivity for your pilgrimage. Install at home, stay connected in Saudi Arabia.",
 };
 
-export default async function HajjUmrahPage() {
+type HajjPageProps = {
+  searchParams: Promise<{ promo?: string; code?: string }>;
+};
+
+export default async function HajjUmrahPage({ searchParams }: HajjPageProps) {
+  const query = await searchParams;
+  const initialPromo = query.promo ?? query.code ?? "";
   const countryImage = getCountryImage(SAUDI_COUNTRY_ID);
 
   let initialData = null;
@@ -39,6 +45,7 @@ export default async function HajjUmrahPage() {
         countryImage={countryImage}
         initialData={initialData}
         initialError={initialError}
+        initialPromo={initialPromo}
       />
     </>
   );
