@@ -276,7 +276,7 @@ export const DESTINATION_CARDS: DestinationCard[] = [
     title: "South America (Multi-country)",
     region: "Americas",
     priceCountryId: "regional-south-america",
-    priceLabel: "From $13.99",
+    priceLabel: "From $12.99",
     className: "bg-brazil",
     image: getCountryImageUrl("brazil"),
     description: "Brazil, Argentina, Chile, and more — one eSIM for the whole region.",

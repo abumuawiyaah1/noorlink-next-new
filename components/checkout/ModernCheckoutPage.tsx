@@ -43,6 +43,7 @@ export function ModernCheckoutPage() {
   const [promoError, setPromoError] = useState<string | null>(null);
   const [validatingPromo, setValidatingPromo] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [wantsTopUp, setWantsTopUp] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -139,6 +140,7 @@ export function ModernCheckoutPage() {
         travelDate: travelDate || undefined,
         packageId: packageId || undefined,
         promoCode: appliedPromo || undefined,
+        wantsTopUp: wantsTopUp || undefined,
       });
 
       if (!result.success || !result.checkoutUrl) {
@@ -300,8 +302,27 @@ export function ModernCheckoutPage() {
 
               <div className="card">
                 <h2>
+                  <i className="fas fa-bolt" style={{ color: "var(--accent)" }} aria-hidden="true" />{" "}
+                  4. Data top-up
+                </h2>
+                <div className="checkbox-container">
+                  <input
+                    id="checkout-topup"
+                    type="checkbox"
+                    checked={wantsTopUp}
+                    onChange={(event) => setWantsTopUp(event.target.checked)}
+                  />
+                  <label className="checkbox-text" htmlFor="checkout-topup">
+                    I may want to add more data later (top-up). We’ll fulfill with a
+                    top-up-capable plan when available.
+                  </label>
+                </div>
+              </div>
+
+              <div className="card">
+                <h2>
                   <i className="fas fa-file-contract" style={{ color: "var(--accent)" }} aria-hidden="true" />{" "}
-                  4. Terms &amp; Privacy
+                  5. Terms &amp; Privacy
                 </h2>
                 <div className="policy-links">
                   <Link href="/terms" target="_blank" rel="noopener noreferrer">

@@ -193,8 +193,7 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
     displayName: "South America Regional",
     shortName: "South America",
     flag: "🌎",
-    heroTagline:
-      "South America regional packs are coming soon while we lock Access LatAm SKUs.",
+    heroTagline: "Brazil to the Andes on one eSIM — Latin America regional coverage.",
     countries: [
       "Brazil",
       "Argentina",
@@ -203,11 +202,21 @@ export const REGIONAL_PRODUCTS: Record<RegionalRouteSlug, RegionalProduct> = {
       "Peru",
       "Uruguay",
       "Ecuador",
+      "Paraguay",
+      "Bolivia",
+      "Venezuela",
+      "Mexico",
+      "Panama",
+      "Costa Rica",
+      "Guatemala",
+      "Honduras",
+      "El Salvador",
+      "Nicaragua",
     ],
     exclusions: [],
     singleCountrySlug: "brazil",
     faqBorder:
-      "Regional South America coverage will use one install once Access LatAm packs are live.",
+      "No. Keep the same eSIM line for mobile data across covered Latin America destinations.",
   },
   global: {
     routeSlug: "global",
