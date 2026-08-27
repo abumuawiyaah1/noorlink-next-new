@@ -16,7 +16,32 @@ export type LookedUpOrder = {
   activationCode?: string | null;
   dataUsedGb?: number | null;
   dataTotalGb?: number | null;
+  validityDays?: number | null;
+  daysRemaining?: number | null;
+  dataRemainingGb?: number | null;
+  fulfillmentPending?: boolean;
+  allowanceStatus?: string | null;
 };
+
+async function parseLookupResponse(
+  response: Response,
+): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string; message?: string }> {
+  const data = (await response.json().catch(() => ({}))) as {
+    found?: boolean;
+    order?: LookedUpOrder | null;
+    detail?: string;
+    message?: string;
+  };
+  if (!response.ok) {
+    const error = data.detail ?? data.message ?? "Could not look up this order.";
+    return { found: false, order: null, error };
+  }
+  return {
+    found: Boolean(data.found),
+    order: data.order ?? null,
+    message: data.message,
+  };
+}
 
 export async function lookupOrder(
   email: string,
@@ -31,23 +56,34 @@ export async function lookupOrder(
 
   try {
     const response = await fetch(url, { method: "GET" });
-    const data = (await response.json().catch(() => ({}))) as {
-      found?: boolean;
-      order?: LookedUpOrder | null;
-      detail?: string;
-    };
-    if (!response.ok) {
-      const error = data.detail ?? "Could not look up this order.";
-      debugError("orders", "lookup failed", { status: response.status, error });
-      return { found: false, order: null, error };
-    }
+    const result = await parseLookupResponse(response);
     debug("orders", "lookup result", {
-      found: Boolean(data.found),
-      status: data.order?.status,
+      found: result.found,
+      status: result.order?.status,
     });
-    return { found: Boolean(data.found), order: data.order ?? null };
+    return result;
   } catch (err) {
     debugError("orders", "network error", err);
+    return {
+      found: false,
+      order: null,
+      error: err instanceof Error ? err.message : "Lookup failed.",
+    };
+  }
+}
+
+export async function lookupOrderBySession(
+  sessionId: string,
+): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string; message?: string }> {
+  const params = new URLSearchParams({ sessionId: sessionId.trim() });
+  const url = `${API_BASE}/api/orders/by-session?${params.toString()}`;
+  debug("orders", "lookupOrderBySession →", { sessionId: sessionId.slice(0, 12) });
+
+  try {
+    const response = await fetch(url, { method: "GET" });
+    return await parseLookupResponse(response);
+  } catch (err) {
+    debugError("orders", "session lookup network error", err);
     return {
       found: false,
       order: null,

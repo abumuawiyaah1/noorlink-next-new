@@ -2,22 +2,64 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { FunnelSteps } from "@/components/layout/FunnelSteps";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
-import { formatCountryLabel } from "@/lib/country-slugs";
+import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
+import { formatCountryLabel } from "@/lib/country-slugs";
+import { lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
-  const country = formatCountryLabel(searchParams.get("country") ?? "your destination");
-  const price = searchParams.get("price") ?? "0.00";
-  const email = searchParams.get("email");
-  const plan = searchParams.get("plan");
-  const dashboardHref = `/dashboard${email ? `?email=${encodeURIComponent(email)}` : ""}`;
-  const supportHref = `/support?subject=${encodeURIComponent("Install / QR code")}${email ? `&email=${encodeURIComponent(email)}` : ""}`;
+  const sessionId = searchParams.get("session_id");
+  const countryParam = formatCountryLabel(searchParams.get("country") ?? "");
+  const priceParam = searchParams.get("price");
+  const emailParam = searchParams.get("email");
+  const planParam = searchParams.get("plan");
+
+  const [order, setOrder] = useState<LookedUpOrder | null>(null);
+  const [loading, setLoading] = useState(Boolean(sessionId));
+
+  const refresh = useCallback(async () => {
+    if (!sessionId) return;
+    const result = await lookupOrderBySession(sessionId);
+    if (result.order) {
+      setOrder(result.order);
+    }
+    setLoading(false);
+  }, [sessionId]);
+
+  useEffect(() => {
+    if (!sessionId) {
+      setLoading(false);
+      return;
+    }
+    void refresh();
+    const pending = order?.fulfillmentPending ?? true;
+    if (!pending && order?.qrCodeUrl) return;
+    const timer = window.setInterval(() => {
+      void refresh();
+    }, 8000);
+    return () => window.clearInterval(timer);
+  }, [sessionId, refresh, order?.fulfillmentPending, order?.qrCodeUrl]);
+
+  const country = formatCountryLabel(order?.country ?? countryParam);
+  const email = order?.email ?? emailParam;
+  const plan = order?.packageName ?? planParam;
+  const price =
+    order?.price != null
+      ? order.price.toFixed(2)
+      : priceParam ?? "0.00";
+  const orderNumber = order?.orderNumber;
+  const dashboardHref = `/dashboard${
+    email ? `?email=${encodeURIComponent(email)}` : ""
+  }${orderNumber ? `${email ? "&" : "?"}orderId=${encodeURIComponent(orderNumber)}` : ""}`;
+  const supportHref = `/support?subject=${encodeURIComponent("Install / QR code")}${
+    email ? `&email=${encodeURIComponent(email)}` : ""
+  }${orderNumber ? `&orderId=${encodeURIComponent(orderNumber)}` : ""}`;
 
   return (
     <>
@@ -52,23 +94,48 @@ function SuccessContent() {
           </p>
           <p>
             Order total: <strong>${price}</strong>
+            {orderNumber ? (
+              <>
+                {" "}
+                · <span className="order-id-inline">{orderNumber}</span>
+              </>
+            ) : null}
           </p>
         </div>
+
+        {order ? <OrderUsageSummary order={order} /> : null}
 
         <div className="ticket-card">
           <div className="ticket-header">
             <strong>What happens next</strong>
-            <span className="order-id">Usually within 1–2 minutes</span>
+            <span className="order-id">
+              {loading ? "Loading order…" : orderNumber ?? "Usually 1–2 min"}
+            </span>
           </div>
           <div className="ticket-body">
             <div className="qr-area">
               <div className="qr-placeholder" aria-hidden="true">
-                ✉️
+                {order?.qrCodeUrl ? "📲" : "✉️"}
               </div>
-              <p className="scan-instruction">
-                The QR code is not shown here. It arrives in a second email after
-                payment confirms.
-              </p>
+              {order?.qrCodeUrl ? (
+                <>
+                  <p className="scan-instruction">Your QR is ready</p>
+                  <a
+                    href={order.qrCodeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-nav"
+                    style={{ display: "inline-block", marginTop: 12 }}
+                  >
+                    Open QR / install
+                  </a>
+                </>
+              ) : (
+                <p className="scan-instruction">
+                  The QR code is not shown here. It arrives in a second email after
+                  payment confirms.
+                </p>
+              )}
             </div>
             <div className="details-area">
               <h3>Install in 3 steps</h3>
@@ -90,8 +157,10 @@ function SuccessContent() {
                 <div className="next-step">
                   <span>3</span>
                   <div>
-                    <strong>Track or get help</strong>
-                    <p>If it takes more than 10 minutes, open My eSIMs or contact support.</p>
+                    <strong>Track usage here</strong>
+                    <p>
+                      See GB and days remaining in My eSIMs anytime during your trip.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -117,10 +186,6 @@ function SuccessContent() {
                   Contact support
                 </Link>
               </div>
-              <p className="success-reassurance">
-                If the QR email is delayed, support can help 24/7 and your order
-                tracker stays available at any time.
-              </p>
             </div>
           </div>
         </div>

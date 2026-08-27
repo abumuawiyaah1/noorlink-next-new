@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { lookupOrder, type LookedUpOrder } from "@/lib/orders-api";
+import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 
@@ -113,6 +114,8 @@ export function OrderLookupCard({
             <span className="lookup-status">{order.status ?? "unknown"}</span>
           </div>
 
+          <OrderUsageSummary order={order} compact />
+
           {order.orderNumber ? (
             <p>
               <strong>Order:</strong> {order.orderNumber}
@@ -123,7 +126,7 @@ export function OrderLookupCard({
               <strong>Paid:</strong> {order.currency ?? "USD"} {Number(order.price).toFixed(2)}
             </p>
           ) : null}
-          {order.dataTotalGb != null ? (
+          {order.dataTotalGb != null && order.dataRemainingGb == null ? (
             <p>
               <strong>Usage:</strong> {order.dataUsedGb ?? 0} GB used of {order.dataTotalGb} GB
             </p>
