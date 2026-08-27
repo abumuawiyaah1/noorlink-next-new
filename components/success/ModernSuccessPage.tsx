@@ -11,30 +11,36 @@ import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { formatCountryLabel } from "@/lib/country-slugs";
-import { lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
+import { lookupOrderByPaymentIntent, lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const paymentIntentId = searchParams.get("payment_intent");
   const countryParam = formatCountryLabel(searchParams.get("country") ?? "");
   const priceParam = searchParams.get("price");
   const emailParam = searchParams.get("email");
   const planParam = searchParams.get("plan");
 
   const [order, setOrder] = useState<LookedUpOrder | null>(null);
-  const [loading, setLoading] = useState(Boolean(sessionId));
+  const [loading, setLoading] = useState(Boolean(sessionId || paymentIntentId));
 
   const refresh = useCallback(async () => {
-    if (!sessionId) return;
-    const result = await lookupOrderBySession(sessionId);
-    if (result.order) {
-      setOrder(result.order);
+    if (sessionId) {
+      const result = await lookupOrderBySession(sessionId);
+      if (result.order) setOrder(result.order);
+      setLoading(false);
+      return;
     }
-    setLoading(false);
-  }, [sessionId]);
+    if (paymentIntentId) {
+      const result = await lookupOrderByPaymentIntent(paymentIntentId);
+      if (result.order) setOrder(result.order);
+      setLoading(false);
+    }
+  }, [sessionId, paymentIntentId]);
 
   useEffect(() => {
-    if (!sessionId) {
+    if (!sessionId && !paymentIntentId) {
       setLoading(false);
       return;
     }
@@ -45,7 +51,7 @@ function SuccessContent() {
       void refresh();
     }, 8000);
     return () => window.clearInterval(timer);
-  }, [sessionId, refresh, order?.fulfillmentPending, order?.qrCodeUrl]);
+  }, [sessionId, paymentIntentId, refresh, order?.fulfillmentPending, order?.qrCodeUrl]);
 
   const country = formatCountryLabel(order?.country ?? countryParam);
   const email = order?.email ?? emailParam;

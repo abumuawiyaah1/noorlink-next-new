@@ -91,3 +91,27 @@ export async function lookupOrderBySession(
     };
   }
 }
+
+export async function lookupOrderByPaymentIntent(
+  paymentIntentId: string,
+): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string; message?: string }> {
+  const params = new URLSearchParams({
+    paymentIntentId: paymentIntentId.trim(),
+  });
+  const url = `${API_BASE}/api/orders/by-payment-intent?${params.toString()}`;
+  debug("orders", "lookupOrderByPaymentIntent →", {
+    paymentIntentId: paymentIntentId.slice(0, 12),
+  });
+
+  try {
+    const response = await fetch(url, { method: "GET" });
+    return await parseLookupResponse(response);
+  } catch (err) {
+    debugError("orders", "payment intent lookup network error", err);
+    return {
+      found: false,
+      order: null,
+      error: err instanceof Error ? err.message : "Lookup failed.",
+    };
+  }
+}

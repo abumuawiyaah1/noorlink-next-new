@@ -371,6 +371,62 @@ export function singleCountryPlansPath(product: RegionalProduct): string {
   return plansPathForCountry(product.singleCountrySlug);
 }
 
+/** Normalize labels for coverage matching (UAE ↔ United Arab Emirates, etc.). */
+function coverageKey(input: string): string {
+  const raw = input.trim().toLowerCase().replace(/[-_]+/g, " ").replace(/\s+/g, " ");
+  const aliases: Record<string, string> = {
+    uae: "united arab emirates",
+    "united arab emirates": "united arab emirates",
+    usa: "united states",
+    us: "united states",
+    "united states": "united states",
+    "united states of america": "united states",
+    uk: "united kingdom",
+    "united kingdom": "united kingdom",
+    "great britain": "united kingdom",
+    england: "united kingdom",
+    turkey: "turkey",
+    turkiye: "turkey",
+    "czech republic": "czechia",
+    czechia: "czechia",
+    "south korea": "south korea",
+    korea: "south korea",
+    "hong kong": "hong kong",
+    "saudi": "saudi arabia",
+    "saudi arabia": "saudi arabia",
+  };
+  return aliases[raw] ?? raw;
+}
+
+function countryListedInProduct(
+  country: string,
+  product: RegionalProduct,
+): boolean {
+  const key = coverageKey(country);
+  if (!key) return false;
+  if (product.exclusions.some((name) => coverageKey(name) === key)) {
+    return false;
+  }
+  return product.countries.some((name) => coverageKey(name) === key);
+}
+
+/**
+ * Best regional (or global) plan for a single-country checkout.
+ * Prefers the most specific non-global region that lists the country;
+ * falls back to Global so layover + destination can share one eSIM.
+ */
+export function recommendRegionalForCountry(
+  country: string,
+): RegionalProduct {
+  const regionalHits = REGIONAL_ROUTE_SLUGS.filter((slug) => slug !== "global")
+    .map((slug) => REGIONAL_PRODUCTS[slug])
+    .filter((product) => countryListedInProduct(country, product))
+    .sort((a, b) => a.countries.length - b.countries.length);
+
+  if (regionalHits[0]) return regionalHits[0];
+  return REGIONAL_PRODUCTS.global;
+}
+
 export const REGIONAL_FAQS = [
   {
     q: "Does one eSIM work in all listed countries?",

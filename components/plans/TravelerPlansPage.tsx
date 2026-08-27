@@ -22,6 +22,8 @@ import {
 } from "@/lib/plans-api";
 import { describeEsimPlan } from "@/lib/plan-descriptions";
 import {
+  plansPathForRegion,
+  recommendRegionalForCountry,
   REGIONAL_FAQS,
   singleCountryPlansPath,
   type RegionalProduct,
@@ -91,6 +93,7 @@ function checkoutHref(
   flag?: string,
   isRegional?: boolean,
   promo?: string,
+  wantsTopUp?: boolean,
 ): string {
   const checkoutParams = new URLSearchParams({
     country: countryName,
@@ -100,6 +103,7 @@ function checkoutHref(
   if (plan.name) checkoutParams.set("plan", plan.name);
   if (plan.id) checkoutParams.set("packageId", plan.id);
   if (isRegional) checkoutParams.set("productType", "regional");
+  if (wantsTopUp) checkoutParams.set("wantsTopUp", "1");
   const href = `/checkout?${checkoutParams.toString()}`;
   return withPromo(href, promo);
 }
@@ -120,6 +124,7 @@ function PlanRow({
   flag,
   isRegional,
   promo,
+  wantsTopUp,
   selected,
   onSelect,
 }: {
@@ -128,12 +133,13 @@ function PlanRow({
   flag?: string;
   isRegional?: boolean;
   promo?: string;
+  wantsTopUp?: boolean;
   selected: boolean;
   onSelect: (planId: string) => void;
 }) {
   const badge = badgeLabel(plan);
   const best = plan.displayBadge === "best_choice";
-  const href = checkoutHref(plan, countryName, flag, isRegional, promo);
+  const href = checkoutHref(plan, countryName, flag, isRegional, promo, wantsTopUp);
   const copy = describeEsimPlan(plan, {
     countryLabel: countryName,
     isRegional,
@@ -293,6 +299,7 @@ function PlanSection({
   flag,
   isRegional,
   promo,
+  wantsTopUp,
   selectedPlanId,
   onSelectPlan,
 }: {
@@ -302,18 +309,18 @@ function PlanSection({
   flag?: string;
   isRegional?: boolean;
   promo?: string;
+  wantsTopUp?: boolean;
   selectedPlanId: string | null;
   onSelectPlan: (planId: string) => void;
 }) {
-  if (plans.length === 0) return null;
+  const sorted = sortPlans(plans);
+  if (sorted.length === 0) return null;
 
   return (
-    <section className="plans-section" aria-labelledby={`plans-section-${label}`}>
-      <h3 className="plans-section__title" id={`plans-section-${label}`}>
-        {label}
-      </h3>
+    <section className="plans-section" aria-label={label}>
+      <h3 className="plans-section__title">{label}</h3>
       <div className="plans-rows">
-        {sortPlans(plans).map((plan) => (
+        {sorted.map((plan) => (
           <PlanRow
             key={plan.id}
             plan={plan}
@@ -321,6 +328,7 @@ function PlanSection({
             flag={flag}
             isRegional={isRegional}
             promo={promo}
+            wantsTopUp={wantsTopUp}
             selected={selectedPlanId === plan.id}
             onSelect={onSelectPlan}
           />
@@ -344,6 +352,7 @@ export function TravelerPlansPage({
   const [error, setError] = useState<string | null>(initialError);
   const [compatOpen, setCompatOpen] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+  const [wantsTopUp, setWantsTopUp] = useState(false);
 
   useEffect(() => {
     const fromProp = normalizePromoCode(initialPromo);
@@ -398,6 +407,10 @@ export function TravelerPlansPage({
   const title = regional?.displayName ?? formatCountryLabel(data?.countryName ?? countryId);
   const flag = regional?.flag ?? resolveCountryFlag(countryId, data?.flag);
   const checkoutCountryName = regional?.displayName ?? title;
+  const layoverRecommendation = useMemo(() => {
+    if (regional) return null;
+    return recommendRegionalForCountry(checkoutCountryName);
+  }, [regional, checkoutCountryName]);
   const cheapest = useMemo(() => {
     const all = data?.plans ?? [];
     if (all.length === 0) return null;
@@ -521,6 +534,16 @@ export function TravelerPlansPage({
               </p>
             )}
 
+            {!regional && layoverRecommendation && (
+              <p className="plans-regional-single-hint">
+                Layover in another country before {checkoutCountryName}?{" "}
+                <Link href={plansPathForRegion(layoverRecommendation.routeSlug)}>
+                  See {layoverRecommendation.shortName} plans
+                </Link>{" "}
+                — one eSIM can cover both legs when your layover is in the region.
+              </p>
+            )}
+
             <div className="plans-reassurance">
               <span>Ready before you fly</span>
               <span>We&apos;ve got you covered</span>
@@ -532,6 +555,16 @@ export function TravelerPlansPage({
               Hover or tap a plan to see what is included. Then continue to secure
               Stripe checkout — the price you see is the price you pay.
             </p>
+            <label className="plans-topup-pref">
+              <input
+                type="checkbox"
+                checked={wantsTopUp}
+                onChange={(event) => setWantsTopUp(event.target.checked)}
+              />
+              <span>
+                I may want to add more data later (top-up when available).
+              </span>
+            </label>
             <div className="plans-sections">
               {PLAN_SECTIONS.map((section) => (
                 <PlanSection
@@ -542,6 +575,7 @@ export function TravelerPlansPage({
                   flag={flag}
                   isRegional={Boolean(regional)}
                   promo={promo}
+                  wantsTopUp={wantsTopUp}
                   selectedPlanId={selectedPlanId}
                   onSelectPlan={setSelectedPlanId}
                 />

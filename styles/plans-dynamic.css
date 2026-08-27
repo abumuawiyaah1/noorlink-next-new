@@ -365,6 +365,30 @@
   color: var(--text-muted);
 }
 
+.plans-topup-pref {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 auto 22px;
+  max-width: 520px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid rgba(15, 61, 62, 0.12);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--text-main, #111827);
+  text-align: left;
+}
+
+.plans-topup-pref input {
+  margin-top: 3px;
+  min-width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
 .plans-row {
   display: grid;
   grid-template-columns: minmax(72px, 0.9fr) minmax(72px, 0.9fr) minmax(88px, 1.1fr) minmax(0, 0.8fr) auto;
