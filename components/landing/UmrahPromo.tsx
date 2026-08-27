@@ -13,9 +13,27 @@ export function UmrahPromo() {
                 Dedicated pilgrimage plans with hotspot included. Install before
                 you fly so maps, messages, and group coordination work on arrival.
               </p>
-              <Link href="/hajj-umrah" className="btn-nav promo-cta">
-                View Hajj &amp; Umrah plans
-              </Link>
+              <div className="promo-cta-row">
+                <Link href="/hajj-umrah" className="btn-nav promo-cta">
+                  View Hajj &amp; Umrah plans
+                </Link>
+                <Link
+                  href="/newsletter/2027-01-ramadan-special"
+                  className="promo-cta-secondary"
+                >
+                  Ramadan Insider special
+                </Link>
+                <Link
+                  href="/newsletter/2027-04-hajj-special"
+                  className="promo-cta-secondary"
+                >
+                  Hajj Insider special
+                </Link>
+              </div>
+              <p className="promo-insider-note">
+                Special editions go to customers buying or searching Umrah &amp; Hajj
+                packages — Qur’an &amp; Hadith reminders, one month before the season.
+              </p>
             </div>
             <div className="promo-feature-img" role="img" aria-label="Pilgrimage travel" />
           </div>

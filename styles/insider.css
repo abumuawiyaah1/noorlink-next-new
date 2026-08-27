@@ -120,10 +120,13 @@
 }
 
 .insider-card {
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(15, 61, 62, 0.08);
+  border: 3px solid transparent;
+  background: linear-gradient(rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.96)) padding-box,
+    var(--border-gradient) border-box;
   overflow: hidden;
   backdrop-filter: blur(8px);
+  border-radius: var(--radius-card-lg, 16px);
+  box-shadow: var(--shadow-card, 0 8px 24px rgba(15, 61, 62, 0.08));
 }
 
 .insider-card--soon {
@@ -475,6 +478,119 @@
   padding-left: 1.15rem;
 }
 
+.insider-issue-reminders {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) 1fr;
+  gap: 1.25rem 1.5rem;
+  align-items: start;
+  margin: 0 0 2rem;
+  padding: 1.4rem 1.45rem;
+  border: 3px solid transparent;
+  border-radius: var(--radius-card-lg, 16px);
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 248, 235, 0.55),
+      rgba(246, 236, 214, 0.62)
+    ),
+    url("/images/insider/insider-manuscript-bg.jpg") center / cover no-repeat padding-box,
+    var(--border-gradient) border-box;
+  box-shadow: var(--shadow-card, 0 8px 24px rgba(15, 61, 62, 0.08));
+}
+
+.insider-issue-reminders__tools {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(92, 64, 35, 0.22);
+  box-shadow: 0 8px 18px -12px rgba(61, 40, 16, 0.45);
+}
+
+.insider-issue-reminders__tools img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.insider-issue-reminders__copy {
+  min-width: 0;
+}
+
+.insider-issue-reminders h2 {
+  margin-top: 1.25rem;
+  color: #3d2914;
+}
+
+.insider-issue-reminders h2:first-child {
+  margin-top: 0;
+}
+
+.insider-reminder {
+  margin: 0 0 1.1rem;
+  padding: 0;
+  border: 0;
+}
+
+.insider-reminder p {
+  font-style: italic;
+  color: #2c2118;
+  margin: 0 0 0.35rem;
+}
+
+.insider-reminder cite {
+  display: block;
+  font-style: normal;
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--insider-teal, #0f3d3e);
+}
+
+.insider-reminder__occasion {
+  font-style: normal !important;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #5c4023;
+  margin: 0 0 0.45rem !important;
+}
+
+.insider-reminder__arabic {
+  font-style: normal !important;
+  font-size: 1.2rem;
+  line-height: 1.85;
+  color: #1f160f;
+  margin: 0 0 0.55rem !important;
+  font-family: "Traditional Arabic", "Scheherazade New", "Noto Naskh Arabic",
+    "Amiri", Georgia, serif;
+}
+
+.insider-reminder--dua {
+  padding-bottom: 0.35rem;
+  margin-bottom: 1.35rem;
+  border-bottom: 1px solid rgba(92, 64, 35, 0.12);
+}
+
+.insider-reminder--dua:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .insider-issue-reminders {
+    grid-template-columns: 1fr;
+  }
+
+  .insider-issue-reminders__tools {
+    width: min(160px, 42vw);
+    margin: 0 auto;
+  }
+}
+
 .insider-issue-hajj {
   padding: 1.35rem 1.4rem;
   background: rgba(15, 61, 62, 0.05);
@@ -484,8 +600,20 @@
 .insider-deal {
   margin-top: 2.5rem;
   padding: 1.75rem;
-  background: linear-gradient(145deg, #0f3d3e, #05191a);
-  color: #fff;
+  border: 3px solid transparent;
+  border-radius: var(--radius-card-lg, 16px);
+  background: linear-gradient(145deg, #ffffff 0%, #f3f7f7 100%) padding-box,
+    var(--border-gradient) border-box;
+  color: var(--insider-ink);
+  box-shadow: var(--shadow-card, 0 8px 24px rgba(15, 61, 62, 0.08));
+}
+
+.insider-deal .insider-kicker {
+  color: var(--insider-accent);
+}
+
+.insider-deal p {
+  color: #334155;
 }
 
 .insider-deal__code {
@@ -494,19 +622,60 @@
   font-size: clamp(1.6rem, 4vw, 2.2rem);
   font-weight: 800;
   letter-spacing: 0.04em;
-  color: var(--insider-accent);
+  color: var(--insider-teal);
 }
 
 .insider-deal__hint {
   margin: 0.85rem 0 1.25rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--insider-muted);
   font-size: 0.95rem;
+}
+
+.insider-deal__giving {
+  margin: 0.85rem 0 1.25rem;
+  padding: 1rem 1.1rem;
+  background: #fff8f0;
+  border: 1px solid #ffe0b2;
+  border-radius: 12px;
+}
+
+.insider-deal__giving p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+.insider-deal__giving-link {
+  margin-top: 0.65rem !important;
+}
+
+.insider-deal__giving-link a {
+  color: var(--insider-teal);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .insider-deal__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
+}
+
+.insider-deal .insider-btn {
+  background: var(--insider-accent);
+  color: #05191a;
+}
+
+.insider-deal .insider-btn--ghost {
+  background: #fff;
+  color: var(--insider-teal);
+  border: 1px solid rgba(15, 61, 62, 0.35);
+}
+
+.insider-deal .insider-btn--ghost:hover {
+  background: rgba(15, 61, 62, 0.06);
 }
 
 .insider-issue-close {
@@ -542,8 +711,11 @@
 .insider-issue-join {
   margin-top: 2.75rem;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(15, 61, 62, 0.1);
+  border: 3px solid transparent;
+  border-radius: var(--radius-card-lg, 16px);
+  background: linear-gradient(rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.96)) padding-box,
+    var(--border-gradient) border-box;
+  box-shadow: var(--shadow-card, 0 8px 24px rgba(15, 61, 62, 0.08));
 }
 
 .insider-issue-join h2 {

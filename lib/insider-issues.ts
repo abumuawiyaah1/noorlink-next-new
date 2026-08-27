@@ -1,39 +1,18 @@
 /**
- * NoorLink Insider — Year 1 issue catalog (web archive + promo metadata).
+ * NoorLink Insider — issue catalog (web archive + promo metadata).
+ * Year 1 + Year 2 monthly issues and Ramadan/Hajj specials.
  * Hero images live in /public/images/insider/ and are served from noorlink.co.
  */
 
-export type InsiderIssue = {
-  slug: string;
-  issueNumber: number;
-  monthLabel: string;
-  subject: string;
-  preview: string;
-  heroImage: string;
-  heroAlt: string;
-  destinationFocus: string;
-  promoCode: string;
-  promoPercent: number;
-  promoEndsLabel: string;
-  ctaPrimary: { label: string; href: string };
-  ctaSecondary?: { label: string; href: string };
-  sections: {
-    opener: string;
-    destinationTitle: string;
-    destinationBody: string[];
-    tips?: string[];
-    connectivityTitle: string;
-    connectivityBody: string;
-    hajjTitle: string;
-    hajjBody: string;
-    dealBody: string;
-    closing: string;
-  };
-};
+import { INSIDER_ISSUES_YEAR2 } from "@/lib/insider-issues-year2";
+import { INSIDER_SPECIALS } from "@/lib/insider-specials";
+import type { InsiderIssue } from "@/lib/insider-types";
+
+export type { InsiderIssue, InsiderIslamicReminder, InsiderDua } from "@/lib/insider-types";
 
 const IMG = "/images/insider";
 
-export const INSIDER_ISSUES: InsiderIssue[] = [
+const INSIDER_ISSUES_YEAR1: InsiderIssue[] = [
   {
     slug: "2026-09-fall-turkey",
     issueNumber: 1,
@@ -443,12 +422,26 @@ export const INSIDER_ISSUES: InsiderIssue[] = [
   },
 ];
 
+/** Chronological catalog: Year 1, specials (by publish month), Year 2. */
+export const INSIDER_ISSUES: InsiderIssue[] = [
+  ...INSIDER_ISSUES_YEAR1,
+  ...INSIDER_SPECIALS,
+  ...INSIDER_ISSUES_YEAR2,
+].sort((a, b) => {
+  const aAt = getInsiderIssuePublishAt(a).getTime();
+  const bAt = getInsiderIssuePublishAt(b).getTime();
+  if (aAt !== bAt) return aAt - bAt;
+  return a.issueNumber - b.issueNumber;
+});
+
 export function getInsiderIssue(slug: string): InsiderIssue | undefined {
   return INSIDER_ISSUES.find((issue) => issue.slug === slug);
 }
 
 export function getInsiderIssuePublishAt(issue: InsiderIssue): Date {
-  const [year, month] = issue.slug.split("-").map(Number);
+  const parts = issue.slug.split("-");
+  const year = Number(parts[0]);
+  const month = Number(parts[1]);
   return new Date(Date.UTC(year, month - 1, 1));
 }
 

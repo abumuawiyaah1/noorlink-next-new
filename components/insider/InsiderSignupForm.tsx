@@ -67,7 +67,8 @@ export function InsiderSignupForm({ variant = "page" }: Props) {
           onChange={(event) => setDestination(event.target.value)}
         >
           <option value="">Next trip (optional)</option>
-          <option value="Umrah">Umrah / Hajj</option>
+          <option value="Umrah">Umrah</option>
+          <option value="Hajj">Hajj</option>
           <option value="Europe">Europe</option>
           <option value="Asia">Asia</option>
           <option value="Americas">Americas</option>
@@ -85,7 +86,7 @@ export function InsiderSignupForm({ variant = "page" }: Props) {
         </p>
       )}
       <p className="insider-signup__privacy">
-        One email a month.{" "}
+        One email a month. Choose Umrah or Hajj to receive pilgrimage specials.{" "}
         <a href="/unsubscribe">Unsubscribe</a> anytime.
       </p>
     </form>

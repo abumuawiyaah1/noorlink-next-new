@@ -166,6 +166,30 @@
         .promo-title { font-size: 2.8rem; margin-bottom: 15px; color: white; line-height: 1.1; }
         .promo-copy { font-size: 1.1rem; color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; }
         .promo-cta { background: var(--accent); color: white !important; display: inline-block; padding: 14px 35px; text-decoration: none; }
+        .promo-cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 18px;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .promo-cta-secondary {
+            color: #ffe0b2;
+            font-weight: 650;
+            font-size: 0.95rem;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .promo-cta-secondary:hover {
+            color: #fff;
+        }
+        .promo-insider-note {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            max-width: 36rem;
+            margin: 0;
+        }
         .news-kicker {
             text-transform: uppercase; color: var(--accent); letter-spacing: 2px;
             font-weight: 700; font-size: 0.8rem; margin-bottom: 10px;

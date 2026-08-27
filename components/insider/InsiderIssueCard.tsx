@@ -30,12 +30,17 @@ export function InsiderIssueCard({
         <Link href={href} className="insider-card__media">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={issue.heroImage} alt={issue.heroAlt} loading="lazy" />
-          <span className="insider-card__badge">Issue #{issue.issueNumber}</span>
+          <span className="insider-card__badge">
+            {issue.kind === "special"
+              ? "Special edition"
+              : `Issue #${issue.issueNumber}`}
+          </span>
         </Link>
       )}
       <div className="insider-card__body">
         <p className="insider-card__meta">
           {issue.monthLabel} · {issue.destinationFocus}
+          {issue.audience === "pilgrimage" ? " · Pilgrimage list" : ""}
         </p>
         <h3>
           {comingSoon ? issue.subject : <Link href={href}>{issue.subject}</Link>}
