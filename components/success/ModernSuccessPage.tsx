@@ -8,6 +8,7 @@ import { FunnelSteps } from "@/components/layout/FunnelSteps";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
+import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
@@ -104,6 +105,10 @@ function SuccessContent() {
         </div>
 
         {order ? <OrderUsageSummary order={order} /> : null}
+
+        {order?.qrCodeUrl && !order.fulfillmentPending ? (
+          <ReviewRequestCard orderId={order.orderNumber} compact />
+        ) : null}
 
         <div className="ticket-card">
           <div className="ticket-header">

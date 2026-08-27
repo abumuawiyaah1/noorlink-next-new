@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { lookupOrder, type LookedUpOrder } from "@/lib/orders-api";
 import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
+import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 
@@ -152,6 +153,10 @@ export function OrderLookupCard({
             <p className="order-lookup-note">
               Activation code: <strong>{order.activationCode}</strong>
             </p>
+          ) : null}
+
+          {order.qrCodeUrl && order.status === "delivered" ? (
+            <ReviewRequestCard orderId={order.orderNumber ?? orderId} compact />
           ) : null}
 
           <button
