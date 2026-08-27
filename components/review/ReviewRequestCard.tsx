@@ -1,7 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { GOOGLE_REVIEW_URL, reviewFeedbackPath } from "@/lib/review-links";
+import {
+  primaryPublicReviewLabel,
+  primaryPublicReviewUrl,
+  reviewFeedbackPath,
+} from "@/lib/review-links";
 
 type ReviewRequestCardProps = {
   orderId?: string;
@@ -13,6 +17,8 @@ export function ReviewRequestCard({
   compact = false,
 }: ReviewRequestCardProps) {
   const feedbackHref = reviewFeedbackPath(orderId);
+  const publicUrl = primaryPublicReviewUrl();
+  const publicLabel = primaryPublicReviewLabel();
 
   return (
     <div className={`review-request${compact ? " review-request--compact" : ""}`}>
@@ -24,18 +30,18 @@ export function ReviewRequestCard({
         any improvements we can make at NoorLink.
       </p>
       <div className="review-request__actions">
-        {GOOGLE_REVIEW_URL ? (
+        {publicUrl ? (
           <a
-            href={GOOGLE_REVIEW_URL}
+            href={publicUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-nav"
           >
-            Rate us on Google
+            {publicLabel}
           </a>
         ) : null}
         <Link href={feedbackHref} className="btn-nav btn-nav--secondary">
-          Share your experience
+          Share private feedback
         </Link>
       </div>
     </div>

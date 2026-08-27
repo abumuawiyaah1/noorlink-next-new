@@ -7,11 +7,18 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
-import { GOOGLE_REVIEW_URL, reviewFeedbackPath } from "@/lib/review-links";
+import {
+  GOOGLE_REVIEW_URL,
+  TRUSTPILOT_REVIEW_URL,
+  primaryPublicReviewLabel,
+  primaryPublicReviewUrl,
+  reviewFeedbackPath,
+} from "@/lib/review-links";
 
 function ReviewContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId") ?? undefined;
+  const publicUrl = primaryPublicReviewUrl();
 
   return (
     <>
@@ -35,13 +42,25 @@ function ReviewContent() {
           <ul>
             <li>
               <strong>Public rating:</strong>{" "}
-              {GOOGLE_REVIEW_URL ? (
-                <a href={GOOGLE_REVIEW_URL} target="_blank" rel="noopener noreferrer">
-                  Rate NoorLink on Google
+              {publicUrl ? (
+                <a href={publicUrl} target="_blank" rel="noopener noreferrer">
+                  {primaryPublicReviewLabel()}
                 </a>
               ) : (
-                "Google review link coming soon — use the form below for now."
+                "Trustpilot link coming soon — use private feedback below for now."
               )}
+              {TRUSTPILOT_REVIEW_URL && GOOGLE_REVIEW_URL ? (
+                <>
+                  {" · "}
+                  <a
+                    href={GOOGLE_REVIEW_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Also on Google
+                  </a>
+                </>
+              ) : null}
             </li>
             <li>
               <strong>Private feedback:</strong>{" "}

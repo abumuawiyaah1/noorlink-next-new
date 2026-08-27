@@ -1,3 +1,6 @@
+const TRUSTPILOT_REVIEW_URL =
+  process.env.NEXT_PUBLIC_TRUSTPILOT_REVIEW_URL?.trim() || "";
+
 const GOOGLE_REVIEW_URL =
   process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL?.trim() || "";
 
@@ -18,4 +21,15 @@ export function reviewFeedbackPath(orderId?: string): string {
   return `/support?${params.toString()}`;
 }
 
-export { GOOGLE_REVIEW_URL };
+/** Primary public review destination (Trustpilot preferred). */
+export function primaryPublicReviewUrl(): string {
+  return TRUSTPILOT_REVIEW_URL || GOOGLE_REVIEW_URL;
+}
+
+export function primaryPublicReviewLabel(): string {
+  if (TRUSTPILOT_REVIEW_URL) return "Rate us on Trustpilot";
+  if (GOOGLE_REVIEW_URL) return "Rate us on Google";
+  return "Leave a public review";
+}
+
+export { TRUSTPILOT_REVIEW_URL, GOOGLE_REVIEW_URL };
