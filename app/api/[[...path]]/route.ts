@@ -1,4 +1,5 @@
 import { SERVER_API_BASE } from "@/lib/api-server";
+import { rateLimitApiProxy } from "@/lib/api-rate-limit";
 import { debug, debugError } from "@/lib/debug";
 
 export const dynamic = "force-dynamic";
@@ -54,8 +55,12 @@ async function proxyToBackend(req: Request, ctx: Ctx): Promise<Response> {
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
+  const apiPath = path.join("/");
+  const limited = await rateLimitApiProxy(req, apiPath);
+  if (limited) return limited;
+
   const incoming = new URL(req.url);
-  const target = `${SERVER_API_BASE}/api/${path.join("/")}${incoming.search}`;
+  const target = `${SERVER_API_BASE}/api/${apiPath}${incoming.search}`;
   debug("api-proxy", `${req.method} →`, target);
 
   const headers = new Headers();

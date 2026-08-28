@@ -7,7 +7,10 @@
  * Usage:
  *   CLOUDFLARE_API_TOKEN=... node scripts/setup-cloudflare-rate-limits.mjs
  *
- * Token: Zone → Zone → Read, Zone → Firewall Services → Edit (scoped to noorlink.co)
+ * Token needs: Zone → Zone → Read, Zone → Zone WAF → Edit (scoped to noorlink.co)
+ *
+ * Note: "Firewall Services Edit" alone is not enough for the Rulesets API.
+ * Dashboard label: Zone WAF → Edit. API permission name: Zone WAF Write.
  */
 
 const ZONE_NAME = process.env.CLOUDFLARE_ZONE_NAME || "noorlink.co";
@@ -115,15 +118,25 @@ async function main() {
 
   if (!ruleset) {
     console.log("Creating http_ratelimit ruleset (1 combined rule for Free plan)…");
-    const created = await cf(`/zones/${zone.id}/rulesets`, {
-      method: "POST",
-      body: JSON.stringify({
-        name: "NoorLink rate limits",
-        kind: "zone",
-        phase: "http_ratelimit",
-        rules: [rulePayload],
-      }),
-    });
+    let created;
+    try {
+      created = await cf(`/zones/${zone.id}/rulesets`, {
+        method: "POST",
+        body: JSON.stringify({
+          name: "NoorLink rate limits",
+          kind: "zone",
+          phase: "http_ratelimit",
+          rules: [rulePayload],
+        }),
+      });
+    } catch (postErr) {
+      if (!/Authentication error/i.test(String(postErr.message))) throw postErr;
+      throw new Error(
+        `${postErr.message}\n` +
+          "Add API token permission: Zone → Zone WAF → Edit (not only Firewall Services). " +
+          "Then roll the token and update CLOUDFLARE_WAF_API_TOKEN in GitHub.",
+      );
+    }
     console.log(`Created ruleset ${created.result.id} with combined API rule.`);
     return;
   }
