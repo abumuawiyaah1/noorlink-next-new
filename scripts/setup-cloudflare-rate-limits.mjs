@@ -102,11 +102,10 @@ async function main() {
     if (/entrypoint ruleset|404/i.test(msg)) {
       ruleset = null;
     } else if (/Authentication error/i.test(msg)) {
-      throw new Error(
-        `${msg}\n` +
-          "If your Cloudflare token is correct, update GitHub secret CLOUDFLARE_WAF_API_TOKEN " +
-          "with the new token value (gh secret set CLOUDFLARE_WAF_API_TOKEN).",
+      console.log(
+        "Entrypoint lookup unavailable; attempting direct ruleset create…",
       );
+      ruleset = null;
     } else {
       throw err;
     }
