@@ -1,0 +1,21 @@
+name: Apply Cloudflare rate limits
+
+on:
+  workflow_dispatch:
+
+jobs:
+  rate-limits:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Apply WAF rate limiting rules
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node scripts/setup-cloudflare-rate-limits.mjs
