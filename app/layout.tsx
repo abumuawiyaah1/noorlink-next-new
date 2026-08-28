@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
+import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 import { CookieYesBannerFix } from "@/components/ui/CookieYesBannerFix";
 import { GlobalBackButton } from "@/components/ui/GlobalBackButton";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
+import { ROOT_METADATA } from "@/lib/seo";
 import "./globals.css";
 
 const COOKIEYES_SCRIPT_ID = "961f820e92b5546e026c4c37009d673e";
@@ -24,11 +26,7 @@ const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
 });
 
-export const metadata: Metadata = {
-  title: "NoorLink | Instant Travel eSIMs",
-  description: "Instant high-speed travel eSIMs in 190+ countries.",
-  icons: { icon: "/images/favicon.png" },
-};
+export const metadata: Metadata = ROOT_METADATA;
 
 export default function RootLayout({
   children,
@@ -49,6 +47,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
+        <SiteJsonLd />
         {children}
         <GlobalBackButton />
         <WhatsAppFab />

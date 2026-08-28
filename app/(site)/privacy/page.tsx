@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import "@/styles/content-pages.css";
 import { PolicyPageShell } from "@/components/content/PolicyPageShell";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Privacy Policy | NoorLink",
+  description: "How NoorLink collects, uses, and protects your personal data.",
+  path: "/privacy",
+});
 
 export default function Page() {
   return (

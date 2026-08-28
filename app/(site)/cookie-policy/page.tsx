@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import "@/styles/content-pages.css";
 import { PolicyPageShell } from "@/components/content/PolicyPageShell";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Cookie Policy | NoorLink",
-};
+  description: "How NoorLink uses cookies and similar technologies on noorlink.co.",
+  path: "/cookie-policy",
+});
 
 export default function CookiePolicyPage() {
   return (

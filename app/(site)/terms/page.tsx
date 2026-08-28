@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import "@/styles/content-pages.css";
 import { PolicyPageShell } from "@/components/content/PolicyPageShell";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Terms of Service | NoorLink",
+  description: "Terms governing use of NoorLink travel eSIM services and website.",
+  path: "/terms",
+});
 
 export default function Page() {
   return (

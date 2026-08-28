@@ -53,7 +53,7 @@ export function RegionalPlansPromo() {
                 <div className="regional-promo__media">
                   <DestinationCardMedia
                     src={image}
-                    alt=""
+                    alt={`${product.displayName} regional eSIM coverage`}
                     priority={index < 3}
                   />
                   {featured && (

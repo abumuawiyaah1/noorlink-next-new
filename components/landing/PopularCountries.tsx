@@ -74,7 +74,9 @@ export function PopularCountries() {
                   <img
                     className="popular-country__img"
                     src={card.image}
-                    alt=""
+                    alt={`${card.title} travel destination`}
+                    width={400}
+                    height={400}
                     loading={index < 3 ? "eager" : "lazy"}
                     decoding="async"
                     fetchPriority={index < 3 ? "high" : "auto"}

@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import "@/styles/destinations.css";
 import { ModernDestinationsPage } from "@/components/destinations/ModernDestinationsPage";
 import { DESTINATION_FILTERS, type DestinationRegion } from "@/lib/destinations-catalog";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Travel eSIM Destinations | NoorLink",
+  description:
+    "Browse 190+ countries and regional eSIM plans. Compare live prices, pick your destination, and install before you fly.",
+  path: "/destinations",
+});
 
 type DestinationsPageProps = {
   searchParams: Promise<{

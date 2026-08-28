@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { TravelerPlansPage } from "@/components/plans/TravelerPlansPage";
 import { getCountryImage } from "@/lib/country-image";
 import { pingPlansApi } from "@/lib/plans-diagnostics";
 import {
   getRegionalProduct,
   normalizeRegionalRouteSlug,
+  plansPathForRegion,
   type RegionalProduct,
 } from "@/lib/regional-products";
+import { buildPageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, productJsonLd } from "@/lib/structured-data";
 import "@/styles/plans-dynamic.css";
 
-export const dynamic = "force-dynamic";
+/** Revalidate plan shell + metadata; live prices still refresh client-side. */
+export const revalidate = 300;
 
 type PageProps = {
   params: Promise<{ region: string }>;
@@ -43,10 +48,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Regional eSIM Plans | NoorLink" };
   }
 
-  return {
+  return buildPageMetadata({
     title: `${product.displayName} eSIM Plans | NoorLink`,
     description: `${product.heroTagline} Covers ${product.countries.length} countries. Fixed, unlimited, and flexible plans.`,
-  };
+    path: plansPathForRegion(product.routeSlug),
+    image: regionalImageSrc(product),
+  });
 }
 
 export default async function RegionalPlansPage({ params, searchParams }: PageProps) {
@@ -81,6 +88,24 @@ export default async function RegionalPlansPage({ params, searchParams }: PagePr
 
   return (
     <>
+      <JsonLd
+        data={[
+          productJsonLd({
+            name: `${product.displayName} eSIM`,
+            description: product.heroTagline,
+            path: plansPathForRegion(product.routeSlug),
+            image: countryImage,
+          }),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Destinations", path: "/destinations" },
+            {
+              name: product.displayName,
+              path: plansPathForRegion(product.routeSlug),
+            },
+          ]),
+        ]}
+      />
       <link rel="preload" as="image" href={countryImage} fetchPriority="high" />
       <TravelerPlansPage
         countryId={product.apiCountryId}

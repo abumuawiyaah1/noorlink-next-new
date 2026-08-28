@@ -72,7 +72,7 @@ export function DestinationGrid() {
             >
               <DestinationCardMedia
                 src={dest.image}
-                alt=""
+                alt={`${dest.title} regional travel plans`}
                 priority={index < 2}
               />
               <div className="card-overlay">

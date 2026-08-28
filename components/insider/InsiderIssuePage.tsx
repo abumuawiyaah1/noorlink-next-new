@@ -63,7 +63,9 @@ export function InsiderIssuePage({ slug }: Props) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/insider/insider-qalam-ink.jpg"
-                  alt=""
+                  alt="Decorative qalam and ink"
+                  width={480}
+                  height={480}
                 />
               </div>
               <div className="insider-issue-reminders__copy">

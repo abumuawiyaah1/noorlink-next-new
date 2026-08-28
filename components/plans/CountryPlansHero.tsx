@@ -30,7 +30,9 @@ export function CountryPlansHero({ src, alt, children }: Props) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
-          alt=""
+          alt={alt}
+          width={1920}
+          height={640}
           loading="eager"
           decoding="async"
           fetchPriority="high"

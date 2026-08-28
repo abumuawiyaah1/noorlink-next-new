@@ -136,7 +136,7 @@ export function ModernDestinationsPage({
               >
                 <DestinationCardMedia
                   src={card.image}
-                  alt=""
+                  alt={`${card.title} — travel eSIM destination`}
                   priority={index < 3}
                 />
                 <div className="card-overlay">

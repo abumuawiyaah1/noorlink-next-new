@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import "@/styles/content-pages.css";
 import { PolicyPageShell } from "@/components/content/PolicyPageShell";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "KYC & AML Policy | NoorLink",
+  description: "Know Your Customer and Anti-Money Laundering policy for NoorLink.",
+  path: "/kyc",
+});
 
 export default function Page() {
   return (

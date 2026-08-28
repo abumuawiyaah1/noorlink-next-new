@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import "@/styles/content-pages.css";
 import { PolicyPageShell } from "@/components/content/PolicyPageShell";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Refund Policy | NoorLink",
+  description: "Refund and cancellation policy for NoorLink travel eSIM purchases.",
+  path: "/refund",
+});
 
 export default function Page() {
   return (

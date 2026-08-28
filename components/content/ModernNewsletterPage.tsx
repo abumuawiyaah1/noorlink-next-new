@@ -25,7 +25,9 @@ export function ModernNewsletterPage() {
           <img
             className="insider-hero__bg"
             src="/images/insider/insider-masthead.jpg"
-            alt=""
+            alt="NoorLink Insider newsletter"
+            width={1920}
+            height={1080}
             aria-hidden="true"
           />
           <div className="insider-hero__veil" />

@@ -7,13 +7,20 @@ type Props = {
   alt: string;
   priority?: boolean;
   className?: string;
+  width?: number;
+  height?: number;
 };
+
+const DEFAULT_WIDTH = 800;
+const DEFAULT_HEIGHT = 500;
 
 export function DestinationCardMedia({
   src,
   alt,
   priority = false,
   className = "",
+  width = DEFAULT_WIDTH,
+  height = DEFAULT_HEIGHT,
 }: Props) {
   const [loaded, setLoaded] = useState(false);
   const markLoaded = useCallback(() => setLoaded(true), []);
@@ -34,6 +41,8 @@ export function DestinationCardMedia({
       <img
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
         fetchPriority={priority ? "high" : "auto"}
