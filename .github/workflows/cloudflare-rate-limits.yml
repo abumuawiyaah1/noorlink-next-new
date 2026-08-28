@@ -17,5 +17,5 @@ jobs:
 
       - name: Apply WAF rate limiting rules
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WAF_API_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
         run: node scripts/setup-cloudflare-rate-limits.mjs
