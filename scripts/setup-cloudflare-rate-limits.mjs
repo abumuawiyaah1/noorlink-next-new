@@ -118,7 +118,8 @@ async function main() {
     );
     ruleset = entry.result;
   } catch (err) {
-    if (!String(err.message).includes("404")) throw err;
+    const msg = String(err.message);
+    if (!/entrypoint ruleset|404/i.test(msg)) throw err;
     ruleset = null;
   }
 
