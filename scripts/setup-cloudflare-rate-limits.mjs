@@ -91,7 +91,7 @@ async function cf(path, init = {}) {
     const msg =
       data.errors?.map((e) => e.message).join("; ") ||
       `${res.status} ${res.statusText}`;
-    throw new Error(msg);
+    throw new Error(`${init.method || "GET"} ${path}: ${msg}`);
   }
   return data;
 }
