@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 /**
- * Apply NoorLink WAF rate limiting rules on noorlink.co (zone-level http_ratelimit).
+ * Apply NoorLink WAF rate limiting on noorlink.co (zone http_ratelimit phase).
+ *
+ * Free plan: 1 rate limiting rule only — we use one combined rule for all /api paths.
  *
  * Usage:
  *   CLOUDFLARE_API_TOKEN=... node scripts/setup-cloudflare-rate-limits.mjs
  *
- * Token needs: Zone → Zone → Read, Zone → Firewall Services → Edit
+ * Token: Zone → Zone → Read, Zone → Firewall Services → Edit (scoped to noorlink.co)
  */
 
 const ZONE_NAME = process.env.CLOUDFLARE_ZONE_NAME || "noorlink.co";
@@ -13,45 +15,22 @@ const API_BASE = "https://api.cloudflare.com/client/v4";
 const TOKEN = process.env.CLOUDFLARE_API_TOKEN || process.env.CF_API_TOKEN;
 
 const RULE_PREFIX = "NoorLink:";
+const COMBINED_DESCRIPTION = `${RULE_PREFIX} Sensitive API routes`;
 
-/** @type {Array<{description: string, expression: string, requests_per_period: number, period: number, mitigation_timeout: number}>} */
-const RULES = [
-  {
-    description: `${RULE_PREFIX} Checkout API`,
-    expression: '(http.request.uri.path contains "/api/checkout")',
-    requests_per_period: 15,
-    period: 60,
-    mitigation_timeout: 300,
-  },
-  {
-    description: `${RULE_PREFIX} Promo validate`,
-    expression: '(http.request.uri.path contains "/api/promo")',
-    requests_per_period: 30,
-    period: 60,
-    mitigation_timeout: 300,
-  },
-  {
-    description: `${RULE_PREFIX} Contact form`,
-    expression: '(http.request.uri.path eq "/api/contact")',
-    requests_per_period: 5,
-    period: 3600,
-    mitigation_timeout: 3600,
-  },
-  {
-    description: `${RULE_PREFIX} Order lookup`,
-    expression: '(http.request.uri.path contains "/api/orders")',
-    requests_per_period: 40,
-    period: 60,
-    mitigation_timeout: 300,
-  },
-  {
-    description: `${RULE_PREFIX} Newsletter`,
-    expression: '(http.request.uri.path contains "/api/newsletter")',
-    requests_per_period: 10,
-    period: 3600,
-    mitigation_timeout: 3600,
-  },
-];
+/** Single rule for Free plan (max 1 rate limiting rule). */
+const COMBINED_RULE = {
+  description: COMBINED_DESCRIPTION,
+  expression: [
+    '(http.request.uri.path contains "/api/checkout")',
+    '(http.request.uri.path contains "/api/promo")',
+    '(http.request.uri.path eq "/api/contact")',
+    '(http.request.uri.path contains "/api/orders")',
+    '(http.request.uri.path contains "/api/newsletter")',
+  ].join(" or "),
+  requests_per_period: 60,
+  period: 60,
+  mitigation_timeout: 10,
+};
 
 function buildRule(def) {
   return {
@@ -69,7 +48,7 @@ function buildRule(def) {
       },
     },
     ratelimit: {
-      characteristics: ["cf.colo.id", "ip.src"],
+      characteristics: ["ip.src"],
       period: def.period,
       requests_per_period: def.requests_per_period,
       mitigation_timeout: def.mitigation_timeout,
@@ -98,11 +77,12 @@ async function cf(path, init = {}) {
 
 async function main() {
   if (!TOKEN) {
-    console.error(
-      "Missing CLOUDFLARE_API_TOKEN (needs Zone Read + Firewall Services Edit).",
-    );
+    console.error("Missing CLOUDFLARE_API_TOKEN.");
     process.exit(1);
   }
+
+  const verify = await cf("/user/tokens/verify");
+  console.log(`Token valid (${verify.result?.status || "ok"})`);
 
   const zones = await cf(`/zones?name=${encodeURIComponent(ZONE_NAME)}`);
   const zone = zones.result?.[0];
@@ -119,48 +99,51 @@ async function main() {
     ruleset = entry.result;
   } catch (err) {
     const msg = String(err.message);
-    if (!/entrypoint ruleset|404/i.test(msg)) throw err;
-    ruleset = null;
+    if (/entrypoint ruleset|404/i.test(msg)) {
+      ruleset = null;
+    } else if (/Authentication error/i.test(msg)) {
+      throw new Error(
+        `${msg}\n` +
+          "If your Cloudflare token is correct, update GitHub secret CLOUDFLARE_WAF_API_TOKEN " +
+          "with the new token value (gh secret set CLOUDFLARE_WAF_API_TOKEN).",
+      );
+    } else {
+      throw err;
+    }
   }
 
+  const rulePayload = buildRule(COMBINED_RULE);
+
   if (!ruleset) {
-    console.log("Creating http_ratelimit entry ruleset…");
+    console.log("Creating http_ratelimit ruleset (1 combined rule for Free plan)…");
     const created = await cf(`/zones/${zone.id}/rulesets`, {
       method: "POST",
       body: JSON.stringify({
         name: "NoorLink rate limits",
         kind: "zone",
         phase: "http_ratelimit",
-        rules: RULES.map(buildRule),
+        rules: [rulePayload],
       }),
     });
-    console.log(`Created ruleset ${created.result.id} with ${RULES.length} rules.`);
+    console.log(`Created ruleset ${created.result.id} with combined API rule.`);
     return;
   }
 
-  const existing = new Set(
-    (ruleset.rules || []).map((r) => r.description).filter(Boolean),
+  const existing = (ruleset.rules || []).find(
+    (r) => r.description === COMBINED_DESCRIPTION,
   );
-  let added = 0;
-
-  for (const def of RULES) {
-    if (existing.has(def.description)) {
-      console.log(`Skip (exists): ${def.description}`);
-      continue;
-    }
-    await cf(`/zones/${zone.id}/rulesets/${ruleset.id}/rules`, {
-      method: "POST",
-      body: JSON.stringify(buildRule(def)),
-    });
-    console.log(`Added: ${def.description}`);
-    added += 1;
+  if (existing) {
+    console.log(`Skip (exists): ${COMBINED_DESCRIPTION}`);
+    console.log("Done — combined rate limit rule already present.");
+    return;
   }
 
-  console.log(
-    added
-      ? `Done — ${added} rule(s) added to ruleset ${ruleset.id}.`
-      : `Done — all ${RULES.length} NoorLink rules already present.`,
-  );
+  await cf(`/zones/${zone.id}/rulesets/${ruleset.id}/rules`, {
+    method: "POST",
+    body: JSON.stringify(rulePayload),
+  });
+  console.log(`Added: ${COMBINED_DESCRIPTION}`);
+  console.log("Done — combined rate limit rule applied.");
 }
 
 main().catch((err) => {
