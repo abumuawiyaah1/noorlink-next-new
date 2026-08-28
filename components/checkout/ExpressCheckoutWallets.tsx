@@ -113,7 +113,7 @@ function ExpressCheckoutInner({
         "";
       if (!clientSecret) throw new Error("Missing payment secret.");
 
-      const returnUrl = `${window.location.origin}/success`;
+      const returnUrl = `${window.location.origin}/success?email=${encodeURIComponent(payload.email.trim())}`;
       const { error } = await stripe.confirmPayment({
         elements,
         clientSecret,

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { lookupOrder, type LookedUpOrder } from "@/lib/orders-api";
+import { isSafeQrCodeUrl, safeExternalHref } from "@/lib/safe-url";
 import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { formatCountryLabel } from "@/lib/country-slugs";
@@ -47,6 +48,8 @@ export function OrderLookupCard({
     }
     setOrder(result.order);
   }
+
+  const qrHref = safeExternalHref(order?.qrCodeUrl, isSafeQrCodeUrl);
 
   return (
     <div className={`login-card${compact ? " login-card--compact" : ""}`}>
@@ -134,8 +137,8 @@ export function OrderLookupCard({
           ) : null}
 
           <div className="lookup-actions">
-            {order.qrCodeUrl ? (
-              <a href={order.qrCodeUrl} target="_blank" rel="noopener noreferrer">
+            {qrHref ? (
+              <a href={qrHref} target="_blank" rel="noopener noreferrer">
                 Open QR / install details
               </a>
             ) : (
@@ -155,7 +158,7 @@ export function OrderLookupCard({
             </p>
           ) : null}
 
-          {order.qrCodeUrl && order.status === "delivered" ? (
+          {qrHref && order.status === "delivered" ? (
             <ReviewRequestCard orderId={order.orderNumber ?? orderId} compact />
           ) : null}
 

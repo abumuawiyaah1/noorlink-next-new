@@ -16,15 +16,42 @@ const HOP_BY_HOP = new Set([
   "content-length",
 ]);
 
+const ALLOWED_EXACT_PATHS = new Set(["contact"]);
+
+const ALLOWED_PATH_PREFIXES = [
+  "v1/plans",
+  "v1/analytics/",
+  "v1/devices/",
+  "orders/",
+  "checkout/",
+  "promo/",
+  "newsletter/",
+];
+
+const ALLOWED_REQUEST_HEADERS = new Set([
+  "accept",
+  "content-type",
+  "accept-language",
+]);
+
 type Ctx = { params: Promise<{ path?: string[] }> };
+
+function isAllowedApiPath(segments: string[]): boolean {
+  if (segments.length === 0) return false;
+  if (segments.some((segment) => !segment || segment === "." || segment === "..")) {
+    return false;
+  }
+  const path = segments.join("/");
+  if (ALLOWED_EXACT_PATHS.has(path)) return true;
+  return ALLOWED_PATH_PREFIXES.some(
+    (prefix) => path === prefix || path.startsWith(prefix),
+  );
+}
 
 async function proxyToBackend(req: Request, ctx: Ctx): Promise<Response> {
   const { path = [] } = await ctx.params;
-  if (path.length === 0) {
-    return Response.json(
-      { error: "Missing API path. Use /api/v1/... or /api/orders/..." },
-      { status: 404 },
-    );
+  if (!isAllowedApiPath(path)) {
+    return Response.json({ error: "Not found" }, { status: 404 });
   }
 
   const incoming = new URL(req.url);
@@ -33,9 +60,9 @@ async function proxyToBackend(req: Request, ctx: Ctx): Promise<Response> {
 
   const headers = new Headers();
   req.headers.forEach((value, key) => {
-    if (!HOP_BY_HOP.has(key.toLowerCase())) {
-      headers.set(key, value);
-    }
+    const lower = key.toLowerCase();
+    if (HOP_BY_HOP.has(lower) || !ALLOWED_REQUEST_HEADERS.has(lower)) return;
+    headers.set(key, value);
   });
   headers.set("accept", headers.get("accept") ?? "application/json");
 
@@ -53,9 +80,9 @@ async function proxyToBackend(req: Request, ctx: Ctx): Promise<Response> {
   try {
     upstream = await fetch(target, init);
   } catch (err) {
-    debugError("api-proxy", "upstream fetch failed", target, err);
+    debugError("api-proxy", "upstream fetch failed", err);
     return Response.json(
-      { error: "Backend unreachable", target },
+      { error: "Backend unreachable" },
       { status: 502 },
     );
   }

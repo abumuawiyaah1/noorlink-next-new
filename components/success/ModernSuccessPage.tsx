@@ -12,6 +12,21 @@ import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { lookupOrderByPaymentIntent, lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
+import { isSafeQrCodeUrl, safeExternalHref } from "@/lib/safe-url";
+
+const EMAIL_STORAGE_KEY = "nl_checkout_email";
+
+function resolveLookupEmail(emailParam: string | null): string {
+  if (emailParam?.includes("@")) return emailParam.trim();
+  if (typeof window === "undefined") return "";
+  try {
+    const remembered = window.localStorage.getItem(EMAIL_STORAGE_KEY);
+    if (remembered?.includes("@")) return remembered.trim();
+  } catch {
+    /* ignore */
+  }
+  return "";
+}
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -26,18 +41,27 @@ function SuccessContent() {
   const [loading, setLoading] = useState(Boolean(sessionId || paymentIntentId));
 
   const refresh = useCallback(async () => {
+    const lookupEmail = resolveLookupEmail(emailParam);
     if (sessionId) {
-      const result = await lookupOrderBySession(sessionId);
+      if (!lookupEmail) {
+        setLoading(false);
+        return;
+      }
+      const result = await lookupOrderBySession(sessionId, lookupEmail);
       if (result.order) setOrder(result.order);
       setLoading(false);
       return;
     }
     if (paymentIntentId) {
-      const result = await lookupOrderByPaymentIntent(paymentIntentId);
+      if (!lookupEmail) {
+        setLoading(false);
+        return;
+      }
+      const result = await lookupOrderByPaymentIntent(paymentIntentId, lookupEmail);
       if (result.order) setOrder(result.order);
       setLoading(false);
     }
-  }, [sessionId, paymentIntentId]);
+  }, [sessionId, paymentIntentId, emailParam]);
 
   useEffect(() => {
     if (!sessionId && !paymentIntentId) {
@@ -67,6 +91,7 @@ function SuccessContent() {
   const supportHref = `/support?subject=${encodeURIComponent("Install / QR code")}${
     email ? `&email=${encodeURIComponent(email)}` : ""
   }${orderNumber ? `&orderId=${encodeURIComponent(orderNumber)}` : ""}`;
+  const qrHref = safeExternalHref(order?.qrCodeUrl, isSafeQrCodeUrl);
 
   return (
     <>
@@ -112,7 +137,7 @@ function SuccessContent() {
 
         {order ? <OrderUsageSummary order={order} /> : null}
 
-        {order?.qrCodeUrl && !order.fulfillmentPending ? (
+        {qrHref && order && !order.fulfillmentPending ? (
           <ReviewRequestCard orderId={order.orderNumber} compact />
         ) : null}
 
@@ -126,13 +151,13 @@ function SuccessContent() {
           <div className="ticket-body">
             <div className="qr-area">
               <div className="qr-placeholder" aria-hidden="true">
-                {order?.qrCodeUrl ? "📲" : "✉️"}
+                {qrHref ? "📲" : "✉️"}
               </div>
-              {order?.qrCodeUrl ? (
+              {qrHref ? (
                 <>
                   <p className="scan-instruction">Your QR is ready</p>
                   <a
-                    href={order.qrCodeUrl}
+                    href={qrHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-nav"

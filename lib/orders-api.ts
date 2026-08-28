@@ -74,8 +74,12 @@ export async function lookupOrder(
 
 export async function lookupOrderBySession(
   sessionId: string,
+  email: string,
 ): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string; message?: string }> {
-  const params = new URLSearchParams({ sessionId: sessionId.trim() });
+  const params = new URLSearchParams({
+    sessionId: sessionId.trim(),
+    email: email.trim(),
+  });
   const url = `${API_BASE}/api/orders/by-session?${params.toString()}`;
   debug("orders", "lookupOrderBySession →", { sessionId: sessionId.slice(0, 12) });
 
@@ -94,9 +98,11 @@ export async function lookupOrderBySession(
 
 export async function lookupOrderByPaymentIntent(
   paymentIntentId: string,
+  email: string,
 ): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string; message?: string }> {
   const params = new URLSearchParams({
     paymentIntentId: paymentIntentId.trim(),
+    email: email.trim(),
   });
   const url = `${API_BASE}/api/orders/by-payment-intent?${params.toString()}`;
   debug("orders", "lookupOrderByPaymentIntent →", {

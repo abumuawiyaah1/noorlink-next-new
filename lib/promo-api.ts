@@ -2,8 +2,9 @@ import { API_BASE } from "@/lib/api-client";
 
 export type PromoValidatePayload = {
   code: string;
+  country: string;
   price: number;
-  packageId?: string;
+  packageId: string;
 };
 
 export type PromoValidateResult = {
@@ -23,9 +24,10 @@ export async function validatePromoCode(
   const url = `${API_BASE}/api/promo/validate`;
   const body: Record<string, unknown> = {
     code: payload.code.trim(),
+    country: payload.country.trim(),
     price: payload.price,
+    packageId: payload.packageId.trim(),
   };
-  if (payload.packageId) body.packageId = payload.packageId;
 
   try {
     const res = await fetch(url, {

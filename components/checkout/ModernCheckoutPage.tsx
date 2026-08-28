@@ -17,6 +17,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { createCheckoutSession } from "@/lib/checkout-api";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { validatePromoCode } from "@/lib/promo-api";
+import { isSafeStripeCheckoutUrl } from "@/lib/safe-url";
 import {
   clearRememberedPromo,
   rememberPromo,
@@ -59,7 +60,7 @@ export function ModernCheckoutPage() {
   const flag = searchParams.get("flag") ?? "🌍";
   const packageId = searchParams.get("packageId") ?? searchParams.get("package_id");
   const plan = searchParams.get("plan") ?? "Selected plan";
-  const price = parsePrice(searchParams.get("price")) || 12;
+  const price = parsePrice(searchParams.get("price"));
   const initialPromo = resolvePromo(searchParams);
 
   const [email, setEmail] = useState("");
@@ -113,10 +114,16 @@ export function ModernCheckoutPage() {
       setPromoError(null);
       setPromoMessage(null);
 
+      if (!packageId?.trim()) {
+        setPromoError("Select a plan before applying a promo code.");
+        return;
+      }
+
       const result = await validatePromoCode({
         code,
+        country,
         price,
-        packageId: packageId || undefined,
+        packageId: packageId.trim(),
       });
 
       setValidatingPromo(false);
@@ -139,7 +146,7 @@ export function ModernCheckoutPage() {
           : "Promo applied.",
       );
     },
-    [promoInput, price, packageId, useFastCheckout],
+    [promoInput, price, packageId, country, useFastCheckout],
   );
 
   useEffect(() => {
@@ -168,6 +175,11 @@ export function ModernCheckoutPage() {
           ? "Enter your email for the QR code."
           : "Please enter your email address.",
       );
+      return;
+    }
+
+    if (!packageId?.trim()) {
+      setError("Missing plan. Please go back and select a plan again.");
       return;
     }
 
@@ -203,6 +215,12 @@ export function ModernCheckoutPage() {
               ? "We could not start payment. Please try again."
               : "We could not start Stripe checkout. Please try again."),
         );
+        setSubmitting(false);
+        return;
+      }
+
+      if (!isSafeStripeCheckoutUrl(result.checkoutUrl)) {
+        setError("Invalid payment redirect. Please try again or contact support.");
         setSubmitting(false);
         return;
       }
