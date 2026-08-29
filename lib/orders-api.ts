@@ -21,6 +21,10 @@ export type LookedUpOrder = {
   dataRemainingGb?: number | null;
   fulfillmentPending?: boolean;
   allowanceStatus?: string | null;
+  isGift?: boolean;
+  giftRecipientName?: string | null;
+  giftRecipientEmail?: string | null;
+  packageId?: string | null;
 };
 
 async function parseLookupResponse(

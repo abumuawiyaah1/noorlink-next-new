@@ -12,6 +12,13 @@ export type CheckoutSessionPayload = {
   promoCode?: string;
   affiliateRef?: string;
   wantsTopUp?: boolean;
+  isGift?: boolean;
+  gift?: {
+    recipientEmail: string;
+    recipientName: string;
+    giftMessage?: string;
+    senderName?: string;
+  };
 };
 
 export type CheckoutSessionResult = {
@@ -48,6 +55,10 @@ export async function createCheckoutSession(
   if (payload.promoCode) body.promoCode = payload.promoCode.trim().toUpperCase();
   if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef.trim().toUpperCase();
   if (payload.wantsTopUp) body.wantsTopUp = true;
+  if (payload.isGift) {
+    body.isGift = true;
+    if (payload.gift) body.gift = payload.gift;
+  }
 
   debug("checkout", "createCheckoutSession →", {
     url,

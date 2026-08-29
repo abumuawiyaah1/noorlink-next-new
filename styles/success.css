@@ -67,6 +67,46 @@
         
         /* Gift Card Styling */
         .card-gift { background: linear-gradient(135deg, var(--primary) 0%, #062223 100%); color: white; box-shadow: 0 10px 20px rgba(15, 61, 62, 0.3); }
+        .card-gift-esim {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 8px 20px rgba(15, 61, 62, 0.08);
+            text-align: left;
+            align-items: flex-start;
+        }
+        .gift-esim-kicker {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .gift-esim-title {
+            font-size: 1.15rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .gift-esim-copy {
+            font-size: 0.92rem;
+            color: #334155;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .gift-esim-cta { display: inline-block; margin-top: 4px; }
+        .btn-nav.btn-nav--accent {
+            background: var(--accent);
+            color: var(--primary-dark, #05191A) !important;
+            border: none;
+            font-weight: 700;
+        }
+        .btn-nav.btn-nav--accent:hover {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
+        }
+        .loyalty-grid--single { grid-template-columns: 1fr; }
+        .gift-sent-card__body { padding: 32px; display: block; }
         .gift-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--accent); }
         .coupon-code { 
             background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.4); 

@@ -8,6 +8,7 @@ import { FunnelSteps } from "@/components/layout/FunnelSteps";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
+import { GiftEsimCard } from "@/components/success/GiftEsimCard";
 import { ReferAFriendCard } from "@/components/success/ReferAFriendCard";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
@@ -33,6 +34,7 @@ function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const paymentIntentId = searchParams.get("payment_intent");
+  const giftReturn = searchParams.get("gift") === "1";
   const countryParam = formatCountryLabel(searchParams.get("country") ?? "");
   const priceParam = searchParams.get("price");
   const emailParam = searchParams.get("email");
@@ -92,7 +94,17 @@ function SuccessContent() {
   const supportHref = `/support?subject=${encodeURIComponent("Install / QR code")}${
     email ? `&email=${encodeURIComponent(email)}` : ""
   }${orderNumber ? `&orderId=${encodeURIComponent(orderNumber)}` : ""}`;
+  const giftPriceFallback = Number.parseFloat(priceParam ?? "0");
+  const giftCardPrice =
+    order?.price ?? (Number.isFinite(giftPriceFallback) && giftPriceFallback > 0
+      ? giftPriceFallback
+      : undefined);
   const qrHref = safeExternalHref(order?.qrCodeUrl, isSafeQrCodeUrl);
+  const isGiftPurchase = giftReturn || Boolean(order?.isGift);
+  const giftRecipientLabel =
+    order?.giftRecipientName && order?.giftRecipientEmail
+      ? `${order.giftRecipientName} (${order.giftRecipientEmail})`
+      : order?.giftRecipientEmail ?? "your friend";
 
   return (
     <>
@@ -119,11 +131,27 @@ function SuccessContent() {
           <div className="check-icon">
             <i className="fas fa-check-circle" aria-hidden="true" />
           </div>
-          <h1>Payment confirmed</h1>
+          <h1>{isGiftPurchase ? "Gift payment confirmed" : "Payment confirmed"}</h1>
           <p>
-            Your eSIM for {country}
-            {plan ? ` (${plan})` : ""} is being prepared
-            {email ? ` — delivery goes to ${email}` : ""}.
+            {isGiftPurchase ? (
+              <>
+                We&apos;re preparing the eSIM for {giftRecipientLabel}. They&apos;ll
+                receive the QR code and your message by email
+                {orderNumber ? (
+                  <>
+                    {" "}
+                    · <span className="order-id-inline">{orderNumber}</span>
+                  </>
+                ) : null}
+                .
+              </>
+            ) : (
+              <>
+                Your eSIM for {country}
+                {plan ? ` (${plan})` : ""} is being prepared
+                {email ? ` — delivery goes to ${email}` : ""}.
+              </>
+            )}
           </p>
           <p>
             Order total: <strong>${price}</strong>
@@ -136,12 +164,13 @@ function SuccessContent() {
           </p>
         </div>
 
-        {order ? <OrderUsageSummary order={order} /> : null}
+        {order && !isGiftPurchase ? <OrderUsageSummary order={order} /> : null}
 
-        {qrHref && order && !order.fulfillmentPending ? (
+        {qrHref && order && !order.fulfillmentPending && !isGiftPurchase ? (
           <ReviewRequestCard orderId={order.orderNumber} compact />
         ) : null}
 
+        {!isGiftPurchase ? (
         <div className="ticket-card">
           <div className="ticket-header">
             <strong>What happens next</strong>
@@ -226,18 +255,55 @@ function SuccessContent() {
             </div>
           </div>
         </div>
+        ) : (
+        <div className="ticket-card gift-sent-card">
+          <div className="ticket-header">
+            <strong>What happens next</strong>
+            <span className="order-id">
+              {loading ? "Loading order…" : orderNumber ?? "Usually 1–2 min"}
+            </span>
+          </div>
+          <div className="ticket-body gift-sent-card__body">
+            <ol className="install-steps">
+              <li>We provision the eSIM and email the QR code to your friend.</li>
+              <li>You receive a confirmation email when delivery is sent.</li>
+              <li>They install on Wi‑Fi before they fly — same calm NoorLink steps.</li>
+            </ol>
+            <p className="email-note">
+              If they don&apos;t see the email within 10 minutes, ask them to check
+              spam or contact{" "}
+              <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp support</a>.
+            </p>
+            <div className="success-actions">
+              <Link href="/gift" className="btn-nav">
+                Send another gift
+              </Link>
+              <Link href="/destinations" className="btn-nav btn-nav--secondary">
+                Browse destinations
+              </Link>
+            </div>
+          </div>
+        </div>
+        )}
 
         <div className="loyalty-grid">
-          <div className="loyalty-card card-gift">
-            <div className="gift-title">
-              <i className="fas fa-gift" aria-hidden="true" /> Share &amp; save
-            </div>
-            <p style={{ fontSize: "0.9rem" }}>
-              Give friends 10% off — earn 10% off your next trip when they buy.
-            </p>
-          </div>
-          <ReferAFriendCard email={email} orderNumber={orderNumber} />
+          {!isGiftPurchase ? (
+            <GiftEsimCard
+              buyerEmail={email}
+              country={order?.country ?? countryParam}
+              packageId={order?.packageId ?? undefined}
+              plan={plan ?? undefined}
+              price={giftCardPrice}
+              flag={order?.flag ?? undefined}
+            />
+          ) : null}
+          {!isGiftPurchase ? <ReferAFriendCard email={email} orderNumber={orderNumber} /> : null}
         </div>
+        {isGiftPurchase ? (
+          <div className="loyalty-grid loyalty-grid--single">
+            <ReferAFriendCard email={email} orderNumber={orderNumber} />
+          </div>
+        ) : null}
       </div>
       <SiteFooter />
     </>
