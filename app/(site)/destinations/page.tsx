@@ -18,6 +18,7 @@ type DestinationsPageProps = {
     region?: string;
     promo?: string;
     code?: string;
+    ref?: string;
   }>;
 };
 
@@ -34,12 +35,14 @@ export default async function Page({ searchParams }: DestinationsPageProps) {
   const initialQuery = params.q ?? params.country ?? "";
   const initialRegion = parseRegion(params.region);
   const initialPromo = params.promo ?? params.code ?? "";
+  const initialRef = params.ref ?? "";
 
   return (
     <ModernDestinationsPage
       initialQuery={initialQuery}
       initialRegion={initialRegion}
       initialPromo={initialPromo}
+      initialRef={initialRef}
     />
   );
 }

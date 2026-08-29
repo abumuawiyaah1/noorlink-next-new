@@ -23,6 +23,12 @@ import {
   rememberPromo,
   resolvePromo,
 } from "@/lib/promo-link";
+import {
+  getRememberedRef,
+  rememberRef,
+  resolveRef,
+} from "@/lib/affiliate-link";
+import { resolveAffiliate, type ResolvedAffiliate } from "@/lib/affiliate-api";
 import { ExpressCheckoutWallets } from "@/components/checkout/ExpressCheckoutWallets";
 
 const EMAIL_STORAGE_KEY = "nl_checkout_email";
@@ -62,6 +68,9 @@ export function ModernCheckoutPage() {
   const plan = searchParams.get("plan") ?? "Selected plan";
   const price = parsePrice(searchParams.get("price"));
   const initialPromo = resolvePromo(searchParams);
+  const affiliateRef = resolveRef(searchParams);
+
+  const [affiliateInfo, setAffiliateInfo] = useState<ResolvedAffiliate | null>(null);
 
   const [email, setEmail] = useState("");
   const [travelDate, setTravelDate] = useState("");
@@ -79,9 +88,24 @@ export function ModernCheckoutPage() {
     searchParams.get("wants_topup") === "1" ||
     searchParams.get("wantsTopup") === "true";
 
+  useEffect(() => {
+    if (!affiliateRef) return;
+    rememberRef(affiliateRef);
+    void resolveAffiliate(affiliateRef).then(setAffiliateInfo);
+  }, [affiliateRef]);
+
+  const affiliateDiscountEstimate = useMemo(() => {
+    if (!affiliateInfo?.valid || !affiliateInfo.customerDiscountPercent || appliedPromo) {
+      return 0;
+    }
+    return Math.round(price * affiliateInfo.customerDiscountPercent) / 100;
+  }, [affiliateInfo, price, appliedPromo]);
+
+  const effectiveDiscount = appliedPromo ? discountAmount : affiliateDiscountEstimate;
+
   const finalPrice = useMemo(
-    () => Math.max(0.01, price - discountAmount),
-    [price, discountAmount],
+    () => Math.max(0.01, price - effectiveDiscount),
+    [price, effectiveDiscount],
   );
   const formattedTotal = useMemo(() => finalPrice.toFixed(2), [finalPrice]);
   const payLabel = submitting
@@ -205,6 +229,7 @@ export function ModernCheckoutPage() {
         travelDate: travelDate || undefined,
         packageId: packageId || undefined,
         promoCode: appliedPromo || undefined,
+        affiliateRef: affiliateRef || undefined,
         wantsTopUp: wantsTopUp || undefined,
       });
 
@@ -332,6 +357,7 @@ export function ModernCheckoutPage() {
                     travelDate: travelDate || undefined,
                     packageId: packageId || undefined,
                     promoCode: appliedPromo || undefined,
+                    affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
                   }}
                   onError={(message) => setError(message || null)}
@@ -561,6 +587,7 @@ export function ModernCheckoutPage() {
                     travelDate: travelDate || undefined,
                     packageId: packageId || undefined,
                     promoCode: appliedPromo || undefined,
+                    affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
                   }}
                   onError={(message) => setError(message || null)}

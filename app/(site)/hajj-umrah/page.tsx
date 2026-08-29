@@ -18,12 +18,13 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 type HajjPageProps = {
-  searchParams: Promise<{ promo?: string; code?: string }>;
+  searchParams: Promise<{ promo?: string; code?: string; ref?: string }>;
 };
 
 export default async function HajjUmrahPage({ searchParams }: HajjPageProps) {
   const query = await searchParams;
   const initialPromo = query.promo ?? query.code ?? "";
+  const initialRef = query.ref ?? "";
   const countryImage = getCountryImage(SAUDI_COUNTRY_ID);
 
   let initialData = null;
@@ -51,6 +52,7 @@ export default async function HajjUmrahPage({ searchParams }: HajjPageProps) {
         initialData={initialData}
         initialError={initialError}
         initialPromo={initialPromo}
+        initialRef={initialRef}
       />
     </>
   );

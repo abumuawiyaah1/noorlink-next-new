@@ -32,8 +32,13 @@ import {
   getRememberedPromo,
   normalizePromoCode,
   rememberPromo,
-  withPromo,
 } from "@/lib/promo-link";
+import {
+  getRememberedRef,
+  normalizeRefCode,
+  rememberRef,
+  withAttribution,
+} from "@/lib/affiliate-link";
 import "@/styles/plans-dynamic.css";
 
 type PlanTab = PlanCategory;
@@ -45,6 +50,7 @@ type TravelerPlansPageProps = {
   initialError?: string | null;
   regional?: RegionalProduct;
   initialPromo?: string;
+  initialRef?: string;
 };
 
 const PLAN_FAQS = [
@@ -93,6 +99,7 @@ function checkoutHref(
   flag?: string,
   isRegional?: boolean,
   promo?: string,
+  ref?: string,
   wantsTopUp?: boolean,
 ): string {
   const checkoutParams = new URLSearchParams({
@@ -105,7 +112,7 @@ function checkoutHref(
   if (isRegional) checkoutParams.set("productType", "regional");
   if (wantsTopUp) checkoutParams.set("wantsTopUp", "1");
   const href = `/checkout?${checkoutParams.toString()}`;
-  return withPromo(href, promo);
+  return withAttribution(href, { promo, ref });
 }
 
 function sortPlans(plans: EsimPlan[]): EsimPlan[] {
@@ -124,6 +131,7 @@ function PlanRow({
   flag,
   isRegional,
   promo,
+  refCode,
   wantsTopUp,
   selected,
   onSelect,
@@ -133,13 +141,14 @@ function PlanRow({
   flag?: string;
   isRegional?: boolean;
   promo?: string;
+  refCode?: string;
   wantsTopUp?: boolean;
   selected: boolean;
   onSelect: (planId: string) => void;
 }) {
   const badge = badgeLabel(plan);
   const best = plan.displayBadge === "best_choice";
-  const href = checkoutHref(plan, countryName, flag, isRegional, promo, wantsTopUp);
+  const href = checkoutHref(plan, countryName, flag, isRegional, promo, refCode, wantsTopUp);
   const copy = describeEsimPlan(plan, {
     countryLabel: countryName,
     isRegional,
@@ -299,6 +308,7 @@ function PlanSection({
   flag,
   isRegional,
   promo,
+  refCode,
   wantsTopUp,
   selectedPlanId,
   onSelectPlan,
@@ -309,6 +319,7 @@ function PlanSection({
   flag?: string;
   isRegional?: boolean;
   promo?: string;
+  refCode?: string;
   wantsTopUp?: boolean;
   selectedPlanId: string | null;
   onSelectPlan: (planId: string) => void;
@@ -328,6 +339,7 @@ function PlanSection({
             flag={flag}
             isRegional={isRegional}
             promo={promo}
+            refCode={refCode}
             wantsTopUp={wantsTopUp}
             selected={selectedPlanId === plan.id}
             onSelect={onSelectPlan}
@@ -345,8 +357,10 @@ export function TravelerPlansPage({
   initialError = null,
   regional,
   initialPromo = "",
+  initialRef = "",
 }: TravelerPlansPageProps) {
   const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
+  const [refCode, setRefCode] = useState(() => normalizeRefCode(initialRef));
   const [data, setData] = useState<PlansByCountryResponse | null>(initialData);
   const [loading, setLoading] = useState(!initialData && !initialError);
   const [error, setError] = useState<string | null>(initialError);
@@ -364,6 +378,17 @@ export function TravelerPlansPage({
     const remembered = getRememberedPromo();
     if (remembered) setPromo(remembered);
   }, [initialPromo]);
+
+  useEffect(() => {
+    const fromProp = normalizeRefCode(initialRef);
+    if (fromProp) {
+      rememberRef(fromProp);
+      setRefCode(fromProp);
+      return;
+    }
+    const remembered = getRememberedRef();
+    if (remembered) setRefCode(remembered);
+  }, [initialRef]);
 
   useEffect(() => {
     if (initialData) return;
@@ -575,6 +600,7 @@ export function TravelerPlansPage({
                   flag={flag}
                   isRegional={Boolean(regional)}
                   promo={promo}
+            refCode={refCode}
                   wantsTopUp={wantsTopUp}
                   selectedPlanId={selectedPlanId}
                   onSelectPlan={setSelectedPlanId}

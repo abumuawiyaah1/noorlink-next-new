@@ -8,6 +8,7 @@ import { FunnelSteps } from "@/components/layout/FunnelSteps";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
+import { ReferAFriendCard } from "@/components/success/ReferAFriendCard";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { formatCountryLabel } from "@/lib/country-slugs";
@@ -229,19 +230,13 @@ function SuccessContent() {
         <div className="loyalty-grid">
           <div className="loyalty-card card-gift">
             <div className="gift-title">
-              <i className="fas fa-gift" aria-hidden="true" /> A gift for you
+              <i className="fas fa-gift" aria-hidden="true" /> Share &amp; save
             </div>
-            <p style={{ fontSize: "0.9rem" }}>10% off your next trip</p>
-            <div className="coupon-code">NOOR-VIP-10</div>
-            <div className="gift-note">Valid for 1 year · Any destination</div>
+            <p style={{ fontSize: "0.9rem" }}>
+              Give friends 10% off — earn 10% off your next trip when they buy.
+            </p>
           </div>
-          <div className="loyalty-card card-refer">
-            <p className="refer-title">Need the QR now?</p>
-            <p>Use My eSIMs with the email you paid with. Support is available 24/7.</p>
-            <Link href={dashboardHref} className="btn-nav">
-              Open My eSIMs
-            </Link>
-          </div>
+          <ReferAFriendCard email={email} orderNumber={orderNumber} />
         </div>
       </div>
       <SiteFooter />

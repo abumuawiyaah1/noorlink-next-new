@@ -37,7 +37,7 @@ export const revalidate = 300;
 
 type PageProps = {
   params: Promise<{ country: string }>;
-  searchParams: Promise<{ promo?: string; code?: string }>;
+  searchParams: Promise<{ promo?: string; code?: string; ref?: string }>;
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -59,6 +59,7 @@ export default async function CountryPlansPage({ params, searchParams }: PagePro
   const query = await searchParams;
   const countryId = normalizeCountrySlug(country);
   const initialPromo = query.promo ?? query.code ?? "";
+  const initialRef = query.ref ?? "";
 
   if (REGIONAL_REDIRECT_SLUGS.has(countryId)) {
     const regionalRoute = normalizeRegionalRouteSlug(countryId);
@@ -110,6 +111,7 @@ export default async function CountryPlansPage({ params, searchParams }: PagePro
         initialData={initialData}
         initialError={initialError}
         initialPromo={initialPromo}
+        initialRef={initialRef}
       />
     </>
   );

@@ -20,8 +20,13 @@ import {
   getRememberedPromo,
   normalizePromoCode,
   rememberPromo,
-  withPromo,
 } from "@/lib/promo-link";
+import {
+  getRememberedRef,
+  normalizeRefCode,
+  rememberRef,
+  withAttribution,
+} from "@/lib/affiliate-link";
 
 const DESTINATIONS_NAV = [
   { href: "/about", label: "About" },
@@ -35,17 +40,20 @@ type Props = {
   initialQuery?: string;
   initialRegion?: "all" | DestinationRegion;
   initialPromo?: string;
+  initialRef?: string;
 };
 
 export function ModernDestinationsPage({
   initialQuery = "",
   initialRegion = "all",
   initialPromo = "",
+  initialRef = "",
 }: Props) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
   const [region, setRegion] = useState<"all" | DestinationRegion>(initialRegion);
   const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
+  const [refCode, setRefCode] = useState(() => normalizeRefCode(initialRef));
 
   useEffect(() => {
     const resolved =
@@ -55,6 +63,14 @@ export function ModernDestinationsPage({
       setPromo(resolved);
     }
   }, [initialPromo]);
+
+  useEffect(() => {
+    const resolved = normalizeRefCode(initialRef) || getRememberedRef();
+    if (resolved) {
+      rememberRef(resolved);
+      setRefCode(resolved);
+    }
+  }, [initialRef]);
 
   const cards = useMemo(
     () => filterDestinationCards(query, region),
@@ -89,7 +105,7 @@ export function ModernDestinationsPage({
           onSubmit={(event: FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             if (cards[0]) {
-              router.push(withPromo(cards[0].href, promo));
+              router.push(withAttribution(cards[0].href, { promo, ref: refCode }));
             }
           }}
         >
@@ -130,7 +146,7 @@ export function ModernDestinationsPage({
             return (
               <Link
                 key={card.id}
-                href={withPromo(card.href, promo)}
+                href={withAttribution(card.href, { promo, ref: refCode })}
                 className={`card ${card.className}`}
                 aria-label={`View plans for ${card.title}, ${priceLabel}`}
               >

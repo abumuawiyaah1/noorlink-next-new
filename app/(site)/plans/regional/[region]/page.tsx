@@ -19,7 +19,7 @@ export const revalidate = 300;
 
 type PageProps = {
   params: Promise<{ region: string }>;
-  searchParams: Promise<{ promo?: string; code?: string }>;
+  searchParams: Promise<{ promo?: string; code?: string; ref?: string }>;
 };
 
 function regionalImageSrc(product: RegionalProduct): string {
@@ -60,6 +60,7 @@ export default async function RegionalPlansPage({ params, searchParams }: PagePr
   const { region } = await params;
   const query = await searchParams;
   const initialPromo = query.promo ?? query.code ?? "";
+  const initialRef = query.ref ?? "";
   const routeSlug = normalizeRegionalRouteSlug(region);
   const product = routeSlug ? getRegionalProduct(routeSlug) : null;
 
@@ -114,6 +115,7 @@ export default async function RegionalPlansPage({ params, searchParams }: PagePr
         initialError={initialError}
         regional={product}
         initialPromo={initialPromo}
+        initialRef={initialRef}
       />
     </>
   );

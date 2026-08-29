@@ -7,6 +7,7 @@ type RateLimitRule = {
 const SENSITIVE_API_RULES: RateLimitRule[] = [
   { prefix: "checkout/", limit: 15, windowSeconds: 60 },
   { prefix: "promo/", limit: 30, windowSeconds: 60 },
+  { prefix: "affiliate/", limit: 40, windowSeconds: 60 },
   { prefix: "contact", limit: 5, windowSeconds: 3600 },
   { prefix: "orders/", limit: 40, windowSeconds: 60 },
   { prefix: "newsletter/", limit: 10, windowSeconds: 3600 },

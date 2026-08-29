@@ -19,6 +19,7 @@ type ExpressPayload = {
   travelDate?: string;
   packageId?: string;
   promoCode?: string;
+  affiliateRef?: string;
   wantsTopUp?: boolean;
 };
 
@@ -84,6 +85,7 @@ function ExpressCheckoutInner({
       if (payload.travelDate) body.travelDate = payload.travelDate;
       if (payload.packageId) body.packageId = payload.packageId;
       if (payload.promoCode) body.promoCode = payload.promoCode;
+      if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef;
       if (payload.wantsTopUp) body.wantsTopUp = true;
 
       debug("checkout", "express payment-intent →");

@@ -29,8 +29,13 @@ import {
   getRememberedPromo,
   normalizePromoCode,
   rememberPromo,
-  withPromo,
 } from "@/lib/promo-link";
+import {
+  getRememberedRef,
+  normalizeRefCode,
+  rememberRef,
+  withAttribution,
+} from "@/lib/affiliate-link";
 import "@/styles/hajj-umrah.css";
 import "@/styles/plans-dynamic.css";
 
@@ -44,9 +49,15 @@ type PilgrimSelectionPageProps = {
   initialData?: PlansByCountryResponse | null;
   initialError?: string | null;
   initialPromo?: string;
+  initialRef?: string;
 };
 
-function buildCheckoutHref(plan: EsimPlan, price: number, promo?: string): string {
+function buildCheckoutHref(
+  plan: EsimPlan,
+  price: number,
+  promo?: string,
+  ref?: string,
+): string {
   const params = new URLSearchParams({
     country: "Saudi Arabia",
     price: price.toFixed(2),
@@ -55,7 +66,7 @@ function buildCheckoutHref(plan: EsimPlan, price: number, promo?: string): strin
   if (plan.countryId) params.set("country_id", plan.countryId);
   if (plan.name) params.set("plan", plan.name);
   if (plan.id) params.set("packageId", plan.id);
-  return withPromo(`/checkout?${params.toString()}`, promo);
+  return withAttribution(`/checkout?${params.toString()}`, { promo, ref });
 }
 
 function tierBadge(tier: PilgrimTierOffer): string | null {
@@ -253,8 +264,10 @@ export function PilgrimSelectionPage({
   initialData = null,
   initialError = null,
   initialPromo = "",
+  initialRef = "",
 }: PilgrimSelectionPageProps) {
   const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
+  const [refCode, setRefCode] = useState(() => normalizeRefCode(initialRef));
   const [tiers, setTiers] = useState<PilgrimTierOffer[]>(() =>
     resolveInitialTiers(initialData),
   );
@@ -275,6 +288,17 @@ export function PilgrimSelectionPage({
     const remembered = getRememberedPromo();
     if (remembered) setPromo(remembered);
   }, [initialPromo]);
+
+  useEffect(() => {
+    const fromProp = normalizeRefCode(initialRef);
+    if (fromProp) {
+      rememberRef(fromProp);
+      setRefCode(fromProp);
+      return;
+    }
+    const remembered = getRememberedRef();
+    if (remembered) setRefCode(remembered);
+  }, [initialRef]);
 
   useEffect(() => {
     if (initialData?.plans?.length) return;
@@ -569,7 +593,7 @@ export function PilgrimSelectionPage({
                 />
               </div>
               <a
-                href={buildCheckoutHref(activePlan, checkoutPrice, promo)}
+                href={buildCheckoutHref(activePlan, checkoutPrice, promo, refCode)}
                 className="pilgrim-desktop-cta__button"
               >
                 Continue to checkout
@@ -691,7 +715,7 @@ export function PilgrimSelectionPage({
               />
             </div>
             <a
-              href={buildCheckoutHref(activePlan, checkoutPrice, promo)}
+              href={buildCheckoutHref(activePlan, checkoutPrice, promo, refCode)}
               className="pilgrim-sticky-cta__button"
             >
               Continue

@@ -10,6 +10,7 @@ export type CheckoutSessionPayload = {
   travelDate?: string;
   packageId?: string;
   promoCode?: string;
+  affiliateRef?: string;
   wantsTopUp?: boolean;
 };
 
@@ -45,6 +46,7 @@ export async function createCheckoutSession(
   if (payload.travelDate) body.travelDate = payload.travelDate;
   if (payload.packageId) body.packageId = payload.packageId;
   if (payload.promoCode) body.promoCode = payload.promoCode.trim().toUpperCase();
+  if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef.trim().toUpperCase();
   if (payload.wantsTopUp) body.wantsTopUp = true;
 
   debug("checkout", "createCheckoutSession →", {
