@@ -197,10 +197,18 @@ Workflow: `.github/workflows/deploy-cloudflare.yml`
 
 Add repository secrets:
 
-- `CLOUDFLARE_API_TOKEN` — Workers deploy permissions
-- `CLOUDFLARE_ACCOUNT_ID` — `1c303e0f0d31b0ad716155ceb6b2c9d2` (your account from the error URL)
+- `CLOUDFLARE_API_TOKEN` — use Cloudflare template **Edit Cloudflare Workers** (Account → **Workers Scripts** → Edit). Custom domains are managed in the dashboard, so you do **not** need Zone → Workers Routes in the token.
+- `CLOUDFLARE_ACCOUNT_ID` — `1c303e0f0d31b0ad716155ceb6b2c9d2`
 
 Push to `main` (or run the workflow manually).
+
+To refresh secrets from a machine already logged in with Wrangler:
+
+```bash
+node scripts/setup-cloudflare-github-deploy.mjs
+```
+
+That script prints the exact dashboard steps if auto-setup is unavailable.
 
 ## Why Pages fails for this repo
 

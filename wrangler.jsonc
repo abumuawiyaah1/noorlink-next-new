@@ -28,10 +28,8 @@
 		"BACKEND_API_URL": "https://api.noorlink.co",
 		"NEXT_PUBLIC_TRUSTPILOT_REVIEW_URL": "https://www.trustpilot.com/evaluate/noorlink.co"
 	},
-	// Apex already live. Re-declare www so Workers Builds republishes DNS
-	// (dashboard shows Worker-managed www but public DNS is NXDOMAIN).
-	"routes": [
-		{ "pattern": "noorlink.co", "custom_domain": true },
-		{ "pattern": "www.noorlink.co", "custom_domain": true }
-	]
+	// Custom domains (noorlink.co, www) are attached in the Worker dashboard.
+	// Keep routes out of wrangler.jsonc so GitHub Actions only needs
+	// Account → Workers Scripts → Edit (Edit Cloudflare Workers template).
+	// See DEPLOY.md → GitHub Actions.
 }
