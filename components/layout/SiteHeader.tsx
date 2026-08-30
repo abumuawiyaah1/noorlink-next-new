@@ -10,6 +10,7 @@ const DEFAULT_NAV: NavItem[] = [
   { href: "/hajj-umrah", label: "Hajj & Umrah Connect" },
   { href: "/destinations", label: "Destinations" },
   { href: "/support", label: "Support" },
+  { href: "/partners#apply", label: "Partners" },
   { href: "/faq", label: "FAQ" },
   { href: "/dashboard", label: "My eSIMs", highlight: true },
 ];

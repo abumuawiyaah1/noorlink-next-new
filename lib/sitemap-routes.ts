@@ -70,6 +70,7 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
     { url: absoluteUrl("/support"), changeFrequency: "monthly", priority: 0.5 },
     { url: absoluteUrl("/newsletter"), changeFrequency: "weekly", priority: 0.6 },
     { url: absoluteUrl("/partners"), changeFrequency: "monthly", priority: 0.4 },
+    { url: absoluteUrl("/partners/terms"), changeFrequency: "yearly", priority: 0.2 },
     { url: absoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.2 },
     { url: absoluteUrl("/terms"), changeFrequency: "yearly", priority: 0.2 },
     { url: absoluteUrl("/refund"), changeFrequency: "yearly", priority: 0.2 },

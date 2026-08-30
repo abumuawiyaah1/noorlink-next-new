@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ReactNode } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -18,6 +19,9 @@ type PolicyPageShellProps = {
   badge?: string;
   alert?: string;
   sections: PolicySection[];
+  breadcrumbItems?: { href?: string; label: string }[];
+  topContent?: ReactNode;
+  children?: ReactNode;
 };
 
 export function PolicyPageShell({
@@ -26,17 +30,20 @@ export function PolicyPageShell({
   badge,
   alert,
   sections,
+  breadcrumbItems,
+  topContent,
+  children,
 }: PolicyPageShellProps) {
+  const crumbs = breadcrumbItems ?? [
+    { href: "/", label: "Home" },
+    { href: "/support", label: "Support" },
+    { label: title },
+  ];
+
   return (
     <>
       <SiteHeader />
-      <Breadcrumbs
-        items={[
-          { href: "/", label: "Home" },
-          { href: "/support", label: "Support" },
-          { label: title },
-        ]}
-      />
+      <Breadcrumbs items={crumbs} />
       <main className="content-page legal-page">
         <section className="content-hero content-hero--compact">
           <div className="content-hero__inner">
@@ -48,6 +55,8 @@ export function PolicyPageShell({
         </section>
 
         <div className="content-shell">
+          {topContent}
+
           <article className="legal-card">
             {alert ? <div className="legal-alert">{alert}</div> : null}
 
@@ -79,6 +88,8 @@ export function PolicyPageShell({
               </p>
             </div>
           </article>
+
+          {children}
         </div>
       </main>
       <SiteFooter />

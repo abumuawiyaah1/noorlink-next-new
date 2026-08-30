@@ -33,6 +33,7 @@ const DESTINATIONS_NAV = [
   { href: "/newsletter", label: "Newsletter Archive" },
   { href: "/destinations", label: "Destinations" },
   { href: "/support", label: "Support" },
+  { href: "/partners#apply", label: "Partners" },
   { href: "/dashboard", label: "My eSIMs", highlight: true },
 ];
 

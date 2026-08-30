@@ -40,6 +40,7 @@ export function HomeFooter() {
             <Link href="/about">About Us</Link>
             <Link href="/newsletter">Newsletter Archive</Link>
             <Link href="/support">Contact Support</Link>
+            <Link href="/partners#apply">Partners</Link>
             <Link href="/faq">FAQ</Link>
           </nav>
         </div>
@@ -48,6 +49,7 @@ export function HomeFooter() {
           <nav className="footer-list" aria-label="Legal">
             <Link href="/privacy">Privacy Policy</Link>
             <Link href="/terms">Terms of Service</Link>
+            <Link href="/partners/terms">Partner Program Terms</Link>
             <Link href="/refund">Refund Policy</Link>
             <Link href="/kyc">KYC / AML Policy</Link>
             <Link href="/cookie-policy">Cookie Policy</Link>
