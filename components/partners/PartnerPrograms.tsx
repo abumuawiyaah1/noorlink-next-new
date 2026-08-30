@@ -26,7 +26,7 @@ const PARTNER_PROGRAMS = [
     body: "After purchase, customers share a personal link. Friends save 10%; the referrer gets 10% off a future order — covered by our Terms of Service, not Partner Program Terms.",
     image: "/images/sim-card.jpg",
     imageAlt: "Digital eSIM delivery on a phone",
-    muted: true,
+    muted: true as const,
   },
 ] as const;
 
@@ -46,7 +46,7 @@ export function PartnerPrograms() {
         {PARTNER_PROGRAMS.map((program) => (
           <article
             key={program.title}
-            className={`partner-program-card${program.muted ? " partner-program-card--muted" : ""}`}
+            className={`partner-program-card${"muted" in program && program.muted ? " partner-program-card--muted" : ""}`}
           >
             <div
               className="partner-program-card__media"

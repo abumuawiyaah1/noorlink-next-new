@@ -10,10 +10,12 @@ const PARTNER_TYPES = [
   { value: "Creator, advisor, or organization", label: "Creator, advisor, or organization" },
 ] as const;
 
+type PartnerType = (typeof PARTNER_TYPES)[number]["value"];
+
 export function PartnerApplicationForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [partnerType, setPartnerType] = useState(PARTNER_TYPES[0].value);
+  const [partnerType, setPartnerType] = useState<PartnerType>(PARTNER_TYPES[0].value);
   const [organization, setOrganization] = useState("");
   const [websiteOrSocial, setWebsiteOrSocial] = useState("");
   const [about, setAbout] = useState("");
@@ -101,7 +103,7 @@ export function PartnerApplicationForm() {
         <select
           id="partner-type"
           value={partnerType}
-          onChange={(event) => setPartnerType(event.target.value)}
+          onChange={(event) => setPartnerType(event.target.value as PartnerType)}
         >
           {PARTNER_TYPES.map((option) => (
             <option key={option.value} value={option.value}>
