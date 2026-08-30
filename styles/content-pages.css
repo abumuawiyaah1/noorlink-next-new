@@ -433,6 +433,12 @@
   font-weight: 700;
 }
 
+.partner-apply__hint {
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+}
+
 @media (max-width: 640px) {
   .partner-portal__tabs {
     grid-template-columns: 1fr;

@@ -6,10 +6,8 @@ import { submitContactForm } from "@/lib/contact-api";
 import "@/styles/help-pages.css";
 
 const PARTNER_TYPES = [
-  { value: "Influencer or creator", label: "Influencer or creator" },
   { value: "Masjid or Islamic center", label: "Masjid or Islamic center" },
-  { value: "Travel advisor or connector", label: "Travel advisor or connector" },
-  { value: "Other organization", label: "Other organization" },
+  { value: "Creator, advisor, or organization", label: "Creator, advisor, or organization" },
 ] as const;
 
 export function PartnerApplicationForm() {
@@ -18,7 +16,7 @@ export function PartnerApplicationForm() {
   const [partnerType, setPartnerType] = useState(PARTNER_TYPES[0].value);
   const [organization, setOrganization] = useState("");
   const [websiteOrSocial, setWebsiteOrSocial] = useState("");
-  const [audience, setAudience] = useState("");
+  const [about, setAbout] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -28,6 +26,10 @@ export function PartnerApplicationForm() {
     event.preventDefault();
     if (!agreedToTerms) {
       setError("Please agree to the Partner Program Terms to submit your application.");
+      return;
+    }
+    if (!organization.trim() && !websiteOrSocial.trim()) {
+      setError("Add your organization name or a website / social handle.");
       return;
     }
 
@@ -42,8 +44,8 @@ export function PartnerApplicationForm() {
       organization.trim() ? `Organization: ${organization.trim()}` : null,
       websiteOrSocial.trim() ? `Website / social: ${websiteOrSocial.trim()}` : null,
       "",
-      "About your audience:",
-      audience.trim(),
+      "About you / your audience:",
+      about.trim(),
       "",
       "Agreed to Partner Program Terms: yes",
     ].filter(Boolean);
@@ -69,20 +71,14 @@ export function PartnerApplicationForm() {
     setEmail("");
     setOrganization("");
     setWebsiteOrSocial("");
-    setAudience("");
+    setAbout("");
     setPartnerType(PARTNER_TYPES[0].value);
     setAgreedToTerms(false);
   }
 
   return (
     <form className="help-form partner-portal__panel" onSubmit={onSubmit}>
-      <h2>Apply to become a partner</h2>
-      <p className="help-intro">
-        Tell us about yourself or your organization. No referral code needed — we approve
-        partners manually before links go live.
-      </p>
-
-        <label htmlFor="partner-name">Your name</label>
+      <label htmlFor="partner-name">Your name</label>
         <input
           id="partner-name"
           required
@@ -114,30 +110,33 @@ export function PartnerApplicationForm() {
           ))}
         </select>
 
-        <label htmlFor="partner-organization">Organization (optional)</label>
+        <label htmlFor="partner-organization">
+          Organization (masjid name, agency, brand){" "}
+          <span className="partner-apply__hint">— organization or website/social required</span>
+        </label>
         <input
           id="partner-organization"
-          placeholder="Masjid name, agency, or brand"
           value={organization}
           onChange={(event) => setOrganization(event.target.value)}
+          placeholder="Al-Noor Islamic Center"
         />
 
-        <label htmlFor="partner-web">Website or social (optional)</label>
+        <label htmlFor="partner-web">Website or social (URL or @handle)</label>
         <input
           id="partner-web"
-          placeholder="https:// or @handle"
           value={websiteOrSocial}
           onChange={(event) => setWebsiteOrSocial(event.target.value)}
+          placeholder="https:// or @handle"
         />
 
-        <label htmlFor="partner-audience">How will you share NoorLink?</label>
+        <label htmlFor="partner-about">Tell us about you / your audience</label>
         <textarea
-          id="partner-audience"
+          id="partner-about"
           required
-          rows={5}
-          placeholder="Audience size, Hajj/Umrah groups, newsletter, social channels, etc."
-          value={audience}
-          onChange={(event) => setAudience(event.target.value)}
+          rows={4}
+          placeholder="Audience size, Hajj/Umrah groups, newsletter, and how you plan to share NoorLink."
+          value={about}
+          onChange={(event) => setAbout(event.target.value)}
         />
 
         <label className="partner-apply__checkbox">

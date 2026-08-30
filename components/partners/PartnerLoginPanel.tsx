@@ -47,12 +47,6 @@ export function PartnerLoginPanel() {
   if (!dashboard) {
     return (
       <form className="help-form partner-portal__panel" onSubmit={handleSubmit}>
-        <h2>Sign in to your partner account</h2>
-        <p className="help-intro">
-          Use the partner code and email on file with NoorLink. No password needed — read-only
-          access to your link, balance, and payouts.
-        </p>
-
         <label htmlFor="partner-code">Partner code</label>
         <input
           id="partner-code"
@@ -80,13 +74,8 @@ export function PartnerLoginPanel() {
         ) : null}
 
         <button type="submit" disabled={loading}>
-          {loading ? "Loading…" : "View dashboard"}
+          {loading ? "Loading…" : "Sign in"}
         </button>
-
-        <p className="partner-portal__terms-note">
-          By signing in, you agree to the{" "}
-          <a href="/partners/terms">Partner Program Terms</a>.
-        </p>
       </form>
     );
   }

@@ -37,8 +37,7 @@ export function PartnersPortal() {
   return (
     <section className="partner-portal" aria-labelledby="partner-portal-heading">
       <div className="partner-portal__intro">
-        <h2 id="partner-portal-heading">Get started</h2>
-        <p>New partner? Apply below. Already approved? Sign in to your account.</p>
+        <h2 id="partner-portal-heading">Apply or sign in</h2>
       </div>
 
       <div className="partner-portal__tabs" role="tablist" aria-label="Partner options">
@@ -51,7 +50,7 @@ export function PartnersPortal() {
           className={mode === "apply" ? "is-active" : undefined}
           onClick={() => selectMode("apply")}
         >
-          Apply to become a partner
+          Apply
         </button>
         <button
           type="button"
@@ -62,7 +61,7 @@ export function PartnersPortal() {
           className={mode === "login" ? "is-active" : undefined}
           onClick={() => selectMode("login")}
         >
-          Sign in to your account
+          Sign in
         </button>
       </div>
 
