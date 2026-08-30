@@ -1,23 +1,29 @@
 "use client";
 
-import Link from "next/link";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { PartnerLoginPanel } from "@/components/partners/PartnerLoginPanel";
 import "@/styles/content-pages.css";
-import "@/styles/help-pages.css";
+import "@/styles/partners.css";
 
 export function PartnerDashboardClient() {
   return (
-    <div className="container" style={{ maxWidth: 640, padding: "2rem 1rem 4rem" }}>
-      <p className="text-muted small">
-        <Link href="/partners#login">← Partner programs</Link>
-      </p>
-      <h1 style={{ color: "var(--primary, #0F3D3E)" }}>Partner dashboard</h1>
-      <p style={{ color: "#334155" }}>
-        Enter your partner code and the email on file with NoorLink.
-      </p>
-      <div style={{ marginTop: "1.5rem" }}>
-        <PartnerLoginPanel />
-      </div>
-    </div>
+    <>
+      <SiteHeader />
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Home" },
+          { href: "/partners", label: "Partners" },
+          { label: "Dashboard" },
+        ]}
+      />
+      <main className="content-page partner-dashboard-page">
+        <div className="partner-dashboard-view">
+          <PartnerLoginPanel variant="standalone" />
+        </div>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

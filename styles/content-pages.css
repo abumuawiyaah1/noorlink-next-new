@@ -385,7 +385,8 @@
   background: var(--surface);
 }
 
-.partner-portal__dashboard a {
+.partner-portal__dashboard a,
+.partner-portal__dashboard .partner-dashboard__link {
   color: var(--accent);
   font-weight: 700;
   word-break: break-all;

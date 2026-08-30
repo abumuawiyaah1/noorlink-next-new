@@ -406,3 +406,310 @@
     padding: 20px;
   }
 }
+
+/* Partner dashboard (/partners/dashboard) */
+.partner-dashboard-page {
+  background: var(--bg-body);
+}
+
+.partner-dashboard-view {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 60vh;
+  padding: 2rem 1rem 4rem;
+}
+
+.partner-dashboard-card {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+}
+
+.partner-dashboard-card--wide {
+  max-width: 760px;
+  text-align: left;
+}
+
+.partner-dashboard-card__icon {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.partner-dashboard-card h1 {
+  margin: 0 0 10px;
+  color: var(--primary);
+  font-size: clamp(1.6rem, 3vw, 2rem);
+}
+
+.partner-dashboard-card > p {
+  margin: 0 0 24px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.partner-dashboard-card__note {
+  margin-top: 20px;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.partner-dashboard-card__note a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.partner-dashboard-form {
+  text-align: left;
+}
+
+.partner-dashboard-form__submit,
+.partner-portal__panel .partner-dashboard-form__submit {
+  width: 100%;
+  margin-top: 10px;
+  background: var(--accent);
+  color: var(--ink, #05191a);
+  border: none;
+  border-radius: var(--radius-control);
+  padding: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.partner-dashboard-form__submit:hover:not(:disabled),
+.partner-portal__panel .partner-dashboard-form__submit:hover:not(:disabled) {
+  filter: brightness(1.04);
+}
+
+.partner-dashboard-form__submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.partner-dashboard-form__error {
+  color: #b91c1c;
+}
+
+.partner-dashboard__head h2 {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+}
+
+.partner-dashboard__meta {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.partner-dashboard__card {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border-radius: var(--radius-card-lg);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+  box-shadow: var(--shadow-card);
+}
+
+.partner-dashboard__card h3,
+.partner-dashboard__commissions h3 {
+  margin: 0 0 12px;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.partner-dashboard__link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.partner-dashboard__link {
+  flex: 1 1 220px;
+  color: var(--accent);
+  font-weight: 700;
+  word-break: break-all;
+  text-decoration: none;
+}
+
+.partner-dashboard__link:hover {
+  text-decoration: underline;
+}
+
+.partner-dashboard__copy-btn {
+  flex: 0 0 auto;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.partner-dashboard__copy-btn:hover {
+  background: #0a2f30;
+}
+
+.partner-dashboard__copy-note,
+.partner-dashboard__status,
+.partner-dashboard__hint {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.partner-dashboard__details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.partner-dashboard__stat {
+  padding: 16px 18px;
+  border-radius: var(--radius-card-lg);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+  box-shadow: var(--shadow-card);
+}
+
+.partner-dashboard__stat-label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.partner-dashboard__stat-value {
+  display: block;
+  margin-top: 6px;
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.partner-dashboard__stat-note {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.partner-dashboard__callout {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: var(--radius-card-lg);
+}
+
+.partner-dashboard__callout--ready {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #047857;
+}
+
+.partner-dashboard__callout--ready p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.partner-dashboard__payout-btn {
+  margin-top: 12px;
+  background: var(--accent);
+  color: var(--ink, #05191a);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 18px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.partner-dashboard__payout-btn:hover:not(:disabled) {
+  filter: brightness(1.04);
+}
+
+.partner-dashboard__payout-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.partner-dashboard__commissions {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border-radius: var(--radius-card-lg);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+  box-shadow: var(--shadow-card);
+}
+
+.partner-dashboard__commission-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.partner-dashboard__commission-list li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(15, 61, 62, 0.08);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.partner-dashboard__commission-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.partner-dashboard__commission-list li span:first-child {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.partner-dashboard__commission-status {
+  text-transform: capitalize;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.partner-dashboard__ghost-btn,
+.partner-portal__dashboard .partner-dashboard__ghost-btn {
+  margin-top: 18px;
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid rgba(15, 61, 62, 0.14);
+  border-radius: var(--radius-pill);
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.partner-dashboard__ghost-btn:hover,
+.partner-portal__dashboard .partner-dashboard__ghost-btn:hover {
+  border-color: var(--accent);
+  background: rgba(255, 149, 0, 0.1);
+}
+
+@media (max-width: 640px) {
+  .partner-dashboard-view {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .partner-dashboard__commission-list li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
