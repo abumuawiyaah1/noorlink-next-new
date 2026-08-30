@@ -11,8 +11,8 @@ import "@/styles/partners.css";
 const PARTNER_STATS = [
   { value: "190+", label: "Destinations" },
   { value: "24/7", label: "Support for referrals" },
-  { value: "$25+", label: "Payout threshold" },
-  { value: "100%", label: "Manual approval" },
+  { value: "Manual", label: "Partner approval" },
+  { value: "One link", label: "No inventory" },
 ] as const;
 
 const PARTNER_STEPS = [
@@ -29,7 +29,7 @@ const PARTNER_STEPS = [
   {
     step: "3",
     title: "Earn on every trip",
-    body: "Your community saves at checkout. You earn commission on qualifying sales.",
+    body: "Your community saves at checkout. You earn rewards on qualifying sales through your link.",
   },
 ] as const;
 
@@ -57,7 +57,7 @@ export function PartnersPageContent() {
               <a href="#apply" className="content-button content-button--accent">
                 Apply to partner
               </a>
-              <a href="#login" className="content-button content-button--ghost partners-hero__ghost">
+              <a href="#login" className="content-button partners-hero__signin">
                 Sign in to your account
               </a>
             </div>
@@ -93,7 +93,7 @@ export function PartnersPageContent() {
               <ul className="partners-trust__list">
                 <li>Stripe-secured checkout your referrals can rely on</li>
                 <li>Hajj &amp; Umrah corridor plans for faith-based travel</li>
-                <li>Transparent commissions and a read-only partner dashboard</li>
+                <li>A read-only partner dashboard for your link and balance</li>
               </ul>
             </div>
             <div
@@ -136,9 +136,7 @@ export function PartnersPageContent() {
               <span className="content-kicker">Ready when you are</span>
               <h2 id="partners-cta-heading">Join creators, masjids, and travel advisors</h2>
               <p>
-                Apply below or sign in if you are already approved. Customer refer-a-friend
-                rewards (discount on a future order) stay separate from this cash partner
-                program.
+                Apply below or sign in if you are already approved.
               </p>
               <p className="partners-cta__note">
                 By applying, you agree to our{" "}

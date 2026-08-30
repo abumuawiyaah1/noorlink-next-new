@@ -61,7 +61,7 @@ export function PartnersPortal() {
           className={mode === "login" ? "is-active" : undefined}
           onClick={() => selectMode("login")}
         >
-          Sign in
+          Sign in to your account
         </button>
       </div>
 

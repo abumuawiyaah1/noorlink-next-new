@@ -1,32 +1,24 @@
 const PARTNER_PROGRAMS = [
   {
     title: "Influencers & creators",
-    kicker: "10% off · 10% commission",
-    body: "Your audience gets 10% off through your link. You earn 10% cash on net sales, with payout from $25.",
+    kicker: "Audience rewards",
+    body: "Share a trusted travel eSIM with your followers. Your link gives them a checkout discount while you earn on qualifying sales.",
     image: "/images/traveler.jpg",
     imageAlt: "Travel creator sharing trip recommendations",
   },
   {
     title: "Masjid & Islamic centers",
-    kicker: "Community-first rewards",
-    body: "Support your center with a link framed as a travel benefit — 5% community discount and 12–15% to your organization on Umrah/Hajj corridor plans.",
+    kicker: "Community-first",
+    body: "Offer your community a practical travel benefit for Umrah, Hajj, and family trips — framed as support for the center, not a coupon hunt.",
     image: "/images/insider/insider-2027-02-umrah.jpg",
     imageAlt: "Pilgrims traveling for Umrah",
   },
   {
     title: "Travel advisors & connectors",
-    kicker: "8% commission · 10% off",
+    kicker: "Advisor-friendly",
     body: "Recommend NoorLink to clients and groups you already advise. One link, no inventory, and support handled by our team.",
     image: "/images/middle-east-regional.jpg",
     imageAlt: "Travel advisor planning a regional trip",
-  },
-  {
-    title: "Refer a friend (customers)",
-    kicker: "Not a cash partner program",
-    body: "After purchase, customers share a personal link. Friends save 10%; the referrer gets 10% off a future order — covered by our Terms of Service, not Partner Program Terms.",
-    image: "/images/sim-card.jpg",
-    imageAlt: "Digital eSIM delivery on a phone",
-    muted: true as const,
   },
 ] as const;
 
@@ -36,18 +28,12 @@ export function PartnerPrograms() {
       <div className="content-section-head partner-programs__head">
         <span className="content-kicker">Program types</span>
         <h2 id="partner-programs-heading">Choose the path that fits your community</h2>
-        <p>
-          Cash partners apply below. Customer refer-a-friend is automatic after a qualifying
-          purchase.
-        </p>
+        <p>Approved cash partners apply below. We review every application manually.</p>
       </div>
 
-      <div className="partner-programs__grid">
+      <div className="partner-programs__grid partner-programs__grid--three">
         {PARTNER_PROGRAMS.map((program) => (
-          <article
-            key={program.title}
-            className={`partner-program-card${"muted" in program && program.muted ? " partner-program-card--muted" : ""}`}
-          >
+          <article key={program.title} className="partner-program-card">
             <div
               className="partner-program-card__media"
               style={{ backgroundImage: `url(${program.image})` }}

@@ -2,12 +2,12 @@ const PARTNER_BENEFITS = [
   {
     icon: "💰",
     title: "Earn on every trip",
-    body: "Cash commissions on net sales from your referral link. Request payout once your approved balance reaches $25.",
+    body: "Cash rewards on qualifying sales from your referral link. Request payout from your partner dashboard when your balance is ready.",
   },
   {
     icon: "🤝",
     title: "Give your community a real discount",
-    body: "Your audience saves 5–10% at checkout — a practical perk for travelers, not a gimmicky coupon hunt.",
+    body: "Your audience gets a practical checkout discount through your link — a travel perk, not a gimmicky coupon hunt.",
   },
   {
     icon: "💬",
