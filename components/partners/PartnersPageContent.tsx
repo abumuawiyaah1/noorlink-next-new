@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { PartnersHeroActions } from "@/components/partners/PartnersHeroActions";
 import { PartnerBenefits } from "@/components/partners/PartnerBenefits";
 import { PartnerPrograms } from "@/components/partners/PartnerPrograms";
 import { PartnersPortal } from "@/components/partners/PartnersPortal";
@@ -53,14 +54,7 @@ export function PartnersPageContent() {
               Help travelers stay connected before they fly — with calm, practical
               service, real support, and rewards that stay simple.
             </p>
-            <div className="partners-hero__actions">
-              <a href="#apply" className="content-button content-button--accent">
-                Apply to partner
-              </a>
-              <a href="#login" className="content-button partners-hero__signin">
-                Sign in to your account
-              </a>
-            </div>
+            <PartnersHeroActions />
           </div>
         </section>
 

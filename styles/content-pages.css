@@ -346,27 +346,34 @@
 }
 
 .partner-portal__tabs button {
-  border: 1px solid #b8caca;
-  border-radius: var(--radius-control);
-  background: #fff;
-  color: #05191a;
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--border-gradient) border-box;
+  color: var(--primary);
   padding: 14px 16px;
   font: inherit;
   font-weight: 700;
   cursor: pointer;
   text-align: center;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .partner-portal__tabs button.is-active {
-  border-color: var(--primary);
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(15, 61, 62, 0.14);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--ink, #05191a);
+  box-shadow: 0 8px 20px rgba(255, 149, 0, 0.24);
 }
 
 .partner-portal__tabs button:not(.is-active):hover {
-  border-color: var(--primary);
-  background: #f3f7f7;
+  border-color: var(--accent);
+  background: rgba(255, 149, 0, 0.12);
   color: var(--primary);
 }
 

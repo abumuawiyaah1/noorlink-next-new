@@ -20,6 +20,9 @@ export function PartnersPortal() {
 
     function onHashChange() {
       setMode(modeFromHash());
+      if (window.location.hash === "#login" || window.location.hash === "#apply") {
+        document.getElementById("partner-portal")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     window.addEventListener("hashchange", onHashChange);
@@ -30,12 +33,12 @@ export function PartnersPortal() {
     setMode(next);
     const hash = next === "login" ? "#login" : "#apply";
     if (window.location.hash !== hash) {
-      window.history.replaceState(null, "", hash);
+      window.history.replaceState(null, "", `${window.location.pathname}${hash}`);
     }
   }
 
   return (
-    <section className="partner-portal" aria-labelledby="partner-portal-heading">
+    <section id="partner-portal" className="partner-portal" aria-labelledby="partner-portal-heading">
       <div className="partner-portal__intro">
         <h2 id="partner-portal-heading">Apply or sign in</h2>
       </div>
@@ -66,7 +69,7 @@ export function PartnersPortal() {
       </div>
 
       <div
-        id="apply"
+        id="partner-panel-apply"
         role="tabpanel"
         aria-labelledby="partner-tab-apply"
         hidden={mode !== "apply"}
@@ -76,7 +79,7 @@ export function PartnersPortal() {
       </div>
 
       <div
-        id="login"
+        id="partner-panel-login"
         role="tabpanel"
         aria-labelledby="partner-tab-login"
         hidden={mode !== "login"}

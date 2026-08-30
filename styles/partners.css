@@ -57,11 +57,19 @@
   color: var(--primary) !important;
   border: 2px solid #fff !important;
   box-shadow: 0 8px 24px rgba(5, 25, 26, 0.18);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .partners-hero__signin:hover {
-  background: #f3f7f7 !important;
-  color: var(--primary) !important;
+  background: var(--accent) !important;
+  color: var(--ink, #05191a) !important;
+  border-color: var(--accent) !important;
+  transform: translateY(-1px);
 }
 
 .partners-hero__ghost {
@@ -98,7 +106,7 @@
 }
 
 .partners-stat {
-  background: var(--surface);
+  box-shadow: var(--shadow-card);
 }
 
 .partners-trust {
@@ -109,8 +117,9 @@
   margin-top: 28px;
   padding: 28px;
   border-radius: var(--radius-card-lg);
-  background: var(--surface);
-  box-shadow: 0 16px 40px rgba(15, 61, 62, 0.08);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+  box-shadow: var(--shadow-card);
 }
 
 .partners-trust__copy h2 {
@@ -197,9 +206,9 @@
 .partner-program-card {
   overflow: hidden;
   border-radius: var(--radius-card-lg);
-  background: var(--surface);
-  box-shadow: 0 12px 28px rgba(15, 61, 62, 0.07);
-  border: 1px solid rgba(15, 61, 62, 0.06);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+  box-shadow: var(--shadow-card);
 }
 
 .partner-program-card--muted {
@@ -258,9 +267,9 @@
 .partners-step-card {
   padding: 24px;
   border-radius: var(--radius-card-lg);
-  background: var(--surface);
-  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
-  border-top: 4px solid var(--accent);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+  box-shadow: var(--shadow-card);
 }
 
 .partners-step-card__num {
@@ -295,8 +304,9 @@
   overflow: hidden;
   margin-top: 36px;
   border-radius: var(--radius-card-lg);
-  background: var(--surface);
-  box-shadow: 0 16px 40px rgba(15, 61, 62, 0.08);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+  box-shadow: var(--shadow-card);
 }
 
 .partners-cta__media {
@@ -337,10 +347,10 @@
   margin-top: 28px;
   padding: 28px;
   border-radius: var(--radius-card-lg);
-  background:
-    linear-gradient(180deg, rgba(243, 247, 247, 0.95), rgba(255, 255, 255, 1));
-  box-shadow: 0 16px 40px rgba(15, 61, 62, 0.08);
-  border: 1px solid rgba(15, 61, 62, 0.06);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+  box-shadow: var(--shadow-card);
+  scroll-margin-top: 96px;
 }
 
 .partner-portal__intro h2 {
