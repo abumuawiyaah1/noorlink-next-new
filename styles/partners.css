@@ -162,7 +162,9 @@
   overflow: hidden;
   border-radius: var(--radius-card-lg);
   margin-bottom: 24px;
-  box-shadow: 0 12px 28px rgba(15, 61, 62, 0.08);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
+  box-shadow: var(--shadow-card);
 }
 
 .partner-benefits__banner-image {

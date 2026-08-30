@@ -298,8 +298,7 @@
 }
 
 .partner-benefits__card {
-  background: var(--surface);
-  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+  box-shadow: var(--shadow-card);
 }
 
 .partner-benefits__card p {
