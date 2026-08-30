@@ -10,10 +10,10 @@ import "@/styles/content-pages.css";
 import "@/styles/partners.css";
 
 const PARTNER_STATS = [
-  { value: "190+", label: "Destinations" },
-  { value: "24/7", label: "Support for referrals" },
-  { value: "Manual", label: "Partner approval" },
-  { value: "One link", label: "No inventory" },
+  { icon: "🌍", value: "190+", label: "Countries" },
+  { icon: "💬", value: "24/7", label: "Support for referrals" },
+  { value: "Curated", label: "Partner approval" },
+  { icon: "🔗", value: "One link", label: "No inventory" },
 ] as const;
 
 const PARTNER_STEPS = [
@@ -62,6 +62,11 @@ export function PartnersPageContent() {
           <section className="partners-stats" aria-label="Program highlights">
             {PARTNER_STATS.map((stat) => (
               <article key={stat.label} className="about-stat partners-stat">
+                {"icon" in stat && stat.icon ? (
+                  <span className="partners-stat__icon" aria-hidden="true">
+                    {stat.icon}
+                  </span>
+                ) : null}
                 <strong>{stat.value}</strong>
                 <span>{stat.label}</span>
               </article>

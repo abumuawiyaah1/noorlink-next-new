@@ -109,6 +109,13 @@
   box-shadow: var(--shadow-card);
 }
 
+.partners-stat__icon {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
 .partners-trust {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
