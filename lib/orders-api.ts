@@ -25,6 +25,22 @@ export type LookedUpOrder = {
   giftRecipientName?: string | null;
   giftRecipientEmail?: string | null;
   packageId?: string | null;
+  activationStatus?: string | null;
+  activatedAt?: string | null;
+  usageSyncedAt?: string | null;
+  usagePct?: number | null;
+  topupSupported?: boolean;
+  topupReason?: string | null;
+  walletBalanceUsd?: number | null;
+};
+
+export type SupportMessageItem = {
+  direction: string;
+  fromEmail?: string;
+  subject?: string | null;
+  body: string;
+  createdAt?: string | null;
+  ticketNumber?: string | null;
 };
 
 async function parseLookupResponse(
@@ -50,11 +66,15 @@ async function parseLookupResponse(
 export async function lookupOrder(
   email: string,
   orderId: string,
+  options?: { refresh?: boolean },
 ): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string }> {
   const params = new URLSearchParams({
     email: email.trim(),
     orderId: orderId.trim(),
   });
+  if (options?.refresh) {
+    params.set("refresh", "true");
+  }
   const url = `${API_BASE}/api/orders/lookup?${params.toString()}`;
   debug("orders", "lookupOrder →", { orderId: orderId.trim() });
 
@@ -122,6 +142,154 @@ export async function lookupOrderByPaymentIntent(
       found: false,
       order: null,
       error: err instanceof Error ? err.message : "Lookup failed.",
+    };
+  }
+}
+
+export async function fetchTopUpOptions(
+  email: string,
+  orderId: string,
+): Promise<{
+  success: boolean;
+  supported: boolean;
+  amountsUsd?: number[];
+  reason?: string;
+}> {
+  const params = new URLSearchParams({
+    email: email.trim(),
+    orderId: orderId.trim(),
+  });
+  const url = `${API_BASE}/api/orders/topup/options?${params.toString()}`;
+  try {
+    const response = await fetch(url, { method: "GET" });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      supported?: boolean;
+      amountsUsd?: number[];
+      reason?: string;
+    };
+    return {
+      success: Boolean(data.success),
+      supported: Boolean(data.supported),
+      amountsUsd: data.amountsUsd,
+      reason: data.reason,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      supported: false,
+      reason: err instanceof Error ? err.message : "Could not load top-up options.",
+    };
+  }
+}
+
+export async function createTopUpSession(input: {
+  orderId: string;
+  email: string;
+  fundUsd: number;
+}): Promise<{
+  success: boolean;
+  checkoutUrl?: string;
+  message?: string;
+}> {
+  const url = `${API_BASE}/api/orders/topup/session`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        orderId: input.orderId.trim(),
+        email: input.email.trim(),
+        fundUsd: input.fundUsd,
+      }),
+    });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      checkoutUrl?: string;
+      message?: string;
+    };
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message ?? "Top-up checkout failed.",
+      };
+    }
+    return {
+      success: Boolean(data.success),
+      checkoutUrl: data.checkoutUrl,
+      message: data.message,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: err instanceof Error ? err.message : "Top-up checkout failed.",
+    };
+  }
+}
+
+export async function resendOrderEsEmail(input: {
+  orderId: string;
+  email: string;
+}): Promise<{ success: boolean; message?: string }> {
+  const url = `${API_BASE}/api/orders/resend-esim`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        orderId: input.orderId.trim(),
+        email: input.email.trim(),
+      }),
+    });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      message?: string;
+    };
+    return {
+      success: Boolean(data.success),
+      message: data.message,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: err instanceof Error ? err.message : "Could not resend QR email.",
+    };
+  }
+}
+
+export async function fetchOrderSupportMessages(
+  email: string,
+  orderId: string,
+): Promise<{
+  success: boolean;
+  messages: SupportMessageItem[];
+  ticketNumber?: string | null;
+  message?: string;
+}> {
+  const params = new URLSearchParams({
+    email: email.trim(),
+    orderId: orderId.trim(),
+  });
+  const url = `${API_BASE}/api/orders/support-messages?${params.toString()}`;
+  try {
+    const response = await fetch(url, { method: "GET" });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      messages?: SupportMessageItem[];
+      ticketNumber?: string | null;
+      message?: string;
+    };
+    return {
+      success: Boolean(data.success),
+      messages: data.messages ?? [],
+      ticketNumber: data.ticketNumber,
+      message: data.message,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      messages: [],
+      message: err instanceof Error ? err.message : "Could not load support messages.",
     };
   }
 }

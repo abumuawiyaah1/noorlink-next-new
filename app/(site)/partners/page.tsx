@@ -43,10 +43,18 @@ export default function PartnersPage() {
               "Email support@noorlink.co with your name, organization (if any), and audience. We approve partners manually before links go live.",
             ],
           },
+          {
+            title: "Existing partners",
+            body: [
+              "View your referral link, commission balance, and recent sales on the partner dashboard (code + email on file).",
+            ],
+          },
         ]}
       />
       <div className="container" style={{ paddingBottom: "3rem" }}>
         <p>
+          <Link href="/partners/dashboard">Partner dashboard</Link>
+          {" · "}
           <Link href="/destinations">Browse destinations</Link>
           {" · "}
           <Link href="/hajj-umrah">Hajj &amp; Umrah plans</Link>

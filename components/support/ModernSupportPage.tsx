@@ -32,7 +32,13 @@ function SupportContent() {
     setSending(true);
     setError(null);
     setStatus(null);
-    const result = await submitContactForm({ name, email, subject, message });
+    const result = await submitContactForm({
+      name,
+      email,
+      subject,
+      message,
+      orderId: initialOrderId || undefined,
+    });
     setSending(false);
     if (!result.success) {
       setError(result.error ?? "Could not send your message.");

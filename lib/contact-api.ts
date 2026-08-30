@@ -6,6 +6,7 @@ export async function submitContactForm(payload: {
   email: string;
   subject?: string;
   message: string;
+  orderId?: string;
 }): Promise<{ success: boolean; ticketId?: string; message?: string; error?: string }> {
   const url = `${API_BASE}/api/contact`;
   debug("contact", "submitContactForm →", {

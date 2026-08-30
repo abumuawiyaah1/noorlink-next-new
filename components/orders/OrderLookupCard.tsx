@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { lookupOrder, type LookedUpOrder } from "@/lib/orders-api";
+import { lookupOrder, resendOrderEsEmail, type LookedUpOrder } from "@/lib/orders-api";
 import { isSafeQrCodeUrl, safeExternalHref } from "@/lib/safe-url";
 import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
+import { OrderTopUpCard } from "@/components/orders/OrderTopUpCard";
+import { OrderSupportThread } from "@/components/orders/OrderSupportThread";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
@@ -31,12 +33,21 @@ export function OrderLookupCard({
   const [order, setOrder] = useState<LookedUpOrder | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState<string | null>(null);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
     setLoading(true);
-    const result = await lookupOrder(email, orderId);
+    let result = await lookupOrder(email, orderId);
+    if (
+      result.found &&
+      result.order &&
+      ["delivered", "active", "suspended"].includes(result.order.status ?? "")
+    ) {
+      result = await lookupOrder(email, orderId, { refresh: true });
+    }
     setLoading(false);
     if (!result.found || !result.order) {
       setOrder(null);
@@ -47,6 +58,27 @@ export function OrderLookupCard({
       return;
     }
     setOrder(result.order);
+  }
+
+  const canResendQr =
+    order &&
+    ["delivered", "active", "suspended"].includes(order.status ?? "") &&
+    Boolean(order.orderNumber);
+
+  async function handleResendQr() {
+    if (!order?.orderNumber) return;
+    setResendMessage(null);
+    setResendLoading(true);
+    const result = await resendOrderEsEmail({
+      orderId: order.orderNumber,
+      email,
+    });
+    setResendLoading(false);
+    setResendMessage(
+      result.success
+        ? result.message ?? "QR email sent — check inbox and spam."
+        : result.message ?? "Could not resend QR email.",
+    );
   }
 
   const qrHref = safeExternalHref(order?.qrCodeUrl, isSafeQrCodeUrl);
@@ -120,6 +152,14 @@ export function OrderLookupCard({
 
           <OrderUsageSummary order={order} compact />
 
+          {order.topupSupported && order.orderNumber ? (
+            <OrderTopUpCard orderNumber={order.orderNumber} email={email} />
+          ) : null}
+
+          {order.orderNumber ? (
+            <OrderSupportThread orderNumber={order.orderNumber} email={email} />
+          ) : null}
+
           {order.orderNumber ? (
             <p>
               <strong>Order:</strong> {order.orderNumber}
@@ -149,8 +189,25 @@ export function OrderLookupCard({
               </Link>
             )}
 
+            {canResendQr ? (
+              <button
+                type="button"
+                className="lookup-action-btn"
+                onClick={handleResendQr}
+                disabled={resendLoading}
+              >
+                {resendLoading ? "Sending…" : "Resend QR email"}
+              </button>
+            ) : null}
+
             <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>Open WhatsApp</a>
           </div>
+
+          {resendMessage ? (
+            <p className="order-lookup-note" role="status">
+              {resendMessage}
+            </p>
+          ) : null}
 
           {order.activationCode ? (
             <p className="order-lookup-note">

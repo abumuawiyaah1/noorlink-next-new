@@ -67,6 +67,12 @@
             color: var(--primary); font-weight: 700; text-decoration: none;
         }
         .lookup-actions a:hover { color: var(--accent); }
+        .lookup-action-btn {
+            background: none; border: none; padding: 0; cursor: pointer;
+            color: var(--primary); font-weight: 700; font-size: inherit; font-family: inherit;
+        }
+        .lookup-action-btn:hover:not(:disabled) { color: var(--accent); }
+        .lookup-action-btn:disabled { opacity: 0.6; cursor: wait; }
 
         /* --- VIEW 2: DASHBOARD (HIDDEN BY DEFAULT) --- */
         #dashboard-view { display: none; padding: 40px 0; }
@@ -171,6 +177,72 @@
             display: block;
             height: 100%;
             background: linear-gradient(90deg, var(--accent), var(--primary));
+        }
+
+        .order-topup {
+            margin-top: 16px;
+            padding: 16px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+        .order-topup__amounts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .order-topup__btn {
+            border: 1px solid var(--primary);
+            background: #fff;
+            color: var(--primary);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .order-topup__btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: #fff;
+        }
+        .order-topup__btn:disabled { opacity: 0.6; cursor: wait; }
+
+        .order-support-thread {
+            margin-top: 16px;
+            padding: 16px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+        .order-support-thread__list {
+            list-style: none;
+            margin: 12px 0 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .order-support-thread__item {
+            padding: 12px;
+            border-radius: 10px;
+            background: #f3f7f7;
+        }
+        .order-support-thread__item--staff {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+        }
+        .order-support-thread__meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+        .order-support-thread__item p {
+            margin: 0;
+            white-space: pre-wrap;
+            line-height: 1.55;
+            color: #111827;
         }
 
         @keyframes pulse {

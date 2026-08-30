@@ -20,8 +20,21 @@ export function OrderUsageSummary({ order, compact = false }: OrderUsageSummaryP
   const showData = order.dataTotalGb != null && order.dataRemainingGb != null;
   const showDays =
     order.validityDays != null && order.daysRemaining != null;
+  const activationLabel = (() => {
+    const status = (order.activationStatus ?? "").toLowerCase();
+    if (status === "active" || status === "installed" || status === "activated") {
+      return "Installed & active";
+    }
+    if (status === "provisioned") {
+      return "Ready to install — not activated yet";
+    }
+    if (status === "expired") {
+      return "Plan expired";
+    }
+    return null;
+  })();
 
-  if (!showData && !showDays && !order.fulfillmentPending) {
+  if (!showData && !showDays && !order.fulfillmentPending && !activationLabel) {
     return null;
   }
 
@@ -32,6 +45,20 @@ export function OrderUsageSummary({ order, compact = false }: OrderUsageSummaryP
           Your QR code is being prepared — usually within 1–2 minutes. This page
           refreshes automatically.
         </p>
+      ) : null}
+
+      {activationLabel ? (
+        <div className="order-usage__block">
+          <div className="order-usage__label-row">
+            <span>Activation</span>
+            <strong>{activationLabel}</strong>
+          </div>
+          {order.usageSyncedAt ? (
+            <p className="order-usage__fine-print" style={{ marginTop: 6 }}>
+              Usage updated {new Date(order.usageSyncedAt).toLocaleString()}
+            </p>
+          ) : null}
+        </div>
       ) : null}
 
       {showData ? (
