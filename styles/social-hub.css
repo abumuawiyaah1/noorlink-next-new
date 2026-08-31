@@ -1,0 +1,222 @@
+.social-hub-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.social-hub-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.social-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.social-hub-grid--links {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.social-hub-grid--assets {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.social-hub-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+.social-hub-card {
+  background: var(--surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  border-radius: var(--radius-card-lg);
+  padding: 22px;
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+}
+
+.social-hub-card h2,
+.social-hub-card h3 {
+  margin: 0 0 10px;
+  color: var(--primary);
+  font-size: 1.05rem;
+}
+
+.social-hub-card p,
+.social-hub-card li,
+.social-hub-card dd {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.social-hub-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.social-hub-card__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--primary-dark) !important;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.social-hub-card__cta:hover {
+  filter: brightness(1.03);
+}
+
+.social-hub-workflow {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 10px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.social-hub-copy {
+  margin: 0;
+  padding: 14px;
+  border-radius: 12px;
+  background: #f3f7f7;
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  color: var(--text-body, #334155);
+  font-family: inherit;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.social-hub-copy--compact {
+  margin-bottom: 10px;
+}
+
+.social-hub-copy-btn {
+  border: 1px solid rgba(15, 61, 62, 0.14);
+  background: #fff;
+  color: var(--primary);
+  border-radius: var(--radius-pill);
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.social-hub-copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--primary-dark);
+}
+
+.social-hub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.social-hub-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(15, 61, 62, 0.08);
+}
+
+.social-hub-list li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.social-hub-list__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.social-hub-list__actions a {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.social-hub-list__actions a:hover {
+  color: var(--accent);
+}
+
+.social-hub-dl {
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.social-hub-dl dt {
+  margin-bottom: 6px;
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 0.88rem;
+}
+
+.social-hub-tags {
+  margin-bottom: 10px !important;
+  color: var(--primary) !important;
+  font-weight: 600;
+}
+
+.social-hub-asset {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 14px;
+  align-items: start;
+  background: var(--surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  border-radius: var(--radius-card-lg);
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+}
+
+.social-hub-asset img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  display: block;
+}
+
+.social-hub-cta {
+  text-align: center;
+}
+
+.social-hub-cta p {
+  margin-top: 12px;
+}
+
+@media (max-width: 640px) {
+  .social-hub-asset {
+    grid-template-columns: 1fr;
+  }
+
+  .social-hub-asset img {
+    width: 100%;
+    height: 160px;
+  }
+}
