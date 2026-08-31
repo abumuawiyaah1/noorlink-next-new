@@ -5,3 +5,7 @@ NEXTJS_ENV=development
 # Local FastAPI (override in `.dev.vars` if needed)
 # NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
 # BACKEND_API_URL=http://127.0.0.1:8000
+
+# Internal social toolkit (/social)
+SOCIAL_HUB_PASSWORD=change-me
+SOCIAL_HUB_SESSION_SECRET=use-a-long-random-string-here

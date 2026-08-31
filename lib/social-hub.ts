@@ -40,7 +40,7 @@ export const SOCIAL_QUICK_LINKS = [
 ] as const;
 
 export const SOCIAL_POST_WORKFLOW = [
-  "Pick a photo from Brand assets below (or use a destination image).",
+  "Upload partner photos or videos in the Media library (or pick a brand asset below).",
   "Copy a caption template and adjust the destination if needed.",
   "Post to Facebook via Business Suite composer (or the Page timeline).",
   "Post the same image + caption on Instagram (@noorlinkesim) until cross-posting is linked.",

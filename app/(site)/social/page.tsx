@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SocialHubPage } from "@/components/social/SocialHubPage";
+import { SocialHubGate } from "@/components/social/SocialHubGate";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -10,5 +10,5 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function Page() {
-  return <SocialHubPage />;
+  return <SocialHubGate />;
 }

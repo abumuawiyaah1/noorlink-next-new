@@ -1,8 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
-import { SiteFooter } from "@/components/layout/SiteFooter";
-import { SiteHeader } from "@/components/layout/SiteHeader";
 import { CopyButton } from "@/components/social/CopyButton";
+import { MediaLibrary } from "@/components/social/MediaLibrary";
 import {
   SOCIAL_BRAND_ASSETS,
   SOCIAL_CAPTION_TEMPLATES,
@@ -15,10 +16,9 @@ import {
 import "@/styles/content-pages.css";
 import "@/styles/social-hub.css";
 
-export function SocialHubPage() {
+export function SocialHubPage({ onLogout }: { onLogout: () => void }) {
   return (
     <>
-      <SiteHeader />
       <Breadcrumbs
         items={[
           { href: "/", label: "Home" },
@@ -31,16 +31,26 @@ export function SocialHubPage() {
             <span className="content-kicker">NoorLink team</span>
             <h1>Social toolkit</h1>
             <p>
-              Open Meta tools, copy captions, and grab brand assets — everything
-              you need to post on Facebook and Instagram.
+              Store partner media, open Meta tools, copy captions, and download
+              brand assets for Facebook and Instagram.
             </p>
-            <p className="content-hero__badge">
-              Bookmark this page · not linked in the public menu
-            </p>
+            <div className="social-hub-hero-actions">
+              <p className="content-hero__badge">
+                Team access only · bookmark this page
+              </p>
+              <button
+                type="button"
+                className="social-hub-copy-btn"
+                onClick={onLogout}
+              >
+                Sign out
+              </button>
+            </div>
           </div>
         </section>
 
         <div className="content-shell social-hub-shell">
+          <MediaLibrary />
           <section className="social-hub-section" aria-labelledby="social-quick-heading">
             <div className="content-section-head">
               <span className="content-kicker">Quick access</span>
@@ -201,7 +211,6 @@ export function SocialHubPage() {
           </section>
         </div>
       </main>
-      <SiteFooter />
     </>
   );
 }

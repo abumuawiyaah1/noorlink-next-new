@@ -222,6 +222,34 @@ Without that, Cloudflare serves static files only → white screen + tail error 
 
 Root `*.html` files are legacy sources only (`lib/legacy/pages/*`). Never set the Pages publish directory to the repo root.
 
+## Social toolkit media library (`/social`)
+
+Team-only page for partner photos/videos, captions, and Meta quick links.
+
+### One-time Cloudflare setup
+
+1. Create the R2 bucket:
+   ```bash
+   npx wrangler r2 bucket create noorlink-social-assets
+   ```
+2. Set Worker secrets (production):
+   ```bash
+   npx wrangler secret put SOCIAL_HUB_PASSWORD
+   npx wrangler secret put SOCIAL_HUB_SESSION_SECRET
+   ```
+   Use a strong team password and a long random session secret (32+ characters).
+
+3. Redeploy (`npm run deploy` or push to `main`).
+
+`wrangler.jsonc` binds `SOCIAL_ASSETS` → `noorlink-social-assets`.
+
+**Storage cap:** Cloudflare R2 free tier is **10 GB** per account. The `/social` media library shows usage and blocks uploads when full — delete posted or old videos to stay under the limit. Check the [R2 dashboard](https://dash.cloudflare.com/?to=/:account/r2/overview) for account-wide usage (other buckets count too).
+
+### Local dev
+
+Copy `.dev.vars.example` → `.dev.vars` and fill in the two values.
+Use `npm run preview` to test uploads with R2. Plain `next dev` stores files under `.data/social-hub/` on disk.
+
 ## Useful scripts
 
 | Script | Purpose |

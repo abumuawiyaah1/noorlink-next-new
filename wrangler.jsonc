@@ -20,6 +20,12 @@
 	"images": {
 		"binding": "IMAGES"
 	},
+	"r2_buckets": [
+		{
+			"binding": "SOCIAL_ASSETS",
+			"bucket_name": "noorlink-social-assets"
+		}
+	],
 	"observability": {
 		"enabled": true
 	},
