@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FooterSocialLinks } from "@/components/layout/FooterSocialLinks";
 
 export function HomeFooter() {
   return (
@@ -16,6 +17,7 @@ export function HomeFooter() {
             <br />
             Albuquerque, NM 87110
           </p>
+          <FooterSocialLinks />
           <div className="home-pay-badges" aria-label="Payment methods">
             <span>
               <i className="fab fa-cc-visa" style={{ color: "#1A1F71" }} aria-hidden="true" />
