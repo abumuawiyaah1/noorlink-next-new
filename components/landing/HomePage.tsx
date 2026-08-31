@@ -3,7 +3,6 @@ import { HomeFooter } from "@/components/landing/HomeFooter";
 import { HomeHero } from "@/components/landing/HomeHero";
 import { HomeNewsletter } from "@/components/landing/HomeNewsletter";
 import { HowItWorks } from "@/components/landing/HowItWorks";
-import { LandingTicker } from "@/components/landing/LandingTicker";
 import { PopularCountries } from "@/components/landing/PopularCountries";
 import { RegionalPlansPromo } from "@/components/landing/RegionalPlansPromo";
 import { Testimonials } from "@/components/landing/Testimonials";
@@ -16,15 +15,14 @@ export function HomePage() {
   return (
     <>
       <SiteHeader />
-      <LandingTicker />
       <HomeHero />
-      <TrustStatsBar />
       <PopularCountries />
       <HowItWorks />
       <DeviceChecker />
       <UmrahPromo />
       <WhyNoorLink />
       <RegionalPlansPromo />
+      <TrustStatsBar />
       <Testimonials />
       <HomeNewsletter />
       <HomeFooter />

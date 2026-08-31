@@ -50,12 +50,11 @@ export function PopularCountries() {
   return (
     <section className="popular-countries" aria-labelledby="popular-countries-heading">
       <div className="container">
-        <h2 id="popular-countries-heading" className="sr-only">
-          Popular countries
-        </h2>
-        <p className="sr-only">
-          Showing {seasonLabel} picks mixed with live traveler interest.
-        </p>
+        <div className="popular-countries__header">
+          <span className="why-kicker">{seasonLabel} picks</span>
+          <h2 id="popular-countries-heading">Popular destinations</h2>
+          <p>Seasonal favorites mixed with where travelers are looking right now.</p>
+        </div>
 
         <div className="popular-countries__track" role="list">
           {cards.map((card, index) => {

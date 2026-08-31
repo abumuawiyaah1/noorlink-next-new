@@ -245,8 +245,8 @@
     }
 
     .pay-btn {
-        background: var(--primary);
-        color: #fff;
+        background: var(--accent);
+        color: var(--primary-dark);
         width: 100%;
         padding: 16px;
         border: none;
@@ -261,7 +261,7 @@
         display: block;
     }
     .pay-btn:hover {
-        background: var(--accent);
+        background: var(--accent-hover);
         color: var(--primary-dark);
         box-shadow: 0 6px 20px rgba(255, 149, 0, 0.3);
     }
@@ -527,9 +527,9 @@
             margin-top: 4px;
         }
         .pay-btn:hover {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 6px 18px rgba(15, 61, 62, 0.25);
+            background: var(--accent-hover);
+            color: var(--primary-dark);
+            box-shadow: 0 6px 18px rgba(255, 149, 0, 0.4);
         }
     }
 

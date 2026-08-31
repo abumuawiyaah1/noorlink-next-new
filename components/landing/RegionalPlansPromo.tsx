@@ -56,14 +56,14 @@ export function RegionalPlansPromo() {
                     alt={`${product.displayName} regional eSIM coverage`}
                     priority={index < 3}
                   />
-                  {featured && (
-                    <span className="regional-promo__badge">Island escape</span>
-                  )}
                   <span className="regional-promo__flag" aria-hidden="true">
                     {product.flag}
                   </span>
                 </div>
                 <div className="regional-promo__body">
+                  {featured && (
+                    <span className="regional-promo__label">Island escape</span>
+                  )}
                   <strong>{product.shortName}</strong>
                   <span className="regional-promo__meta">
                     {product.countries.length} destinations

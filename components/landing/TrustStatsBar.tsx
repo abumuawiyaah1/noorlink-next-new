@@ -1,8 +1,8 @@
 const stats = [
-  { value: "190+", label: "Countries covered", icon: "🌍" },
-  { value: "Instant", label: "QR delivery", icon: "⚡" },
-  { value: "Hotspot", label: "Included on plans", icon: "📶" },
-  { value: "24/7", label: "WhatsApp support", icon: "💬" },
+  { value: "190+", label: "Countries covered", icon: "fa-globe" },
+  { value: "Instant", label: "QR delivery", icon: "fa-bolt" },
+  { value: "Hotspot", label: "Included on plans", icon: "fa-wifi" },
+  { value: "24/7", label: "WhatsApp support", icon: "fa-comments" },
 ] as const;
 
 export function TrustStatsBar() {
@@ -13,7 +13,7 @@ export function TrustStatsBar() {
           {stats.map((item) => (
             <div key={item.label} className="trust-stat">
               <span className="trust-stat-icon" aria-hidden="true">
-                {item.icon}
+                <i className={`fas ${item.icon}`} />
               </span>
               <div>
                 <strong>{item.value}</strong>

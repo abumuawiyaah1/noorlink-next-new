@@ -24,7 +24,13 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .order-id { font-family: monospace; opacity: 0.8; letter-spacing: 1px; }
-        .ticket-body { padding: 40px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; }
+        .ticket-body {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+            background: var(--surface);
+        }
         
         .qr-area { text-align: center; border-right: 1px solid #eee; padding-right: 40px; }
         .qr-placeholder {
@@ -115,11 +121,27 @@
         .gift-note { font-size: 0.8rem; opacity: 0.8; }
 
         /* Referral Styling */
-        .card-refer { color: var(--text-main); }
+        .card-refer {
+            color: var(--text-main);
+            background: var(--surface);
+            border: 1px solid rgba(15, 61, 62, 0.08);
+            border-radius: var(--radius-card);
+            padding: 24px;
+            box-shadow: var(--shadow-card);
+        }
         .refer-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
-        .refer-link { 
-            background: #f3f4f6; padding: 10px; margin: 15px 0; border-radius: var(--radius-sm);
-            font-size: 0.9rem; color: var(--primary); font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+        .refer-link {
+            background: #f3f7f7;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            border: 1px dashed rgba(15, 61, 62, 0.25);
         }
         .share-btn { 
             background: var(--whatsapp); color: white; padding: 8px 16px; border-radius: var(--radius-pill); 

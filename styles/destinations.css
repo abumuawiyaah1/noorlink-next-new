@@ -60,8 +60,8 @@
         }
 
         .search-box input { border: none; flex: 1; padding: var(--btn-pad-y) var(--btn-pad-x); font-size: 1rem; outline: none; border-radius: var(--radius-pill); background: transparent; }
-        .search-btn { background: var(--accent); border: none; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.3s; color: white; }
-        .search-btn:hover { transform: scale(1.05); background: var(--primary); }
+        .search-btn { background: var(--accent); border: none; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.3s; color: var(--primary-dark); }
+        .search-btn:hover { transform: scale(1.05); background: var(--accent-hover); }
 
         .filter-bar { display: flex; justify-content: center; gap: 10px; margin-bottom: 50px; flex-wrap: wrap; }
         .filter-btn { 
@@ -79,49 +79,56 @@
         .dest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; padding-bottom: 100px; }
         
         .card { 
-            min-height: 420px; border-radius: var(--radius-card-lg); position: relative; overflow: hidden; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: all 0.4s ease;
-            border: 3px solid transparent;
-            display: block;
-            background:
-                linear-gradient(var(--primary-dark), var(--primary-dark)) padding-box,
-                var(--border-gradient) border-box;
+            border-radius: var(--radius-card-lg);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(15, 61, 62, 0.08);
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+            color: var(--text-main);
+            min-height: 0;
         }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
-        .card:hover .card-overlay { background: linear-gradient(to top, rgba(15, 61, 62, 0.96) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.1) 100%); }
-        .card:hover .flag { transform: scale(1.1); }
-        .card:hover .card-price { background: white; color: var(--primary); }
-
-        .bg-dynamic { background: linear-gradient(135deg, #2c3e50, #4ca1af); }
-
-        .card-overlay {
-            background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.08) 100%);
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 22px; color: white; text-align: left;
-            transition: 0.4s;
-            z-index: 2;
+        .card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(15, 61, 62, 0.14); }
+        .dest-grid .card .card-media {
+            position: relative;
+            inset: auto;
+            height: 180px;
+            flex-shrink: 0;
         }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            background: var(--surface);
+            flex: 1;
+        }
+        .bg-dynamic { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+
         .flag { font-size: 4rem; display: block; margin: 0 auto 15px auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); transition: 0.4s; }
-        .card h3 { margin: 0 0 8px; font-size: 1.45rem; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .card h3 { margin: 0; font-size: 1.3rem; font-weight: 800; color: var(--primary); }
         .card-desc {
-            margin: 0 0 10px;
-            font-size: 0.88rem;
+            margin: 0;
+            font-size: 0.9rem;
             line-height: 1.45;
-            color: rgba(255, 255, 255, 0.9);
-            text-shadow: 0 1px 6px rgba(0,0,0,0.45);
+            color: #334155;
         }
         .card-tips {
             list-style: none;
-            margin: 0 0 14px;
+            margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
         .card-tips li {
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.82);
+            color: var(--text-muted);
             padding-left: 14px;
             position: relative;
         }
@@ -134,18 +141,20 @@
         }
         .card-price {
             background: var(--accent);
-            color: var(--text-main);
+            color: var(--primary-dark);
             font-weight: 800;
-            padding: 6px 16px;
-            border-radius: var(--radius-card-lg);
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
             font-size: 0.9rem;
             display: inline-block;
             width: fit-content;
+            margin-top: auto;
             transition: 0.3s;
         }
+        .card:hover .card-price { filter: brightness(1.03); }
         .card-price.is-pending {
-            background: rgba(255, 255, 255, 0.18);
-            color: #fff;
+            background: rgba(15, 61, 62, 0.08);
+            color: var(--primary);
             font-weight: 700;
         }
 
@@ -160,8 +169,8 @@
         }
         .search-card-style:hover { transform: scale(1.01); border-color: var(--accent); }
         .search-text { font-weight: 800; font-size: 2.5rem; margin-bottom: 15px; }
-        .search-sub { font-size: 1.2rem; color: #cbd5e1; margin-bottom: 30px; }
-        .glow-btn { background: var(--accent); color: var(--text-main); padding: 15px 40px; border-radius: var(--radius-pill); font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 20px rgba(255, 149, 0, 0.4); display: inline-block; }
+        .search-sub { font-size: 1.2rem; color: var(--text-on-dark-muted); margin-bottom: 30px; }
+        .glow-btn { background: var(--accent); color: var(--primary-dark); padding: 15px 40px; border-radius: var(--radius-pill); font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 20px rgba(255, 149, 0, 0.4); display: inline-block; }
 
         /* FOOTER */
         footer { background: var(--primary-dark); color: #94a3b8; padding: 60px 0; text-align: center; font-size: 0.9rem; }

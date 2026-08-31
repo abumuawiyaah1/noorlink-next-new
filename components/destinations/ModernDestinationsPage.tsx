@@ -156,7 +156,7 @@ export function ModernDestinationsPage({
                   alt={`${card.title} — travel eSIM destination`}
                   priority={index < 3}
                 />
-                <div className="card-overlay">
+                <div className="card-body">
                   <h3>{card.title}</h3>
                   <p className="card-desc">{card.description}</p>
                   <ul className="card-tips">

@@ -18,7 +18,7 @@
 .plans-page__hero-media {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #1a3a3b 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
 }
 
 .plans-page__hero-media img {
@@ -433,15 +433,15 @@
 }
 
 .plans-row.is-best {
-  border-color: #6ee7b7;
-  background: #f0fdf4;
+  border-color: rgba(255, 149, 0, 0.55);
+  background: var(--accent-soft);
 }
 
 .plans-row.is-best.is-selected,
 .plans-row.is-best:hover,
 .plans-row.is-best:focus-visible {
-  border-color: #34d399;
-  background: #ecfdf5;
+  border-color: var(--accent);
+  background: #fff8ef;
 }
 
 .plans-row__details {
@@ -727,8 +727,8 @@
 }
 
 .plans-card__badge--best {
-  background: rgba(16, 185, 129, 0.14);
-  color: #047857;
+  background: var(--accent-soft);
+  color: var(--primary);
 }
 
 .plans-card__name {
@@ -824,8 +824,8 @@
 }
 
 .plans-card--payg .plans-card__cta {
-  background: var(--primary);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  color: var(--primary-dark);
 }
 
 .plans-skeleton-grid {

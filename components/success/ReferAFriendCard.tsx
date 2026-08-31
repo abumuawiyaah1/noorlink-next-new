@@ -49,10 +49,13 @@ export function ReferAFriendCard({ email, orderNumber }: Props) {
         <p className="gift-note">Preparing your link…</p>
       ) : linkUrl ? (
         <>
-          <div className="coupon-code" style={{ fontSize: "0.85rem", wordBreak: "break-all" }}>
-            {linkUrl.replace(/^https?:\/\//, "")}
-          </div>
-          <button type="button" className="btn-nav" onClick={() => void copyLink()} style={{ marginTop: 12 }}>
+          <div className="refer-link">{linkUrl.replace(/^https?:\/\//, "")}</div>
+          <button
+            type="button"
+            className="btn-nav btn-nav--accent"
+            onClick={() => void copyLink()}
+            style={{ marginTop: 12 }}
+          >
             {copied ? "Copied!" : "Copy link"}
           </button>
         </>

@@ -72,7 +72,7 @@
   --shadow-card: 0 8px 24px rgba(15, 61, 62, 0.08);
 
   /* Gradients */
-  --border-gradient: linear-gradient(135deg, var(--primary), var(--accent), var(--success));
+  --border-gradient: linear-gradient(135deg, var(--primary), var(--accent));
   --card-gradient-border: linear-gradient(var(--surface), var(--surface)) padding-box,
     var(--border-gradient) border-box;
   --hero-overlay: linear-gradient(rgba(15, 61, 62, 0.92), rgba(5, 25, 26, 0.96));
