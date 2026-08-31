@@ -222,33 +222,22 @@ Without that, Cloudflare serves static files only → white screen + tail error 
 
 Root `*.html` files are legacy sources only (`lib/legacy/pages/*`). Never set the Pages publish directory to the repo root.
 
-## Social toolkit media library (`/social`)
+## Social toolkit (admin dashboard)
 
-Team-only page for partner photos/videos, captions, and Meta quick links.
+Social media library, captions, and Meta links live in the **backend admin** — not on the public site.
 
-### One-time Cloudflare setup
+| URL | Purpose |
+| --- | --- |
+| https://api.noorlink.co/admin | Team sign-in |
+| https://api.noorlink.co/admin/social-media | Partner media, captions, Meta links |
 
-1. Create the R2 bucket:
-   ```bash
-   npx wrangler r2 bucket create noorlink-social-assets
-   ```
-2. Set Worker secrets (production):
-   ```bash
-   npx wrangler secret put SOCIAL_HUB_PASSWORD
-   npx wrangler secret put SOCIAL_HUB_SESSION_SECRET
-   ```
-   Use a strong team password and a long random session secret (32+ characters).
+`/social` and `/team` on noorlink.co redirect to the admin dashboard.
 
-3. Redeploy (`npm run deploy` or push to `main`).
+See `noorlink-automation/docs/SOCIAL-MEDIA-HUB.md` for Storage bucket setup.
 
-`wrangler.jsonc` binds `SOCIAL_ASSETS` → `noorlink-social-assets`.
+### Legacy: Cloudflare R2 on the website (optional / deprecated)
 
-**Storage cap:** Cloudflare R2 free tier is **10 GB** per account. The `/social` media library shows usage and blocks uploads when full — delete posted or old videos to stay under the limit. Check the [R2 dashboard](https://dash.cloudflare.com/?to=/:account/r2/overview) for account-wide usage (other buckets count too).
-
-### Local dev
-
-Copy `.dev.vars.example` → `.dev.vars` and fill in the two values.
-Use `npm run preview` to test uploads with R2. Plain `next dev` stores files under `.data/social-hub/` on disk.
+The Next.js `/api/social/*` routes and R2 binding were an interim approach. Prefer the admin hub above. If you still use R2 secrets on the Worker, they can be removed after cutover.
 
 ## Useful scripts
 
