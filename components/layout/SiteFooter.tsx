@@ -1,4 +1,18 @@
 import Link from "next/link";
+import { Facebook, Instagram } from "lucide-react";
+
+const SOCIAL_LINKS = [
+  {
+    href: "https://www.instagram.com/noorlinkesim/",
+    label: "NoorLink on Instagram",
+    Icon: Instagram,
+  },
+  {
+    href: "https://www.facebook.com/profile.php?id=61593708492331",
+    label: "NoorLink on Facebook",
+    Icon: Facebook,
+  },
+] as const;
 
 export function SiteFooter() {
   return (
@@ -17,7 +31,23 @@ export function SiteFooter() {
           <Link href="/terms">Terms</Link>
           <Link href="/refund">Refunds</Link>
         </nav>
-        <span>© {new Date().getFullYear()} NoorLink</span>
+        <div className="site-footer__meta">
+          <nav className="site-footer__social" aria-label="Social">
+            {SOCIAL_LINKS.map(({ href, label, Icon }) => (
+              <a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                title={label}
+              >
+                <Icon size={18} strokeWidth={2} aria-hidden="true" />
+              </a>
+            ))}
+          </nav>
+          <span>© {new Date().getFullYear()} NoorLink</span>
+        </div>
       </div>
     </footer>
   );
