@@ -253,15 +253,21 @@
         .news-privacy { text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 15px; }
         .news-status { text-align: center; font-size: 0.88rem; font-weight: 600; color: var(--success-text); margin-top: 12px; }
         .news-status.is-error { color: var(--error); }
-        .home-pay-badges { margin-top: 25px; display: flex; gap: 8px; flex-wrap: wrap; }
-        .home-pay-badges span {
-            background: white; padding: 6px 10px; border-radius: var(--radius-sm);
-            display: flex; align-items: center; justify-content: center;
+        .home-pay-badges { margin-top: 25px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .payment-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
         }
-        .payment-badge-icon {
+        .payment-badge__image {
             display: block;
-            width: 38px;
-            height: 24px;
+            width: 60px;
+            height: 38px;
+            object-fit: cover;
         }
         .check-icon-large {
             display: flex;
@@ -270,8 +276,9 @@
             color: var(--primary);
         }
         .check-icon-large__svg {
-            width: 3rem;
-            height: 3rem;
+            width: 3.4rem;
+            height: auto;
+            filter: drop-shadow(0 8px 18px rgba(15, 61, 62, 0.18));
         }
         .popular-countries {
             padding: 40px 0 56px;
