@@ -11,12 +11,13 @@
             background: var(--bg-body); 
             line-height: 1.6;
             overflow-x: hidden;
+            padding-top: 40px; /* fixed ticker */
         }
         a { text-decoration: none; color: inherit; transition: 0.3s ease; }
         ul { list-style: none; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-        /* --- GLOBAL TICKER (kept for reuse; not on homepage fold) --- */
+        /* --- GLOBAL TICKER --- */
         .ticker-wrap {
             position: fixed; top: 0; left: 0; width: 100%; height: 40px;
             background-color: var(--primary-dark); color: #fff; z-index: 9999;
@@ -37,11 +38,11 @@
         /* --- HEADER --- */
         header { 
             background: var(--glass); backdrop-filter: blur(12px); 
-            padding: 15px 0; position: sticky; top: 0; z-index: 1000; 
+            padding: 15px 0; position: sticky; top: 40px; z-index: 1000; 
             border-bottom: 1px solid rgba(0,0,0,0.05);
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
         }
-        header.site-header { top: 0; }
+        header.site-header { top: 40px; }
         .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
         
         /* LOGO TEXT + TM */
