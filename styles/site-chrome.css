@@ -235,6 +235,23 @@
     border-color 0.15s ease;
 }
 
+.footer-social__link--brand {
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.footer-social__link--brand:hover {
+  color: inherit !important;
+  background: transparent;
+  border-color: transparent;
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
 .footer-social__link:hover {
   color: #05191a !important;
   background: var(--accent);
@@ -242,8 +259,8 @@
 }
 
 .footer-social__link svg {
-  width: 20px;
-  height: 20px;
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
   display: block;
 }

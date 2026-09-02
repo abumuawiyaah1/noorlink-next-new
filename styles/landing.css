@@ -61,8 +61,23 @@
         /* --- HERO SECTION --- */
         .hero { 
             background: var(--hero-overlay), url('/images/hero.jpg');
-            background-size: cover; background-position: center;
-            color: white; padding: 120px 0 100px; text-align: center; position: relative;
+            background-size: cover; background-position: center 42%;
+            color: white; padding: 112px 0 96px; text-align: center; position: relative;
+        }
+        .hero-copy {
+            max-width: 760px;
+            margin: 0 auto 32px;
+            padding: 28px 32px 24px;
+            border-radius: var(--radius-card-lg);
+            background: linear-gradient(
+                165deg,
+                rgba(5, 25, 26, 0.62) 0%,
+                rgba(15, 61, 62, 0.48) 100%
+            );
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 18px 48px rgba(5, 25, 26, 0.28);
         }
         .hero-brand {
             font-size: clamp(2rem, 5vw, 3rem);
@@ -83,15 +98,15 @@
         .hero h1 {
             font-size: clamp(2rem, 5vw, 3.4rem);
             font-weight: 800;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             line-height: 1.1;
             color: var(--text-on-dark);
-            text-shadow: 0 2px 16px rgba(5, 25, 26, 0.35);
+            text-shadow: 0 2px 12px rgba(5, 25, 26, 0.4);
         }
         .hero-lede {
             font-size: 1.1rem;
             color: var(--text-on-dark-muted);
-            margin: 0 auto 32px;
+            margin: 0 auto;
             max-width: 620px;
             line-height: 1.55;
         }
@@ -582,6 +597,11 @@
         }
 
         @media (max-width: 768px) {
+            .hero { padding: 88px 0 72px; background-position: center 36%; }
+            .hero-copy {
+                padding: 22px 20px 18px;
+                margin-bottom: 24px;
+            }
             .mobile-toggle { display: block; }
             .nav-links { display: none; flex-direction: column; position: absolute; top: 75px; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-bottom: 1px solid #eee; gap: 20px; text-align: center; }
             .nav-links.active { display: flex; }

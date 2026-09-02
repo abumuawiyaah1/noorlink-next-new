@@ -77,8 +77,10 @@
     var(--border-gradient) border-box;
   --hero-overlay: linear-gradient(
     to bottom,
-    rgba(15, 61, 62, 0.42) 0%,
-    rgba(15, 61, 62, 0.58) 45%,
-    rgba(5, 25, 26, 0.78) 100%
+    rgba(15, 61, 62, 0.9) 0%,
+    rgba(15, 61, 62, 0.78) 22%,
+    rgba(15, 61, 62, 0.45) 48%,
+    rgba(5, 25, 26, 0.18) 72%,
+    rgba(5, 25, 26, 0.42) 100%
   );
 }
