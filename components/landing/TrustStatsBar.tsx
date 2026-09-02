@@ -11,8 +11,8 @@ export function TrustStatsBar() {
               <Image
                 src={item.image}
                 alt={item.imageAlt}
-                width={40}
-                height={40}
+                width={44}
+                height={44}
                 className="trust-stat-card__icon"
               />
             </div>
