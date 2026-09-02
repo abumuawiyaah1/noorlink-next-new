@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 import { CookieYesBannerFix } from "@/components/ui/CookieYesBannerFix";
+import { MarketingAttributionCapture } from "@/components/analytics/MarketingAttributionCapture";
 import { GlobalBackButton } from "@/components/ui/GlobalBackButton";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
 import { ROOT_METADATA } from "@/lib/seo";
@@ -48,6 +49,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <SiteJsonLd />
+        <MarketingAttributionCapture />
         {children}
         <GlobalBackButton />
         <WhatsAppFab />

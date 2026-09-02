@@ -9,6 +9,7 @@ import {
 import { loadStripe, type StripeExpressCheckoutElementConfirmEvent } from "@stripe/stripe-js";
 import { useEffect, useMemo, useState } from "react";
 import { API_BASE } from "@/lib/api-client";
+import { attributionPayloadForCheckout } from "@/lib/attribution";
 import { debug, debugError } from "@/lib/debug";
 
 type ExpressPayload = {
@@ -87,6 +88,8 @@ function ExpressCheckoutInner({
       if (payload.promoCode) body.promoCode = payload.promoCode;
       if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef;
       if (payload.wantsTopUp) body.wantsTopUp = true;
+      const attribution = attributionPayloadForCheckout();
+      if (attribution) body.attribution = attribution;
 
       debug("checkout", "express payment-intent →");
       const res = await fetch(`${API_BASE}/api/checkout/payment-intent`, {

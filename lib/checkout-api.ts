@@ -1,4 +1,5 @@
 import { API_BASE } from "@/lib/api-client";
+import { attributionPayloadForCheckout } from "@/lib/attribution";
 import { debug, debugError } from "@/lib/debug";
 
 export type CheckoutSessionPayload = {
@@ -59,6 +60,8 @@ export async function createCheckoutSession(
     body.isGift = true;
     if (payload.gift) body.gift = payload.gift;
   }
+  const attribution = attributionPayloadForCheckout();
+  if (attribution) body.attribution = attribution;
 
   debug("checkout", "createCheckoutSession →", {
     url,
