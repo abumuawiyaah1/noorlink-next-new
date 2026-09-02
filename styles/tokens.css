@@ -75,12 +75,5 @@
   --border-gradient: linear-gradient(135deg, var(--primary), var(--accent));
   --card-gradient-border: linear-gradient(var(--surface), var(--surface)) padding-box,
     var(--border-gradient) border-box;
-  --hero-overlay: linear-gradient(
-    to bottom,
-    rgba(15, 61, 62, 0.9) 0%,
-    rgba(15, 61, 62, 0.78) 22%,
-    rgba(15, 61, 62, 0.45) 48%,
-    rgba(5, 25, 26, 0.18) 72%,
-    rgba(5, 25, 26, 0.42) 100%
-  );
+  --hero-overlay: linear-gradient(rgba(15, 61, 62, 0.92), rgba(5, 25, 26, 0.96));
 }

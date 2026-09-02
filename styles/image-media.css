@@ -48,25 +48,70 @@
   transform: scale(1.06);
 }
 
-/* Trust stats strip (homepage) */
-.trust-stats-bar {
-  margin-top: 0;
-  position: relative;
-  z-index: 20;
-  padding: 28px 0 36px;
-  background: var(--bg-body);
+/* Trust stats (homepage — inside How it works) */
+.trust-stats-intro {
+  margin-bottom: 48px;
 }
 
 .trust-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
-  backdrop-filter: blur(12px);
-  border-radius: var(--radius-card-lg);
-  padding: 24px 28px;
-  box-shadow: 0 20px 50px rgba(15, 61, 62, 0.12);
 }
 
+.trust-stats-grid--cards {
+  gap: 20px;
+}
+
+.trust-stat-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-card-lg);
+  background: #fff;
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  box-shadow: 0 12px 32px rgba(15, 61, 62, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.trust-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(15, 61, 62, 0.12);
+}
+
+.trust-stat-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--bg-mist, #f3f7f7);
+}
+
+.trust-stat-card__image {
+  object-fit: cover;
+}
+
+.trust-stat-card__body {
+  padding: 16px 18px 18px;
+  text-align: left;
+}
+
+.trust-stat-card__body strong {
+  display: block;
+  font-size: 1.2rem;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.trust-stat-card__body span {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Legacy icon strip (hero / other surfaces) */
 .trust-stat {
   display: flex;
   align-items: center;
@@ -109,13 +154,12 @@
 }
 
 @media (max-width: 520px) {
-  .trust-stats-grid {
-    grid-template-columns: 1fr;
-    padding: 20px;
+  .trust-stats-intro {
+    margin-bottom: 36px;
   }
 
-  .trust-stats-bar {
-    margin-top: 0;
+  .trust-stats-grid {
+    grid-template-columns: 1fr;
   }
 }
 

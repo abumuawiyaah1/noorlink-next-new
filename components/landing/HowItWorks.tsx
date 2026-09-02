@@ -1,7 +1,10 @@
+import { TrustStatsBar } from "@/components/landing/TrustStatsBar";
+
 export function HowItWorks() {
   return (
     <section className="steps-section" id="how-it-works">
       <div className="container">
+        <TrustStatsBar />
         <div className="steps-header">
           <h2>How it works</h2>
           <p>Install before you fly — three calm steps to data on arrival.</p>
