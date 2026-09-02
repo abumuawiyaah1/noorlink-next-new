@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FooterSocialLinks } from "@/components/layout/FooterSocialLinks";
+import { PaymentMethodBadges } from "@/components/ui/PaymentMethodBadges";
 
 export function HomeFooter() {
   return (
@@ -18,23 +19,7 @@ export function HomeFooter() {
             Albuquerque, NM 87110
           </p>
           <FooterSocialLinks />
-          <div className="home-pay-badges" aria-label="Payment methods">
-            <span>
-              <i className="fab fa-cc-visa" style={{ color: "#1A1F71" }} aria-hidden="true" />
-            </span>
-            <span>
-              <i className="fab fa-cc-mastercard" style={{ color: "#EB001B" }} aria-hidden="true" />
-            </span>
-            <span>
-              <i className="fab fa-cc-amex" style={{ color: "#2E77BC" }} aria-hidden="true" />
-            </span>
-            <span>
-              <i className="fab fa-paypal" style={{ color: "#00457C" }} aria-hidden="true" />
-            </span>
-            <span>
-              <i className="fab fa-apple-pay" style={{ color: "#000" }} aria-hidden="true" />
-            </span>
-          </div>
+          <PaymentMethodBadges />
         </div>
         <div>
           <h4>Company</h4>

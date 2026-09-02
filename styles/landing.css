@@ -256,7 +256,22 @@
         .home-pay-badges { margin-top: 25px; display: flex; gap: 8px; flex-wrap: wrap; }
         .home-pay-badges span {
             background: white; padding: 6px 10px; border-radius: var(--radius-sm);
-            display: flex; align-items: center; font-size: 24px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .payment-badge-icon {
+            display: block;
+            width: 38px;
+            height: 24px;
+        }
+        .check-icon-large {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        .check-icon-large__svg {
+            width: 3rem;
+            height: 3rem;
         }
         .popular-countries {
             padding: 40px 0 56px;
@@ -450,7 +465,6 @@
             padding: 50px; border-radius: var(--radius-card-lg); max-width: 700px; margin: 30px auto 0; 
             box-shadow: 0 20px 60px -10px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center;
         }
-        .check-icon-large { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
         .check-input-group { display: flex; gap: 10px; width: 100%; max-width: 500px; margin: auto; }
         .check-input { flex: 1; padding: 16px; border: 2px solid #e5e7eb; border-radius: var(--radius-control); font-size: 1.1rem; outline: none; }
         .check-btn { background: var(--primary); color: white; border: none; padding: 0 30px; border-radius: var(--radius-control); font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 1rem; }

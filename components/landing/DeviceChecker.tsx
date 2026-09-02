@@ -7,6 +7,7 @@ import {
   type DeviceBrand,
 } from "@/lib/devices-api";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
+import { PhoneDeviceIcon } from "@/components/ui/PhoneDeviceIcon";
 
 function normalize(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, " ");
@@ -88,7 +89,7 @@ export function DeviceChecker() {
     <section className="checker-section">
       <div className="container">
         <div className="check-icon-large">
-          <i className="fas fa-mobile-alt" aria-hidden="true" />
+          <PhoneDeviceIcon className="check-icon-large__svg" />
         </div>
         <h2 style={{ fontSize: "2rem", color: "var(--primary)" }}>
           Is your phone compatible?
