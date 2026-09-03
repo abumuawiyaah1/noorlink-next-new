@@ -1,35 +1,42 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const BENEFITS = [
   {
-    icon: "fa-bolt",
     title: "Instant delivery",
     body: "Your QR code arrives by email minutes after checkout — no waiting for mail, no SIM swap at the airport.",
+    image: "/images/trust-stats/qr-delivery.png",
+    imageAlt: "Traveler scanning an eSIM QR code on their phone",
   },
   {
-    icon: "fa-globe",
     title: "190+ countries covered",
     body: "One provider, one checkout. NoorLink connects you to local carrier networks across six continents.",
+    image: "/images/trust-stats/countries.png",
+    imageAlt: "Globe highlighting international travel destinations",
   },
   {
-    icon: "fa-wifi",
     title: "Hotspot included",
     body: "Every plan supports mobile hotspot. Share your connection with a laptop or travel companion at no extra cost.",
+    image: "/images/trust-stats/hotspot.png",
+    imageAlt: "Phone sharing mobile data with a laptop via hotspot",
   },
   {
-    icon: "fa-lock",
     title: "Secure Stripe checkout",
     body: "Card details are never stored on NoorLink servers. Payments are encrypted end-to-end through Stripe.",
+    image: "/images/sim-card.jpg",
+    imageAlt: "eSIM card ready to install before travel",
   },
   {
-    icon: "fa-rotate-left",
     title: "Refund if it fails",
     body: "If a technical error prevents activation, we review the issue quickly and refund or replace when eligible.",
+    image: "/images/traveler.jpg",
+    imageAlt: "Traveler connected and ready after landing",
   },
   {
-    icon: "fa-comments",
     title: "Real 24/7 support",
     body: "WhatsApp support is staffed around the clock. Reach a human in minutes, not days.",
+    image: "/images/trust-stats/support.png",
+    imageAlt: "Support team helping a customer by phone and chat",
   },
 ] as const;
 
@@ -49,11 +56,19 @@ export function WhyNoorLink() {
         <div className="why-grid">
           {BENEFITS.map((benefit) => (
             <article key={benefit.title} className="why-card">
-              <div className="why-card__icon" aria-hidden="true">
-                <i className={`fas ${benefit.icon}`} />
+              <div className="why-card__media">
+                <Image
+                  src={benefit.image}
+                  alt={benefit.imageAlt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                  className="why-card__image"
+                />
               </div>
-              <h3>{benefit.title}</h3>
-              <p>{benefit.body}</p>
+              <div className="why-card__body">
+                <h3>{benefit.title}</h3>
+                <p>{benefit.body}</p>
+              </div>
             </article>
           ))}
         </div>
