@@ -62,8 +62,8 @@
 .trust-stats-grid--compact {
   padding: 14px 16px;
   border-radius: var(--radius-card-lg);
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(15, 61, 62, 0.08);
+  border: 3px solid transparent;
+  background: var(--card-gradient-border);
   box-shadow: 0 8px 24px rgba(15, 61, 62, 0.06);
 }
 

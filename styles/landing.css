@@ -170,14 +170,14 @@
             padding: 8px 0 24px;
         }
         .ramadan-promo {
-            background: var(--surface);
             margin: 40px 20px;
             border-radius: var(--radius-card-lg);
             color: var(--text-main);
             position: relative;
             overflow: hidden;
             box-shadow: var(--shadow-card);
-            border: 1px solid rgba(15, 61, 62, 0.08);
+            border: 3px solid transparent;
+            background: var(--card-gradient-border);
         }
         .umrah-promo-section::before,
         .umrah-promo-section::after,

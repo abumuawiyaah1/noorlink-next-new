@@ -401,7 +401,8 @@
 .card.summary-card,
 .loyalty-card.card-refer,
 .regional-promo__card,
-.regional-map__panel {
+.regional-map__panel,
+.ramadan-promo {
   border: 3px solid transparent;
   background: var(--card-gradient-border);
 }
