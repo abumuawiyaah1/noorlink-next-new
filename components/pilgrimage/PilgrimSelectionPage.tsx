@@ -19,10 +19,12 @@ import {
   type ConnectedPilgrimDataGb,
   type PilgrimTierKey,
   type PilgrimTierOffer,
+  type UmrahUnlimitedDays,
   computeGroupSavings,
   resolveConnectedPilgrimPlan,
   resolvePilgrimPlanCopy,
   resolvePilgrimTiers,
+  resolveUmrahUnlimitedPlan,
   splitPricePerPerson,
 } from "@/lib/pilgrim-tiers";
 import {
@@ -36,6 +38,7 @@ import {
   rememberRef,
   withAttribution,
 } from "@/lib/affiliate-link";
+import { PILGRIMAGE_BRAND_LINE } from "@/lib/brand";
 import "@/styles/hajj-umrah.css";
 import "@/styles/plans-dynamic.css";
 
@@ -75,24 +78,38 @@ function tierBadge(tier: PilgrimTierOffer): string | null {
   return null;
 }
 
+function tierComingSoonNote(tier: PilgrimTierOffer): string {
+  if (tier.key === "unlimited") {
+    return "Day-pass unlimited is in the works — WhatsApp us if you want early notice when it launches.";
+  }
+  if (tier.key === "family") {
+    return "Group hotspot plans are on the way — WhatsApp us for early access.";
+  }
+  return "Coming soon — WhatsApp us for early access.";
+}
+
 function TierCard({
   tier,
   selected,
   groupSize,
   connectedDataGb,
+  umrahUnlimitedDays,
   individualReferencePrice,
   onSelect,
   onGroupSizeChange,
   onConnectedDataGbChange,
+  onUmrahUnlimitedDaysChange,
 }: {
   tier: PilgrimTierOffer;
   selected: boolean;
   groupSize: number;
   connectedDataGb: ConnectedPilgrimDataGb;
+  umrahUnlimitedDays: UmrahUnlimitedDays;
   individualReferencePrice: number;
   onSelect: () => void;
   onGroupSizeChange: (size: number) => void;
   onConnectedDataGbChange: (gb: ConnectedPilgrimDataGb) => void;
+  onUmrahUnlimitedDaysChange: (days: UmrahUnlimitedDays) => void;
 }) {
   if (tier.comingSoon) {
     const copy = resolvePilgrimPlanCopy(tier, null);
@@ -111,7 +128,7 @@ function TierCard({
         </div>
         <div className="pilgrim-price-wrap">
           <p className="pilgrim-card__coming-soon-note">
-            Group hotspot plans are on the way — WhatsApp us for early access.
+            {tierComingSoonNote(tier)}
           </p>
         </div>
         <button type="button" className="pilgrim-card__cta" disabled>
@@ -122,12 +139,20 @@ function TierCard({
   }
 
   const isConnected = tier.key === "connected" && tier.connectedVariants;
+  const isUnlimited = tier.key === "unlimited" && tier.unlimitedVariants;
   const plan = isConnected
     ? resolveConnectedPilgrimPlan(tier, connectedDataGb)
-    : tier.plan;
+    : isUnlimited
+      ? resolveUmrahUnlimitedPlan(tier, umrahUnlimitedDays)
+      : tier.plan;
   if (!plan) return null;
 
-  const copy = resolvePilgrimPlanCopy(tier, plan, connectedDataGb);
+  const copy = resolvePilgrimPlanCopy(
+    tier,
+    plan,
+    connectedDataGb,
+    umrahUnlimitedDays,
+  );
 
   const display = tier.hasGroupCalculator
     ? splitPricePerPerson(plan.price, plan.formattedPriceParts, groupSize)
@@ -197,6 +222,32 @@ function TierCard({
                   <span className="pilgrim-data-picker__meta">
                     {variant.durationDays ?? 30} days
                   </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {isUnlimited && (
+        <div className="pilgrim-data-picker" role="group" aria-label="Trip length">
+          <span className="pilgrim-data-picker__label">Trip length</span>
+          <div className="pilgrim-data-picker__options pilgrim-data-picker__options--triple">
+            {([7, 10, 14] as const).map((days) => {
+              const active = umrahUnlimitedDays === days;
+              return (
+                <button
+                  key={days}
+                  type="button"
+                  className={`pilgrim-data-picker__option${active ? " is-active" : ""}`}
+                  aria-pressed={active}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onUmrahUnlimitedDaysChange(days);
+                  }}
+                >
+                  <span className="pilgrim-data-picker__gb">{days} days</span>
+                  <span className="pilgrim-data-picker__meta">3GB/day</span>
                 </button>
               );
             })}
@@ -275,6 +326,8 @@ export function PilgrimSelectionPage({
   const [error, setError] = useState<string | null>(initialError);
   const [selectedTier, setSelectedTier] = useState<PilgrimTierKey>("connected");
   const [connectedDataGb, setConnectedDataGb] = useState<ConnectedPilgrimDataGb>(10);
+  const [umrahUnlimitedDays, setUmrahUnlimitedDays] =
+    useState<UmrahUnlimitedDays>(10);
   const [groupSize, setGroupSize] = useState(4);
   const [compatibilityOpen, setCompatibilityOpen] = useState(false);
 
@@ -369,16 +422,22 @@ export function PilgrimSelectionPage({
     if (activeTier.key === "connected") {
       return resolveConnectedPilgrimPlan(activeTier, connectedDataGb);
     }
+    if (activeTier.key === "unlimited") {
+      return resolveUmrahUnlimitedPlan(activeTier, umrahUnlimitedDays);
+    }
     return activeTier.plan;
-  }, [activeTier, connectedDataGb]);
+  }, [activeTier, connectedDataGb, umrahUnlimitedDays]);
 
   const activePlanLabel = useMemo(() => {
     if (!activeTier) return "";
     if (activeTier.key === "connected") {
       return `${activeTier.title} · ${connectedDataGb}GB`;
     }
+    if (activeTier.key === "unlimited") {
+      return `${activeTier.title} · ${umrahUnlimitedDays} days`;
+    }
     return activeTier.title;
-  }, [activeTier, connectedDataGb]);
+  }, [activeTier, connectedDataGb, umrahUnlimitedDays]);
   const checkoutPrice = useMemo(() => {
     if (!activePlan) return 0;
     if (activeTier?.hasGroupCalculator) {
@@ -408,6 +467,13 @@ export function PilgrimSelectionPage({
       if (tier.key === "connected" && tier.connectedVariants) {
         return [tier.connectedVariants.gb10.price, tier.connectedVariants.gb20.price];
       }
+      if (tier.key === "unlimited" && tier.unlimitedVariants) {
+        return [
+          tier.unlimitedVariants.d7.price,
+          tier.unlimitedVariants.d10.price,
+          tier.unlimitedVariants.d14.price,
+        ];
+      }
       if (typeof tier.plan?.price === "number") return [tier.plan.price];
       return [];
     });
@@ -430,10 +496,10 @@ export function PilgrimSelectionPage({
           />
           <header className="plans-page__header">
             <div className="plans-page__brand">
-              <span className="plans-page__eyebrow">Hajj &amp; Umrah</span>
+              <span className="plans-page__eyebrow">{PILGRIMAGE_BRAND_LINE}</span>
               <p className="plans-page__tagline">
-                Install at home, stay connected the moment you arrive in Saudi
-                Arabia.
+                Hajj &amp; Umrah — install at home, stay connected the moment you
+                arrive in Saudi Arabia.
               </p>
             </div>
             <div className="plans-page__search-wrap">
@@ -497,8 +563,8 @@ export function PilgrimSelectionPage({
                     <span>Connected · 10GB</span>
                   </li>
                   <li>
-                    <strong>Long stay or heavy video use</strong>
-                    <span>Full Devotion · 50GB</span>
+                    <strong>Longer stay or more video</strong>
+                    <span>Connected · 20GB</span>
                   </li>
                 </ul>
               </div>
@@ -542,6 +608,7 @@ export function PilgrimSelectionPage({
                   selected={selectedTier === tier.key}
                   groupSize={groupSize}
                   connectedDataGb={connectedDataGb}
+                  umrahUnlimitedDays={umrahUnlimitedDays}
                   individualReferencePrice={individualReferencePrice}
                   onSelect={() => {
                     if (tier.comingSoon) return;
@@ -551,6 +618,10 @@ export function PilgrimSelectionPage({
                   onConnectedDataGbChange={(gb) => {
                     setConnectedDataGb(gb);
                     setSelectedTier("connected");
+                  }}
+                  onUmrahUnlimitedDaysChange={(days) => {
+                    setUmrahUnlimitedDays(days);
+                    setSelectedTier("unlimited");
                   }}
                 />
               ))}
@@ -642,7 +713,7 @@ export function PilgrimSelectionPage({
             </h2>
             <p className="pilgrim-compare__subtitle">
               Compare data, hotspot, and support across our pilgrimage profiles.
-              Family Share group plans are coming soon.
+              Umrah Unlimited and Family Share are coming soon.
             </p>
             <div className="pilgrim-compare__table-wrap">
               <table>
@@ -651,7 +722,7 @@ export function PilgrimSelectionPage({
                     <th scope="col">Benefit</th>
                     <th scope="col">Basic</th>
                     <th scope="col">Connected</th>
-                    <th scope="col">Full Devotion</th>
+                    <th scope="col">Umrah Unlimited</th>
                     <th scope="col">Family Share</th>
                   </tr>
                 </thead>
@@ -660,42 +731,42 @@ export function PilgrimSelectionPage({
                     <td>Coverage</td>
                     <td>Makkah &amp; Madinah</td>
                     <td>Makkah &amp; Madinah</td>
-                    <td>Makkah &amp; Madinah</td>
+                    <td>Coming soon</td>
                     <td>Coming soon</td>
                   </tr>
                   <tr>
                     <td>Data allowance</td>
                     <td>5GB · 30 days</td>
                     <td>10GB or 20GB</td>
-                    <td>50GB · 30 days</td>
+                    <td>Coming soon</td>
                     <td>Coming soon</td>
                   </tr>
                   <tr>
                     <td>Hotspot sharing</td>
                     <td>Included</td>
                     <td>Included</td>
-                    <td>Included</td>
+                    <td>Coming soon</td>
                     <td>Coming soon</td>
                   </tr>
                   <tr>
                     <td>WhatsApp support</td>
                     <td>24/7</td>
                     <td>24/7</td>
-                    <td>24/7</td>
+                    <td>Coming soon</td>
                     <td>Coming soon</td>
                   </tr>
                   <tr>
                     <td>Video calls &amp; live updates</td>
                     <td>Light use</td>
                     <td>Regular use</td>
-                    <td>Heavy use</td>
+                    <td>Coming soon</td>
                     <td>Coming soon</td>
                   </tr>
                   <tr>
                     <td>Best for</td>
                     <td>Short stays</td>
                     <td>Most first-time pilgrims</td>
-                    <td>Extended devotion</td>
+                    <td>Coming soon</td>
                     <td>Coming soon</td>
                   </tr>
                 </tbody>

@@ -36,6 +36,20 @@ export function describeEsimPlan(
   const regional = Boolean(options.isRegional);
 
   if (plan.planCategory === "unlimited" || /unlimited/i.test(plan.name)) {
+    const isDailyFup =
+      /umrah unlimited|3gb\/day|fup1mbps|daily/i.test(plan.name) ||
+      (plan.dataGb === 3 && (plan.durationDays ?? 0) <= 14);
+    if (isDailyFup) {
+      const tripDays = plan.durationDays ?? 7;
+      return {
+        description: `Saudi day-pass: 3GB/day at full speed for ${tripDays} days on ${speed}, then stay connected at up to 1 Mbps until each daily reset. Honest unlimited — not a fixed GB bucket.`,
+        highlights: [
+          `3GB/day full speed · ${tripDays} days`,
+          `Then up to 1 Mbps · hotspot included`,
+          `Starts when you connect in Saudi Arabia`,
+        ],
+      };
+    }
     return {
       description: regional
         ? `Unlimited high-speed data across the region for ${days} on ${speed}. Built for continuous maps, calls, and streaming while you cross borders.`

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PILGRIMAGE_BRAND_LINE } from "@/lib/brand";
 
 export function UmrahPromo() {
   return (
@@ -7,7 +8,7 @@ export function UmrahPromo() {
         <div className="ramadan-promo">
           <div className="promo-content">
             <div className="promo-text">
-              <div className="promo-kicker">Hajj &amp; Umrah</div>
+              <div className="promo-kicker">{PILGRIMAGE_BRAND_LINE}</div>
               <h2 className="promo-title">Stay connected in Makkah and Madinah</h2>
               <p className="promo-copy">
                 Dedicated pilgrimage plans with hotspot included. Install before

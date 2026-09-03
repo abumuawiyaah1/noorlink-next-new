@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PilgrimSelectionPage } from "@/components/pilgrimage/PilgrimSelectionPage";
+import { PILGRIMAGE_BRAND_LINE } from "@/lib/brand";
 import { getCountryImage } from "@/lib/country-image";
 import { pingPlansApi } from "@/lib/plans-diagnostics";
 import { buildPageMetadata } from "@/lib/seo";
@@ -12,7 +13,7 @@ const SAUDI_COUNTRY_ID = "saudi-arabia";
 export const metadata: Metadata = buildPageMetadata({
   title: "Hajj & Umrah eSIM Plans | NoorLink",
   description:
-    "Premium connectivity for your pilgrimage. Install at home, stay connected in Makkah and Madinah.",
+    `${PILGRIMAGE_BRAND_LINE}. Premium Umrah and Hajj eSIM plans — install at home, stay connected in Makkah and Madinah.`,
   path: "/hajj-umrah",
   image: getCountryImage("saudi-arabia"),
 });

@@ -45,15 +45,16 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
   },
   {
     key: "unlimited",
-    title: "Full Devotion",
-    subtitle: "Premium · 50GB",
+    title: "Umrah Unlimited",
+    subtitle: "Premium · 3GB/day",
     description:
-      "High-capacity 50GB for live streams, video calls, and full itinerary apps.",
+      "3GB/day at full speed, then up to 1 Mbps — for travelers who do not want to count gigabytes.",
     highlights: [
-      "50GB high-speed data (30 days)",
-      "Best for extended stays",
-      "Heavy use without upgrading mid-trip",
+      "3GB/day full speed · then 1 Mbps",
+      "Flexible trip lengths when we launch",
+      "Hotspot included",
     ],
+    comingSoon: true,
   },
   {
     key: "family",
@@ -78,9 +79,16 @@ export type PilgrimTierOffer = PilgrimTierMeta & {
     gb10: EsimPlan;
     gb20: EsimPlan;
   };
+  /** Umrah Unlimited: traveler picks trip length (Access day-pass). */
+  unlimitedVariants?: {
+    d7: EsimPlan;
+    d10: EsimPlan;
+    d14: EsimPlan;
+  };
 };
 
 export type ConnectedPilgrimDataGb = 10 | 20;
+export type UmrahUnlimitedDays = 7 | 10 | 14;
 
 export type PilgrimPlanCopy = {
   description: string;
@@ -92,6 +100,7 @@ export function resolvePilgrimPlanCopy(
   tier: PilgrimTierOffer,
   plan: EsimPlan | null,
   connectedDataGb: ConnectedPilgrimDataGb = 10,
+  umrahUnlimitedDays: UmrahUnlimitedDays = 10,
 ): PilgrimPlanCopy {
   if (tier.comingSoon) {
     return {
@@ -137,11 +146,8 @@ export function resolvePilgrimPlanCopy(
   }
 
   if (tier.key === "unlimited" && plan) {
-    const shared = describeEsimPlan(plan, { countryLabel: "Saudi Arabia" });
-    return {
-      description: `Access Saudi fixed pack: ${gb ?? 50}GB for ${days} days on ${speed}. High-capacity plan for heavy video, live updates, and longer stays — not a true unlimited line.`,
-      highlights: shared.highlights,
-    };
+    const activePlan = resolveUmrahUnlimitedPlan(tier, umrahUnlimitedDays);
+    return describeEsimPlan(activePlan, { countryLabel: "Saudi Arabia" });
   }
 
   if (plan) {
@@ -194,20 +200,20 @@ export const PILGRIM_FALLBACK_PLANS: Record<PilgrimTierKey, EsimPlan> = {
     displayBadge: "best_choice",
   },
   unlimited: {
-    id: "pilgrim-devotion-50",
+    id: "pilgrim-umrah-unlimited-10",
     countryId: "saudi-arabia",
-    name: "Full Devotion 50GB",
-    dataGb: 50,
-    durationDays: 30,
-    price: 59.9,
-    formattedPriceParts: fallbackParts(59.9),
+    name: "Umrah Unlimited 10 Days",
+    dataGb: 3,
+    durationDays: 10,
+    price: 64.99,
+    formattedPriceParts: fallbackParts(64.99),
     currency: "USD",
     isRechargeable: false,
     isPayAsYouGo: false,
     pricingStrategy: "MANUAL",
     marginStatus: "manual",
-    planCategory: "fixed",
-    displayBadge: null,
+    planCategory: "unlimited",
+    displayBadge: "flexible",
   },
   family: {
     id: "pilgrim-family",
@@ -237,6 +243,24 @@ const CONNECTED_FALLBACK_20: EsimPlan = {
   formattedPriceParts: fallbackParts(34.77),
 };
 
+const UNLIMITED_FALLBACK_7: EsimPlan = {
+  ...PILGRIM_FALLBACK_PLANS.unlimited,
+  id: "pilgrim-umrah-unlimited-7",
+  name: "Umrah Unlimited 7 Days",
+  durationDays: 7,
+  price: 49.99,
+  formattedPriceParts: fallbackParts(49.99),
+};
+
+const UNLIMITED_FALLBACK_14: EsimPlan = {
+  ...PILGRIM_FALLBACK_PLANS.unlimited,
+  id: "pilgrim-umrah-unlimited-14",
+  name: "Umrah Unlimited 14 Days",
+  durationDays: 14,
+  price: 89.99,
+  formattedPriceParts: fallbackParts(89.99),
+};
+
 function pickConnectedPlan(plans: EsimPlan[], dataGb: ConnectedPilgrimDataGb): EsimPlan | null {
   const named = plans.filter((p) => /connected pilgrim/i.test(p.name));
   const match =
@@ -244,6 +268,18 @@ function pickConnectedPlan(plans: EsimPlan[], dataGb: ConnectedPilgrimDataGb): E
     plans.find((p) => p.planCategory === "fixed" && p.dataGb === dataGb) ??
     null;
   return match;
+}
+
+function pickUmrahUnlimitedPlan(
+  plans: EsimPlan[],
+  days: UmrahUnlimitedDays,
+): EsimPlan | null {
+  const candidates = plans.filter(
+    (p) =>
+      p.planCategory === "unlimited" ||
+      /umrah unlimited/i.test(p.name),
+  );
+  return candidates.find((p) => p.durationDays === days) ?? null;
 }
 
 export function resolveConnectedPilgrimPlan(
@@ -258,15 +294,25 @@ export function resolveConnectedPilgrimPlan(
   return tier.plan ?? PILGRIM_FALLBACK_PLANS.connected;
 }
 
+export function resolveUmrahUnlimitedPlan(
+  tier: PilgrimTierOffer,
+  days: UmrahUnlimitedDays,
+): EsimPlan {
+  if (tier.unlimitedVariants) {
+    if (days === 7) return tier.unlimitedVariants.d7;
+    if (days === 14) return tier.unlimitedVariants.d14;
+    return tier.unlimitedVariants.d10;
+  }
+  if (tier.plan && tier.plan.durationDays === days) return tier.plan;
+  if (days === 7) return UNLIMITED_FALLBACK_7;
+  if (days === 14) return UNLIMITED_FALLBACK_14;
+  return tier.plan ?? PILGRIM_FALLBACK_PLANS.unlimited;
+}
+
 export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
   const fixed = plans
     .filter((p) => p.planCategory === "fixed")
     .sort((a, b) => a.price - b.price);
-  const devotion =
-    plans.find((p) => /full devotion|devotion 50/i.test(p.name)) ??
-    plans.find((p) => p.dataGb === 50 && p.planCategory === "fixed") ??
-    plans.find((p) => p.planCategory === "unlimited") ??
-    null;
   const connectedGb10 =
     pickConnectedPlan(plans, 10) ?? fixed.find((p) => p.dataGb === 10) ?? null;
   const connectedGb20 =
@@ -276,11 +322,16 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
     plans.find((p) => p.displayBadge === "best_choice") ??
     fixed[1] ??
     null;
+  const unlimitedGb7 = pickUmrahUnlimitedPlan(plans, 7);
+  const unlimitedGb10 = pickUmrahUnlimitedPlan(plans, 10);
+  const unlimitedGb14 = pickUmrahUnlimitedPlan(plans, 14);
+  const unlimited =
+    unlimitedGb10 ?? unlimitedGb7 ?? unlimitedGb14 ?? null;
   const basic =
     fixed.find(
       (p) =>
         p.id !== connected?.id &&
-        p.id !== devotion?.id &&
+        p.id !== unlimited?.id &&
         p.dataGb !== 10 &&
         p.dataGb !== 20 &&
         p.dataGb !== 50,
@@ -292,7 +343,7 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
   const byKey: Record<PilgrimTierKey, EsimPlan | null> = {
     basic,
     connected,
-    unlimited: devotion,
+    unlimited,
     family: null,
   };
 
@@ -308,6 +359,14 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
         gb20: connectedGb20 ?? CONNECTED_FALLBACK_20,
       };
       offer.plan = offer.connectedVariants.gb10;
+    }
+    if (meta.key === "unlimited") {
+      offer.unlimitedVariants = {
+        d7: unlimitedGb7 ?? UNLIMITED_FALLBACK_7,
+        d10: unlimitedGb10 ?? PILGRIM_FALLBACK_PLANS.unlimited,
+        d14: unlimitedGb14 ?? UNLIMITED_FALLBACK_14,
+      };
+      offer.plan = offer.unlimitedVariants.d10;
     }
     return offer;
   });

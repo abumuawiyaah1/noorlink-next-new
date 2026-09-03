@@ -312,6 +312,16 @@
   gap: 0.5rem;
 }
 
+.pilgrim-data-picker__options--triple {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 420px) {
+  .pilgrim-data-picker__options--triple {
+    grid-template-columns: 1fr;
+  }
+}
+
 .pilgrim-data-picker__option {
   display: flex;
   flex-direction: column;
