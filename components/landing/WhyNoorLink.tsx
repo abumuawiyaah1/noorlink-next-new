@@ -1,44 +1,100 @@
 import Image from "next/image";
 import Link from "next/link";
+import { PaymentMethodBadges } from "@/components/ui/PaymentMethodBadges";
 
-const BENEFITS = [
+type BenefitMedia =
+  | { type: "image"; src: string; alt: string }
+  | { type: "payments" }
+  | { type: "refund" };
+
+const BENEFITS: ReadonlyArray<{
+  title: string;
+  body: string;
+  media: BenefitMedia;
+}> = [
   {
     title: "Instant delivery",
-    body: "Your QR code arrives by email minutes after checkout — no waiting for mail, no SIM swap at the airport.",
-    image: "/images/trust-stats/qr-delivery.png",
-    imageAlt: "Traveler scanning an eSIM QR code on their phone",
+    body: "QR code by email minutes after checkout — no mail, no airport SIM swap.",
+    media: {
+      type: "image",
+      src: "/images/trust-stats/qr-delivery.png",
+      alt: "Traveler scanning an eSIM QR code on their phone",
+    },
   },
   {
     title: "190+ countries covered",
-    body: "One provider, one checkout. NoorLink connects you to local carrier networks across six continents.",
-    image: "/images/trust-stats/countries.png",
-    imageAlt: "Globe highlighting international travel destinations",
+    body: "One checkout connects you to local networks across six continents.",
+    media: {
+      type: "image",
+      src: "/images/trust-stats/countries.png",
+      alt: "Globe highlighting international travel destinations",
+    },
   },
   {
     title: "Hotspot included",
-    body: "Every plan supports mobile hotspot. Share your connection with a laptop or travel companion at no extra cost.",
-    image: "/images/trust-stats/hotspot.png",
-    imageAlt: "Phone sharing mobile data with a laptop via hotspot",
+    body: "Share data with a laptop or travel companion at no extra cost.",
+    media: {
+      type: "image",
+      src: "/images/trust-stats/hotspot.png",
+      alt: "Phone sharing mobile data with a laptop via hotspot",
+    },
   },
   {
     title: "Secure Stripe checkout",
-    body: "Card details are never stored on NoorLink servers. Payments are encrypted end-to-end through Stripe.",
-    image: "/images/sim-card.jpg",
-    imageAlt: "eSIM card ready to install before travel",
+    body: "Apple Pay, cards, and PayPal through Stripe — never stored on our servers.",
+    media: { type: "payments" },
   },
   {
     title: "Refund if it fails",
-    body: "If a technical error prevents activation, we review the issue quickly and refund or replace when eligible.",
-    image: "/images/traveler.jpg",
-    imageAlt: "Traveler connected and ready after landing",
+    body: "Technical activation failure? We review quickly and refund when eligible.",
+    media: { type: "refund" },
   },
   {
     title: "Real 24/7 support",
-    body: "WhatsApp support is staffed around the clock. Reach a human in minutes, not days.",
-    image: "/images/trust-stats/support.png",
-    imageAlt: "Support team helping a customer by phone and chat",
+    body: "WhatsApp support around the clock — reach a human in minutes.",
+    media: {
+      type: "image",
+      src: "/images/trust-stats/support.png",
+      alt: "Support team helping a customer by phone and chat",
+    },
   },
-] as const;
+];
+
+function WhyCardMedia({ media }: { media: BenefitMedia }) {
+  if (media.type === "payments") {
+    return (
+      <div className="why-card__media why-card__media--payments">
+        <PaymentMethodBadges className="why-card__payments" />
+      </div>
+    );
+  }
+
+  if (media.type === "refund") {
+    return (
+      <div className="why-card__media why-card__media--refund">
+        <Image
+          src="/images/trust-stats/refund.svg"
+          alt="Refund returned to original payment method"
+          width={320}
+          height={128}
+          className="why-card__refund-art"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="why-card__media">
+      <Image
+        src={media.src}
+        alt={media.alt}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+        className="why-card__image"
+      />
+    </div>
+  );
+}
 
 export function WhyNoorLink() {
   return (
@@ -56,15 +112,7 @@ export function WhyNoorLink() {
         <div className="why-grid">
           {BENEFITS.map((benefit) => (
             <article key={benefit.title} className="why-card">
-              <div className="why-card__media">
-                <Image
-                  src={benefit.image}
-                  alt={benefit.imageAlt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                  className="why-card__image"
-                />
-              </div>
+              <WhyCardMedia media={benefit.media} />
               <div className="why-card__body">
                 <h3>{benefit.title}</h3>
                 <p>{benefit.body}</p>
