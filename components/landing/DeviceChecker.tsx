@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   fetchCompatibleDevices,
+  reportDeviceCheckMiss,
   type DeviceBrand,
 } from "@/lib/devices-api";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
@@ -66,6 +67,7 @@ export function DeviceChecker() {
           detail: `${match.brand} ${match.model} can use NoorLink. Confirm it is carrier-unlocked before you buy.`,
         });
       } else {
+        reportDeviceCheckMiss(trimmed);
         setResult({
           ok: false,
           title: "We could not confirm this device.",

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createPortal } from "react-dom";
 import {
   fetchCompatibleDevices,
+  reportDeviceCheckMiss,
   type DeviceBrand,
 } from "@/lib/devices-api";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
@@ -87,6 +88,7 @@ export function DeviceCheckerBridge() {
             detail: `${match.brand} ${match.model} supports eSIM.`,
           });
         } else {
+          reportDeviceCheckMiss(query);
           setResult({
             ok: false,
             title: "We couldn't confirm this device.",

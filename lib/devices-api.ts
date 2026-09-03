@@ -40,3 +40,21 @@ export async function fetchCompatibleDevices(): Promise<DeviceBrand[]> {
     throw err;
   }
 }
+
+/** Fire-and-forget: log a device search we could not match (weekly ops review). */
+export function reportDeviceCheckMiss(query: string): void {
+  const trimmed = query.trim();
+  if (trimmed.length < 2) return;
+
+  const url = `${API_BASE}/api/v1/devices/report-miss`;
+  void fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query: trimmed }),
+  }).catch((err) => {
+    debugError("devices", "reportDeviceCheckMiss failed", err);
+  });
+}
