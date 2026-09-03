@@ -46,7 +46,7 @@ export function WhyNoorLink() {
       <div className="container">
         <div className="why-header">
           <span className="why-kicker">Why NoorLink</span>
-          <h2 id="why-heading">Stay connected without the airport scramble.</h2>
+          <h2 id="why-heading">Install before you fly. Connect when you land.</h2>
           <p>
             Buy and install your eSIM before you fly so maps, messages, and
             hotspot work when you land.
