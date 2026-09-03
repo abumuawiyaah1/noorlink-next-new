@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { TrustStatsBar } from "@/components/landing/TrustStatsBar";
+import { HOW_IT_WORKS_STEPS } from "@/lib/how-it-works-steps";
 
 export function HowItWorks() {
   return (
@@ -10,36 +12,21 @@ export function HowItWorks() {
           <p>Install before you fly — three calm steps to data on arrival.</p>
         </div>
         <div className="steps-grid">
-          <article className="step-card">
-            <div className="step-icon">
-              <i className="fas fa-mobile-alt" aria-hidden="true" />
-            </div>
-            <h3>1. Choose your plan</h3>
-            <p>
-              Confirm your phone supports eSIM, then pick a destination and data
-              amount that fits the trip.
-            </p>
-          </article>
-          <article className="step-card">
-            <div className="step-icon">
-              <i className="fas fa-envelope-open-text" aria-hidden="true" />
-            </div>
-            <h3>2. Get your QR</h3>
-            <p>
-              Your activation details arrive by email right after checkout — no
-              waiting for a plastic SIM.
-            </p>
-          </article>
-          <article className="step-card">
-            <div className="step-icon">
-              <i className="fas fa-qrcode" aria-hidden="true" />
-            </div>
-            <h3>3. Scan &amp; connect</h3>
-            <p>
-              Install from Settings before you fly. Turn on data roaming when you
-              land and you&apos;re online.
-            </p>
-          </article>
+          {HOW_IT_WORKS_STEPS.map((step) => (
+            <article key={step.id} className="step-card">
+              <div className="step-thumb">
+                <Image
+                  src={step.image}
+                  alt={step.imageAlt}
+                  width={88}
+                  height={88}
+                  className="step-thumb__image"
+                />
+              </div>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>

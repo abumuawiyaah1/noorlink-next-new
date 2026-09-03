@@ -156,7 +156,26 @@
             transition: transform 0.3s ease;
         }
         .step-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        
+
+        .step-thumb {
+            width: 88px;
+            height: 88px;
+            margin: 0 auto 18px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(15, 61, 62, 0.1);
+            background: #f3f7f7;
+            box-shadow: 0 6px 16px rgba(15, 61, 62, 0.08);
+        }
+
+        .step-thumb__image {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+        }
+
         .step-icon { width: 70px; height: 70px; background: var(--accent-soft); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 20px auto; }
         .step-card h3 { margin-bottom: 10px; font-size: 1.25rem; color: var(--primary); }
         .step-card p { color: var(--text-muted); font-size: 0.95rem; }
