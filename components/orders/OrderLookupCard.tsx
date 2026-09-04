@@ -5,6 +5,7 @@ import { FormEvent, useState } from "react";
 import { lookupOrder, resendOrderEsEmail, type LookedUpOrder } from "@/lib/orders-api";
 import { isSafeQrCodeUrl, safeExternalHref } from "@/lib/safe-url";
 import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
+import { EsimInstallPanel } from "@/components/orders/EsimInstallPanel";
 import { OrderTopUpCard } from "@/components/orders/OrderTopUpCard";
 import { OrderSupportThread } from "@/components/orders/OrderSupportThread";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
@@ -152,6 +153,10 @@ export function OrderLookupCard({
 
           <OrderUsageSummary order={order} compact />
 
+          {order.qrCodeUrl || order.iosTapLink || order.lpaString ? (
+            <EsimInstallPanel order={order} compact />
+          ) : null}
+
           {order.topupSupported && order.orderNumber ? (
             <OrderTopUpCard orderNumber={order.orderNumber} email={email} />
           ) : null}
@@ -177,17 +182,13 @@ export function OrderLookupCard({
           ) : null}
 
           <div className="lookup-actions">
-            {qrHref ? (
-              <a href={qrHref} target="_blank" rel="noopener noreferrer">
-                Open QR / install details
-              </a>
-            ) : (
+            {!qrHref ? (
               <Link
                 href={`/support?subject=${encodeURIComponent("Install / QR code")}&email=${encodeURIComponent(email)}&orderId=${encodeURIComponent(order.orderNumber ?? orderId)}`}
               >
                 QR missing? Contact support
               </Link>
-            )}
+            ) : null}
 
             {canResendQr ? (
               <button
@@ -196,7 +197,7 @@ export function OrderLookupCard({
                 onClick={handleResendQr}
                 disabled={resendLoading}
               >
-                {resendLoading ? "Sending…" : "Resend QR email"}
+                {resendLoading ? "Sending…" : "Resend install email"}
               </button>
             ) : null}
 
@@ -206,12 +207,6 @@ export function OrderLookupCard({
           {resendMessage ? (
             <p className="order-lookup-note" role="status">
               {resendMessage}
-            </p>
-          ) : null}
-
-          {order.activationCode ? (
-            <p className="order-lookup-note">
-              Activation code: <strong>{order.activationCode}</strong>
             </p>
           ) : null}
 

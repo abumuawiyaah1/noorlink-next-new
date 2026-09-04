@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/success.css";
+import "@/styles/esim-install.css";
 import { SuccessPage } from "@/components/legacy/SuccessPage";
 import { buildPageMetadata } from "@/lib/seo";
 

@@ -1,0 +1,169 @@
+/* Branded eSIM install panel — success + dashboard */
+
+.esim-install {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: var(--nl-surface, #ffffff);
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+}
+
+.esim-install--compact {
+  padding: 1.15rem;
+  margin: 1rem 0;
+}
+
+.esim-install__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nl-primary, #0f3d3e);
+}
+
+.esim-install__title {
+  margin: 0 0 0.4rem;
+  font-size: 1.35rem;
+  color: var(--nl-primary, #0f3d3e);
+}
+
+.esim-install__lede {
+  margin: 0 0 1.25rem;
+  color: var(--nl-muted, #6b7280);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.esim-install__grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 720px) {
+  .esim-install__grid {
+    grid-template-columns: minmax(200px, 240px) 1fr;
+    align-items: start;
+  }
+}
+
+.esim-install__qr {
+  text-align: center;
+}
+
+.esim-install__qr img {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 12px;
+  border: 3px solid var(--nl-accent, #ff9500);
+  background: #fff;
+}
+
+.esim-install__caption {
+  margin: 0.65rem 0 0;
+  font-size: 0.85rem;
+  color: var(--nl-muted, #6b7280);
+}
+
+.esim-install__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.esim-install__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  text-align: center;
+}
+
+.esim-install__btn--primary {
+  background: var(--nl-accent, #ff9500);
+  color: var(--nl-ink, #05191a);
+}
+
+.esim-install__btn--secondary {
+  background: #fff;
+  color: var(--nl-primary, #0f3d3e);
+  border: 2px solid var(--nl-primary, #0f3d3e);
+}
+
+.esim-install__code,
+.esim-install__lpa {
+  padding: 0.85rem 1rem;
+  background: #f3f7f7;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.esim-install__code {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.esim-install__code span,
+.esim-install__lpa-head span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--nl-muted, #6b7280);
+}
+
+.esim-install__code strong {
+  font-family: ui-monospace, Menlo, monospace;
+  color: var(--nl-primary, #0f3d3e);
+  letter-spacing: 0.04em;
+}
+
+.esim-install__lpa-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.esim-install__lpa code {
+  display: block;
+  font-size: 0.78rem;
+  word-break: break-all;
+  color: var(--nl-primary, #0f3d3e);
+  line-height: 1.45;
+}
+
+.esim-install__copy {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--nl-primary, #0f3d3e);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.esim-install__steps {
+  margin: 0.35rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--nl-muted, #6b7280);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.esim-install__steps li {
+  margin-bottom: 0.35rem;
+}

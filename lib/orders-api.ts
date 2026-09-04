@@ -14,6 +14,9 @@ export type LookedUpOrder = {
   createdAt?: string;
   qrCodeUrl?: string | null;
   activationCode?: string | null;
+  lpaString?: string | null;
+  iosTapLink?: string | null;
+  androidTapLink?: string | null;
   dataUsedGb?: number | null;
   dataTotalGb?: number | null;
   validityDays?: number | null;

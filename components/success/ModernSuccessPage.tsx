@@ -8,6 +8,7 @@ import { FunnelSteps } from "@/components/layout/FunnelSteps";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
+import { EsimInstallPanel } from "@/components/orders/EsimInstallPanel";
 import { GiftEsimCard } from "@/components/success/GiftEsimCard";
 import { ReferAFriendCard } from "@/components/success/ReferAFriendCard";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
@@ -166,6 +167,13 @@ function SuccessContent() {
 
         {order && !isGiftPurchase ? <OrderUsageSummary order={order} /> : null}
 
+        {order &&
+        !isGiftPurchase &&
+        !order.fulfillmentPending &&
+        (order.qrCodeUrl || order.iosTapLink || order.lpaString) ? (
+          <EsimInstallPanel order={order} />
+        ) : null}
+
         {qrHref && order && !order.fulfillmentPending && !isGiftPurchase ? (
           <ReviewRequestCard orderId={order.orderNumber} compact />
         ) : null}
@@ -181,25 +189,20 @@ function SuccessContent() {
           <div className="ticket-body">
             <div className="qr-area">
               <div className="qr-placeholder" aria-hidden="true">
-                {qrHref ? "📲" : "✉️"}
+                {qrHref ? "✓" : "✉️"}
               </div>
               {qrHref ? (
                 <>
-                  <p className="scan-instruction">Your QR is ready</p>
-                  <a
-                    href={qrHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-nav"
-                    style={{ display: "inline-block", marginTop: 12 }}
-                  >
-                    Open QR / install
-                  </a>
+                  <p className="scan-instruction">Your install QR is ready above</p>
+                  <p className="email-note" style={{ marginTop: 8 }}>
+                    Prefer email? The same branded QR and one-tap links are in your
+                    delivery message.
+                  </p>
                 </>
               ) : (
                 <p className="scan-instruction">
-                  The QR code is not shown here. It arrives in a second email after
-                  payment confirms.
+                  Your branded QR and install links appear here as soon as payment
+                  confirms — usually within a minute or two.
                 </p>
               )}
             </div>
@@ -216,8 +219,11 @@ function SuccessContent() {
                 <div className="next-step">
                   <span>2</span>
                   <div>
-                    <strong>QR delivery email</strong>
-                    <p>The second email includes the QR code and install details.</p>
+                    <strong>Install on this page or email</strong>
+                    <p>
+                      Scan the NoorLink QR, or tap Install on iPhone / Android if you
+                      can’t scan.
+                    </p>
                   </div>
                 </div>
                 <div className="next-step">
@@ -231,12 +237,9 @@ function SuccessContent() {
                 </div>
               </div>
               <ol className="install-steps">
-                <li>Open the delivery email and find the QR code.</li>
-                <li>
-                  On iPhone: Settings → Cellular → Add eSIM. On Android: Settings →
-                  Network → SIMs → Add eSIM.
-                </li>
-                <li>Scan the QR, turn the line on, and enable data roaming.</li>
+                <li>Use Wi‑Fi before you install.</li>
+                <li>Scan the QR or open a one-tap install link on your phone.</li>
+                <li>After landing, turn the NoorLink line on and enable data roaming.</li>
               </ol>
               <p className="email-note">
                 Check inbox and spam/junk. If nothing arrives within 10 minutes,

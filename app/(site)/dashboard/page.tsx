@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/dashboard.css";
+import "@/styles/esim-install.css";
 import { DashboardPage } from "@/components/legacy/DashboardPage";
 import { buildPageMetadata } from "@/lib/seo";
 
