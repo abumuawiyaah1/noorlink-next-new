@@ -10,7 +10,6 @@ import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
 import { CountrySearch } from "@/components/search/CountrySearch";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { PilgrimCarrierRow } from "@/components/pilgrimage/PilgrimCarrierRow";
-import { PilgrimageInspiration } from "@/components/pilgrimage/PilgrimageInspiration";
 import {
   fetchPlansByCountry,
   type EsimPlan,
@@ -477,8 +476,6 @@ export function PilgrimSelectionPage({
               </div>
 
               <PilgrimCarrierRow />
-
-              <PilgrimageInspiration />
 
               <div className="pilgrim-trip-guide" aria-labelledby="pilgrim-trip-guide-title">
                 <h2 id="pilgrim-trip-guide-title" className="pilgrim-trip-guide__title">
