@@ -10,7 +10,15 @@ export function normalizeCountrySlug(input: string): string {
 
 export function plansPathForCountry(countryId: string): string {
   const slug = normalizeCountrySlug(countryId);
-  if (slug === "saudi-arabia" || slug === "umrah" || slug === "hajj") {
+  if (
+    slug === "saudi-arabia" ||
+    slug === "umrah" ||
+    slug === "hajj" ||
+    slug === "sauditurkey" ||
+    slug === "saudiegypt" ||
+    slug === "saudi-turkey" ||
+    slug === "saudi-egypt"
+  ) {
     return "/hajj-umrah";
   }
   return `/plans/${slug}`;

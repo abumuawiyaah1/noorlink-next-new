@@ -27,6 +27,18 @@ import {
   resolveUmrahUnlimitedPlan,
 } from "@/lib/pilgrim-tiers";
 import {
+  type PilgrimRouteKey,
+  type PilgrimRoutePackKey,
+  type PilgrimRoutePackVariants,
+  ME_REGIONAL_API_ID,
+  PILGRIM_ROUTE_COVERAGE_NOTE,
+  PILGRIM_ROUTE_META,
+  brandedRoutePlanName,
+  getPilgrimRouteMeta,
+  resolvePilgrimRoutePacks,
+  resolvePilgrimRoutePlan,
+} from "@/lib/pilgrim-route-plans";
+import {
   getRememberedPromo,
   normalizePromoCode,
   rememberPromo,
@@ -48,25 +60,36 @@ const HAJJ_WHATSAPP_MESSAGE =
 type PilgrimSelectionPageProps = {
   countryImage: string;
   initialData?: PlansByCountryResponse | null;
+  initialMeData?: PlansByCountryResponse | null;
   initialError?: string | null;
   initialPromo?: string;
   initialRef?: string;
 };
+
+type PurchaseFocus = "saudi" | "route";
 
 function buildCheckoutHref(
   plan: EsimPlan,
   price: number,
   promo?: string,
   ref?: string,
+  opts?: {
+    country?: string;
+    flag?: string;
+    planName?: string;
+    isRegional?: boolean;
+  },
 ): string {
   const params = new URLSearchParams({
-    country: "Saudi Arabia",
+    country: opts?.country ?? "Saudi Arabia",
     price: price.toFixed(2),
-    flag: "🇸🇦",
+    flag: opts?.flag ?? "🇸🇦",
   });
   if (plan.countryId) params.set("country_id", plan.countryId);
-  if (plan.name) params.set("plan", plan.name);
+  const planName = opts?.planName ?? plan.name;
+  if (planName) params.set("plan", planName);
   if (plan.id) params.set("packageId", plan.id);
+  if (opts?.isRegional) params.set("productType", "regional");
   return withAttribution(`/checkout?${params.toString()}`, { promo, ref });
 }
 
@@ -261,9 +284,16 @@ function resolveInitialTiers(
   return resolvePilgrimTiers(initialData.plans);
 }
 
+function resolveInitialRoutePacks(
+  initialMeData?: PlansByCountryResponse | null,
+): PilgrimRoutePackVariants {
+  return resolvePilgrimRoutePacks(initialMeData?.plans ?? []);
+}
+
 export function PilgrimSelectionPage({
   countryImage,
   initialData = null,
+  initialMeData = null,
   initialError = null,
   initialPromo = "",
   initialRef = "",
@@ -273,12 +303,19 @@ export function PilgrimSelectionPage({
   const [tiers, setTiers] = useState<PilgrimTierOffer[]>(() =>
     resolveInitialTiers(initialData),
   );
+  const [routePacks, setRoutePacks] = useState<PilgrimRoutePackVariants>(() =>
+    resolveInitialRoutePacks(initialMeData),
+  );
   const [loading, setLoading] = useState(!initialData && !initialError);
   const [error, setError] = useState<string | null>(initialError);
+  const [purchaseFocus, setPurchaseFocus] = useState<PurchaseFocus>("saudi");
   const [selectedTier, setSelectedTier] = useState<PilgrimTierKey>("connected");
   const [connectedDataGb, setConnectedDataGb] = useState<ConnectedPilgrimDataGb>(10);
   const [umrahUnlimitedDays, setUmrahUnlimitedDays] =
     useState<UmrahUnlimitedDays>(10);
+  const [selectedRoute, setSelectedRoute] =
+    useState<PilgrimRouteKey>("saudi-turkey");
+  const [routePack, setRoutePack] = useState<PilgrimRoutePackKey>("premium");
   const [compatibilityOpen, setCompatibilityOpen] = useState(false);
 
   // Keep selected unlimited length valid when catalog only has 7/10d.
@@ -314,7 +351,24 @@ export function PilgrimSelectionPage({
   }, [initialRef]);
 
   useEffect(() => {
-    if (initialData?.plans?.length) return;
+    if (initialData?.plans?.length) {
+      if (!initialMeData?.plans?.length) {
+        let cancelled = false;
+        void (async () => {
+          try {
+            const me = await fetchPlansByCountry(ME_REGIONAL_API_ID);
+            if (!cancelled) setRoutePacks(resolvePilgrimRoutePacks(me.plans));
+          } catch (err) {
+            console.error("[PilgrimSelectionPage] ME regional load failed:", err);
+            if (!cancelled) setRoutePacks(resolvePilgrimRoutePacks([]));
+          }
+        })();
+        return () => {
+          cancelled = true;
+        };
+      }
+      return;
+    }
 
     let cancelled = false;
 
@@ -323,11 +377,18 @@ export function PilgrimSelectionPage({
       setError(null);
 
       try {
-        const response = await fetchPlansByCountry(SAUDI_COUNTRY_ID);
+        const [saudi, me] = await Promise.all([
+          fetchPlansByCountry(SAUDI_COUNTRY_ID),
+          fetchPlansByCountry(ME_REGIONAL_API_ID).catch((err) => {
+            console.error("[PilgrimSelectionPage] ME regional load failed:", err);
+            return null;
+          }),
+        ]);
         if (cancelled) return;
 
-        const resolved = resolvePilgrimTiers(response.plans);
+        const resolved = resolvePilgrimTiers(saudi.plans);
         setTiers(resolved);
+        setRoutePacks(resolvePilgrimRoutePacks(me?.plans ?? []));
 
         if (resolved.length === 0) {
           setError("No pilgrimage plans are available for Saudi Arabia yet.");
@@ -340,6 +401,7 @@ export function PilgrimSelectionPage({
         if (cancelled) return;
 
         setTiers([]);
+        setRoutePacks(resolvePilgrimRoutePacks([]));
         setError(
           err instanceof Error
             ? err.message
@@ -355,7 +417,7 @@ export function PilgrimSelectionPage({
     return () => {
       cancelled = true;
     };
-  }, [initialData]);
+  }, [initialData, initialMeData]);
 
   const activeTier = useMemo(() => {
     const selected =
@@ -368,7 +430,18 @@ export function PilgrimSelectionPage({
     );
   }, [tiers, selectedTier]);
 
+  const activeRouteMeta = useMemo(
+    () => getPilgrimRouteMeta(selectedRoute),
+    [selectedRoute],
+  );
+
+  const activeRoutePlan = useMemo(
+    () => resolvePilgrimRoutePlan(routePacks, routePack),
+    [routePacks, routePack],
+  );
+
   const activePlan = useMemo(() => {
+    if (purchaseFocus === "route") return activeRoutePlan;
     if (!activeTier) return null;
     if (activeTier.key === "connected") {
       return resolveConnectedPilgrimPlan(activeTier, connectedDataGb);
@@ -377,9 +450,18 @@ export function PilgrimSelectionPage({
       return resolveUmrahUnlimitedPlan(activeTier, umrahUnlimitedDays);
     }
     return activeTier.plan;
-  }, [activeTier, connectedDataGb, umrahUnlimitedDays]);
+  }, [
+    purchaseFocus,
+    activeRoutePlan,
+    activeTier,
+    connectedDataGb,
+    umrahUnlimitedDays,
+  ]);
 
   const activePlanLabel = useMemo(() => {
+    if (purchaseFocus === "route") {
+      return brandedRoutePlanName(activeRouteMeta, activeRoutePlan);
+    }
     if (!activeTier) return "";
     if (activeTier.key === "connected") {
       return `${activeTier.title} · ${connectedDataGb}GB`;
@@ -388,9 +470,28 @@ export function PilgrimSelectionPage({
       return `${activeTier.title} · ${umrahUnlimitedDays} days`;
     }
     return activeTier.title;
-  }, [activeTier, connectedDataGb, umrahUnlimitedDays]);
+  }, [
+    purchaseFocus,
+    activeRouteMeta,
+    activeRoutePlan,
+    activeTier,
+    connectedDataGb,
+    umrahUnlimitedDays,
+  ]);
 
-  const checkoutPrice = activePlan?.price ?? 0;
+  const checkoutHref = useMemo(() => {
+    if (!activePlan) return "#";
+    if (purchaseFocus === "route") {
+      return buildCheckoutHref(activePlan, activePlan.price, promo, refCode, {
+        country: activeRouteMeta.checkoutCountry,
+        flag: activeRouteMeta.flag,
+        planName: brandedRoutePlanName(activeRouteMeta, activePlan),
+        isRegional: true,
+      });
+    }
+    return buildCheckoutHref(activePlan, activePlan.price, promo, refCode);
+  }, [activePlan, purchaseFocus, activeRouteMeta, promo, refCode]);
+
   const stickyParts = activePlan?.formattedPriceParts ?? { dollars: "0", cents: "0" };
 
   const cheapest = useMemo(() => {
@@ -405,9 +506,10 @@ export function PilgrimSelectionPage({
       if (typeof tier.plan?.price === "number") return [tier.plan.price];
       return [];
     });
+    prices.push(routePacks.plus.price, routePacks.premium.price);
     if (prices.length === 0) return null;
     return Math.min(...prices);
-  }, [tiers]);
+  }, [tiers, routePacks]);
 
   return (
     <>
@@ -498,6 +600,10 @@ export function PilgrimSelectionPage({
                     <strong>Do not want to count GB</strong>
                     <span>Umrah Unlimited · 3GB/day</span>
                   </li>
+                  <li>
+                    <strong>Also staying in Turkey or Egypt</strong>
+                    <span>Saudi + Turkey / Egypt · multi-stop</span>
+                  </li>
                 </ul>
               </div>
 
@@ -538,23 +644,147 @@ export function PilgrimSelectionPage({
                 <TierCard
                   key={tier.key}
                   tier={tier}
-                  selected={selectedTier === tier.key}
+                  selected={purchaseFocus === "saudi" && selectedTier === tier.key}
                   connectedDataGb={connectedDataGb}
                   umrahUnlimitedDays={umrahUnlimitedDays}
                   onSelect={() => {
                     if (tier.comingSoon) return;
+                    setPurchaseFocus("saudi");
                     setSelectedTier(tier.key);
                   }}
                   onConnectedDataGbChange={(gb) => {
                     setConnectedDataGb(gb);
+                    setPurchaseFocus("saudi");
                     setSelectedTier("connected");
                   }}
                   onUmrahUnlimitedDaysChange={(days) => {
                     setUmrahUnlimitedDays(days);
+                    setPurchaseFocus("saudi");
                     setSelectedTier("unlimited");
                   }}
                 />
               ))}
+            </section>
+          )}
+
+          {!loading && !error && tiers.length > 0 && (
+            <section
+              className="pilgrim-routes"
+              aria-labelledby="pilgrim-routes-title"
+            >
+              <h2 id="pilgrim-routes-title" className="pilgrim-routes__title">
+                Also stopping in Turkey or Egypt?
+              </h2>
+              <p className="pilgrim-routes__hint">
+                Same Middle East regional eSIM — branded for your path. Pick the
+                route you care about; coverage also includes GCC and other listed
+                destinations.
+              </p>
+              <div className="pilgrim-routes__grid">
+                {PILGRIM_ROUTE_META.map((route) => {
+                  const selected =
+                    purchaseFocus === "route" && selectedRoute === route.key;
+                  return (
+                    <article
+                      key={route.key}
+                      className={`pilgrim-card pilgrim-card--selectable pilgrim-card--route${selected ? " is-selected" : ""}${routePack === "premium" && selected ? " is-recommended" : ""}`}
+                      onClick={() => {
+                        setPurchaseFocus("route");
+                        setSelectedRoute(route.key);
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          setPurchaseFocus("route");
+                          setSelectedRoute(route.key);
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
+                      aria-pressed={selected}
+                      aria-label={`Select ${route.title}`}
+                    >
+                      {selected && routePack === "premium" && (
+                        <span className="pilgrim-card__badge">Best for multi-day</span>
+                      )}
+                      <p className="pilgrim-card__tier">{route.subtitle}</p>
+                      <h3 className="pilgrim-card__title">
+                        <span aria-hidden="true">{route.flag} </span>
+                        {route.title}
+                      </h3>
+                      <div className="pilgrim-card__details">
+                        <p className="pilgrim-card__desc">{route.description}</p>
+                        <ul className="pilgrim-card__highlights">
+                          {route.highlights.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div
+                        className="pilgrim-data-picker"
+                        role="group"
+                        aria-label={`${route.title} data allowance`}
+                      >
+                        <span className="pilgrim-data-picker__label">Data allowance</span>
+                        <div className="pilgrim-data-picker__options">
+                          {([
+                            ["plus", routePacks.plus] as const,
+                            ["premium", routePacks.premium] as const,
+                          ]).map(([key, variant]) => {
+                            const active =
+                              selected && routePack === key;
+                            return (
+                              <button
+                                key={key}
+                                type="button"
+                                className={`pilgrim-data-picker__option${active ? " is-active" : ""}`}
+                                aria-pressed={active}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  setPurchaseFocus("route");
+                                  setSelectedRoute(route.key);
+                                  setRoutePack(key);
+                                }}
+                              >
+                                <span className="pilgrim-data-picker__gb">
+                                  {variant.dataGb ?? (key === "plus" ? 5 : 10)} GB
+                                </span>
+                                <span className="pilgrim-data-picker__meta">
+                                  {variant.durationDays ?? (key === "plus" ? 15 : 30)}{" "}
+                                  days
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <div className="pilgrim-price-wrap">
+                        <PsychologicalPrice
+                          parts={
+                            (selected
+                              ? activeRoutePlan
+                              : routePacks.premium
+                            ).formattedPriceParts
+                          }
+                          currency={routePacks.premium.currency}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        className="pilgrim-card__cta"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setPurchaseFocus("route");
+                          setSelectedRoute(route.key);
+                        }}
+                      >
+                        {selected ? "Selected" : "Select plan"}
+                      </button>
+                    </article>
+                  );
+                })}
+              </div>
+              <p className="pilgrim-routes__note">{PILGRIM_ROUTE_COVERAGE_NOTE}</p>
             </section>
           )}
 
@@ -577,7 +807,7 @@ export function PilgrimSelectionPage({
           {activePlan && (
             <p className="pilgrim-install-note">
               Install on Wi‑Fi before you fly. Your data package typically starts when
-              the eSIM connects to a Saudi network — not at checkout.
+              the eSIM connects in a covered country — not at checkout.
             </p>
           )}
 
@@ -594,7 +824,7 @@ export function PilgrimSelectionPage({
                 />
               </div>
               <a
-                href={buildCheckoutHref(activePlan, checkoutPrice, promo, refCode)}
+                href={checkoutHref}
                 className="pilgrim-desktop-cta__button"
               >
                 Continue to checkout
@@ -652,6 +882,7 @@ export function PilgrimSelectionPage({
                     <th scope="col">Basic</th>
                     <th scope="col">Connected</th>
                     <th scope="col">Umrah Unlimited</th>
+                    <th scope="col">Saudi + Turkey / Egypt</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -660,21 +891,25 @@ export function PilgrimSelectionPage({
                     <td>Makkah &amp; Madinah</td>
                     <td>Makkah &amp; Madinah</td>
                     <td>Makkah &amp; Madinah</td>
+                    <td>Saudi + Turkey or Egypt*</td>
                   </tr>
                   <tr>
                     <td>Data allowance</td>
                     <td>5GB · 30 days</td>
                     <td>10GB or 20GB</td>
                     <td>3GB/day · then 1 Mbps</td>
+                    <td>5GB / 15d or 10GB / 30d</td>
                   </tr>
                   <tr>
                     <td>Trip length</td>
                     <td>30 days</td>
                     <td>30 days</td>
                     <td>7 or 10 days</td>
+                    <td>15 or 30 days</td>
                   </tr>
                   <tr>
                     <td>Hotspot sharing</td>
+                    <td>Included</td>
                     <td>Included</td>
                     <td>Included</td>
                     <td>Included</td>
@@ -684,22 +919,28 @@ export function PilgrimSelectionPage({
                     <td>24/7</td>
                     <td>24/7</td>
                     <td>24/7</td>
+                    <td>24/7</td>
                   </tr>
                   <tr>
                     <td>Video calls &amp; live updates</td>
                     <td>Light use</td>
                     <td>Regular use</td>
                     <td>Heavy daily use</td>
+                    <td>Multi-country trip use</td>
                   </tr>
                   <tr>
                     <td>Best for</td>
                     <td>Short stays</td>
                     <td>Most first-time pilgrims</td>
                     <td>Travelers who prefer day-pass unlimited</td>
+                    <td>Days in Turkey/Egypt + Saudi</td>
                   </tr>
                 </tbody>
               </table>
             </div>
+            <p className="pilgrim-compare__footnote">
+              *{PILGRIM_ROUTE_COVERAGE_NOTE}
+            </p>
           </section>
         </div>
 
@@ -714,7 +955,7 @@ export function PilgrimSelectionPage({
               />
             </div>
             <a
-              href={buildCheckoutHref(activePlan, checkoutPrice, promo, refCode)}
+              href={checkoutHref}
               className="pilgrim-sticky-cta__button"
             >
               Continue

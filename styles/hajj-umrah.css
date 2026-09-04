@@ -123,6 +123,45 @@
   font-weight: 600;
 }
 
+.pilgrim-routes {
+  margin: 2.25rem 0 1.75rem;
+}
+
+.pilgrim-routes__title {
+  margin: 0 0 0.45rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.pilgrim-routes__hint {
+  margin: 0 0 1.15rem;
+  max-width: 42rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.pilgrim-routes__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .pilgrim-routes__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.pilgrim-routes__note,
+.pilgrim-compare__footnote {
+  margin: 0.85rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
 .pilgrim-support-cta {
   display: flex;
   flex-wrap: wrap;
