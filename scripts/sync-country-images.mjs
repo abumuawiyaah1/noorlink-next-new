@@ -4,8 +4,9 @@
  *
  * Usage: node scripts/sync-country-images.mjs
  *
- * Add photos as `{country-slug}.jpg` (e.g. russia.jpg, colombia.jpg).
- * Regional-only art: `{name}-regional.jpg` (europe-regional.jpg, etc.)
+ * Prefer WebP cards. Add photos as `{country-slug}.webp` (or .jpg then run
+ * `node scripts/optimize-critical-images.mjs` / destination WebP batch).
+ * Regional-only art: `{name}-regional.webp`
  */
 import { readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -18,44 +19,76 @@ const OUT = path.join(ROOT, "lib/country-images.registry.ts");
 
 const SKIP = new Set([
   "placeholder.jpg",
+  "placeholder.webp",
   "thumbnail_option_1.png",
+  "thumbnail_option_1.webp",
 ]);
+
+function baseSlug(name) {
+  return path.basename(name, path.extname(name)).toLowerCase();
+}
 
 function isCountryPhoto(name) {
   const lower = name.toLowerCase();
   if (SKIP.has(lower)) return false;
-  if (!/\.jpe?g$/i.test(lower)) return false;
+  if (!/\.(jpe?g|webp)$/i.test(lower)) return false;
   if (lower.includes("regional")) return false;
-  if (/\d/.test(path.basename(lower, path.extname(lower)))) return false;
+  if (/\d/.test(baseSlug(lower))) return false;
   if (lower.includes("unsplash")) return false;
   return true;
 }
 
 function isRegionalPhoto(name) {
   const lower = name.toLowerCase();
-  return /\.jpe?g$/i.test(lower) && lower.includes("regional") && !/\d/.test(lower);
+  return (
+    /\.(jpe?g|webp)$/i.test(lower) &&
+    lower.includes("regional") &&
+    !/\d/.test(baseSlug(lower))
+  );
+}
+
+/** Prefer .webp over .jpg when both exist. */
+function pickBest(filesBySlug) {
+  const out = {};
+  for (const [slug, files] of Object.entries(filesBySlug)) {
+    const webp = files.find((f) => f.toLowerCase().endsWith(".webp"));
+    out[slug] = `/images/destinations/${webp ?? files[0]}`;
+  }
+  return out;
 }
 
 const files = readdirSync(DEST_DIR);
-const countryEntries = {};
-const regionalEntries = {
-  europe: "europe-regional.jpg",
-  "asia-pacific": "asia-regional.jpg",
-  "middle-east": "middle-east-regional.jpg",
-  africa: "middle-east-regional.jpg",
-  americas: "usa.jpg",
-};
+const countryFiles = {};
+const regionalFiles = {};
 
 for (const file of files.sort()) {
-  if (!isCountryPhoto(file)) continue;
-  const slug = path.basename(file, path.extname(file)).toLowerCase();
-  countryEntries[slug] = `/images/destinations/${file}`;
+  if (isCountryPhoto(file)) {
+    const slug = baseSlug(file);
+    (countryFiles[slug] ??= []).push(file);
+  } else if (isRegionalPhoto(file)) {
+    const slug = baseSlug(file).replace(/-regional$/, "");
+    (regionalFiles[slug] ??= []).push(file);
+  }
 }
 
-for (const [key, file] of Object.entries(regionalEntries)) {
-  if (files.includes(file)) {
-    regionalEntries[key] = `/images/destinations/${file}`;
-  }
+const countryEntries = pickBest(countryFiles);
+const regionalRaw = pickBest(regionalFiles);
+
+const regionalEntries = {
+  caribbean: regionalRaw.caribbean,
+  africa: regionalRaw.africa,
+  americas: regionalRaw["north-america"] ?? regionalRaw.americas,
+  "north-america": regionalRaw["north-america"],
+  "asia-pacific": regionalRaw["asia-pacific"] ?? regionalRaw.asia,
+  europe: regionalRaw.europe,
+  "middle-east": regionalRaw["middle-east"],
+  "south-america": regionalRaw["south-america"],
+  global: regionalRaw.global,
+};
+
+// Drop undefined keys
+for (const key of Object.keys(regionalEntries)) {
+  if (!regionalEntries[key]) delete regionalEntries[key];
 }
 
 function formatRecord(record) {
@@ -69,7 +102,7 @@ const content = `/**
  * Country photo registry — synced from public/images/destinations/.
  * Run: node scripts/sync-country-images.mjs
  *
- * Add a photo: drop \`{country-slug}.jpg\` in public/images/destinations/, then sync.
+ * Add a photo: drop \`{country-slug}.webp\` (or .jpg) in public/images/destinations/, then sync.
  */
 export const COUNTRY_IMAGE_REGISTRY: Record<string, string> = {
 ${formatRecord(countryEntries)}
@@ -82,27 +115,6 @@ ${formatRecord(regionalEntries)}
 `;
 
 writeFileSync(OUT, content);
-console.log(`Updated ${path.relative(ROOT, OUT)}`);
-console.log(`  Countries with photos: ${Object.keys(countryEntries).length}`);
-
-const sellable = [
-  "usa", "canada", "mexico", "panama", "costa-rica", "bahamas", "jamaica",
-  "dominican-republic", "barbados", "trinidad-and-tobago", "puerto-rico",
-  "uk", "france", "germany", "italy", "spain", "netherlands", "switzerland",
-  "portugal", "austria", "belgium", "ireland", "sweden", "norway", "denmark",
-  "finland", "iceland", "malta", "russia",
-  "japan", "china", "india", "australia", "singapore", "thailand", "south-korea",
-  "indonesia", "malaysia", "philippines", "vietnam", "fiji", "maldives",
-  "saudi-arabia", "uae", "qatar", "kuwait", "bahrain", "oman", "turkey",
-  "egypt", "jordan", "lebanon",
-  "brazil", "argentina", "chile", "colombia", "peru",
-  "south-africa", "nigeria", "morocco",
-];
-
-const missing = sellable.filter((slug) => !countryEntries[slug]).sort();
-if (missing.length) {
-  console.log(`\n  Still need photos (${missing.length}):`);
-  for (const slug of missing) console.log(`    - ${slug}.jpg`);
-} else {
-  console.log("\n  All sellable countries have photos.");
-}
+console.log(
+  `Wrote ${Object.keys(countryEntries).length} countries + ${Object.keys(regionalEntries).length} regionals → ${path.relative(ROOT, OUT)}`,
+);

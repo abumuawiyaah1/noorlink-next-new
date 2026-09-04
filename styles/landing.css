@@ -60,9 +60,16 @@
 
         /* --- HERO SECTION --- */
         .hero { 
-            background: var(--hero-overlay), url('/images/hero.jpg');
+            background: var(--hero-overlay), url("/images/hero.webp");
             background-size: cover; background-position: center;
             color: white; padding: 120px 0 100px; text-align: center; position: relative;
+        }
+        @media (max-width: 768px) {
+            .hero {
+                background: var(--hero-overlay), url("/images/hero-800.webp");
+                background-size: cover;
+                background-position: center;
+            }
         }
         .hero-brand {
             font-size: clamp(2rem, 5vw, 3rem);
@@ -138,7 +145,7 @@
             background-color: #fff;
             background-image:
                 linear-gradient(rgba(255, 255, 255, 0.95), rgba(250, 251, 252, 0.96)),
-                url('/images/map-texture.jpg');
+                url('/images/map-texture.webp');
             background-size: cover;
             background-position: center;
         }
@@ -209,7 +216,7 @@
         .promo-text { flex: 1; min-width: 300px; }
         .promo-feature-img {
             flex: 1; min-width: 280px; height: 300px;
-            background: url('/images/ramadan-feature.jpg') center/cover;
+            background: url('/images/ramadan-feature.webp') center/cover;
             border-radius: var(--radius-card-lg);
             border: 1px solid rgba(15, 61, 62, 0.08);
             box-shadow: var(--shadow-card);
@@ -478,7 +485,7 @@
             background-color: #fff;
             background-image:
                 linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.96)),
-                url('/images/map-texture.jpg');
+                url('/images/map-texture.webp');
             background-size: cover;
             background-position: center;
         }
@@ -509,7 +516,7 @@
         /* Added Map Texture */
         .newsletter-section::after {
             content: ""; position: absolute; top:0; left:0; width:100%; height:100%;
-            background-image: url('/images/map-texture.jpg');
+            background-image: url('/images/map-texture.webp');
             background-size: cover; opacity: 0.05; pointer-events: none;
         }
         
@@ -578,7 +585,7 @@
             transform: translate(-50%, -50%);
             width: min(400px, 62vw);
             height: min(400px, 62vw);
-            background: url('/images/logo.png') center / contain no-repeat;
+            background: url('/images/logo.webp') center / contain no-repeat;
             opacity: 0.04;
             pointer-events: none;
             z-index: 0;
@@ -593,7 +600,7 @@
                     rgba(243, 245, 247, 0.94),
                     rgba(255, 255, 255, 0.97)
                 ),
-                url('/images/hero.jpg');
+                url('/images/hero.webp');
             background-size: cover;
             background-position: center;
             background-attachment: scroll;

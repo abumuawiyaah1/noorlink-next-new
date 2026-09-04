@@ -11,12 +11,15 @@ import { REGIONAL_IMAGE_REGISTRY } from "@/lib/country-images.registry";
 const DEST = "/images/destinations";
 
 export const SITE_IMAGES = {
-  hero: "/images/hero.jpg",
-  mapTexture: "/images/map-texture.jpg",
-  worldHands: "/images/world-hands.jpg",
+  hero: "/images/hero.webp",
+  heroMobile: "/images/hero-800.webp",
+  /** Prefer JPEG for social/OG cards (broader crawler support). */
+  heroOg: "/images/og.jpg",
+  mapTexture: "/images/map-texture.webp",
+  worldHands: "/images/world-hands.webp",
   team: "/images/team.jpg",
-  ramadanBg: "/images/ramadan-bg.jpg",
-  ramadanFeature: "/images/ramadan-feature.jpg",
+  ramadanBg: "/images/ramadan-bg.webp",
+  ramadanFeature: "/images/ramadan-feature.webp",
 } as const;
 
 /** @deprecated Prefer getCountryImageUrl() — kept for legacy imports. */

@@ -128,7 +128,7 @@ export function PartnersPageContent() {
           <section className="partners-cta" aria-labelledby="partners-cta-heading">
             <div
               className="partners-cta__media"
-              style={{ backgroundImage: "url(/images/world-hands.jpg)" }}
+              style={{ backgroundImage: "url(/images/world-hands.webp)" }}
               aria-hidden="true"
             />
             <div className="partners-cta__copy">

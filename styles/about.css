@@ -10,7 +10,7 @@
             overflow-x: hidden;
             /* PARALLAX BACKGROUND TEXTURE */
             background-color: var(--bg-body);
-            background-image: url('/images/map-texture.jpg'); 
+            background-image: url('/images/map-texture.webp'); 
             background-size: cover;
             background-blend-mode: soft-light;
         }

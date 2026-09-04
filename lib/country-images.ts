@@ -7,7 +7,7 @@ import {
 const DEST = "/images/destinations";
 
 /** Shown when we sell a country but don't have its photo yet — not another country's image. */
-export const COUNTRY_IMAGE_PLACEHOLDER = `${DEST}/placeholder.jpg`;
+export const COUNTRY_IMAGE_PLACEHOLDER = `${DEST}/placeholder.webp`;
 
 /** Map search/checkout slugs to the photo filename slug. */
 const IMAGE_SLUG_ALIASES: Record<string, string> = {

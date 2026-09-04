@@ -17,7 +17,7 @@ const BENEFITS: ReadonlyArray<{
     body: "QR code by email minutes after checkout — no mail, no airport SIM swap.",
     media: {
       type: "image",
-      src: "/images/trust-stats/qr-delivery.png",
+      src: "/images/trust-stats/qr-delivery.webp",
       alt: "Traveler scanning an eSIM QR code on their phone",
     },
   },
@@ -26,7 +26,7 @@ const BENEFITS: ReadonlyArray<{
     body: "One checkout connects you to local networks across six continents.",
     media: {
       type: "image",
-      src: "/images/trust-stats/countries.png",
+      src: "/images/trust-stats/countries.webp",
       alt: "Globe highlighting international travel destinations",
     },
   },
@@ -35,7 +35,7 @@ const BENEFITS: ReadonlyArray<{
     body: "Share data with a laptop or travel companion at no extra cost.",
     media: {
       type: "image",
-      src: "/images/trust-stats/hotspot.png",
+      src: "/images/trust-stats/hotspot.webp",
       alt: "Phone sharing mobile data with a laptop via hotspot",
     },
   },
@@ -54,7 +54,7 @@ const BENEFITS: ReadonlyArray<{
     body: "WhatsApp support around the clock — reach a human in minutes.",
     media: {
       type: "image",
-      src: "/images/trust-stats/support.png",
+      src: "/images/trust-stats/support.webp",
       alt: "Support team helping a customer by phone and chat",
     },
   },

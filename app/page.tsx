@@ -9,7 +9,7 @@ export const metadata: Metadata = buildPageMetadata({
   description:
     "Enjoy hassle-free travel with instant high-speed eSIM data in 190+ countries. Install before you fly — no physical SIM required.",
   path: "/",
-  image: SITE_IMAGES.hero,
+  image: SITE_IMAGES.heroOg,
 });
 
 export default function Home() {
@@ -18,7 +18,15 @@ export default function Home() {
       <link
         rel="preload"
         as="image"
+        href={SITE_IMAGES.heroMobile}
+        media="(max-width: 768px)"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        as="image"
         href={SITE_IMAGES.hero}
+        media="(min-width: 769px)"
         fetchPriority="high"
       />
       <HomePage />

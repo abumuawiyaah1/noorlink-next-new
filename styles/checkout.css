@@ -1,7 +1,7 @@
 /* Loaded from globals.css so checkout styles apply on client navigation (not only after refresh). */
 .nl-checkout {
     background: var(--bg-body);
-    background-image: url("/images/map-texture.jpg");
+    background-image: url("/images/map-texture.webp");
     background-size: cover;
     background-blend-mode: soft-light;
     min-height: 100vh;

@@ -9,7 +9,7 @@
   padding: 88px 24px 104px;
   background:
     linear-gradient(120deg, rgba(15, 61, 62, 0.94), rgba(5, 25, 26, 0.88)),
-    url("/images/world-hands.jpg") center/cover;
+    url("/images/world-hands.webp") center/cover;
 }
 
 .partners-hero__overlay {

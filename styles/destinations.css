@@ -7,7 +7,7 @@
             color: var(--text-main); 
             line-height: 1.6;
             background-color: var(--bg-body);
-            background-image: url('/images/map-texture.jpg'); 
+            background-image: url('/images/map-texture.webp'); 
             background-size: cover;
             background-blend-mode: soft-light;
         }
@@ -34,7 +34,7 @@
         /* HERO AREA */
         .page-header { 
             background: linear-gradient(rgba(15, 61, 62, 0.9), rgba(5, 25, 26, 0.95)), 
-                        url('/images/hero.jpg');
+                        url('/images/hero.webp');
             background-size: cover;
             background-position: center;
             color: white; 
@@ -161,7 +161,7 @@
         /* SEARCH CARD */
         .search-card-style {
             width: 100%; grid-column: 1 / -1; 
-            background: linear-gradient(to right, rgba(15, 61, 62, 0.9), rgba(5, 25, 26, 0.7)), url('/images/world-hands.jpg');
+            background: linear-gradient(to right, rgba(15, 61, 62, 0.9), rgba(5, 25, 26, 0.7)), url('/images/world-hands.webp');
             background-size: cover; background-position: center;
             border-radius: var(--radius-card-lg); padding: 60px; text-align: center; color: white;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 1px solid rgba(255, 149, 0, 0.2);
