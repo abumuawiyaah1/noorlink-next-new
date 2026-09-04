@@ -7,9 +7,11 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { CountryPlansHero } from "@/components/plans/CountryPlansHero";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
+import { PhoneDeviceIcon } from "@/components/ui/PhoneDeviceIcon";
 import { CountrySearch } from "@/components/search/CountrySearch";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { PilgrimCarrierRow } from "@/components/pilgrimage/PilgrimCarrierRow";
+import { PilgrimageInspiration } from "@/components/pilgrimage/PilgrimageInspiration";
 import {
   fetchPlansByCountry,
   type EsimPlan,
@@ -31,12 +33,12 @@ import {
   type PilgrimRoutePackKey,
   type PilgrimRoutePackVariants,
   ME_REGIONAL_API_ID,
-  PILGRIM_ROUTE_COVERAGE_NOTE,
+  PILGRIM_ROUTE_GCC_BONUS,
   PILGRIM_ROUTE_META,
   brandedRoutePlanName,
   getPilgrimRouteMeta,
   resolvePilgrimRoutePacks,
-  resolvePilgrimRoutePlan,
+  resolvePilgrimRoutePlanForKey,
 } from "@/lib/pilgrim-route-plans";
 import {
   getRememberedPromo,
@@ -97,6 +99,46 @@ function tierBadge(tier: PilgrimTierOffer): string | null {
   if (tier.recommended) return "Most Popular";
   if (tier.plan?.displayBadge === "best_choice") return "Best Choice";
   return null;
+}
+
+/** Hover / focus / tap on “plus GCC” shows included GCC country names + flags. */
+function GccBonusHover() {
+  return (
+    <span className="pilgrim-gcc-hint">
+      <button
+        type="button"
+        className="pilgrim-gcc-hint__trigger"
+        aria-label="GCC countries included"
+        onClick={(event) => event.stopPropagation()}
+      >
+        plus GCC
+      </button>
+      <span className="pilgrim-gcc-hint__panel" role="tooltip">
+        <span className="pilgrim-gcc-hint__panel-title">Included GCC coverage</span>
+        <ul className="pilgrim-gcc-hint__list">
+          {PILGRIM_ROUTE_GCC_BONUS.map((country) => (
+            <li key={country.name}>
+              <span aria-hidden="true">{country.flag}</span>
+              <span>{country.name}</span>
+            </li>
+          ))}
+        </ul>
+      </span>
+    </span>
+  );
+}
+
+function RouteDescriptionWithGccHover({ text }: { text: string }) {
+  const marker = "plus GCC";
+  const idx = text.indexOf(marker);
+  if (idx === -1) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, idx)}
+      <GccBonusHover />
+      {text.slice(idx + marker.length)}
+    </>
+  );
 }
 
 function TierCard({
@@ -314,7 +356,7 @@ export function PilgrimSelectionPage({
   const [umrahUnlimitedDays, setUmrahUnlimitedDays] =
     useState<UmrahUnlimitedDays>(10);
   const [selectedRoute, setSelectedRoute] =
-    useState<PilgrimRouteKey>("saudi-turkey");
+    useState<PilgrimRouteKey>("saudi-morocco");
   const [routePack, setRoutePack] = useState<PilgrimRoutePackKey>("premium");
   const [compatibilityOpen, setCompatibilityOpen] = useState(false);
 
@@ -436,8 +478,8 @@ export function PilgrimSelectionPage({
   );
 
   const activeRoutePlan = useMemo(
-    () => resolvePilgrimRoutePlan(routePacks, routePack),
-    [routePacks, routePack],
+    () => resolvePilgrimRoutePlanForKey(routePacks, routePack, selectedRoute),
+    [routePacks, routePack, selectedRoute],
   );
 
   const activePlan = useMemo(() => {
@@ -506,7 +548,12 @@ export function PilgrimSelectionPage({
       if (typeof tier.plan?.price === "number") return [tier.plan.price];
       return [];
     });
-    prices.push(routePacks.plus.price, routePacks.premium.price);
+    prices.push(
+      ...PILGRIM_ROUTE_META.flatMap((route) => [
+        resolvePilgrimRoutePlanForKey(routePacks, "plus", route.key).price,
+        resolvePilgrimRoutePlanForKey(routePacks, "premium", route.key).price,
+      ]),
+    );
     if (prices.length === 0) return null;
     return Math.min(...prices);
   }, [tiers, routePacks]);
@@ -540,11 +587,11 @@ export function PilgrimSelectionPage({
                 🇸🇦
               </span>
               <span className="plans-page__destination-name">
-                Connectivity for your Pilgrimage
+                Stay connected in al-Haramayn
               </span>
             </h1>
             <p className="plans-page__regional-sub">
-              Pilgrimage eSIM · Hotspot included · 24/7 WhatsApp support
+              Makkah &amp; Madinah eSIM · Hotspot included · 24/7 WhatsApp support
             </p>
           </header>
         </CountryPlansHero>
@@ -567,6 +614,7 @@ export function PilgrimSelectionPage({
                   className="plans-trust__compat"
                   onClick={() => setCompatibilityOpen(true)}
                 >
+                  <PhoneDeviceIcon className="plans-trust__compat-phone" />
                   Check compatibility
                 </button>
               </div>
@@ -579,39 +627,13 @@ export function PilgrimSelectionPage({
 
               <PilgrimCarrierRow />
 
-              <div className="pilgrim-trip-guide" aria-labelledby="pilgrim-trip-guide-title">
-                <h2 id="pilgrim-trip-guide-title" className="pilgrim-trip-guide__title">
-                  Which plan fits your trip?
-                </h2>
-                <ul className="pilgrim-trip-guide__list">
-                  <li>
-                    <strong>3–7 day Umrah</strong>
-                    <span>Lite Explorer · 5GB</span>
-                  </li>
-                  <li>
-                    <strong>First pilgrimage · 10–14 days</strong>
-                    <span>Connected · 10GB</span>
-                  </li>
-                  <li>
-                    <strong>Longer stay or more video</strong>
-                    <span>Connected · 20GB</span>
-                  </li>
-                  <li>
-                    <strong>Do not want to count GB</strong>
-                    <span>Umrah Unlimited · 3GB/day</span>
-                  </li>
-                  <li>
-                    <strong>Also staying in Turkey or Egypt</strong>
-                    <span>Saudi + Turkey / Egypt · multi-stop</span>
-                  </li>
-                </ul>
-              </div>
+              <PilgrimageInspiration />
 
               <h2 className="plans-picker__title">Choose your pilgrimage plan</h2>
               <p className="plans-picker__hint">
                 Fixed Saudi packs or honest day-pass unlimited (3GB/day, then 1 Mbps).
-                The price you see is the price you pay at secure checkout. Hotspot is
-                included on every plan below.
+                The price you see is the price you pay — not surprises, not hidden
+                fees. Hotspot is included on every plan below.
               </p>
             </>
           )}
@@ -673,12 +695,11 @@ export function PilgrimSelectionPage({
               aria-labelledby="pilgrim-routes-title"
             >
               <h2 id="pilgrim-routes-title" className="pilgrim-routes__title">
-                Also stopping in Turkey or Egypt?
+                Also stopping in Turkey, Egypt, or Morocco?
               </h2>
               <p className="pilgrim-routes__hint">
-                Same Middle East regional eSIM — branded for your path. Pick the
-                route you care about; coverage also includes GCC and other listed
-                destinations.
+                One eSIM for your travel stop and your Hajj or Umrah — GCC coverage
+                included as a bonus. Pick the route that matches your trip.
               </p>
               <div className="pilgrim-routes__grid">
                 {PILGRIM_ROUTE_META.map((route) => {
@@ -713,7 +734,9 @@ export function PilgrimSelectionPage({
                         {route.title}
                       </h3>
                       <div className="pilgrim-card__details">
-                        <p className="pilgrim-card__desc">{route.description}</p>
+                        <p className="pilgrim-card__desc">
+                          <RouteDescriptionWithGccHover text={route.description} />
+                        </p>
                         <ul className="pilgrim-card__highlights">
                           {route.highlights.map((item) => (
                             <li key={item}>{item}</li>
@@ -761,9 +784,10 @@ export function PilgrimSelectionPage({
                       <div className="pilgrim-price-wrap">
                         <PsychologicalPrice
                           parts={
-                            (selected
-                              ? activeRoutePlan
-                              : routePacks.premium
+                            resolvePilgrimRoutePlanForKey(
+                              routePacks,
+                              selected && routePack ? routePack : "premium",
+                              route.key,
                             ).formattedPriceParts
                           }
                           currency={routePacks.premium.currency}
@@ -784,7 +808,6 @@ export function PilgrimSelectionPage({
                   );
                 })}
               </div>
-              <p className="pilgrim-routes__note">{PILGRIM_ROUTE_COVERAGE_NOTE}</p>
             </section>
           )}
 
@@ -806,8 +829,8 @@ export function PilgrimSelectionPage({
 
           {activePlan && (
             <p className="pilgrim-install-note">
-              Install on Wi‑Fi before you fly. Your data package typically starts when
-              the eSIM connects in a covered country — not at checkout.
+              Install on Wi‑Fi before you fly. Your data package starts when the eSIM
+              connects in a covered country — not at checkout.
             </p>
           )}
 
@@ -862,6 +885,7 @@ export function PilgrimSelectionPage({
                 className="pilgrim-essentials__button"
                 onClick={() => setCompatibilityOpen(true)}
               >
+                <PhoneDeviceIcon className="pilgrim-essentials__phone" />
                 Compatibility Checker
               </button>
             </div>
@@ -882,7 +906,7 @@ export function PilgrimSelectionPage({
                     <th scope="col">Basic</th>
                     <th scope="col">Connected</th>
                     <th scope="col">Umrah Unlimited</th>
-                    <th scope="col">Saudi + Turkey / Egypt</th>
+                    <th scope="col">Saudi + Turkey / Egypt / Morocco</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -891,7 +915,7 @@ export function PilgrimSelectionPage({
                     <td>Makkah &amp; Madinah</td>
                     <td>Makkah &amp; Madinah</td>
                     <td>Makkah &amp; Madinah</td>
-                    <td>Saudi + Turkey or Egypt*</td>
+                    <td>Saudi + Turkey, Egypt, or Morocco</td>
                   </tr>
                   <tr>
                     <td>Data allowance</td>
@@ -933,14 +957,11 @@ export function PilgrimSelectionPage({
                     <td>Short stays</td>
                     <td>Most first-time pilgrims</td>
                     <td>Travelers who prefer day-pass unlimited</td>
-                    <td>Days in Turkey/Egypt + Saudi</td>
+                    <td>Days in Turkey/Egypt/Morocco + Saudi</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p className="pilgrim-compare__footnote">
-              *{PILGRIM_ROUTE_COVERAGE_NOTE}
-            </p>
           </section>
         </div>
 

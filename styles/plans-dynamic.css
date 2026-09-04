@@ -336,6 +336,9 @@
 }
 
 .plans-trust__compat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   border: none;
   border-radius: var(--radius-pill);
   background: var(--accent);
@@ -344,6 +347,12 @@
   font-size: 0.92rem;
   padding: var(--btn-pad-y) var(--btn-pad-x);
   cursor: pointer;
+}
+
+.plans-trust__compat-phone {
+  width: 1.35rem;
+  height: 2rem;
+  flex-shrink: 0;
 }
 
 .plans-trust__compat:hover {

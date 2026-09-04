@@ -45,14 +45,29 @@
 
 .pilgrim-carriers {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.65rem 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
   margin-bottom: 1.5rem;
   padding: 0.85rem 1rem;
   border-radius: var(--radius-control);
   background: var(--bg-body);
   border: 1px solid #e5e7eb;
+}
+
+.pilgrim-carriers__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+  width: 100%;
+}
+
+.pilgrim-carriers__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
 }
 
 .pilgrim-carriers__label {
@@ -82,45 +97,57 @@
   color: var(--primary);
 }
 
-.pilgrim-trip-guide {
-  margin-bottom: 1.75rem;
-  padding: 1.1rem 1.25rem;
-  border-radius: var(--radius-card);
-  background: rgba(255, 149, 0, 0.08);
-  border: 1px solid rgba(255, 149, 0, 0.22);
+.pilgrim-carriers__divider {
+  display: none;
+  width: 1px;
+  height: 1.35rem;
+  background: rgba(15, 61, 62, 0.16);
 }
 
-.pilgrim-trip-guide__title {
-  margin: 0 0 0.85rem;
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--primary);
+@media (min-width: 720px) {
+  .pilgrim-carriers__divider {
+    display: block;
+  }
 }
 
-.pilgrim-trip-guide__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 0.65rem;
-}
-
-.pilgrim-trip-guide__list li {
+.pilgrim-carriers__pay {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.35rem 1rem;
-  font-size: 0.92rem;
-  color: var(--text-main);
+  align-items: center;
+  gap: 0.55rem 0.75rem;
 }
 
-.pilgrim-trip-guide__list strong {
-  color: var(--primary);
+.pilgrim-carriers__pay-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
 }
 
-.pilgrim-trip-guide__list span {
-  color: var(--text-muted);
-  font-weight: 600;
+.pilgrim-carriers__pay-badges .payment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 5px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid rgba(15, 61, 62, 0.1);
+  box-shadow: 0 1px 4px rgba(15, 61, 62, 0.08);
+}
+
+.pilgrim-carriers__pay-badges .payment-badge__image {
+  display: block;
+  width: 44px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.pilgrim-carriers__trust {
+  margin: 0;
+  max-width: 42rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--text-muted, #5b6b6c);
 }
 
 .pilgrim-routes {
@@ -132,14 +159,116 @@
   font-size: 1.35rem;
   font-weight: 800;
   color: var(--primary);
+  text-align: center;
 }
 
 .pilgrim-routes__hint {
-  margin: 0 0 1.15rem;
-  max-width: 42rem;
+  margin: 0 auto 1.15rem;
+  max-width: 48rem;
   font-size: 0.95rem;
   line-height: 1.5;
   color: var(--text-muted);
+  text-align: center;
+  text-wrap: balance;
+}
+
+@media (min-width: 900px) {
+  .pilgrim-routes__hint {
+    white-space: nowrap;
+    max-width: none;
+  }
+}
+
+.pilgrim-gcc-hint {
+  position: relative;
+  display: inline;
+}
+
+.pilgrim-gcc-hint__trigger {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--primary);
+  font: inherit;
+  font-weight: 700;
+  cursor: help;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+
+.pilgrim-gcc-hint__trigger:hover,
+.pilgrim-gcc-hint__trigger:focus-visible {
+  color: var(--accent, #ff9500);
+}
+
+.pilgrim-gcc-hint__panel {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.55rem);
+  z-index: 20;
+  width: min(16.5rem, 78vw);
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(15, 61, 62, 0.12);
+  box-shadow: 0 12px 28px rgba(5, 25, 26, 0.14);
+  color: var(--primary);
+  text-align: left;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.pilgrim-gcc-hint__panel::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 0.65rem;
+  height: 0.65rem;
+  background: #fff;
+  border-right: 1px solid rgba(15, 61, 62, 0.12);
+  border-bottom: 1px solid rgba(15, 61, 62, 0.12);
+  transform: translateX(-50%) rotate(45deg);
+  margin-top: -0.35rem;
+}
+
+.pilgrim-gcc-hint:hover .pilgrim-gcc-hint__panel,
+.pilgrim-gcc-hint:focus-within .pilgrim-gcc-hint__panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.pilgrim-gcc-hint__panel-title {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted, #5b6b6c);
+}
+
+.pilgrim-gcc-hint__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.pilgrim-gcc-hint__list li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--primary);
+  line-height: 1.25;
 }
 
 .pilgrim-routes__grid {
@@ -154,12 +283,10 @@
   }
 }
 
-.pilgrim-routes__note,
-.pilgrim-compare__footnote {
-  margin: 0.85rem 0 0;
-  font-size: 0.82rem;
-  line-height: 1.45;
-  color: var(--text-muted);
+@media (min-width: 1024px) {
+  .pilgrim-routes__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .pilgrim-support-cta {
@@ -501,6 +628,12 @@
   border: 1px solid rgba(255, 149, 0, 0.35);
 }
 
+.pilgrim-essentials__phone {
+  width: 1.15rem;
+  height: 1.7rem;
+  flex-shrink: 0;
+}
+
 .pilgrim-compare {
   overflow-x: auto;
   border-radius: var(--radius-card-lg);
@@ -736,4 +869,172 @@
   font-size: 1.1rem;
   font-weight: 700;
   margin-top: 0.35rem;
+}
+
+/* ── Pilgrimage inspiration (Qur'an, Hadith, gallery) ───── */
+.pilgrim-inspiration {
+  margin-bottom: 2.25rem;
+}
+
+.pilgrim-inspiration__header {
+  text-align: center;
+  max-width: 42rem;
+  margin: 0 auto 1.5rem;
+}
+
+.pilgrim-inspiration__kicker {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.pilgrim-inspiration__title {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.15;
+}
+
+.pilgrim-inspiration__lead {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+
+.pilgrim-inspiration__featured {
+  margin-bottom: 1rem;
+  padding: 1.35rem 1.4rem;
+  border-radius: var(--radius-card-lg);
+  background: var(--card-gradient-border);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.pilgrim-inspiration__label {
+  display: inline-block;
+  margin-bottom: 0.65rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pilgrim-inspiration__arabic {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-brand);
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+  line-height: 1.8;
+  color: var(--primary);
+}
+
+.pilgrim-inspiration__arabic--small {
+  font-size: 1.05rem;
+  margin-bottom: 0.55rem;
+}
+
+.pilgrim-inspiration__quote,
+.pilgrim-inspiration__quote-text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #334155;
+  font-style: italic;
+}
+
+.pilgrim-inspiration__cite {
+  display: block;
+  margin-top: 0.75rem;
+  font-style: normal;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.pilgrim-inspiration__quotes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.pilgrim-inspiration__quote-card {
+  padding: 1rem 1.05rem;
+  border-radius: var(--radius-card);
+  background: #fff;
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  box-shadow: 0 6px 18px rgba(15, 61, 62, 0.05);
+}
+
+.pilgrim-inspiration__gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.pilgrim-inspiration__gallery-card {
+  overflow: hidden;
+  border-radius: var(--radius-card-lg);
+  background: var(--card-gradient-border);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-card);
+}
+
+.pilgrim-inspiration__gallery-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #eef3f3;
+}
+
+.pilgrim-inspiration__gallery-image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.pilgrim-inspiration__gallery-body {
+  padding: 0.9rem 1rem 1.05rem;
+  background: #fff;
+}
+
+.pilgrim-inspiration__gallery-body h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.pilgrim-inspiration__gallery-body p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.pilgrim-inspiration__reminder {
+  margin: 0;
+  padding: 0.95rem 1.1rem;
+  border-radius: var(--radius-card);
+  background: rgba(15, 61, 62, 0.04);
+  border-left: 4px solid var(--accent);
+  color: #334155;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .pilgrim-inspiration__quotes,
+  .pilgrim-inspiration__gallery {
+    grid-template-columns: 1fr;
+  }
 }

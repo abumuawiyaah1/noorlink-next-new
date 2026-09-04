@@ -2,7 +2,7 @@ import type { EsimPlan, FormattedPriceParts } from "@/lib/plans-api";
 import { REGIONAL_PRODUCTS } from "@/lib/regional-products";
 
 /** Traveler-facing multi-stop brands; same ME regional wholesale SKUs under the hood. */
-export type PilgrimRouteKey = "saudi-turkey" | "saudi-egypt";
+export type PilgrimRouteKey = "saudi-morocco" | "saudi-turkey" | "saudi-egypt";
 
 export type PilgrimRoutePackKey = "plus" | "premium";
 
@@ -19,18 +19,45 @@ export type PilgrimRouteMeta = {
 
 export const ME_REGIONAL_API_ID = REGIONAL_PRODUCTS["middle-east"].apiCountryId;
 
+/**
+ * Path-package retail (high → low): Morocco, Turkey, Egypt.
+ * Same wholesale ME SKUs; small gaps so each route feels like its own package.
+ */
+export const PILGRIM_ROUTE_RETAIL: Record<
+  PilgrimRouteKey,
+  Record<PilgrimRoutePackKey, number>
+> = {
+  "saudi-morocco": { plus: 20.99, premium: 33.99 },
+  "saudi-turkey": { plus: 19.99, premium: 32.99 },
+  "saudi-egypt": { plus: 18.99, premium: 31.99 },
+};
+
 export const PILGRIM_ROUTE_META: PilgrimRouteMeta[] = [
+  {
+    key: "saudi-morocco",
+    title: "Saudi + Morocco",
+    subtitle: "Multi-stop",
+    flag: "🇸🇦🇲🇦",
+    description:
+      "One eSIM for your travel in Morocco and your Hajj or Umrah — plus GCC coverage included at no extra charge.",
+    highlights: [
+      "Saudi Arabia + Morocco on one install",
+      "GCC bonus coverage included",
+      "Choose 5GB / 15 days or 10GB / 30 days",
+    ],
+    checkoutCountry: "Saudi + Morocco",
+  },
   {
     key: "saudi-turkey",
     title: "Saudi + Turkey",
     subtitle: "Multi-stop",
     flag: "🇸🇦🇹🇷",
     description:
-      "One eSIM for days in Turkey and days in Saudi — maps, WhatsApp, and family updates on both legs.",
+      "One eSIM for your travel in Turkey and your Hajj or Umrah — plus GCC coverage included at no extra charge.",
     highlights: [
       "Saudi Arabia + Turkey on one install",
+      "GCC bonus coverage included",
       "Choose 5GB / 15 days or 10GB / 30 days",
-      "Hotspot included",
     ],
     checkoutCountry: "Saudi + Turkey",
   },
@@ -40,19 +67,24 @@ export const PILGRIM_ROUTE_META: PilgrimRouteMeta[] = [
     subtitle: "Multi-stop",
     flag: "🇸🇦🇪🇬",
     description:
-      "One eSIM for time in Egypt and your pilgrimage in Saudi — stay online across both stops.",
+      "One eSIM for your travel in Egypt and your Hajj or Umrah — plus GCC coverage included at no extra charge.",
     highlights: [
       "Saudi Arabia + Egypt on one install",
+      "GCC bonus coverage included",
       "Choose 5GB / 15 days or 10GB / 30 days",
-      "Hotspot included",
     ],
     checkoutCountry: "Saudi + Egypt",
   },
 ];
 
-/** Honest coverage note — same ME regional network, not Saudi-only. */
-export const PILGRIM_ROUTE_COVERAGE_NOTE =
-  "Powered by our Middle East regional network (GCC and more included). Lebanon is not included yet.";
+/** GCC destinations included as bonus on multi-stop pilgrimage routes (Saudi is the pilgrimage stop). */
+export const PILGRIM_ROUTE_GCC_BONUS: { name: string; flag: string }[] = [
+  { name: "United Arab Emirates", flag: "🇦🇪" },
+  { name: "Qatar", flag: "🇶🇦" },
+  { name: "Kuwait", flag: "🇰🇼" },
+  { name: "Bahrain", flag: "🇧🇭" },
+  { name: "Oman", flag: "🇴🇲" },
+];
 
 function fallbackParts(price: number): FormattedPriceParts {
   const dollars = Math.floor(price);
@@ -131,6 +163,29 @@ export function resolvePilgrimRoutePlan(
   pack: PilgrimRoutePackKey,
 ): EsimPlan {
   return pack === "plus" ? packs.plus : packs.premium;
+}
+
+/** Apply path-package retail so Morocco / Turkey / Egypt show distinct prices. */
+export function withPilgrimRouteRetail(
+  plan: EsimPlan,
+  route: PilgrimRouteKey,
+  pack: PilgrimRoutePackKey,
+): EsimPlan {
+  const price = PILGRIM_ROUTE_RETAIL[route][pack];
+  if (plan.price === price) return plan;
+  return {
+    ...plan,
+    price,
+    formattedPriceParts: fallbackParts(price),
+  };
+}
+
+export function resolvePilgrimRoutePlanForKey(
+  packs: PilgrimRoutePackVariants,
+  pack: PilgrimRoutePackKey,
+  route: PilgrimRouteKey,
+): EsimPlan {
+  return withPilgrimRouteRetail(resolvePilgrimRoutePlan(packs, pack), route, pack);
 }
 
 export function brandedRoutePlanName(

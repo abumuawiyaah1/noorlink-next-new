@@ -16,8 +16,10 @@ export function plansPathForCountry(countryId: string): string {
     slug === "hajj" ||
     slug === "sauditurkey" ||
     slug === "saudiegypt" ||
+    slug === "saudimorocco" ||
     slug === "saudi-turkey" ||
-    slug === "saudi-egypt"
+    slug === "saudi-egypt" ||
+    slug === "saudi-morocco"
   ) {
     return "/hajj-umrah";
   }

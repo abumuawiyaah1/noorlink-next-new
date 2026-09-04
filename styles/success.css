@@ -167,6 +167,65 @@
             color: #666;
         }
 
+        .pilgrim-gift-guides {
+            margin: 0 0 28px;
+            padding: 22px 24px;
+            border-radius: var(--radius-card-lg, 16px);
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 8px 24px rgba(15, 61, 62, 0.06);
+        }
+        .pilgrim-gift-guides__kicker {
+            margin: 0 0 6px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted, #6b7280);
+        }
+        .pilgrim-gift-guides__title {
+            margin: 0 0 6px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .pilgrim-gift-guides__text {
+            margin: 0 0 14px;
+            font-size: 0.92rem;
+            color: var(--text-muted, #6b7280);
+        }
+        .pilgrim-gift-guides__list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 0.65rem;
+        }
+        .pilgrim-gift-guides__link {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            padding: 0.75rem 0.9rem;
+            border-radius: 12px;
+            background: #f3f7f7;
+            border: 1px solid rgba(15, 61, 62, 0.1);
+            text-decoration: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .pilgrim-gift-guides__link:hover {
+            border-color: rgba(255, 149, 0, 0.45);
+            box-shadow: 0 4px 14px rgba(15, 61, 62, 0.06);
+        }
+        .pilgrim-gift-guides__link-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .pilgrim-gift-guides__link-blurb {
+            font-size: 0.84rem;
+            color: var(--text-muted, #6b7280);
+        }
+
         .order-id-inline { font-family: monospace; font-size: 0.95rem; }
         .order-usage {
             background: var(--surface, #fff);

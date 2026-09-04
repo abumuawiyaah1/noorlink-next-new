@@ -12,3 +12,6 @@ node_modules/
 !.env.production
 !.env.example
 tsconfig.tsbuildinfo
+
+# Local PDF build deps (do not commit)
+.pdf-tools/

@@ -14,6 +14,10 @@ import { ReferAFriendCard } from "@/components/success/ReferAFriendCard";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { formatCountryLabel } from "@/lib/country-slugs";
+import {
+  isPilgrimageOrder,
+  PILGRIM_GIFT_GUIDES,
+} from "@/lib/pilgrim-gift-guides";
 import { lookupOrderByPaymentIntent, lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
 import { isSafeQrCodeUrl, safeExternalHref } from "@/lib/safe-url";
 
@@ -102,6 +106,8 @@ function SuccessContent() {
       : undefined);
   const qrHref = safeExternalHref(order?.qrCodeUrl, isSafeQrCodeUrl);
   const isGiftPurchase = giftReturn || Boolean(order?.isGift);
+  const showPilgrimGuides =
+    !isGiftPurchase && isPilgrimageOrder(country, plan ?? undefined);
   const giftRecipientLabel =
     order?.giftRecipientName && order?.giftRecipientEmail
       ? `${order.giftRecipientName} (${order.giftRecipientEmail})`
@@ -176,6 +182,36 @@ function SuccessContent() {
 
         {qrHref && order && !order.fulfillmentPending && !isGiftPurchase ? (
           <ReviewRequestCard orderId={order.orderNumber} compact />
+        ) : null}
+
+        {showPilgrimGuides ? (
+          <aside className="pilgrim-gift-guides" aria-label="Complimentary pilgrimage guides">
+            <p className="pilgrim-gift-guides__kicker">
+              Complimentary gift with your purchase
+            </p>
+            <h2 className="pilgrim-gift-guides__title">
+              Free al-Haramayn guides
+            </h2>
+            <p className="pilgrim-gift-guides__text">
+              Also in your delivery email. Save on Wi‑Fi before you fly — not required
+              to use your eSIM.
+            </p>
+            <ul className="pilgrim-gift-guides__list">
+              {PILGRIM_GIFT_GUIDES.map((guide) => (
+                <li key={guide.id}>
+                  <a
+                    className="pilgrim-gift-guides__link"
+                    href={guide.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="pilgrim-gift-guides__link-title">{guide.title}</span>
+                    <span className="pilgrim-gift-guides__link-blurb">{guide.blurb}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </aside>
         ) : null}
 
         {!isGiftPurchase ? (
