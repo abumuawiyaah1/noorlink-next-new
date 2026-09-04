@@ -33,7 +33,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
     items: [
       {
         q: "Can I get a refund?",
-        a: "If the eSIM fails to activate due to a technical error, we can refund. Change-of-mind after a working QR is issued is not refundable.",
+        a: "If the eSIM fails to activate due to a technical error on our side or the provider’s side, we can refund or replace. Change-of-mind and phones that are not eSIM-compatible or are carrier-locked are not refundable after a working QR is delivered. See our Refund Policy.",
       },
     ],
   },

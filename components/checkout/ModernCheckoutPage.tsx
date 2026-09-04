@@ -344,7 +344,12 @@ export function ModernCheckoutPage() {
                 <div className="checkout-trust-badges" aria-label="Trust">
                   <span>🔒 Stripe secure</span>
                   <span>📱 QR by email</span>
-                  <span>↩ Easy refunds</span>
+                  <span>
+                    ↩{" "}
+                    <Link href="/refund" target="_blank" rel="noopener noreferrer">
+                      Refund if activation fails
+                    </Link>
+                  </span>
                 </div>
 
                 <ExpressCheckoutWallets
@@ -389,6 +394,10 @@ export function ModernCheckoutPage() {
                   and{" "}
                   <Link href="/privacy" target="_blank" rel="noopener noreferrer">
                     Privacy Policy
+                  </Link>
+                  .{" "}
+                  <Link href="/refund" target="_blank" rel="noopener noreferrer">
+                    Refund if activation fails
                   </Link>
                   .
                 </p>
@@ -443,7 +452,11 @@ export function ModernCheckoutPage() {
       <div className="checkout-trust">
         <span>Apple Pay · Google Pay · Link · card</span>
         <span>Card details never stored</span>
-        <span>Refund policy available</span>
+        <span>
+          <Link href="/refund" target="_blank" rel="noopener noreferrer">
+            Refund if activation fails
+          </Link>
+        </span>
       </div>
       <p
         className="secure-badge"
@@ -574,7 +587,12 @@ export function ModernCheckoutPage() {
                 <div className="checkout-trust-badges" aria-label="Trust">
                   <span>🔒 Stripe secure</span>
                   <span>📱 QR by email</span>
-                  <span>↩ Refund policy</span>
+                  <span>
+                    ↩{" "}
+                    <Link href="/refund" target="_blank" rel="noopener noreferrer">
+                      Refund if activation fails
+                    </Link>
+                  </span>
                 </div>
 
                 <ExpressCheckoutWallets
@@ -611,6 +629,10 @@ export function ModernCheckoutPage() {
                   and{" "}
                   <Link href="/privacy" target="_blank" rel="noopener noreferrer">
                     Privacy Policy
+                  </Link>
+                  .{" "}
+                  <Link href="/refund" target="_blank" rel="noopener noreferrer">
+                    Refund if activation fails
                   </Link>
                   .
                 </p>
