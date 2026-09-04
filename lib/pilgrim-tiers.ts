@@ -1,11 +1,7 @@
 import { describeEsimPlan } from "@/lib/plan-descriptions";
 import type { EsimPlan, FormattedPriceParts } from "@/lib/plans-api";
 
-export type PilgrimTierKey =
-  | "basic"
-  | "connected"
-  | "unlimited"
-  | "family";
+export type PilgrimTierKey = "basic" | "connected" | "unlimited";
 
 export type PilgrimTierMeta = {
   key: PilgrimTierKey;
@@ -14,7 +10,6 @@ export type PilgrimTierMeta = {
   description: string;
   highlights: string[];
   recommended?: boolean;
-  hasGroupCalculator?: boolean;
   comingSoon?: boolean;
 };
 
@@ -38,7 +33,7 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
       "Choose 10GB or 20GB — balanced data for daily worship, family updates, and navigation.",
     highlights: [
       "Congestion-resilient access",
-      "Priority routing in holy sites",
+      "Hotspot included",
       "Recommended for first-time pilgrims",
     ],
     recommended: true,
@@ -46,44 +41,29 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
   {
     key: "unlimited",
     title: "Umrah Unlimited",
-    subtitle: "Premium · 3GB/day",
+    subtitle: "3GB/day · day-pass",
     description:
       "3GB/day at full speed, then up to 1 Mbps — for travelers who do not want to count gigabytes.",
     highlights: [
       "3GB/day full speed · then 1 Mbps",
-      "Flexible trip lengths when we launch",
+      "Choose 7 or 10 day trip length",
       "Hotspot included",
     ],
-    comingSoon: true,
-  },
-  {
-    key: "family",
-    title: "Family Share",
-    subtitle: "Efficiency / Hotspot",
-    description:
-      "One plan, shared connectivity — coordinate your group with a single hotspot.",
-    highlights: [
-      "Hotspot-ready for group devices",
-      "Split cost across travelers",
-      "Group coordination in crowded areas",
-    ],
-    hasGroupCalculator: true,
-    comingSoon: true,
   },
 ];
 
 export type PilgrimTierOffer = PilgrimTierMeta & {
   plan: EsimPlan | null;
-  /** Connected Pilgrim: traveler picks 10GB or 20GB (Access fixed packs). */
+  /** Connected Pilgrim: traveler picks 10GB or 20GB. */
   connectedVariants?: {
     gb10: EsimPlan;
     gb20: EsimPlan;
   };
-  /** Umrah Unlimited: traveler picks trip length (Access day-pass). */
+  /** Umrah Unlimited: traveler picks trip length (14d only when catalog has it). */
   unlimitedVariants?: {
     d7: EsimPlan;
     d10: EsimPlan;
-    d14: EsimPlan;
+    d14?: EsimPlan;
   };
 };
 
@@ -115,7 +95,7 @@ export function resolvePilgrimPlanCopy(
 
   if (tier.key === "basic") {
     return {
-      description: `Access Saudi fixed pack: ${gb ?? 5}GB for ${days} days on ${speed}. Built for maps, WhatsApp, and arrival coordination without overbuying data.`,
+      description: `Saudi fixed pack: ${gb ?? 5}GB for ${days} days on ${speed}. Built for maps, WhatsApp, and arrival coordination without overbuying data.`,
       highlights: [
         `${gb ?? 5}GB high-speed data · ${days} days`,
         `${speed} on Saudi networks`,
@@ -127,7 +107,7 @@ export function resolvePilgrimPlanCopy(
   if (tier.key === "connected") {
     if (connectedDataGb === 20) {
       return {
-        description: `Access Saudi fixed pack: 20GB for ${days} days on ${speed}. Extra headroom for photos, navigation, and regular video calls during a fuller pilgrimage.`,
+        description: `Saudi fixed pack: 20GB for ${days} days on ${speed}. Extra headroom for photos, navigation, and regular video calls during a fuller pilgrimage.`,
         highlights: [
           `20GB high-speed data · ${days} days`,
           `${speed} · hotspot supported on most devices`,
@@ -136,7 +116,7 @@ export function resolvePilgrimPlanCopy(
       };
     }
     return {
-      description: `Access Saudi fixed pack: 10GB for ${days} days on ${speed}. The balanced pick for daily worship apps, family messaging, and maps across Makkah & Madinah.`,
+      description: `Saudi fixed pack: 10GB for ${days} days on ${speed}. The balanced pick for daily worship apps, family messaging, and maps across Makkah & Madinah.`,
       highlights: [
         `10GB high-speed data · ${days} days`,
         `${speed} · Saudi Arabia coverage`,
@@ -205,30 +185,14 @@ export const PILGRIM_FALLBACK_PLANS: Record<PilgrimTierKey, EsimPlan> = {
     name: "Umrah Unlimited 10 Days",
     dataGb: 3,
     durationDays: 10,
-    price: 64.99,
-    formattedPriceParts: fallbackParts(64.99),
+    price: 42.99,
+    formattedPriceParts: fallbackParts(42.99),
     currency: "USD",
     isRechargeable: false,
     isPayAsYouGo: false,
     pricingStrategy: "MANUAL",
     marginStatus: "manual",
     planCategory: "unlimited",
-    displayBadge: "flexible",
-  },
-  family: {
-    id: "pilgrim-family",
-    countryId: "saudi-arabia",
-    name: "Family Share",
-    dataGb: 50,
-    durationDays: 30,
-    price: 0,
-    formattedPriceParts: fallbackParts(0),
-    currency: "USD",
-    isRechargeable: false,
-    isPayAsYouGo: false,
-    pricingStrategy: "MANUAL",
-    marginStatus: "manual",
-    planCategory: "flexible",
     displayBadge: "flexible",
   },
 };
@@ -248,8 +212,8 @@ const UNLIMITED_FALLBACK_7: EsimPlan = {
   id: "pilgrim-umrah-unlimited-7",
   name: "Umrah Unlimited 7 Days",
   durationDays: 7,
-  price: 49.99,
-  formattedPriceParts: fallbackParts(49.99),
+  price: 34.99,
+  formattedPriceParts: fallbackParts(34.99),
 };
 
 const UNLIMITED_FALLBACK_14: EsimPlan = {
@@ -300,13 +264,24 @@ export function resolveUmrahUnlimitedPlan(
 ): EsimPlan {
   if (tier.unlimitedVariants) {
     if (days === 7) return tier.unlimitedVariants.d7;
-    if (days === 14) return tier.unlimitedVariants.d14;
+    if (days === 14) {
+      return tier.unlimitedVariants.d14 ?? tier.unlimitedVariants.d10;
+    }
     return tier.unlimitedVariants.d10;
   }
   if (tier.plan && tier.plan.durationDays === days) return tier.plan;
   if (days === 7) return UNLIMITED_FALLBACK_7;
   if (days === 14) return UNLIMITED_FALLBACK_14;
   return tier.plan ?? PILGRIM_FALLBACK_PLANS.unlimited;
+}
+
+/** Available unlimited trip lengths (14d only when the catalog has a live SKU). */
+export function availableUmrahUnlimitedDays(
+  tier: PilgrimTierOffer,
+): UmrahUnlimitedDays[] {
+  const variants = tier.unlimitedVariants;
+  if (!variants) return [7, 10];
+  return variants.d14 ? [7, 10, 14] : [7, 10];
 }
 
 export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
@@ -344,7 +319,6 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
     basic,
     connected,
     unlimited,
-    family: null,
   };
 
   return PILGRIM_TIER_META.map((meta) => {
@@ -364,39 +338,10 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
       offer.unlimitedVariants = {
         d7: unlimitedGb7 ?? UNLIMITED_FALLBACK_7,
         d10: unlimitedGb10 ?? PILGRIM_FALLBACK_PLANS.unlimited,
-        d14: unlimitedGb14 ?? UNLIMITED_FALLBACK_14,
+        ...(unlimitedGb14 ? { d14: unlimitedGb14 } : {}),
       };
       offer.plan = offer.unlimitedVariants.d10;
     }
     return offer;
   });
-}
-
-export function splitPricePerPerson(
-  price: number,
-  parts: FormattedPriceParts,
-  groupSize: number,
-): { price: number; formattedPriceParts: FormattedPriceParts } {
-  const safeSize = Math.max(1, groupSize);
-  const perPerson = Math.round((price / safeSize) * 100) / 100;
-  return {
-    price: perPerson,
-    formattedPriceParts: fallbackParts(perPerson),
-  };
-}
-
-export function computeGroupSavings(
-  individualPlanPrice: number,
-  familyPerPersonPrice: number,
-  groupSize: number,
-): { perPersonSavings: number; totalSavings: number } {
-  const safeSize = Math.max(1, groupSize);
-  const perPersonSavings = Math.max(
-    0,
-    Math.round((individualPlanPrice - familyPerPersonPrice) * 100) / 100,
-  );
-  return {
-    perPersonSavings,
-    totalSavings: Math.round(perPersonSavings * safeSize * 100) / 100,
-  };
 }
