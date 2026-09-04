@@ -115,7 +115,7 @@ function GccBonusHover() {
         plus GCC
       </button>
       <span className="pilgrim-gcc-hint__panel" role="tooltip">
-        <span className="pilgrim-gcc-hint__panel-title">Included GCC coverage</span>
+        <span className="pilgrim-gcc-hint__panel-title">Included GCC Coverage</span>
         <ul className="pilgrim-gcc-hint__list">
           {PILGRIM_ROUTE_GCC_BONUS.map((country) => (
             <li key={country.name}>
@@ -163,7 +163,7 @@ function TierCard({
     const copy = resolvePilgrimPlanCopy(tier, null);
     return (
       <article className="pilgrim-card pilgrim-card--coming-soon">
-        <span className="pilgrim-card__badge">Coming soon</span>
+        <span className="pilgrim-card__badge">Coming Soon</span>
         <p className="pilgrim-card__tier">{tier.subtitle}</p>
         <h2 className="pilgrim-card__title">{tier.title}</h2>
         <div className="pilgrim-card__details">
@@ -176,11 +176,11 @@ function TierCard({
         </div>
         <div className="pilgrim-price-wrap">
           <p className="pilgrim-card__coming-soon-note">
-            Coming soon — WhatsApp us for early access.
+            Coming Soon — WhatsApp us for early access.
           </p>
         </div>
         <button type="button" className="pilgrim-card__cta" disabled>
-          Coming soon
+          Coming Soon
         </button>
       </article>
     );
@@ -240,8 +240,8 @@ function TierCard({
       </div>
 
       {isConnected && (
-        <div className="pilgrim-data-picker" role="group" aria-label="Data allowance">
-          <span className="pilgrim-data-picker__label">Data allowance</span>
+        <div className="pilgrim-data-picker" role="group" aria-label="Data Allowance">
+          <span className="pilgrim-data-picker__label">Data Allowance</span>
           <div className="pilgrim-data-picker__options">
             {([10, 20] as const).map((gb) => {
               const variant =
@@ -272,8 +272,8 @@ function TierCard({
       )}
 
       {isUnlimited && (
-        <div className="pilgrim-data-picker" role="group" aria-label="Trip length">
-          <span className="pilgrim-data-picker__label">Trip length</span>
+        <div className="pilgrim-data-picker" role="group" aria-label="Trip Length">
+          <span className="pilgrim-data-picker__label">Trip Length</span>
           <div
             className={`pilgrim-data-picker__options${unlimitedDays.length > 2 ? " pilgrim-data-picker__options--triple" : ""}`}
           >
@@ -314,7 +314,7 @@ function TierCard({
           onSelect();
         }}
       >
-        {selected ? "Selected" : "Select plan"}
+        {selected ? "Selected" : "Select Plan"}
       </button>
     </article>
   );
@@ -588,11 +588,11 @@ export function PilgrimSelectionPage({
                 🇸🇦
               </span>
               <span className="plans-page__destination-name">
-                Stay connected in al-Haramayn
+                Stay Connected in al-Haramayn
               </span>
             </h1>
             <p className="plans-page__regional-sub">
-              Makkah &amp; Madinah eSIM · Hotspot included · 24/7 WhatsApp support
+              Makkah &amp; Madinah eSIM · Hotspot Included · 24/7 WhatsApp Support
             </p>
           </header>
         </CountryPlansHero>
@@ -606,7 +606,7 @@ export function PilgrimSelectionPage({
                     Saudi Arabia coverage · Makkah &amp; Madinah ready
                   </p>
                   <p className="plans-trust__meta">
-                    Install before you fly
+                    Install Before You Fly
                     {cheapest != null ? ` · From $${cheapest.toFixed(2)}` : ""}
                   </p>
                 </div>
@@ -616,21 +616,21 @@ export function PilgrimSelectionPage({
                   onClick={() => setCompatibilityOpen(true)}
                 >
                   <PhoneDeviceIcon className="plans-trust__compat-phone" />
-                  Check compatibility
+                  Check Compatibility
                 </button>
               </div>
 
               <div className="plans-reassurance">
-                <span>Ready before you fly</span>
-                <span>We&apos;ve got you covered</span>
-                <span>24/7 WhatsApp support</span>
+                <span>Ready Before You Fly</span>
+                <span>We&apos;ve Got You Covered</span>
+                <span>24/7 WhatsApp Support</span>
               </div>
 
               <PilgrimCarrierRow />
 
               <PilgrimageInspiration />
 
-              <h2 className="plans-picker__title">Choose your pilgrimage plan</h2>
+              <h2 className="plans-picker__title">Choose Your Pilgrimage Plan</h2>
               <p className="plans-picker__hint">
                 Fixed Saudi packs or honest day-pass unlimited (3GB/day, then 1 Mbps).
                 The price you see is the price you pay — not surprises, not hidden
@@ -641,7 +641,7 @@ export function PilgrimSelectionPage({
 
           {loading && (
             <div className="pilgrim-page__loading" aria-busy="true" aria-live="polite">
-              <p className="pilgrim-page__loading-text">Loading plans…</p>
+              <p className="pilgrim-page__loading-text">Loading Plans…</p>
               <div className="pilgrim-grid pilgrim-grid--skeleton" aria-hidden="true">
                 {Array.from({ length: 3 }).map((_, index) => (
                   <div key={index} className="pilgrim-card pilgrim-card--skeleton" />
@@ -652,7 +652,7 @@ export function PilgrimSelectionPage({
 
           {!loading && error && (
             <div className="pilgrim-page__error" role="alert">
-              <p className="pilgrim-page__error-title">Could not load plans</p>
+              <p className="pilgrim-page__error-title">Could Not Load Plans</p>
               <p className="pilgrim-page__error-detail">{error}</p>
               <p className="pilgrim-page__error-hint">
                 Please try again shortly, or{" "}
@@ -696,7 +696,7 @@ export function PilgrimSelectionPage({
               aria-labelledby="pilgrim-routes-title"
             >
               <h2 id="pilgrim-routes-title" className="pilgrim-routes__title">
-                Also stopping in Turkey, Egypt, or Morocco?
+                Also Stopping in Turkey, Egypt, or Morocco?
               </h2>
               <p className="pilgrim-routes__hint">
                 One eSIM for your travel stop and your Hajj or Umrah — GCC coverage
@@ -727,7 +727,7 @@ export function PilgrimSelectionPage({
                       aria-label={`Select ${route.title}`}
                     >
                       {selected && routePack === "premium" && (
-                        <span className="pilgrim-card__badge">Best for multi-day</span>
+                        <span className="pilgrim-card__badge">Best for Multi-Day</span>
                       )}
                       <p className="pilgrim-card__tier">{route.subtitle}</p>
                       <h3 className="pilgrim-card__title">
@@ -749,7 +749,7 @@ export function PilgrimSelectionPage({
                         role="group"
                         aria-label={`${route.title} data allowance`}
                       >
-                        <span className="pilgrim-data-picker__label">Data allowance</span>
+                        <span className="pilgrim-data-picker__label">Data Allowance</span>
                         <div className="pilgrim-data-picker__options">
                           {([
                             ["plus", routePacks.plus] as const,
@@ -803,7 +803,7 @@ export function PilgrimSelectionPage({
                           setSelectedRoute(route.key);
                         }}
                       >
-                        {selected ? "Selected" : "Select plan"}
+                        {selected ? "Selected" : "Select Plan"}
                       </button>
                     </article>
                   );
@@ -838,7 +838,7 @@ export function PilgrimSelectionPage({
           {activePlan && (
             <div className="pilgrim-desktop-cta">
               <div>
-                <p className="pilgrim-desktop-cta__label">Your selection</p>
+                <p className="pilgrim-desktop-cta__label">Your Selection</p>
                 <p className="pilgrim-desktop-cta__plan">{activePlanLabel}</p>
               </div>
               <div className="pilgrim-desktop-cta__price">
@@ -851,7 +851,7 @@ export function PilgrimSelectionPage({
                 href={checkoutHref}
                 className="pilgrim-desktop-cta__button"
               >
-                Continue to checkout
+                Continue to Checkout
               </a>
             </div>
           )}
@@ -861,7 +861,7 @@ export function PilgrimSelectionPage({
             aria-labelledby="pilgrim-gift-downloads-title"
           >
             <h2 id="pilgrim-gift-downloads-title" className="pilgrim-gift-downloads__title">
-              Download before you fly
+              Download Before You Fly
             </h2>
             <p className="pilgrim-gift-downloads__text">
               Free al-Haramayn guides for your phone — also included with your
@@ -890,7 +890,7 @@ export function PilgrimSelectionPage({
 
           <section className="pilgrim-compare" aria-labelledby="pilgrim-compare-title">
             <h2 id="pilgrim-compare-title" className="pilgrim-compare__title">
-              Benefits comparison
+              Benefits Comparison
             </h2>
             <p className="pilgrim-compare__subtitle">
               Compare data, hotspot, and support across our pilgrimage profiles.
@@ -915,42 +915,42 @@ export function PilgrimSelectionPage({
                     <td>Saudi + Turkey, Egypt, or Morocco</td>
                   </tr>
                   <tr>
-                    <td>Data allowance</td>
+                    <td>Data Allowance</td>
                     <td>5GB · 30 days</td>
                     <td>10GB or 20GB</td>
                     <td>3GB/day · then 1 Mbps</td>
                     <td>5GB / 15d or 10GB / 30d</td>
                   </tr>
                   <tr>
-                    <td>Trip length</td>
+                    <td>Trip Length</td>
                     <td>30 days</td>
                     <td>30 days</td>
                     <td>7 or 10 days</td>
                     <td>15 or 30 days</td>
                   </tr>
                   <tr>
-                    <td>Hotspot sharing</td>
+                    <td>Hotspot Sharing</td>
                     <td>Included</td>
                     <td>Included</td>
                     <td>Included</td>
                     <td>Included</td>
                   </tr>
                   <tr>
-                    <td>WhatsApp support</td>
+                    <td>WhatsApp Support</td>
                     <td>24/7</td>
                     <td>24/7</td>
                     <td>24/7</td>
                     <td>24/7</td>
                   </tr>
                   <tr>
-                    <td>Video calls &amp; live updates</td>
+                    <td>Video Calls &amp; Live Updates</td>
                     <td>Light use</td>
                     <td>Regular use</td>
                     <td>Heavy daily use</td>
                     <td>Multi-country trip use</td>
                   </tr>
                   <tr>
-                    <td>Best for</td>
+                    <td>Best For</td>
                     <td>Short stays</td>
                     <td>Most first-time pilgrims</td>
                     <td>Travelers who prefer day-pass unlimited</td>
@@ -965,7 +965,7 @@ export function PilgrimSelectionPage({
         {activePlan && (
           <div className="pilgrim-sticky-cta" role="region" aria-label="Purchase">
             <div className="pilgrim-sticky-cta__meta">
-              <span className="pilgrim-sticky-cta__label">Selected plan</span>
+              <span className="pilgrim-sticky-cta__label">Selected Plan</span>
               <span className="pilgrim-sticky-cta__plan">{activePlanLabel}</span>
               <PsychologicalPrice
                 parts={stickyParts}

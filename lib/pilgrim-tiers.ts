@@ -41,7 +41,7 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
   {
     key: "unlimited",
     title: "Umrah Unlimited",
-    subtitle: "3GB/day · day-pass",
+    subtitle: "3GB/Day · Day-Pass",
     description:
       "3GB/day at full speed, then up to 1 Mbps — for travelers who do not want to count gigabytes.",
     highlights: [

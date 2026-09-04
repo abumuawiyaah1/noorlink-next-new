@@ -10,9 +10,9 @@ export function PilgrimageInspiration() {
   return (
     <section className="pilgrim-inspiration" aria-labelledby="pilgrim-inspiration-title">
       <div className="pilgrim-inspiration__header">
-        <span className="pilgrim-inspiration__kicker">For the journey of a lifetime</span>
+        <span className="pilgrim-inspiration__kicker">For the Journey of a Lifetime</span>
         <h2 id="pilgrim-inspiration-title" className="pilgrim-inspiration__title">
-          Worship first. Connectivity in the background.
+          Worship First. Connectivity in the Background.
         </h2>
         <p className="pilgrim-inspiration__lead">
           NoorLink helps pilgrims stay connected in Makkah and Madinah without letting

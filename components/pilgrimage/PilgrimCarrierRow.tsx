@@ -15,7 +15,7 @@ export function PilgrimCarrierRow() {
     <div className="pilgrim-carriers" aria-label="Networks and payment security">
       <div className="pilgrim-carriers__row">
         <div className="pilgrim-carriers__group">
-          <span className="pilgrim-carriers__label">Powered in Saudi Arabia by</span>
+          <span className="pilgrim-carriers__label">Powered in Saudi Arabia By</span>
           <ul className="pilgrim-carriers__list">
             {carriers.map((name) => (
               <li key={name} className="pilgrim-carriers__item">
@@ -26,7 +26,7 @@ export function PilgrimCarrierRow() {
         </div>
         <span className="pilgrim-carriers__divider" aria-hidden="true" />
         <div className="pilgrim-carriers__pay">
-          <span className="pilgrim-carriers__label">Pay securely with</span>
+          <span className="pilgrim-carriers__label">Pay Securely With</span>
           <PaymentMethodBadges className="pilgrim-carriers__pay-badges" />
         </div>
       </div>

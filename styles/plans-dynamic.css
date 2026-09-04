@@ -317,8 +317,8 @@
   margin: 0 0 18px;
   padding: 18px 20px;
   border-radius: var(--radius-card-lg);
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--card-gradient-border);
+  border: 3px solid transparent;
 }
 
 .plans-trust__network {

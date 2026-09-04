@@ -61,7 +61,7 @@ export const PILGRIMAGE_GALLERY: PilgrimageGalleryItem[] = [
   },
   {
     id: "preparation",
-    title: "Prepare before you travel",
+    title: "Prepare Before You Travel",
     caption: "Install your eSIM at home so worship and logistics — not phone shops — come first.",
     image: "/images/pilgrimage/pilgrim-preparation.png",
     imageAlt: "Traveler preparing for pilgrimage at home with phone and essentials",

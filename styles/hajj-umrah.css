@@ -23,7 +23,7 @@
   padding: 1.5rem;
   border-radius: var(--radius-card-lg);
   background: var(--card-gradient-border);
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   box-shadow: var(--shadow-card);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   scroll-margin-bottom: 6.5rem;
@@ -51,8 +51,10 @@
   margin-bottom: 1.5rem;
   padding: 0.85rem 1rem;
   border-radius: var(--radius-control);
-  background: var(--bg-body);
-  border: 1px solid #e5e7eb;
+  background:
+    linear-gradient(var(--bg-body), var(--bg-body)) padding-box,
+    var(--border-gradient) border-box;
+  border: 3px solid transparent;
 }
 
 .pilgrim-carriers__row {
@@ -299,7 +301,7 @@
   padding: 1rem 1.15rem;
   border-radius: var(--radius-card);
   background: var(--card-gradient-border);
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   box-shadow: var(--shadow-card);
 }
 
@@ -578,7 +580,7 @@
   padding: 1.5rem;
   border-radius: var(--radius-card-lg);
   background: var(--card-gradient-border);
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   box-shadow: var(--shadow-card);
 }
 
@@ -618,14 +620,15 @@
   height: 100%;
   padding: 0.85rem 1rem;
   border-radius: var(--radius-control);
-  background: var(--bg-body);
-  border: 1px solid #e5e7eb;
+  background:
+    linear-gradient(var(--bg-body), var(--bg-body)) padding-box,
+    var(--border-gradient) border-box;
+  border: 2px solid transparent;
   text-decoration: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
 }
 
 .pilgrim-gift-downloads__link:hover {
-  border-color: rgba(255, 149, 0, 0.45);
   box-shadow: 0 4px 14px rgba(15, 61, 62, 0.06);
 }
 
@@ -643,25 +646,27 @@
 
 .pilgrim-compare {
   overflow-x: auto;
-  border-radius: var(--radius-card-lg);
+  margin-bottom: 1.5rem;
+  border-radius: var(--radius-card);
   background: var(--card-gradient-border);
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   box-shadow: var(--shadow-card);
 }
 
 .pilgrim-compare__title {
-  padding: 1.25rem 1.5rem 0;
+  padding: 0.85rem 1rem 0;
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 800;
   color: var(--primary);
 }
 
 .pilgrim-compare__subtitle {
-  padding: 0.35rem 1.5rem 1rem;
+  padding: 0.2rem 1rem 0.65rem;
   margin: 0;
   color: var(--text-muted);
-  font-size: 0.92rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
 }
 
 .pilgrim-compare__table-wrap {
@@ -671,22 +676,26 @@
 
 .pilgrim-compare table {
   width: 100%;
-  min-width: 640px;
+  min-width: 520px;
   border-collapse: collapse;
 }
 
 .pilgrim-compare th,
 .pilgrim-compare td {
-  padding: 0.9rem 1rem;
+  padding: 0.5rem 0.75rem;
   text-align: left;
   border-top: 1px solid #eef0f2;
-  font-size: 0.9rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
 }
 
 .pilgrim-compare th {
   background: var(--bg-body);
   color: var(--primary);
   font-weight: 800;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .pilgrim-desktop-cta {
@@ -698,7 +707,7 @@
   padding: 1.1rem 1.25rem;
   border-radius: var(--radius-card);
   background: var(--card-gradient-border);
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   box-shadow: var(--shadow-card);
 }
 
@@ -919,7 +928,7 @@
   padding: 1.35rem 1.4rem;
   border-radius: var(--radius-card-lg);
   background: var(--card-gradient-border);
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   box-shadow: var(--shadow-card);
   text-align: center;
 }
@@ -978,8 +987,8 @@
 .pilgrim-inspiration__quote-card {
   padding: 1rem 1.05rem;
   border-radius: var(--radius-card);
-  background: #fff;
-  border: 1px solid rgba(15, 61, 62, 0.08);
+  background: var(--card-gradient-border);
+  border: 3px solid transparent;
   box-shadow: 0 6px 18px rgba(15, 61, 62, 0.05);
 }
 
@@ -991,16 +1000,18 @@
 }
 
 .pilgrim-inspiration__gallery-card {
-  overflow: hidden;
+  padding: 3px;
   border-radius: var(--radius-card-lg);
-  background: var(--card-gradient-border);
-  border: 2px solid transparent;
+  background: var(--border-gradient);
+  border: none;
   box-shadow: var(--shadow-card);
 }
 
 .pilgrim-inspiration__gallery-media {
   position: relative;
   aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: calc(var(--radius-card-lg) - 3px) calc(var(--radius-card-lg) - 3px) 0 0;
   background: #eef3f3;
 }
 
@@ -1011,6 +1022,7 @@
 
 .pilgrim-inspiration__gallery-body {
   padding: 0.9rem 1rem 1.05rem;
+  border-radius: 0 0 calc(var(--radius-card-lg) - 3px) calc(var(--radius-card-lg) - 3px);
   background: #fff;
 }
 
@@ -1033,6 +1045,7 @@
   padding: 0.95rem 1.1rem;
   border-radius: var(--radius-card);
   background: rgba(15, 61, 62, 0.04);
+  border: 1px solid rgba(15, 61, 62, 0.1);
   border-left: 4px solid var(--accent);
   color: #334155;
   font-size: 0.92rem;

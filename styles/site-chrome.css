@@ -402,7 +402,15 @@
 .loyalty-card.card-refer,
 .regional-promo__card,
 .regional-map__panel,
-.ramadan-promo {
+.ramadan-promo,
+.pilgrim-card,
+.pilgrim-support-cta,
+.pilgrim-gift-downloads,
+.pilgrim-compare,
+.pilgrim-desktop-cta,
+.pilgrim-inspiration__featured,
+.pilgrim-inspiration__quote-card,
+.plans-trust {
   border: 3px solid transparent;
   background: var(--card-gradient-border);
 }
