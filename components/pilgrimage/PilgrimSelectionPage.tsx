@@ -12,6 +12,7 @@ import { CountrySearch } from "@/components/search/CountrySearch";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { PilgrimCarrierRow } from "@/components/pilgrimage/PilgrimCarrierRow";
 import { PilgrimageInspiration } from "@/components/pilgrimage/PilgrimageInspiration";
+import { TrustProofBanner } from "@/components/landing/TrustProofBanner";
 import {
   fetchPlansByCountry,
   type EsimPlan,
@@ -619,6 +620,8 @@ export function PilgrimSelectionPage({
                   Check Compatibility
                 </button>
               </div>
+
+              <TrustProofBanner className="trust-proof-banner--pilgrim" />
 
               <div className="plans-reassurance">
                 <span>Ready Before You Fly</span>

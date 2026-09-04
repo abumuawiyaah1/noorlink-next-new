@@ -420,3 +420,29 @@
   background: transparent;
   box-shadow: none;
 }
+
+/* Slim social proof until public reviews are ready */
+.trust-proof-banner {
+  margin: 0 auto;
+  max-width: 42rem;
+  padding: 0.55rem 1.1rem;
+  text-align: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--primary);
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--border-gradient) border-box;
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(15, 61, 62, 0.06);
+}
+
+.trust-proof-banner--home {
+  margin: -0.5rem auto 1.5rem;
+}
+
+.trust-proof-banner--pilgrim {
+  margin: 0 auto 1.15rem;
+}
