@@ -51,6 +51,7 @@ import {
   rememberRef,
   withAttribution,
 } from "@/lib/affiliate-link";
+import { PILGRIM_GIFT_GUIDES } from "@/lib/pilgrim-gift-guides";
 import { PILGRIMAGE_BRAND_LINE } from "@/lib/brand";
 import "@/styles/hajj-umrah.css";
 import "@/styles/plans-dynamic.css";
@@ -605,7 +606,7 @@ export function PilgrimSelectionPage({
                     Saudi Arabia coverage · Makkah &amp; Madinah ready
                   </p>
                   <p className="plans-trust__meta">
-                    Enjoy hassle-free travel
+                    Install before you fly
                     {cheapest != null ? ` · From $${cheapest.toFixed(2)}` : ""}
                   </p>
                 </div>
@@ -855,40 +856,36 @@ export function PilgrimSelectionPage({
             </div>
           )}
 
-          <section className="pilgrim-essentials" aria-labelledby="pilgrim-essentials-title">
-            <h2 id="pilgrim-essentials-title" className="pilgrim-essentials__title">
-              Pilgrim essentials
+          <section
+            className="pilgrim-gift-downloads"
+            aria-labelledby="pilgrim-gift-downloads-title"
+          >
+            <h2 id="pilgrim-gift-downloads-title" className="pilgrim-gift-downloads__title">
+              Download before you fly
             </h2>
-            <p className="pilgrim-essentials__text">
-              Prepare your devices before travel. Official apps and our compatibility
-              check help ensure a smooth arrival in the Kingdom.
+            <p className="pilgrim-gift-downloads__text">
+              Free al-Haramayn guides for your phone — also included with your
+              pilgrimage eSIM purchase. Not required to use your plan.
             </p>
-            <div className="pilgrim-essentials__links">
-              <a
-                className="pilgrim-essentials__link"
-                href="https://www.nusuk.sa/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Nusuk installation guide
-              </a>
-              <a
-                className="pilgrim-essentials__link"
-                href="https://ta.sdaia.gov.sa/home"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Tawakkalna setup guide
-              </a>
-              <button
-                type="button"
-                className="pilgrim-essentials__button"
-                onClick={() => setCompatibilityOpen(true)}
-              >
-                <PhoneDeviceIcon className="pilgrim-essentials__phone" />
-                Compatibility Checker
-              </button>
-            </div>
+            <ul className="pilgrim-gift-downloads__list">
+              {PILGRIM_GIFT_GUIDES.map((guide) => (
+                <li key={guide.id}>
+                  <a
+                    className="pilgrim-gift-downloads__link"
+                    href={guide.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="pilgrim-gift-downloads__link-title">
+                      {guide.title}
+                    </span>
+                    <span className="pilgrim-gift-downloads__link-blurb">
+                      {guide.blurb}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </section>
 
           <section className="pilgrim-compare" aria-labelledby="pilgrim-compare-title">

@@ -573,7 +573,7 @@
   box-shadow: 0 4px 14px rgba(255, 149, 0, 0.3);
 }
 
-.pilgrim-essentials {
+.pilgrim-gift-downloads {
   margin-bottom: 2.5rem;
   padding: 1.5rem;
   border-radius: var(--radius-card-lg);
@@ -582,56 +582,63 @@
   box-shadow: var(--shadow-card);
 }
 
-.pilgrim-essentials__title {
+.pilgrim-gift-downloads__title {
   margin: 0 0 0.5rem;
   font-size: 1.2rem;
   font-weight: 800;
   color: var(--primary);
 }
 
-.pilgrim-essentials__text {
+.pilgrim-gift-downloads__text {
   margin: 0 0 1rem;
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.6;
+  max-width: 40rem;
 }
 
-.pilgrim-essentials__links {
+.pilgrim-gift-downloads__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.65rem;
+}
+
+@media (min-width: 720px) {
+  .pilgrim-gift-downloads__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.pilgrim-gift-downloads__link {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.pilgrim-essentials__link,
-.pilgrim-essentials__button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.7rem 1rem;
+  flex-direction: column;
+  gap: 0.25rem;
+  height: 100%;
+  padding: 0.85rem 1rem;
   border-radius: var(--radius-control);
-  font-size: 0.88rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: opacity 0.15s ease;
-}
-
-.pilgrim-essentials__link {
   background: var(--bg-body);
-  color: var(--primary);
   border: 1px solid #e5e7eb;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.pilgrim-essentials__button {
-  cursor: pointer;
-  background: var(--accent-soft);
-  color: #c2410c;
-  border: 1px solid rgba(255, 149, 0, 0.35);
+.pilgrim-gift-downloads__link:hover {
+  border-color: rgba(255, 149, 0, 0.45);
+  box-shadow: 0 4px 14px rgba(15, 61, 62, 0.06);
 }
 
-.pilgrim-essentials__phone {
-  width: 1.15rem;
-  height: 1.7rem;
-  flex-shrink: 0;
+.pilgrim-gift-downloads__link-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.pilgrim-gift-downloads__link-blurb {
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: var(--text-muted);
 }
 
 .pilgrim-compare {
