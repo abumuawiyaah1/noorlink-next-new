@@ -8,6 +8,7 @@ import {
 } from "@/lib/regional-products";
 import { RegionalWorldMap } from "@/components/landing/RegionalWorldMap";
 import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
+import { RegionFlagPreview } from "@/components/ui/RegionFlagPreview";
 import { getRegionalImageUrl } from "@/lib/country-images";
 import {
   PENDING_PRICE_LABEL,
@@ -47,8 +48,8 @@ export function RegionalPlansPromo() {
               <Link
                 key={routeSlug}
                 href={plansPathForRegion(routeSlug)}
-                className={`regional-promo__card${featured ? " is-featured" : ""}`}
-                aria-label={`View ${product.displayName} plans, ${price}`}
+                className={`regional-promo__card region-card${featured ? " is-featured" : ""}`}
+                aria-label={`View ${product.displayName} plans and covered countries, ${price}`}
               >
                 <div className="regional-promo__media">
                   <DestinationCardMedia
@@ -68,6 +69,7 @@ export function RegionalPlansPromo() {
                   <span className="regional-promo__meta">
                     {product.countries.length} destinations
                   </span>
+                  <RegionFlagPreview routeSlug={routeSlug} previewCount={10} />
                   <span
                     className={`regional-promo__price${hasPrice ? "" : " is-pending"}`}
                   >

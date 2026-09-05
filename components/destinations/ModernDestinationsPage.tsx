@@ -9,13 +9,23 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import {
   DESTINATION_FILTERS,
   filterDestinationCards,
-  type DestinationRegion,
+  type DestinationCard,
+  type DestinationFilterId,
 } from "@/lib/destinations-catalog";
 import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
+import { RegionFlagPreview } from "@/components/ui/RegionFlagPreview";
+import { getCountryFlag } from "@/lib/country-flags";
 import {
   PENDING_PRICE_LABEL,
   useLiveStartingPrices,
 } from "@/components/destinations/useLiveStartingPrices";
+import { getRegionalProductByApiId } from "@/lib/regional-products";
+import { fetchTrendingCountrySignals } from "@/lib/analytics-api";
+import {
+  buildHybridPopularCountryIds,
+  cardsForPopularIds,
+  defaultPopularCountryCards,
+} from "@/lib/popular-countries";
 import {
   getRememberedPromo,
   normalizePromoCode,
@@ -39,7 +49,7 @@ const DESTINATIONS_NAV = [
 
 type Props = {
   initialQuery?: string;
-  initialRegion?: "all" | DestinationRegion;
+  initialRegion?: DestinationFilterId;
   initialPromo?: string;
   initialRef?: string;
 };
@@ -52,9 +62,12 @@ export function ModernDestinationsPage({
 }: Props) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
-  const [region, setRegion] = useState<"all" | DestinationRegion>(initialRegion);
+  const [region, setRegion] = useState<DestinationFilterId>(initialRegion);
   const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
   const [refCode, setRefCode] = useState(() => normalizeRefCode(initialRef));
+  const [trendingCards, setTrendingCards] = useState<DestinationCard[]>(() =>
+    defaultPopularCountryCards(),
+  );
 
   useEffect(() => {
     const resolved =
@@ -73,10 +86,28 @@ export function ModernDestinationsPage({
     }
   }, [initialRef]);
 
-  const cards = useMemo(
-    () => filterDestinationCards(query, region),
-    [query, region],
-  );
+  useEffect(() => {
+    let cancelled = false;
+
+    async function hydrateTrending() {
+      const trending = await fetchTrendingCountrySignals();
+      if (cancelled) return;
+      const ids = buildHybridPopularCountryIds({ trending });
+      setTrendingCards(cardsForPopularIds(ids));
+    }
+
+    void hydrateTrending();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const cards = useMemo(() => {
+    const trimmed = query.trim();
+    // Trending tab = same 8 Popular countries (no regions / Global).
+    if (region === "all" && !trimmed) return trendingCards;
+    return filterDestinationCards(query, region);
+  }, [query, region, trendingCards]);
   const livePrices = useLiveStartingPrices(
     cards.map((card) => card.priceCountryId),
   );
@@ -143,13 +174,18 @@ export function ModernDestinationsPage({
           {cards.map((card, index) => {
             const livePrice = livePrices[card.priceCountryId];
             const priceLabel = livePrice?.label ?? PENDING_PRICE_LABEL;
+            const regional = getRegionalProductByApiId(card.priceCountryId);
 
             return (
               <Link
                 key={card.id}
                 href={withAttribution(card.href, { promo, ref: refCode })}
-                className={`card ${card.className}`}
-                aria-label={`View plans for ${card.title}, ${priceLabel}`}
+                className={`card ${card.className}${regional ? " region-card" : ""}`}
+                aria-label={
+                  regional
+                    ? `View ${card.title} regional plans and covered countries, ${priceLabel}`
+                    : `View plans for ${card.title}, ${priceLabel}`
+                }
               >
                 <DestinationCardMedia
                   src={card.image}
@@ -157,13 +193,21 @@ export function ModernDestinationsPage({
                   priority={index < 3}
                 />
                 <div className="card-body">
-                  <h3>{card.title}</h3>
+                  <h3>
+                    <span className="card-flag" aria-hidden="true">
+                      {getCountryFlag(card.priceCountryId)}
+                    </span>{" "}
+                    {card.title}
+                  </h3>
                   <p className="card-desc">{card.description}</p>
                   <ul className="card-tips">
                     {card.thingsToDo.slice(0, 3).map((tip) => (
                       <li key={tip}>{tip}</li>
                     ))}
                   </ul>
+                  {regional ? (
+                    <RegionFlagPreview routeSlug={regional.routeSlug} />
+                  ) : null}
                   <span
                     className={`card-price${livePrice ? "" : " is-pending"}`}
                     aria-busy={!livePrice}

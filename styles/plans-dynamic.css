@@ -981,6 +981,9 @@
 }
 
 .plans-regional-coverage__chips li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 6px 12px;
   border-radius: 999px;
   background: #fff;
@@ -988,6 +991,11 @@
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--primary);
+}
+
+.plans-regional-coverage__flag {
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .plans-regional-coverage__more {
@@ -1033,4 +1041,87 @@
   font-size: 0.82rem;
   color: var(--text-muted);
   line-height: 1.4;
+}
+
+/* Seasonal / festivity story — below plans so checkout stays first */
+.plans-popular-story {
+  margin: 40px 0 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  padding: 20px;
+  border-radius: var(--radius-card-lg);
+  background: #fff;
+  border: 1px solid rgba(15, 61, 62, 0.1);
+  box-shadow: 0 10px 28px rgba(15, 61, 62, 0.06);
+}
+
+.plans-popular-story__media {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0f3d3e;
+  aspect-ratio: 16 / 10;
+}
+
+.plans-popular-story__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plans-popular-story__kicker {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ff9500;
+}
+
+.plans-popular-story__copy h2 {
+  margin: 0 0 10px;
+  font-size: 1.35rem;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.plans-popular-story__lead {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.plans-popular-story__tips {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.plans-popular-story__tips li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f3d3e;
+  line-height: 1.35;
+}
+
+.plans-popular-story__tips li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #ff9500;
+  font-weight: 800;
+}
+
+@media (max-width: 768px) {
+  .plans-popular-story {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
 }

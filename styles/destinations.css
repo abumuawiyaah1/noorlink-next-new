@@ -110,7 +110,8 @@
         .bg-dynamic { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
 
         .flag { font-size: 4rem; display: block; margin: 0 auto 15px auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); transition: 0.4s; }
-        .card h3 { margin: 0; font-size: 1.3rem; font-weight: 800; color: var(--primary); }
+        .card h3 { margin: 0; font-size: 1.3rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.45rem; }
+        .card-flag { font-size: 1.35rem; line-height: 1; flex-shrink: 0; }
         .card-desc {
             margin: 0;
             font-size: 0.9rem;
@@ -156,6 +157,83 @@
             background: rgba(15, 61, 62, 0.08);
             color: var(--primary);
             font-weight: 700;
+        }
+
+        /* Multi-country region cards: flags only on hover */
+        .dest-grid .region-card {
+            overflow: visible;
+        }
+        .dest-grid .region-card .card-body {
+            position: relative;
+            overflow: visible;
+        }
+        .dest-grid .region-flag-preview {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: calc(100% - 8px);
+            z-index: 8;
+            pointer-events: none;
+        }
+        .dest-grid .region-flag-preview__panel {
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: #fff;
+            border: 1px solid rgba(15, 61, 62, 0.12);
+            box-shadow: 0 14px 32px rgba(5, 25, 26, 0.16);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(4px);
+            transition: opacity 0.18s ease, visibility 0.18s ease, transform 0.18s ease;
+        }
+        .dest-grid .region-card:hover .region-flag-preview__panel,
+        .dest-grid .region-card:focus-within .region-flag-preview__panel {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .dest-grid .region-flag-preview__title {
+            margin: 0 0 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            color: #5b6b6c;
+        }
+        .dest-grid .region-flag-preview__flags {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 10px;
+            max-height: 12rem;
+            overflow: auto;
+        }
+        .dest-grid .region-flag-preview__flags li {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #0f3d3e;
+            line-height: 1.25;
+            min-width: 0;
+        }
+        .dest-grid .region-flag-preview__name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .dest-grid .region-flag-preview__more {
+            grid-column: 1 / -1;
+            color: #ff9500 !important;
+            font-weight: 800 !important;
+        }
+        @media (hover: none) {
+            .dest-grid .region-flag-preview {
+                display: none;
+            }
         }
 
         /* SEARCH CARD */

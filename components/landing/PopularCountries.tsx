@@ -15,31 +15,44 @@ import {
   cardsForPopularIds,
   defaultPopularCountryCards,
   resolvePopularSeason,
+  type PopularSeasonId,
 } from "@/lib/popular-countries";
+import { getPopularStory } from "@/lib/popular-moments";
+
+type PopularCard = DestinationCard & { reason: string };
+
+function withReasons(
+  cards: DestinationCard[],
+  seasonId: PopularSeasonId,
+): PopularCard[] {
+  return cards.map((card) => ({
+    ...card,
+    reason: getPopularStory(card.id, seasonId).reason,
+  }));
+}
 
 export function PopularCountries() {
-  const [cards, setCards] = useState<DestinationCard[]>(() =>
-    defaultPopularCountryCards(),
+  const season = resolvePopularSeason();
+  const [cards, setCards] = useState<PopularCard[]>(() =>
+    withReasons(defaultPopularCountryCards(), season.id),
   );
-  const [seasonLabel, setSeasonLabel] = useState(
-    () => resolvePopularSeason().label,
-  );
+  const [seasonLabel, setSeasonLabel] = useState(season.label);
   const livePrices = useLiveStartingPrices(cards.map((card) => card.priceCountryId));
 
   useEffect(() => {
     let cancelled = false;
 
     async function hydrate() {
-      const season = resolvePopularSeason();
+      const nextSeason = resolvePopularSeason();
       const trending = await fetchTrendingCountrySignals();
       if (cancelled) return;
 
       const ids = buildHybridPopularCountryIds({
-        season,
+        season: nextSeason,
         trending,
       });
-      setSeasonLabel(season.label);
-      setCards(cardsForPopularIds(ids));
+      setSeasonLabel(nextSeason.label);
+      setCards(withReasons(cardsForPopularIds(ids), nextSeason.id));
     }
 
     void hydrate();
@@ -54,10 +67,13 @@ export function PopularCountries() {
         <div className="popular-countries__header">
           <span className="why-kicker">{seasonLabel} picks</span>
           <h2 id="popular-countries-heading">Popular destinations</h2>
-          <p>Seasonal favorites mixed with where travelers are looking right now.</p>
+          <p>
+            Eight countries worth opening right now — hover for why, then pick a
+            plan.
+          </p>
         </div>
 
-        <div className="popular-countries__track" role="list">
+        <div className="popular-countries__grid" role="list">
           {cards.map((card, index) => {
             const price = livePrices[card.priceCountryId]?.label ?? PENDING_PRICE_LABEL;
             const flag = getCountryFlag(card.priceCountryId);
@@ -68,7 +84,7 @@ export function PopularCountries() {
                 href={card.href}
                 className="popular-country"
                 role="listitem"
-                aria-label={`View ${card.title} plans, ${price}`}
+                aria-label={`View ${card.title} plans, ${card.reason}, ${price}`}
               >
                 <div className="popular-country__media">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -80,16 +96,18 @@ export function PopularCountries() {
                     alt={`${card.title} travel destination`}
                     width={400}
                     height={400}
-                    loading={index < 2 ? "eager" : "lazy"}
+                    loading={index < 4 ? "eager" : "lazy"}
                     decoding="async"
-                    fetchPriority={index < 2 ? "high" : "auto"}
+                    fetchPriority={index < 4 ? "high" : "auto"}
                   />
                   <span className="popular-country__flag" aria-hidden="true">
                     {flag}
                   </span>
+                  <span className="popular-country__reason-peek">{card.reason}</span>
                 </div>
                 <div className="popular-country__body">
                   <span className="popular-country__name">{card.title}</span>
+                  <span className="popular-country__reason">{card.reason}</span>
                   <span
                     className={`popular-country__price${livePrices[card.priceCountryId] ? "" : " is-pending"}`}
                   >

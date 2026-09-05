@@ -1,7 +1,9 @@
 import { DESTINATION_CARDS, type DestinationCard } from "@/lib/destinations-catalog";
 import { normalizeCountrySlug } from "@/lib/country-slugs";
+import { getActiveFestivityCountryIds } from "@/lib/popular-moments";
 
-export const POPULAR_COUNTRIES_ROW_SIZE = 6;
+/** Eight countries in two rows on the homepage Popular section. */
+export const POPULAR_COUNTRIES_ROW_SIZE = 8;
 
 /** Minimum search count before a trending destination can fill a hybrid slot. */
 export const POPULAR_TRENDING_MIN_COUNT = 3;
@@ -15,44 +17,81 @@ export type PopularSeasonId =
 export type PopularSeasonConfig = {
   id: PopularSeasonId;
   label: string;
-  /** Locked brand / campaign destinations (shown first). */
+  /** Locked brand / campaign destinations (shown first). Countries only. */
   anchors: readonly string[];
-  /** Used when trending is sparse — completes the row after anchors. */
+  /** Used when trending is sparse — completes the grid after anchors. */
   fallbacks: readonly string[];
 };
 
 /**
  * NoorLink seasonal calendar (UTC month).
- * Anchors protect pilgrimage + leisure corridors; fallbacks keep the row full.
+ * Anchors protect pilgrimage + leisure corridors; fallbacks keep the grid full.
+ * Regions / Global never appear here.
  */
 export const POPULAR_SEASONS: Record<PopularSeasonId, PopularSeasonConfig> = {
   "winter-sun": {
     id: "winter-sun",
     label: "Winter sun",
-    anchors: ["caribbean", "mexico", "usa"],
-    fallbacks: ["turkey", "uae", "uk", "france", "japan", "saudi-arabia"],
+    anchors: ["jamaica", "mexico", "usa"],
+    fallbacks: [
+      "turkey",
+      "uae",
+      "uk",
+      "france",
+      "japan",
+      "saudi-arabia",
+      "spain",
+      "italy",
+    ],
   },
   "pilgrimage-spring": {
     id: "pilgrimage-spring",
     label: "Pilgrimage spring",
     anchors: ["saudi-arabia", "turkey", "uae"],
-    fallbacks: ["uk", "france", "usa", "japan", "caribbean", "germany"],
+    fallbacks: [
+      "uk",
+      "france",
+      "usa",
+      "japan",
+      "italy",
+      "germany",
+      "spain",
+      "mexico",
+    ],
   },
   summer: {
     id: "summer",
     label: "Summer travel",
-    anchors: ["france", "turkey", "uk"],
-    fallbacks: ["usa", "uae", "japan", "saudi-arabia", "caribbean", "germany"],
+    anchors: ["france", "italy", "spain"],
+    fallbacks: [
+      "turkey",
+      "uk",
+      "usa",
+      "jamaica",
+      "japan",
+      "uae",
+      "germany",
+      "saudi-arabia",
+    ],
   },
   "hajj-fall": {
     id: "hajj-fall",
     label: "Hajj & fall travel",
     anchors: ["saudi-arabia", "turkey", "uae"],
-    fallbacks: ["uk", "france", "usa", "japan", "caribbean", "germany"],
+    fallbacks: [
+      "uk",
+      "france",
+      "usa",
+      "japan",
+      "italy",
+      "germany",
+      "spain",
+      "mexico",
+    ],
   },
 };
 
-/** Map analytics labels / slugs → DESTINATION_CARDS ids we can price. */
+/** Map analytics labels / slugs → single-country DESTINATION_CARDS ids only. */
 const TRENDING_LABEL_TO_CARD_ID: Record<string, string> = {
   umrah: "saudi-arabia",
   hajj: "saudi-arabia",
@@ -60,12 +99,16 @@ const TRENDING_LABEL_TO_CARD_ID: Record<string, string> = {
   "saudi-arabia": "saudi-arabia",
   turkey: "turkey",
   france: "france",
+  italy: "italy",
+  spain: "spain",
   uk: "uk",
   "united kingdom": "uk",
   "united-kingdom": "uk",
   usa: "usa",
   "united states": "usa",
   "united-states": "usa",
+  "new york": "usa",
+  nyc: "usa",
   uae: "uae",
   "united arab emirates": "uae",
   dubai: "uae",
@@ -76,16 +119,20 @@ const TRENDING_LABEL_TO_CARD_ID: Record<string, string> = {
   brazil: "brazil",
   thailand: "thailand",
   china: "china",
-  caribbean: "caribbean",
-  bahamas: "caribbean",
-  jamaica: "caribbean",
-  europe: "europe",
-  "middle east": "middle-east",
-  "middle-east": "middle-east",
+  jamaica: "jamaica",
+  bahamas: "jamaica",
+  barbados: "jamaica",
+  // Regions intentionally omitted — Popular is countries only.
 };
 
+export function isPopularCountryCard(card: DestinationCard): boolean {
+  return !card.priceCountryId.startsWith("regional-");
+}
+
 function cardById(id: string): DestinationCard | undefined {
-  return DESTINATION_CARDS.find((card) => card.id === id);
+  const card = DESTINATION_CARDS.find((item) => item.id === id);
+  if (!card || !isPopularCountryCard(card)) return undefined;
+  return card;
 }
 
 export function resolvePopularSeason(date: Date = new Date()): PopularSeasonConfig {
@@ -109,16 +156,18 @@ export function trendingLabelToCardId(label: string): string | null {
 }
 
 /**
- * Hybrid row: seasonal anchors first, then trending (above min count),
- * then seasonal fallbacks — always exactly `target` sellable cards.
+ * Hybrid grid: season anchors first, then festivities, then demand,
+ * then fallbacks — always exactly `target` single-country cards.
  */
 export function buildHybridPopularCountryIds(options: {
   season?: PopularSeasonConfig;
   trending?: { label: string; count?: number }[];
   target?: number;
   minTrendingCount?: number;
+  date?: Date;
 }): string[] {
-  const season = options.season ?? resolvePopularSeason();
+  const date = options.date ?? new Date();
+  const season = options.season ?? resolvePopularSeason(date);
   const target = options.target ?? POPULAR_COUNTRIES_ROW_SIZE;
   const minCount = options.minTrendingCount ?? POPULAR_TRENDING_MIN_COUNT;
   const result: string[] = [];
@@ -132,8 +181,13 @@ export function buildHybridPopularCountryIds(options: {
     result.push(id);
   };
 
+  // 1) Season wins
   for (const id of season.anchors) push(id);
 
+  // 2) Active festivities / special days
+  for (const id of getActiveFestivityCountryIds(date)) push(id);
+
+  // 3) Live demand
   const trending = options.trending ?? [];
   for (const item of trending) {
     const count = item.count ?? 0;
@@ -141,11 +195,13 @@ export function buildHybridPopularCountryIds(options: {
     push(trendingLabelToCardId(item.label));
   }
 
+  // 4) Seasonal fallbacks
   for (const id of season.fallbacks) push(id);
 
-  // Absolute safety net — never return a short row.
+  // 5) Safety net — countries only
   for (const card of DESTINATION_CARDS) {
     if (result.length >= target) break;
+    if (!isPopularCountryCard(card)) continue;
     push(card.id);
   }
 
@@ -163,6 +219,7 @@ export function defaultPopularCountryCards(date?: Date): DestinationCard[] {
   const ids = buildHybridPopularCountryIds({
     season: resolvePopularSeason(date),
     trending: [],
+    date,
   });
   return cardsForPopularIds(ids);
 }

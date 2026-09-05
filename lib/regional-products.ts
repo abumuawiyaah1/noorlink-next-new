@@ -315,6 +315,16 @@ export function getRegionalProduct(routeSlug: string): RegionalProduct | null {
   return normalized ? REGIONAL_PRODUCTS[normalized] : null;
 }
 
+/** Resolve regional product from API `country_id` like `regional-europe`. */
+export function getRegionalProductByApiId(
+  apiCountryId: string,
+): RegionalProduct | null {
+  const id = apiCountryId.trim().toLowerCase();
+  return (
+    Object.values(REGIONAL_PRODUCTS).find((p) => p.apiCountryId === id) ?? null
+  );
+}
+
 export function plansPathForRegion(routeSlug: string): string {
   const product = getRegionalProduct(routeSlug);
   if (!product) return "/destinations";

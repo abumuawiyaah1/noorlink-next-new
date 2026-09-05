@@ -65,7 +65,7 @@ export function RegionalWorldMap() {
       <div className="regional-map__canvas" role="group" aria-labelledby={titleId}>
         <p id={titleId} className="sr-only">
           Interactive world regions map for NoorLink eSIM plans. Select a
-          colored region to view multi-country coverage.
+          colored region to view regional coverage.
         </p>
         <svg
           className="regional-map__svg regional-map__svg--geo"

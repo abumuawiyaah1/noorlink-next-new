@@ -3,12 +3,16 @@
  * Download missing country hero photos from Wikimedia Commons (free licenses).
  *
  * Usage: node scripts/fetch-country-images.mjs
- *        node scripts/fetch-country-images.mjs russia colombia  (subset)
+ *        node scripts/fetch-country-images.mjs kenya ghana  (subset)
+ *        node scripts/fetch-country-images.mjs --missing     (only slugs without a photo)
  *
  * Then: npm run sync-country-images && npm run optimize-images
+ *
+ * Goal: keep a deep photo library so any sellable country can show a real place
+ * image (backend can originate plans for many countries; UI should not look empty).
  */
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -17,53 +21,114 @@ const ROOT = path.join(__dirname, "..");
 const DEST_DIR = path.join(ROOT, "public/images/destinations");
 const ATTRIBUTION = path.join(ROOT, "public/images/destinations/ATTRIBUTION.md");
 
-/** slug → Wikimedia search query (landmark / skyline) */
+/** slug → Wikimedia search query (landmark / skyline / place atmosphere) */
 const SEARCH_QUERIES = {
+  // Americas
   argentina: "Buenos Aires skyline Argentina",
-  australia: "Sydney Opera House harbour",
-  austria: "Vienna Austria cityscape",
+  aruba: "Eagle Beach Aruba",
   bahamas: "Nassau Bahamas beach",
-  bahrain: "Manama Bahrain skyline",
   barbados: "Bridgetown Barbados",
-  belgium: "Grand Place Brussels",
+  belize: "Caye Caulker Belize Barrier Reef Aerial",
+  bolivia: "La Paz Bolivia city",
+  brazil: "Rio de Janeiro Brazil Sugarloaf",
+  "cayman-islands": "Grand Cayman Seven Mile Beach",
+  canada: "Toronto Canada skyline",
   chile: "Santiago Chile Andes",
-  colombia: "Bogota Colombia skyline",
+  colombia: "Cartagena Colombia old city",
   "costa-rica": "Arenal Volcano Costa Rica landscape",
-  denmark: "Copenhagen Nyhavn",
   "dominican-republic": "Punta Cana Dominican Republic beach",
-  egypt: "Pyramids Giza Egypt",
-  fiji: "Fiji islands beach",
+  ecuador: "Quito Ecuador historic center",
+  guatemala: "Semuc Champey Guatemala",
+  honduras: "West Bay Beach Roatan Honduras",
+  jamaica: "Montego Bay Jamaica beach",
+  mexico: "Mexico City Zocalo",
+  panama: "Panama City skyline",
+  paraguay: "Asuncion Paraguay",
+  peru: "Machu Picchu Peru",
+  "puerto-rico": "San Juan Puerto Rico",
+  "trinidad-and-tobago": "Maracas Beach Trinidad",
+  uruguay: "Montevideo Uruguay",
+  usa: "New York City skyline Manhattan",
+  venezuela: "Caracas Venezuela",
+
+  // Europe
+  austria: "Vienna Austria cityscape",
+  belgium: "Grand Place Brussels",
+  bulgaria: "Sofia Bulgaria",
+  croatia: "Dubrovnik Croatia old town",
+  cyprus: "Limassol Cyprus coast",
+  czechia: "Prague Czech Republic old town",
+  denmark: "Copenhagen Nyhavn",
   finland: "Helsinki Finland harbour",
+  france: "Paris France Eiffel Tower",
+  germany: "Berlin Germany Brandenburg Gate",
+  greece: "Santorini Greece white buildings",
+  hungary: "Budapest Hungary parliament",
   iceland: "Reykjavik Iceland",
+  ireland: "Dublin Ireland city",
+  italy: "Rome Italy Colosseum",
+  malta: "Valletta Malta",
+  netherlands: "Amsterdam canals Netherlands",
+  norway: "Geirangerfjord Norway landscape",
+  poland: "Krakow Poland old town",
+  portugal: "Lisbon Portugal tram",
+  romania: "Bucharest Romania",
+  russia: "Saint Petersburg Russia",
+  spain: "Barcelona Spain Sagrada Familia",
+  sweden: "Stockholm Sweden",
+  switzerland: "Swiss Alps Matterhorn",
+  uk: "London United Kingdom Thames",
+  ukraine: "Kyiv Ukraine",
+
+  // Asia / Pacific
+  australia: "Sydney Opera House harbour",
+  bangladesh: "Dhaka Bangladesh",
+  cambodia: "Angkor Wat Cambodia",
+  china: "Shanghai Bund China",
+  fiji: "Fiji islands beach",
+  "hong-kong": "Hong Kong skyline Victoria Harbour",
   india: "Taj Mahal India",
   indonesia: "Bali Indonesia rice terrace",
-  ireland: "Dublin Ireland city",
-  jamaica: "Montego Bay Jamaica",
+  japan: "Tokyo Japan Shibuya",
+  malaysia: "Kuala Lumpur Petronas",
+  maldives: "Maldives overwater bungalow",
+  "new-zealand": "Queenstown New Zealand",
+  pakistan: "Lahore Pakistan Badshahi Mosque",
+  philippines: "Manila Philippines bay",
+  singapore: "Marina Bay Singapore",
+  "south-korea": "Seoul South Korea skyline",
+  "sri-lanka": "Colombo Sri Lanka",
+  taiwan: "Taipei Taiwan 101",
+  thailand: "Bangkok Thailand Wat Arun",
+  vietnam: "Ha Long Bay Vietnam",
+
+  // Middle East
+  bahrain: "Manama Bahrain skyline",
+  egypt: "Pyramids Giza Egypt",
+  israel: "Jerusalem Old City",
   jordan: "Petra Jordan",
   kuwait: "Kuwait City towers",
   lebanon: "Beirut Lebanon",
-  malaysia: "Kuala Lumpur Petronas",
-  maldives: "Maldives overwater resort",
-  malta: "Valletta Malta",
-  morocco: "Marrakech Morocco",
-  netherlands: "Amsterdam canals Netherlands",
-  nigeria: "Lagos Nigeria skyline",
-  norway: "Geirangerfjord Norway landscape",
   oman: "Sultan Qaboos Grand Mosque Muscat Oman",
-  panama: "Panama City skyline",
-  peru: "Machu Picchu Peru",
-  philippines: "Manila Philippines bay",
-  portugal: "Lisbon Portugal tram",
-  "puerto-rico": "San Juan Puerto Rico",
   qatar: "Doha Qatar skyline",
-  russia: "Saint Petersburg Russia",
-  singapore: "Marina Bay Singapore",
+  "saudi-arabia": "Riyadh Saudi Arabia skyline",
+  turkey: "Istanbul Turkey Bosphorus",
+  uae: "Dubai UAE Burj Khalifa",
+
+  // Africa (priority expansion)
+  algeria: "Algiers Algeria casbah",
+  ethiopia: "Addis Ababa Ethiopia",
+  ghana: "Accra Ghana Independence Square",
+  kenya: "Nairobi Kenya skyline",
+  morocco: "Marrakech Morocco medina",
+  nigeria: "Lagos Nigeria skyline",
+  rwanda: "Kigali Rwanda",
+  senegal: "Dakar Senegal",
   "south-africa": "Cape Town Table Mountain",
-  "south-korea": "Seoul South Korea skyline",
-  sweden: "Stockholm Sweden",
-  switzerland: "Swiss Alps Matterhorn",
-  "trinidad-and-tobago": "Maracas Beach Trinidad",
-  vietnam: "Ha Long Bay Vietnam",
+  tanzania: "Zanzibar Tanzania beach",
+  tunisia: "Tunis Tunisia medina",
+  uganda: "Kampala Uganda",
+  zambia: "Victoria Falls Zambia",
 };
 
 const SELLABLE = Object.keys(SEARCH_QUERIES);
@@ -72,6 +137,14 @@ const COMMONS_API = "https://commons.wikimedia.org/w/api.php";
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
+}
+
+function hasLocalPhoto(slug) {
+  return (
+    existsSync(path.join(DEST_DIR, `${slug}.webp`)) ||
+    existsSync(path.join(DEST_DIR, `${slug}.jpg`)) ||
+    existsSync(path.join(DEST_DIR, `${slug}.jpeg`))
+  );
 }
 
 async function commonsSearch(query) {
@@ -132,9 +205,11 @@ async function downloadImage(url, destPath) {
   writeFileSync(destPath, buf);
 
   try {
-    execFileSync("sips", ["-Z", "1200", "-s", "format", "jpeg", "-s", "formatOptions", "80", destPath, "--out", destPath], {
-      stdio: "pipe",
-    });
+    execFileSync(
+      "sips",
+      ["-Z", "1200", "-s", "format", "jpeg", "-s", "formatOptions", "80", destPath, "--out", destPath],
+      { stdio: "pipe" },
+    );
   } catch {
     // Keep original if sips fails (non-macOS).
   }
@@ -163,7 +238,7 @@ function appendAttribution(slug, entry) {
 
 async function fetchOne(slug, force = false) {
   const out = path.join(DEST_DIR, `${slug}.jpg`);
-  if (existsSync(out) && !force) {
+  if (!force && hasLocalPhoto(slug)) {
     console.log(`  skip ${slug} (exists)`);
     return { slug, status: "skipped" };
   }
@@ -194,12 +269,25 @@ async function fetchOne(slug, force = false) {
 async function main() {
   mkdirSync(DEST_DIR, { recursive: true });
   const force = process.argv.includes("--force");
-  const args = process.argv.slice(2).filter((a) => a !== "--force");
-  const targets = args.length > 0 ? args.filter((s) => SEARCH_QUERIES[s]) : SELLABLE;
+  const missingOnly = process.argv.includes("--missing");
+  const args = process.argv
+    .slice(2)
+    .filter((a) => a !== "--force" && a !== "--missing");
+
+  let targets =
+    args.length > 0 ? args.filter((s) => SEARCH_QUERIES[s]) : [...SELLABLE];
+
+  if (missingOnly || args.length === 0) {
+    targets = targets.filter((slug) => force || !hasLocalPhoto(slug));
+  }
 
   if (targets.length === 0) {
-    console.error("No valid slugs. Example: node scripts/fetch-country-images.mjs russia");
-    process.exit(1);
+    console.log("Nothing to fetch — library already covers requested slugs.");
+    const onDisk = readdirSync(DEST_DIR).filter((f) =>
+      /\.(jpe?g|webp)$/i.test(f) && !f.includes("regional") && !/\d/.test(f),
+    );
+    console.log(`Local destination photos: ~${onDisk.length} files`);
+    process.exit(0);
   }
 
   console.log(`Fetching ${targets.length} country photos from Wikimedia Commons…\n`);
@@ -212,7 +300,9 @@ async function main() {
 
   const ok = results.filter((r) => r.status === "ok").length;
   const failed = results.filter((r) => r.status === "not-found" || r.status === "error");
-  console.log(`\nDone: ${ok} downloaded, ${failed.length} failed, ${results.filter((r) => r.status === "skipped").length} skipped`);
+  console.log(
+    `\nDone: ${ok} downloaded, ${failed.length} failed, ${results.filter((r) => r.status === "skipped").length} skipped`,
+  );
   if (failed.length) {
     console.log("\nRetry manually or adjust SEARCH_QUERIES for:");
     for (const f of failed) console.log(`  - ${f.slug}`);
