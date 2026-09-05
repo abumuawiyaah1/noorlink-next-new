@@ -21,6 +21,10 @@ declare global {
     SOCIAL_ASSETS?: R2Bucket;
     SOCIAL_HUB_PASSWORD?: string;
     SOCIAL_HUB_SESSION_SECRET?: string;
+    RESEND_API_KEY?: string;
+    RESEND_FROM_EMAIL?: string;
+    OUTREACH_REPLY_TO?: string;
+    SUPPORT_EMAIL?: string;
   }
 }
 

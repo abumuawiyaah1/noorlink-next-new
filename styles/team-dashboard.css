@@ -1,0 +1,578 @@
+@import "./social-hub.css";
+
+.team-app {
+  min-height: 100vh;
+  background: #eef2f4;
+}
+
+.team-app--centered {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.team-app__loading {
+  color: var(--text-muted);
+}
+
+.team-app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  background: var(--primary);
+  color: #fff;
+  border-bottom: 3px solid var(--accent);
+}
+
+.team-app__brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.team-app__wordmark {
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+.team-app__wordmark-noor {
+  color: #fff;
+}
+
+.team-app__wordmark-link {
+  color: var(--accent);
+}
+
+.team-app__badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.team-app__signout {
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  color: var(--primary);
+  font-weight: 800;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.team-app__body {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 0;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  min-height: calc(100vh - 58px);
+}
+
+.team-app__nav {
+  padding: 24px 16px;
+  background: #fff;
+  border-right: 1px solid rgba(15, 61, 62, 0.08);
+}
+
+.team-app__nav-label {
+  margin: 0 0 12px;
+  padding: 0 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.team-app__nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.team-app__nav-link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.team-app__nav-link:hover {
+  background: #f3f7f7;
+}
+
+.team-app__nav-link--active {
+  background: rgba(255, 149, 0, 0.14);
+  color: #9a5b00;
+}
+
+.team-app__main {
+  padding: 28px 24px 48px;
+}
+
+.team-login {
+  width: min(440px, 100%);
+  padding: 28px;
+  background: var(--surface);
+  border-radius: var(--radius-card-lg);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  box-shadow: 0 16px 40px rgba(15, 61, 62, 0.08);
+}
+
+.team-login__kicker {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.team-login h1 {
+  margin: 0 0 10px;
+  color: var(--primary);
+  font-size: 1.7rem;
+}
+
+.team-login__lead {
+  margin: 0 0 20px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.team-login__form {
+  display: grid;
+  gap: 12px;
+}
+
+.team-login__form label {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.team-login__form input {
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 61, 62, 0.14);
+  padding: 0 12px;
+  font: inherit;
+}
+
+.team-login__form button {
+  min-height: 44px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--primary-dark);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.team-login__error {
+  margin: 0;
+  color: #b42318;
+  font-size: 0.9rem;
+}
+
+.team-home__intro h1 {
+  margin: 8px 0 10px;
+  color: var(--primary);
+}
+
+.team-home__intro p {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.team-home__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+
+.team-home__card {
+  display: grid;
+  gap: 8px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  border-radius: var(--radius-card-lg);
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+}
+
+.team-home__card h2 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 1.05rem;
+}
+
+.team-home__card p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 0.92rem;
+}
+
+.team-home__card-cta {
+  margin-top: 6px;
+  color: #9a5b00;
+  font-weight: 800;
+  font-size: 0.88rem;
+}
+
+.team-home__soon h2 {
+  margin: 0 0 12px;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.team-home__soon ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.team-home__soon li {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px dashed rgba(15, 61, 62, 0.16);
+  border-radius: 12px;
+}
+
+.team-home__soon strong {
+  color: var(--primary);
+}
+
+.team-home__soon span {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 800px) {
+  .team-app__body {
+    grid-template-columns: 1fr;
+  }
+
+  .team-app__nav {
+    border-right: 0;
+    border-bottom: 1px solid rgba(15, 61, 62, 0.08);
+  }
+
+  .team-app__nav ul {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}
+
+/* Creator outreach CRM */
+.content-kicker {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.outreach-intro h1 {
+  margin: 8px 0 10px;
+  color: var(--primary);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.outreach-intro p {
+  margin: 0 0 20px;
+  max-width: 46rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.outreach-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.outreach-search,
+.outreach-select,
+.outreach-form input,
+.outreach-form select,
+.outreach-form textarea {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 61, 62, 0.14);
+  padding: 8px 12px;
+  font: inherit;
+  background: #fff;
+}
+
+.outreach-search {
+  flex: 1 1 220px;
+}
+
+.outreach-select {
+  flex: 0 1 180px;
+}
+
+.outreach-btn {
+  min-height: 42px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(15, 61, 62, 0.14);
+  padding: 0 16px;
+  font-weight: 800;
+  cursor: pointer;
+  background: #fff;
+  color: var(--primary);
+}
+
+.outreach-btn--primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--primary-dark, #05191a);
+}
+
+.outreach-btn--danger {
+  color: #b42318;
+  border-color: rgba(180, 35, 24, 0.25);
+}
+
+.outreach-error {
+  color: #b42318;
+  margin: 0 0 12px;
+}
+
+.outreach-success {
+  color: #047857;
+  margin: 0 0 12px;
+}
+
+.outreach-banner {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.outreach-banner--warn {
+  background: #fff8f0;
+  color: #9a5b00;
+}
+
+.outreach-banner code {
+  font-size: 0.85em;
+}
+
+.outreach-muted {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.outreach-compose {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(15, 61, 62, 0.1);
+  display: grid;
+  gap: 14px;
+}
+
+.outreach-compose__head h2 {
+  margin: 0 0 6px;
+  color: var(--primary);
+  font-size: 1.15rem;
+}
+
+.outreach-compose__head p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.outreach-templates {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.outreach-template {
+  text-align: left;
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 61, 62, 0.12);
+  background: #f8fafb;
+  cursor: pointer;
+}
+
+.outreach-template strong {
+  color: var(--primary);
+  font-size: 0.92rem;
+}
+
+.outreach-template span {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.outreach-template.is-active {
+  border-color: rgba(255, 149, 0, 0.55);
+  background: #fff8f0;
+  outline: 2px solid rgba(255, 149, 0, 0.25);
+}
+
+.outreach-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.outreach-list,
+.outreach-editor {
+  background: #fff;
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  border-radius: var(--radius-card-lg);
+  padding: 14px;
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.05);
+}
+
+.outreach-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  max-height: min(70vh, 720px);
+  overflow: auto;
+}
+
+.outreach-list__item {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  gap: 2px;
+}
+
+.outreach-list__item:hover,
+.outreach-list__item.is-active {
+  background: #f3f7f7;
+}
+
+.outreach-list__item.is-active {
+  outline: 2px solid rgba(255, 149, 0, 0.35);
+}
+
+.outreach-list__name {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.outreach-list__meta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.outreach-form {
+  display: grid;
+  gap: 14px;
+}
+
+.outreach-form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.outreach-form__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.outreach-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.outreach-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.outreach-inline input {
+  flex: 1 1 180px;
+}
+
+.outreach-inline--end {
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.outreach-inline .social-hub__copy-btn,
+.outreach-inline .social-hub-copy-btn {
+  min-height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 61, 62, 0.14);
+  padding: 0 12px;
+  background: #f3f7f7;
+  color: var(--primary);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.outreach-link {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.outreach-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .outreach-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .outreach-list ul {
+    max-height: 240px;
+  }
+}

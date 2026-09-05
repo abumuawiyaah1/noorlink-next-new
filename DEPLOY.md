@@ -230,8 +230,11 @@ Social media library, captions, and Meta links live in the **backend admin** —
 | --- | --- |
 | https://api.noorlink.co/admin | Team sign-in |
 | https://api.noorlink.co/admin/social-media | Partner media, captions, Meta links |
+| https://noorlink.co/team/outreach | Creator outreach databank + branded email send |
 
-`/social` and `/team` on noorlink.co redirect to the admin dashboard.
+`/social` and `/team` on noorlink.co redirect to the admin dashboard. Creator outreach stays on the Next site at `/team/outreach` (same team password as social hub secrets).
+
+Outreach email send needs Worker secrets: `RESEND_API_KEY`, `RESEND_FROM_EMAIL` (same as automation order mail). Optional: `OUTREACH_REPLY_TO`.
 
 See `noorlink-automation/docs/SOCIAL-MEDIA-HUB.md` for Storage bucket setup.
 
