@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PaymentMethodBadges } from "@/components/ui/PaymentMethodBadges";
+import { SecureCheckoutTrust } from "@/components/ui/SecureCheckoutTrust";
 
 type BenefitMedia =
   | { type: "image"; src: string; alt: string }
-  | { type: "payments" }
-  | { type: "refund" };
+  | { type: "trust" };
 
 const BENEFITS: ReadonlyArray<{
   title: string;
@@ -17,8 +16,8 @@ const BENEFITS: ReadonlyArray<{
     body: "QR code by email minutes after checkout — no mail, no airport SIM swap.",
     media: {
       type: "image",
-      src: "/images/trust-stats/qr-delivery.webp",
-      alt: "Traveler scanning an eSIM QR code on their phone",
+      src: "/images/trust-stats/qr-delivery-card.webp",
+      alt: "Phone showing eSIM ready email with QR code",
     },
   },
   {
@@ -26,7 +25,7 @@ const BENEFITS: ReadonlyArray<{
     body: "One checkout connects you to local networks across six continents.",
     media: {
       type: "image",
-      src: "/images/trust-stats/countries.webp",
+      src: "/images/trust-stats/countries-card.webp",
       alt: "Globe highlighting international travel destinations",
     },
   },
@@ -35,50 +34,40 @@ const BENEFITS: ReadonlyArray<{
     body: "Share data with a laptop or travel companion at no extra cost.",
     media: {
       type: "image",
-      src: "/images/trust-stats/hotspot.webp",
-      alt: "Phone sharing mobile data with a laptop via hotspot",
+      src: "/images/trust-stats/hotspot-share-card.webp",
+      alt: "Phone beside a laptop ready to share data via hotspot",
     },
   },
   {
     title: "Secure Stripe checkout",
-    body: "Apple Pay, cards, and PayPal through Stripe — never stored on our servers.",
-    media: { type: "payments" },
+    body: "Apple Pay, Google Pay, cards, and PayPal through Stripe — never stored on our servers.",
+    media: { type: "trust" },
   },
   {
     title: "Refund if it fails",
     body: "Technical activation failure? We review quickly and refund when eligible.",
-    media: { type: "refund" },
+    media: {
+      type: "image",
+      src: "/images/trust-stats/refund-noorlink-card.webp",
+      alt: "NoorLink refund — cash returned with branded paperwork on the desk",
+    },
   },
   {
     title: "Real 24/7 support",
     body: "WhatsApp support around the clock — reach a human in minutes.",
     media: {
       type: "image",
-      src: "/images/trust-stats/support.webp",
-      alt: "Support team helping a customer by phone and chat",
+      src: "/images/trust-stats/support-card.webp",
+      alt: "Support agent helping a customer by phone and chat",
     },
   },
 ];
 
 function WhyCardMedia({ media }: { media: BenefitMedia }) {
-  if (media.type === "payments") {
+  if (media.type === "trust") {
     return (
-      <div className="why-card__media why-card__media--payments">
-        <PaymentMethodBadges className="why-card__payments" />
-      </div>
-    );
-  }
-
-  if (media.type === "refund") {
-    return (
-      <div className="why-card__media why-card__media--refund">
-        <Image
-          src="/images/trust-stats/refund.svg"
-          alt="Refund returned to original payment method"
-          width={320}
-          height={128}
-          className="why-card__refund-art"
-        />
+      <div className="why-card__media why-card__media--trust">
+        <SecureCheckoutTrust variant="card" />
       </div>
     );
   }
@@ -88,8 +77,9 @@ function WhyCardMedia({ media }: { media: BenefitMedia }) {
       <Image
         src={media.src}
         alt={media.alt}
-        fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+        width={560}
+        height={240}
+        sizes="(max-width: 600px) 92vw, (max-width: 900px) 46vw, 380px"
         className="why-card__image"
       />
     </div>

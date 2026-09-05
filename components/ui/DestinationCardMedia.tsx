@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { destinationCardSrcSet } from "@/lib/country-images";
 
 type Props = {
   src: string;
@@ -11,8 +12,8 @@ type Props = {
   height?: number;
 };
 
-const DEFAULT_WIDTH = 800;
-const DEFAULT_HEIGHT = 500;
+const DEFAULT_WIDTH = 400;
+const DEFAULT_HEIGHT = 250;
 
 export function DestinationCardMedia({
   src,
@@ -24,22 +25,25 @@ export function DestinationCardMedia({
 }: Props) {
   const [loaded, setLoaded] = useState(false);
   const markLoaded = useCallback(() => setLoaded(true), []);
+  const responsive = destinationCardSrcSet(src);
 
   useEffect(() => {
     setLoaded(false);
     const img = new Image();
-    img.src = src;
+    img.src = responsive.src;
     if (img.complete && img.naturalWidth > 0) {
       setLoaded(true);
     }
-  }, [src]);
+  }, [responsive.src]);
 
   return (
     <div className={`card-media${loaded ? " is-loaded" : ""}${className ? ` ${className}` : ""}`}>
       {!loaded && <span className="card-media-shimmer" aria-hidden="true" />}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={src}
+        src={responsive.src}
+        srcSet={responsive.srcSet}
+        sizes={responsive.sizes}
         alt={alt}
         width={width}
         height={height}

@@ -66,7 +66,7 @@
         }
         @media (max-width: 768px) {
             .hero {
-                background: var(--hero-overlay), url("/images/hero-800.webp");
+                background: var(--hero-overlay), url("/images/hero-640.webp");
                 background-size: cover;
                 background-position: center;
             }
@@ -216,10 +216,15 @@
         .promo-text { flex: 1; min-width: 300px; }
         .promo-feature-img {
             flex: 1; min-width: 280px; height: 300px;
-            background: url('/images/ramadan-feature.webp') center/cover;
+            background: url('/images/ramadan-feature-sm.webp') center/cover;
             border-radius: var(--radius-card-lg);
             border: 1px solid rgba(15, 61, 62, 0.08);
             box-shadow: var(--shadow-card);
+        }
+        @media (min-width: 900px) {
+            .promo-feature-img {
+                background-image: url('/images/ramadan-feature.webp');
+            }
         }
         .promo-kicker {
             display: inline-block;

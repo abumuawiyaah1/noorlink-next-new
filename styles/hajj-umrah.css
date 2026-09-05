@@ -126,7 +126,7 @@
   align-items: center;
 }
 
-.pilgrim-carriers__pay-badges .payment-badge {
+.pilgrim-carriers__pay-badges .secure-trust__mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -137,10 +137,11 @@
   box-shadow: 0 1px 4px rgba(15, 61, 62, 0.08);
 }
 
-.pilgrim-carriers__pay-badges .payment-badge__image {
+.pilgrim-carriers__pay-badges .secure-trust__mark-image {
   display: block;
-  width: 44px;
-  height: 28px;
+  height: 24px;
+  width: auto;
+  max-width: 56px;
   object-fit: contain;
 }
 

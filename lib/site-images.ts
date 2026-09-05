@@ -12,7 +12,7 @@ const DEST = "/images/destinations";
 
 export const SITE_IMAGES = {
   hero: "/images/hero.webp",
-  heroMobile: "/images/hero-800.webp",
+  heroMobile: "/images/hero-640.webp",
   /** Prefer JPEG for social/OG cards (broader crawler support). */
   heroOg: "/images/og.jpg",
   mapTexture: "/images/map-texture.webp",

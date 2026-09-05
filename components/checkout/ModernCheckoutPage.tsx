@@ -14,6 +14,7 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { FunnelSteps } from "@/components/layout/FunnelSteps";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SecureCheckoutTrust } from "@/components/ui/SecureCheckoutTrust";
 import { createCheckoutSession } from "@/lib/checkout-api";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { validatePromoCode } from "@/lib/promo-api";
@@ -449,22 +450,25 @@ export function ModernCheckoutPage() {
           { n: 4, label: "Activate" },
         ]}
       />
-      <div className="checkout-trust">
-        <span>Apple Pay · Google Pay · Link · card</span>
-        <span>Card details never stored</span>
-        <span>
-          <Link href="/refund" target="_blank" rel="noopener noreferrer">
-            Refund if activation fails
-          </Link>
-        </span>
+      <div className="checkout-trust-wrap">
+        <div className="checkout-trust">
+          <span>Apple Pay · Google Pay · Link · card</span>
+          <span>Card details never stored</span>
+          <span>
+            <Link href="/refund" target="_blank" rel="noopener noreferrer">
+              Refund if activation fails
+            </Link>
+          </span>
+        </div>
+        <SecureCheckoutTrust variant="marks" showSsl />
+        <p
+          className="secure-badge"
+          style={{ margin: 0, width: "fit-content" }}
+        >
+          <i className="fas fa-shield-alt" aria-hidden="true" /> Verified Secure
+          Checkout
+        </p>
       </div>
-      <p
-        className="secure-badge"
-        style={{ margin: "12px auto 0", width: "fit-content" }}
-      >
-        <i className="fas fa-shield-alt" aria-hidden="true" /> Verified Secure
-        Checkout
-      </p>
 
       <main id="main-content">
         <div className="container">

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FooterSocialLinks } from "@/components/layout/FooterSocialLinks";
-import { PaymentMethodBadges } from "@/components/ui/PaymentMethodBadges";
+import { SecureCheckoutTrust } from "@/components/ui/SecureCheckoutTrust";
 
 export function HomeFooter() {
   return (
@@ -19,7 +19,11 @@ export function HomeFooter() {
             Albuquerque, NM 87110
           </p>
           <FooterSocialLinks />
-          <PaymentMethodBadges />
+          <SecureCheckoutTrust
+            variant="marks"
+            showSsl={false}
+            className="home-pay-badges footer-pay-marks"
+          />
         </div>
         <div>
           <h4>Company</h4>

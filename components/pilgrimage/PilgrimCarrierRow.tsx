@@ -1,5 +1,5 @@
 import { getCountryNetworkNames } from "@/lib/country-networks";
-import { PaymentMethodBadges } from "@/components/ui/PaymentMethodBadges";
+import { SecureCheckoutTrust } from "@/components/ui/SecureCheckoutTrust";
 
 const SAUDI_COUNTRY_ID = "saudi-arabia";
 
@@ -27,7 +27,11 @@ export function PilgrimCarrierRow() {
         <span className="pilgrim-carriers__divider" aria-hidden="true" />
         <div className="pilgrim-carriers__pay">
           <span className="pilgrim-carriers__label">Pay Securely With</span>
-          <PaymentMethodBadges className="pilgrim-carriers__pay-badges" />
+          <SecureCheckoutTrust
+            variant="marks"
+            showSsl={false}
+            className="pilgrim-carriers__pay-badges"
+          />
         </div>
       </div>
       <p className="pilgrim-carriers__trust">

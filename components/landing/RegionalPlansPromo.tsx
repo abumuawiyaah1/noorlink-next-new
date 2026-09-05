@@ -35,7 +35,7 @@ export function RegionalPlansPromo() {
         <RegionalWorldMap />
 
         <div className="regional-promo__grid" aria-label="All regional plans">
-          {REGIONAL_ROUTE_SLUGS.map((routeSlug, index) => {
+          {REGIONAL_ROUTE_SLUGS.map((routeSlug) => {
             const product = REGIONAL_PRODUCTS[routeSlug];
             const price =
               livePrices[product.apiCountryId]?.label ?? PENDING_PRICE_LABEL;
@@ -54,7 +54,7 @@ export function RegionalPlansPromo() {
                   <DestinationCardMedia
                     src={image}
                     alt={`${product.displayName} regional eSIM coverage`}
-                    priority={index < 3}
+                    priority={false}
                   />
                   <span className="regional-promo__flag" aria-hidden="true">
                     {product.flag}

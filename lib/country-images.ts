@@ -108,6 +108,31 @@ export function getRegionalImageUrl(routeSlug: string): string {
   );
 }
 
+/**
+ * Responsive card delivery: 400w `-sm.webp` + 800w full.
+ * Destination cards display ~170–280px; avoid downloading 800px files on mobile.
+ */
+export function destinationCardSrcSet(src: string): {
+  src: string;
+  srcSet?: string;
+  sizes: string;
+} {
+  const sizes = "(max-width: 768px) 45vw, (max-width: 1100px) 30vw, 280px";
+  if (
+    !src.includes("/images/destinations/") ||
+    !src.endsWith(".webp") ||
+    src.includes("-sm.webp")
+  ) {
+    return { src, sizes };
+  }
+  const sm = src.replace(/\.webp$/i, "-sm.webp");
+  return {
+    src: sm,
+    srcSet: `${sm} 400w, ${src} 800w`,
+    sizes,
+  };
+}
+
 export function hasCountryPhoto(countryId: string): boolean {
   const slug = resolveCountryImageSlug(countryId);
   return Boolean(slug && COUNTRY_IMAGE_REGISTRY[slug]);

@@ -613,9 +613,86 @@
 .why-card__media {
   position: relative;
   width: 100%;
-  height: 68px;
+  aspect-ratio: 7 / 3;
+  height: auto;
+  min-height: 108px;
   overflow: hidden;
   background: #eef3f3;
+}
+
+.why-card__media--trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f7f7;
+  padding: 0;
+  aspect-ratio: 7 / 3;
+  min-height: 108px;
+  overflow: hidden;
+}
+
+.why-card__media--trust .secure-trust {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.why-card__media--trust .secure-trust__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 10px 6px;
+  gap: 0;
+}
+
+.why-card__media--trust .secure-trust__title {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.why-card__media--trust .secure-trust__mid {
+  margin: 6px 0 4px;
+  gap: 10px;
+}
+
+.why-card__media--trust .secure-trust__stripe {
+  font-size: 0.95rem;
+}
+
+.why-card__media--trust .secure-trust__paypal {
+  font-size: 0.9rem;
+}
+
+.why-card__media--trust .secure-trust__shield {
+  width: 28px;
+  height: 28px;
+}
+
+.why-card__media--trust .secure-trust__marks {
+  gap: 4px 5px;
+}
+
+.why-card__media--trust .secure-trust__mark {
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+
+.why-card__media--trust .secure-trust__mark-image {
+  height: 20px;
+  max-width: 58px;
+}
+
+.why-card__media--trust .secure-trust__mark--ssl .secure-trust__mark-image {
+  max-width: 72px;
+}
+
+.why-card__media--trust .secure-trust__brand {
+  display: none;
 }
 
 .why-card__media--payments,
@@ -624,12 +701,17 @@
   align-items: center;
   justify-content: center;
   background: #f3f7f7;
-  padding: 8px 10px;
+  padding: 10px 12px;
+  aspect-ratio: 7 / 3;
+  min-height: 108px;
 }
 
 .why-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center 35%;
 }
 
 .why-card__payments {
@@ -646,14 +728,14 @@
 }
 
 .why-card__payments .payment-badge__image {
-  width: 46px;
-  height: 28px;
+  width: 52px;
+  height: 32px;
 }
 
 .why-card__refund-art {
   width: auto;
   height: 100%;
-  max-height: 52px;
+  max-height: 88px;
   object-fit: contain;
 }
 

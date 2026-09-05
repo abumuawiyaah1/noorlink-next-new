@@ -7,6 +7,7 @@ import {
   useLiveStartingPrices,
 } from "@/components/destinations/useLiveStartingPrices";
 import { getCountryFlag } from "@/lib/country-flags";
+import { destinationCardSrcSet } from "@/lib/country-images";
 import type { DestinationCard } from "@/lib/destinations-catalog";
 import { fetchTrendingCountrySignals } from "@/lib/analytics-api";
 import {
@@ -60,6 +61,7 @@ export function PopularCountries() {
           {cards.map((card, index) => {
             const price = livePrices[card.priceCountryId]?.label ?? PENDING_PRICE_LABEL;
             const flag = getCountryFlag(card.priceCountryId);
+            const image = destinationCardSrcSet(card.image);
             return (
               <Link
                 key={card.id}
@@ -72,13 +74,15 @@ export function PopularCountries() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     className="popular-country__img"
-                    src={card.image}
+                    src={image.src}
+                    srcSet={image.srcSet}
+                    sizes="(max-width: 768px) 42vw, 160px"
                     alt={`${card.title} travel destination`}
                     width={400}
                     height={400}
-                    loading={index < 3 ? "eager" : "lazy"}
+                    loading={index < 2 ? "eager" : "lazy"}
                     decoding="async"
-                    fetchPriority={index < 3 ? "high" : "auto"}
+                    fetchPriority={index < 2 ? "high" : "auto"}
                   />
                   <span className="popular-country__flag" aria-hidden="true">
                     {flag}
