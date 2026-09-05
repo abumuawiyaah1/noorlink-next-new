@@ -56,14 +56,25 @@ export function normalizePlanPriceParts(plan: EsimPlan): EsimPlan {
   };
 }
 
+function isLivePlan(plan: EsimPlan): boolean {
+  return !plan.comingSoon;
+}
+
 export function normalizePlansResponse(
   response: PlansByCountryResponse,
 ): PlansByCountryResponse {
-  const plans = response.plans.map(normalizePlanPriceParts);
+  // Drop "coming soon" placeholders — only show plans customers can buy.
+  const plans = response.plans.filter(isLivePlan).map(normalizePlanPriceParts);
   const planGroups = {
-    fixed: response.planGroups.fixed.map(normalizePlanPriceParts),
-    unlimited: response.planGroups.unlimited.map(normalizePlanPriceParts),
-    flexible: response.planGroups.flexible.map(normalizePlanPriceParts),
+    fixed: response.planGroups.fixed
+      .filter(isLivePlan)
+      .map(normalizePlanPriceParts),
+    unlimited: response.planGroups.unlimited
+      .filter(isLivePlan)
+      .map(normalizePlanPriceParts),
+    flexible: response.planGroups.flexible
+      .filter(isLivePlan)
+      .map(normalizePlanPriceParts),
   };
 
   return {

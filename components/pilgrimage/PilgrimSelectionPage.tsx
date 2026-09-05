@@ -160,33 +160,6 @@ function TierCard({
   onConnectedDataGbChange: (gb: ConnectedPilgrimDataGb) => void;
   onUmrahUnlimitedDaysChange: (days: UmrahUnlimitedDays) => void;
 }) {
-  if (tier.comingSoon) {
-    const copy = resolvePilgrimPlanCopy(tier, null);
-    return (
-      <article className="pilgrim-card pilgrim-card--coming-soon">
-        <span className="pilgrim-card__badge">Coming Soon</span>
-        <p className="pilgrim-card__tier">{tier.subtitle}</p>
-        <h2 className="pilgrim-card__title">{tier.title}</h2>
-        <div className="pilgrim-card__details">
-          <p className="pilgrim-card__desc">{copy.description}</p>
-          <ul className="pilgrim-card__highlights">
-            {copy.highlights.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="pilgrim-price-wrap">
-          <p className="pilgrim-card__coming-soon-note">
-            Coming Soon — WhatsApp us for early access.
-          </p>
-        </div>
-        <button type="button" className="pilgrim-card__cta" disabled>
-          Coming Soon
-        </button>
-      </article>
-    );
-  }
-
   const isConnected = tier.key === "connected" && tier.connectedVariants;
   const isUnlimited = tier.key === "unlimited" && tier.unlimitedVariants;
   const unlimitedDays = isUnlimited ? availableUmrahUnlimitedDays(tier) : [];
@@ -464,12 +437,11 @@ export function PilgrimSelectionPage({
   }, [initialData, initialMeData]);
 
   const activeTier = useMemo(() => {
-    const selected =
-      tiers.find((tier) => tier.key === selectedTier && !tier.comingSoon) ?? null;
+    const selected = tiers.find((tier) => tier.key === selectedTier) ?? null;
     return (
       selected ??
-      tiers.find((tier) => tier.recommended && !tier.comingSoon) ??
-      tiers.find((tier) => !tier.comingSoon && tier.plan) ??
+      tiers.find((tier) => tier.recommended) ??
+      tiers.find((tier) => tier.plan) ??
       null
     );
   }, [tiers, selectedTier]);
@@ -674,7 +646,6 @@ export function PilgrimSelectionPage({
                   connectedDataGb={connectedDataGb}
                   umrahUnlimitedDays={umrahUnlimitedDays}
                   onSelect={() => {
-                    if (tier.comingSoon) return;
                     setPurchaseFocus("saudi");
                     setSelectedTier(tier.key);
                   }}

@@ -82,13 +82,6 @@ export function resolvePilgrimPlanCopy(
   connectedDataGb: ConnectedPilgrimDataGb = 10,
   umrahUnlimitedDays: UmrahUnlimitedDays = 10,
 ): PilgrimPlanCopy {
-  if (tier.comingSoon) {
-    return {
-      description: tier.description,
-      highlights: tier.highlights,
-    };
-  }
-
   const days = plan?.durationDays ?? 30;
   const gb = plan?.dataGb;
   const speed = "3G / 4G / 5G";
@@ -321,10 +314,7 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
     unlimited,
   };
 
-  return PILGRIM_TIER_META.map((meta) => {
-    if (meta.comingSoon) {
-      return { ...meta, plan: null };
-    }
+  return PILGRIM_TIER_META.filter((meta) => !meta.comingSoon).map((meta) => {
     const plan = byKey[meta.key] ?? PILGRIM_FALLBACK_PLANS[meta.key];
     const offer: PilgrimTierOffer = { ...meta, plan };
     if (meta.key === "connected") {
