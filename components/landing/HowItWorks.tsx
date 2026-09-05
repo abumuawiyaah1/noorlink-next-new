@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { TrustStatsBar } from "@/components/landing/TrustStatsBar";
+import { TrustProofBanner } from "@/components/landing/TrustProofBanner";
 import { HOW_IT_WORKS_STEPS } from "@/lib/how-it-works-steps";
 
 export function HowItWorks() {
   return (
     <section className="steps-section" id="how-it-works">
       <div className="container">
-        <TrustStatsBar />
+        <TrustProofBanner className="trust-proof-banner--steps" />
         <div className="steps-header">
           <h2>How it works</h2>
           <p>Install before you fly — three calm steps to data on arrival.</p>

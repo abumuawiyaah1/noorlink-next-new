@@ -65,7 +65,7 @@ export const heroDestinations: HeroDestination[] = [
     flag: "🇸🇦",
     type: "country",
     href: "/hajj-umrah",
-    keywords: ["umrah", "hajj", "saudi", "saudi arabia", "mecca", "medina", "jeddah"],
+    keywords: ["umrah", "hajj", "ramadan", "saudi", "saudi arabia", "mecca", "medina", "jeddah"],
   },
   {
     id: "caribbean",
@@ -133,6 +133,7 @@ export const heroDestinations: HeroDestination[] = [
   },
 ];
 
+/** Legacy static pills — hero now uses lib/this-week. */
 export const popularPills = [
   { label: "Umrah", query: "Umrah", destinationId: "saudi-arabia" },
   { label: "Turkey", query: "Turkey", destinationId: "turkey" },
