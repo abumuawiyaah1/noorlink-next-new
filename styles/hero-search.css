@@ -4,6 +4,62 @@
   margin: 0 auto 30px;
 }
 
+.hero-flag-strip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 2px;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.hero-flag-strip__item {
+  display: block;
+  width: 36px;
+  height: 36px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: none;
+  box-shadow: 0 2px 6px rgba(5, 25, 26, 0.28);
+  flex-shrink: 0;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.hero-flag-strip__item:first-child {
+  margin-left: 0;
+}
+
+.hero-flag-strip__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 640px) {
+  .hero-flag-strip__item {
+    width: 28px;
+    height: 28px;
+    margin-left: -9px;
+  }
+
+  /* Keep the strip readable — hide overflow flags instead of crushing layout */
+  .hero-flag-strip__item:nth-child(n + 11) {
+    display: none;
+  }
+}
+
 .hero-search-widget .hero-search {
   margin-bottom: 0;
 }
@@ -116,6 +172,7 @@
 }
 
 .hero-search-pill {
+  position: relative;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(5px);
   padding: 5px 15px;
@@ -134,4 +191,86 @@
   background: rgba(255, 149, 0, 0.25);
   border-color: rgba(255, 149, 0, 0.6);
   transform: translateY(-1px);
+}
+
+.hero-search-pill__text {
+  display: inline;
+}
+
+/* Soft delayed tip — only on real hover; hide fast on leave; never covers search. */
+.hero-search-pill__tip {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  z-index: 2;
+  width: max-content;
+  max-width: 220px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(5, 25, 26, 0.92);
+  color: #f3f5f7;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-50%) translateY(2px);
+  transition: opacity 0.15s ease 0s, transform 0.15s ease 0s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-search-pill:hover .hero-search-pill__tip,
+  .hero-search-pill:focus-visible .hero-search-pill__tip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    transition: opacity 0.2s ease 0.5s, transform 0.2s ease 0.5s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-search-pill__tip {
+    transition: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero-search-pill:hover .hero-search-pill__tip,
+    .hero-search-pill:focus-visible .hero-search-pill__tip {
+      transition: none;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-search-widget {
+    margin-bottom: 18px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 2px;
+  }
+
+  .hero-search-pills {
+    gap: 8px;
+    margin-top: 14px;
+    margin-bottom: 18px;
+  }
+
+  .hero-search-pills__label {
+    width: 100%;
+    margin: 0 0 2px;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  .hero-search-pill {
+    padding: 8px 13px;
+    font-size: 0.84rem;
+    min-height: 40px;
+  }
+
+  .hero-search-pill__tip {
+    max-width: min(200px, 70vw);
+    font-size: 0.7rem;
+  }
 }

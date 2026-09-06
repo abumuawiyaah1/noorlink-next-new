@@ -8,6 +8,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { CountryPlansHero } from "@/components/plans/CountryPlansHero";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import { RegionalCoveragePanel } from "@/components/plans/RegionalCoveragePanel";
+import { PlansPopularStory } from "@/components/plans/PlansPopularStory";
 import { PsychologicalPrice } from "@/components/ui/PsychologicalPrice";
 import { CountrySearch } from "@/components/search/CountrySearch";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
@@ -437,7 +438,7 @@ export function TravelerPlansPage({
         <header className="plans-page__header">
           <div className="plans-page__brand">
             <span className="plans-page__eyebrow">
-              {regional ? "Multi-country eSIM" : "NoorLink"}
+              {regional ? "Regional eSIM" : "NoorLink"}
             </span>
             <p className="plans-page__tagline">
               {regional ? regional.heroTagline : "Enjoy hassle-free travel"}
@@ -495,7 +496,7 @@ export function TravelerPlansPage({
               <div className="plans-trust__copy">
                 <p className="plans-trust__network">
                   {regional
-                    ? `Multi-country coverage · ${regional.countries.length} destinations`
+                    ? `Regional coverage · ${regional.countries.length} destinations`
                     : formatCountryNetworkLabel(countryId)}
                 </p>
                 <p className="plans-trust__meta">
@@ -582,6 +583,13 @@ export function TravelerPlansPage({
             </div>
 
             <PlansFaq countryName={checkoutCountryName} regional={regional} />
+
+            {!regional && (
+              <PlansPopularStory
+                countryId={countryId}
+                countryName={checkoutCountryName}
+              />
+            )}
           </>
         )}
       </div>

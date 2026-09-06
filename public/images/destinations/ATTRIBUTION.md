@@ -45,3 +45,40 @@
 - **switzerland.jpg** — 008 Milky way aligned with the Matterhorn reflecting in Stellisee Photo by Giles Laurent.jpg ([Commons](https://commons.wikimedia.org/wiki/File:008_Milky_way_aligned_with_the_Matterhorn_reflecting_in_Stellisee_Photo_by_Giles_Laurent.jpg)) — CC BY-SA 4.0
 - **trinidad-and-tobago.jpg** — Maracas beachTrinidad 03 2012 966.JPG ([Commons](https://commons.wikimedia.org/wiki/File:Maracas_beachTrinidad_03_2012_966.JPG)) — CC BY-SA 3.0
 - **vietnam.jpg** — Halong Bay in Vietnam.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Halong_Bay_in_Vietnam.jpg)) — CC BY-SA 3.0
+- **bolivia.jpg** — Fotomontaje de La Paz.png ([Commons](https://commons.wikimedia.org/wiki/File:Fotomontaje_de_La_Paz.png)) — CC BY-SA 4.0
+- **ecuador.jpg** — Banco del Pichincha, Quito, Ecuador, 2015-07-22, DD 191.JPG ([Commons](https://commons.wikimedia.org/wiki/File:Banco_del_Pichincha%2C_Quito%2C_Ecuador%2C_2015-07-22%2C_DD_191.JPG)) — CC BY-SA 4.0
+- **paraguay.jpg** — Asunción, Paraguay, in 1615 by Guamán Poma.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Asunci%C3%B3n%2C_Paraguay%2C_in_1615_by_Guam%C3%A1n_Poma.jpg)) — CC BY-SA 4.0
+- **uruguay.jpg** — Collage Landmarks of Montevideo.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Collage_Landmarks_of_Montevideo.jpg)) — CC BY-SA 4.0
+- **venezuela.jpg** — Digitally altered image of Torre Lincoln.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Digitally_altered_image_of_Torre_Lincoln.jpg)) — CC BY-SA 4.0
+- **bulgaria.jpg** — Sveta Sofia Church, Sofia (P1070749).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Sveta_Sofia_Church%2C_Sofia_(P1070749).jpg)) — CC BY-SA 4.0
+- **croatia.jpg** — Old Town street, Dubrovnik, Croatia (approximate GPS location) (PPL1-Corrected) julesvernex2.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Old_Town_street%2C_Dubrovnik%2C_Croatia_(approximate_GPS_location)_(PPL1-Corrected)_julesvernex2.jpg)) — CC BY 4.0
+- **cyprus.jpg** — NSW Conducts Bilateral Training with Cyprus Special Operations Forces (8236270).jpg ([Commons](https://commons.wikimedia.org/wiki/File:NSW_Conducts_Bilateral_Training_with_Cyprus_Special_Operations_Forces_(8236270).jpg)) — Public domain
+- **czechia.jpg** — Prague Old Town 2021 42.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Prague_Old_Town_2021_42.jpg)) — CC BY-SA 4.0
+- **greece.jpg** — Santorin (GR), Ia, Vier Glocken -- 2017 -- 2720-6-2.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Santorin_(GR)%2C_Ia%2C_Vier_Glocken_--_2017_--_2720-6-2.jpg)) — CC BY-SA 4.0
+- **hungary.jpg** — BP parliament at night BÅn.JPG ([Commons](https://commons.wikimedia.org/wiki/File:BP_parliament_at_night_B%C3%85n.JPG)) — CC BY 2.5
+- **poland.jpg** — Mikołaj Zyblikiewicz Monument, Wszystkich Swietych (All Saints) Square, Old Town, Krakow, Poland.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Miko%C5%82aj_Zyblikiewicz_Monument%2C_Wszystkich_Swietych_(All_Saints)_Square%2C_Old_Town%2C_Krakow%2C_Poland.jpg)) — CC BY-SA 4.0
+- **romania.jpg** — Grave of Toma Stelian in the Bellu Cemetery in Bucharest, Romania (02).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Grave_of_Toma_Stelian_in_the_Bellu_Cemetery_in_Bucharest%2C_Romania_(02).jpg)) — CC BY-SA 4.0
+- **ukraine.jpg** — Euromaidan 2014 in Kyiv. Guard of Maidan.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Euromaidan_2014_in_Kyiv._Guard_of_Maidan.jpg)) — CC BY-SA 3.0
+- **bangladesh.jpg** — 500 years old pond is enriched with its history Dhaka, Bangladesh.jpg ([Commons](https://commons.wikimedia.org/wiki/File:500_years_old_pond_is_enriched_with_its_history_Dhaka%2C_Bangladesh.jpg)) — CC BY-SA 4.0
+- **cambodia.jpg** — 2016 Angkor, Angkor Wat, Grobla do Angkor Wat, Małpa (08).jpg ([Commons](https://commons.wikimedia.org/wiki/File:2016_Angkor%2C_Angkor_Wat%2C_Grobla_do_Angkor_Wat%2C_Ma%C5%82pa_(08).jpg)) — CC BY-SA 4.0
+- **hong-kong.jpg** — Victoria Harbour skyscrapers.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Victoria_Harbour_skyscrapers.jpg)) — CC0
+- **new-zealand.jpg** — Queenstown-Nueva Zelanda07.JPG ([Commons](https://commons.wikimedia.org/wiki/File:Queenstown-Nueva_Zelanda07.JPG)) — CC BY-SA 3.0
+- **pakistan.jpg** — Badshahi Mosque (Lahore).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Badshahi_Mosque_(Lahore).jpg)) — CC BY-SA 4.0
+- **sri-lanka.jpg** — Ganesha in the Temple of Gangaramaya..- Colombo (2).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Ganesha_in_the_Temple_of_Gangaramaya..-_Colombo_(2).jpg)) — CC BY-SA 4.0
+- **taiwan.jpg** — Taipei 101 2009 amk-EditMylius.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Taipei_101_2009_amk-EditMylius.jpg)) — CC BY-SA 3.0
+- **israel.jpg** — Jerusalem Old City Street.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Jerusalem_Old_City_Street.jpg)) — CC BY-SA 4.0
+- **algeria.jpg** — Algiers - Street in the Casbah.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Algiers_-_Street_in_the_Casbah.jpg)) — Public domain
+- **ethiopia.jpg** — Ancient Stelae with University Student - Addis Ababa University - Addis Ababa - Ethiopia (8668598358).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Ancient_Stelae_with_University_Student_-_Addis_Ababa_University_-_Addis_Ababa_-_Ethiopia_(8668598358).jpg)) — CC BY-SA 2.0
+- **ghana.jpg** — Independence Square, Korle-Klottey (IMG 20230201 120939).jpg ([Commons](https://commons.wikimedia.org/wiki/File:Independence_Square%2C_Korle-Klottey_(IMG_20230201_120939).jpg)) — CC BY-SA 4.0
+- **kenya.jpg** — A giraffe the tallest animal in Kenya at Nairobi National Park with a background of Britam Tower the tallest building in Kenya.jpg ([Commons](https://commons.wikimedia.org/wiki/File:A_giraffe_the_tallest_animal_in_Kenya_at_Nairobi_National_Park_with_a_background_of_Britam_Tower_the_tallest_building_in_Kenya.jpg)) — CC BY-SA 4.0
+- **rwanda.jpg** — Time 100 Kigali Rwanda 2023.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Time_100_Kigali_Rwanda_2023.jpg)) — CC BY 4.0
+- **senegal.jpg** — Baie de Mermoz a Dakar, Senegal.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Baie_de_Mermoz_a_Dakar%2C_Senegal.jpg)) — CC0
+- **tanzania.jpg** — Earth from Space- Zanzibar, Tanzania ESA510738.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Earth_from_Space-_Zanzibar%2C_Tanzania_ESA510738.jpg)) — Attribution
+- **tunisia.jpg** — Door in the medina of Tunis 03.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Door_in_the_medina_of_Tunis_03.jpg)) — CC BY-SA 4.0
+- **uganda.jpg** — Uganda Supreme court building in Kampala 03.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Uganda_Supreme_court_building_in_Kampala_03.jpg)) — CC BY-SA 4.0
+- **zambia.jpg** — Cataratas Victoria, Zambia-Zimbabue, 2018-07-27, DD 04.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Cataratas_Victoria%2C_Zambia-Zimbabue%2C_2018-07-27%2C_DD_04.jpg)) — CC BY-SA 4.0
+- **aruba.jpg** — Eagle Beach, Aruba 1.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Eagle_Beach%2C_Aruba_1.jpg)) — CC BY-SA 4.0
+- **cayman-islands.jpg** — Seven Mile Beach cayman sun.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Seven_Mile_Beach_cayman_sun.jpg)) — CC0
+- **guatemala.jpg** — Cahabón River, Semuc Champey, Guatemala.jpg ([Commons](https://commons.wikimedia.org/wiki/File:Cahab%C3%B3n_River%2C_Semuc_Champey%2C_Guatemala.jpg)) — CC BY-SA 3.0
+- **honduras.jpg** — West Bay Beach -Roatan -Honduras-23May2009.jpg ([Commons](https://commons.wikimedia.org/wiki/File:West_Bay_Beach_-Roatan_-Honduras-23May2009.jpg)) — CC BY 2.0
+- **belize.jpg** — Caye Caulker Belize Barrier Reef Aerial (119509537).jpeg ([Commons](https://commons.wikimedia.org/wiki/File:Caye_Caulker_Belize_Barrier_Reef_Aerial_(119509537).jpeg)) — CC BY 3.0

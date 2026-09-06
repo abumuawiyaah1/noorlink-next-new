@@ -2,18 +2,32 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  fetchPopularPills,
-  logSearch,
-  seasonalHeroPills,
-  type HeroPopularPill,
-} from "@/lib/analytics-api";
+import { logSearch, type HeroPopularPill } from "@/lib/analytics-api";
 import {
   filterDestinations,
   resolveDestination,
   type HeroDestination,
 } from "@/lib/hero-destinations";
+import { thisWeekHeroPills } from "@/lib/this-week";
 import "@/styles/hero-search.css";
+
+/** Overlapping circular flag badges (square art cropped to circle). */
+const HERO_FLAG_STRIP: { code: string; label: string }[] = [
+  { code: "de", label: "Germany" },
+  { code: "za", label: "South Africa" },
+  { code: "ci", label: "Ivory Coast" },
+  { code: "gb", label: "United Kingdom" },
+  { code: "jp", label: "Japan" },
+  { code: "cy", label: "Cyprus" },
+  { code: "br", label: "Brazil" },
+  { code: "us", label: "United States" },
+  { code: "sa", label: "Saudi Arabia" },
+  { code: "tr", label: "Turkey" },
+  { code: "co", label: "Colombia" },
+  { code: "eg", label: "Egypt" },
+  { code: "ma", label: "Morocco" },
+  { code: "ng", label: "Nigeria" },
+];
 
 const MIN_QUERY_LENGTH = 3;
 
@@ -27,7 +41,7 @@ export function HeroSearch() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selected, setSelected] = useState<HeroDestination | null>(null);
   const [activePill, setActivePill] = useState<string | null>(null);
-  const [pills, setPills] = useState<HeroPopularPill[]>(() => seasonalHeroPills());
+  const [pills] = useState<HeroPopularPill[]>(() => thisWeekHeroPills());
 
   const suggestions = filterDestinations(query);
   const trimmedQuery = query.trim();
@@ -100,31 +114,29 @@ export function HeroSearch() {
     setActiveIndex(0);
   }, [query]);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    fetchPopularPills()
-      .then((hydrated) => {
-        if (!cancelled && hydrated.length > 0) setPills(hydrated);
-      })
-      .catch(() => {
-        if (!cancelled) setPills(seasonalHeroPills());
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   return (
     <div className="hero-search-widget" ref={containerRef}>
+      <ul className="hero-flag-strip" aria-hidden="true">
+        {HERO_FLAG_STRIP.map((flag) => (
+          <li key={flag.code} className="hero-flag-strip__item" title={flag.label}>
+            <img
+              className="hero-flag-strip__img"
+              src={`/images/flags/${flag.code}.svg`}
+              alt=""
+              width={40}
+              height={40}
+              decoding="async"
+            />
+          </li>
+        ))}
+      </ul>
       <div className="hero-search">
         <input
           ref={inputRef}
           type="text"
           id="homeSearch"
           value={query}
-          placeholder="Where are you traveling? (e.g. Turkey)"
+          placeholder="Where are you traveling?"
           autoComplete="off"
           onChange={(e) => {
             const value = e.target.value;
@@ -187,18 +199,27 @@ export function HeroSearch() {
       )}
 
       <div className="hero-search-pills">
-        <span className="hero-search-pills__label">Popular:</span>
-        {pills.map((pill) => (
+        <span className="hero-search-pills__label">This week:</span>
+        {pills.map((pill) => {
+          const tipId = `hero-pill-tip-${pill.label.toLowerCase().replace(/\s+/g, "-")}`;
+          return (
           <button
             key={pill.label}
             type="button"
             className={`hero-search-pill${activePill === pill.label ? " is-selected" : ""}`}
             onClick={() => handlePillClick(pill)}
+            aria-describedby={tipId}
           >
-            {pill.flag ? `${pill.flag} ` : null}
-            {pill.label}
+            <span className="hero-search-pill__text">
+              {pill.flag ? `${pill.flag} ` : null}
+              {pill.label}
+            </span>
+            <span id={tipId} className="hero-search-pill__tip" role="tooltip">
+              {pill.reason}
+            </span>
           </button>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

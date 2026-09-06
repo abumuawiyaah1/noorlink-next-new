@@ -921,7 +921,7 @@ export function PilgrimSelectionPage({
                     <td>Light use</td>
                     <td>Regular use</td>
                     <td>Heavy daily use</td>
-                    <td>Multi-country trip use</td>
+                    <td>Regional trip use</td>
                   </tr>
                   <tr>
                     <td>Best For</td>

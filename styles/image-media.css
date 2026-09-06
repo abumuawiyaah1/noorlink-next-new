@@ -48,9 +48,13 @@
   transform: scale(1.06);
 }
 
-/* Trust stats (homepage — inside How it works) */
+/* Trust stats (homepage — under hero) */
 .trust-stats-intro {
   margin-bottom: 40px;
+}
+
+.trust-stats-intro--home {
+  margin: 0.75rem auto 1.75rem;
 }
 
 .trust-stats-grid {
@@ -171,12 +175,41 @@
 
 @media (max-width: 520px) {
   .trust-stats-intro {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
   }
 
+  .trust-stats-intro--home {
+    margin: 0.35rem auto 1.25rem;
+  }
+
+  /* Stay 2×2 on phones — a 1-column stack wastes first-screen space */
   .trust-stats-grid {
-    grid-template-columns: 1fr;
-    padding: 12px 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 10px;
+    padding: 10px 12px;
+  }
+
+  .trust-stat-card--compact {
+    gap: 8px;
+  }
+
+  .trust-stat-card__thumb {
+    width: 36px;
+    height: 36px;
+  }
+
+  .trust-stat-card__icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .trust-stat-card__body strong {
+    font-size: 0.95rem;
+  }
+
+  .trust-stat-card__body span {
+    font-size: 0.72rem;
+    line-height: 1.25;
   }
 }
 
@@ -457,9 +490,98 @@
   min-width: 0;
 }
 
+.regional-promo__card.region-card {
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+}
+
+.regional-promo__card.region-card:hover,
+.regional-promo__card.region-card:focus-within {
+  z-index: 4;
+}
+
 .regional-promo__card:hover {
   transform: translateY(-3px);
   box-shadow: 0 16px 36px rgba(255, 149, 0, 0.2);
+}
+
+.regional-promo__card .region-flag-preview {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: calc(100% - 4px);
+  z-index: 6;
+  pointer-events: none;
+  width: auto;
+}
+
+.regional-promo__card .region-flag-preview__panel {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(15, 61, 62, 0.12);
+  box-shadow: 0 12px 28px rgba(5, 25, 26, 0.16);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, visibility 0.18s ease, transform 0.18s ease;
+}
+
+.regional-promo__card:hover .region-flag-preview__panel,
+.regional-promo__card:focus-within .region-flag-preview__panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.regional-promo__card .region-flag-preview__title {
+  margin: 0 0 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #5b6b6c;
+}
+
+.regional-promo__card .region-flag-preview__flags {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 8px;
+  max-height: 9.5rem;
+  overflow: auto;
+}
+
+.regional-promo__card .region-flag-preview__flags li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #0f3d3e;
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.regional-promo__card .region-flag-preview__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.regional-promo__card .region-flag-preview__more {
+  grid-column: 1 / -1;
+  color: #ff9500 !important;
+  font-weight: 800 !important;
+}
+
+@media (hover: none) {
+  .regional-promo__card .region-flag-preview {
+    display: none;
+  }
 }
 
 .regional-promo__media {
@@ -530,6 +652,7 @@
   flex: 1;
   text-align: center;
   align-items: center;
+  position: relative;
 }
 
 .regional-promo__body strong {

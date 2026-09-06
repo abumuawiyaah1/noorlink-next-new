@@ -1,9 +1,16 @@
 import Image from "next/image";
 import { HOME_TRUST_STATS } from "@/lib/home-trust-stats";
 
-export function TrustStatsBar() {
+type TrustStatsBarProps = {
+  className?: string;
+};
+
+export function TrustStatsBar({ className = "" }: TrustStatsBarProps) {
   return (
-    <div className="trust-stats-intro" aria-label="NoorLink highlights">
+    <div
+      className={`trust-stats-intro${className ? ` ${className}` : ""}`}
+      aria-label="NoorLink highlights"
+    >
       <div className="trust-stats-grid trust-stats-grid--compact">
         {HOME_TRUST_STATS.map((item) => (
           <article key={item.id} className="trust-stat-card trust-stat-card--compact">

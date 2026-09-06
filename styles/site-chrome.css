@@ -443,6 +443,10 @@
   margin: -0.5rem auto 1.5rem;
 }
 
+.trust-proof-banner--steps {
+  margin: 0 auto 1.75rem;
+}
+
 .trust-proof-banner--pilgrim {
   margin: 0 auto 1.15rem;
 }

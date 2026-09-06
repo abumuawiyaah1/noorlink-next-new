@@ -33,8 +33,11 @@ function isCountryPhoto(name) {
   if (SKIP.has(lower)) return false;
   if (!/\.(jpe?g|webp)$/i.test(lower)) return false;
   if (lower.includes("regional")) return false;
-  if (/\d/.test(baseSlug(lower))) return false;
+  const slug = baseSlug(lower);
+  if (slug.endsWith("-sm") || slug.endsWith("-thumb")) return false;
+  if (/\d/.test(slug)) return false;
   if (lower.includes("unsplash")) return false;
+  if (slug === "placeholder") return false;
   return true;
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { flagForCountryLabel } from "@/lib/country-flags";
 import type { RegionalProduct } from "@/lib/regional-products";
 
 type RegionalCoveragePanelProps = {
@@ -31,7 +32,12 @@ export function RegionalCoveragePanel({
 
       <ul className="plans-regional-coverage__chips" aria-label="Countries covered">
         {(expanded ? countries : preview).map((country) => (
-          <li key={country}>{country}</li>
+          <li key={country}>
+            <span className="plans-regional-coverage__flag" aria-hidden="true">
+              {flagForCountryLabel(country)}
+            </span>
+            <span>{country}</span>
+          </li>
         ))}
         {!expanded && rest > 0 && (
           <li className="plans-regional-coverage__more">+{rest} more</li>

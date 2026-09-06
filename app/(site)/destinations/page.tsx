@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/destinations.css";
 import { ModernDestinationsPage } from "@/components/destinations/ModernDestinationsPage";
-import { DESTINATION_FILTERS, type DestinationRegion } from "@/lib/destinations-catalog";
+import { parseDestinationFilter } from "@/lib/destinations-catalog";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -22,18 +22,10 @@ type DestinationsPageProps = {
   }>;
 };
 
-function parseRegion(value?: string): "all" | DestinationRegion {
-  if (!value) return "all";
-  const match = DESTINATION_FILTERS.find(
-    (filter) => filter.id.toLowerCase() === value.toLowerCase(),
-  );
-  return match?.id ?? "all";
-}
-
 export default async function Page({ searchParams }: DestinationsPageProps) {
   const params = await searchParams;
   const initialQuery = params.q ?? params.country ?? "";
-  const initialRegion = parseRegion(params.region);
+  const initialRegion = parseDestinationFilter(params.region);
   const initialPromo = params.promo ?? params.code ?? "";
   const initialRef = params.ref ?? "";
 

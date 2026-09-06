@@ -90,7 +90,7 @@ export function describeEsimPlan(
       `${dataLabel} · ${days}`,
       `${speed} coverage`,
       regional
-        ? "One QR for multi-country travel"
+        ? "One QR for regional travel"
         : "Hotspot supported on most devices",
     ],
   };
