@@ -68,8 +68,7 @@ export function PopularCountries() {
           <span className="why-kicker">{seasonLabel} picks</span>
           <h2 id="popular-countries-heading">Popular destinations</h2>
           <p>
-            Eight countries worth opening right now — hover for why, then pick a
-            plan.
+            Eight countries worth opening right now — tap one to see plans.
           </p>
         </div>
 
@@ -96,9 +95,9 @@ export function PopularCountries() {
                     alt={`${card.title} travel destination`}
                     width={400}
                     height={400}
-                    loading={index < 4 ? "eager" : "lazy"}
+                    loading={index < 2 ? "eager" : "lazy"}
                     decoding="async"
-                    fetchPriority={index < 4 ? "high" : "auto"}
+                    fetchPriority={index < 2 ? "high" : "auto"}
                   />
                   <span className="popular-country__flag" aria-hidden="true">
                     {flag}
