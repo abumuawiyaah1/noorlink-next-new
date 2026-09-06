@@ -136,7 +136,7 @@ export function HeroSearch() {
           type="text"
           id="homeSearch"
           value={query}
-          placeholder="Where are you traveling? (e.g. Turkey)"
+          placeholder="Where are you traveling?"
           autoComplete="off"
           onChange={(e) => {
             const value = e.target.value;

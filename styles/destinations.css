@@ -267,4 +267,30 @@
             .nav-links { display: none; flex-direction: column; position: absolute; top: 75px; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-bottom: 1px solid #eee; gap: 20px; text-align: center; }
             .nav-links.active { display: flex; }
             .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+
+            .filter-bar {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                gap: 8px;
+                margin: 0 -16px 28px;
+                padding: 4px 16px 10px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .filter-bar::-webkit-scrollbar { display: none; }
+            .filter-btn {
+                flex: 0 0 auto;
+                padding: 8px 14px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+            .dest-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                padding-bottom: 72px;
+            }
+            .dest-grid .card .card-media {
+                height: 120px;
+            }
         }
