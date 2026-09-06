@@ -68,8 +68,7 @@ export function PopularCountries() {
           <span className="why-kicker">{seasonLabel} picks</span>
           <h2 id="popular-countries-heading">Popular destinations</h2>
           <p>
-            Eight countries worth opening right now — hover for why, then pick a
-            plan.
+            Eight countries worth opening right now — tap one to see plans.
           </p>
         </div>
 

@@ -175,41 +175,42 @@
 
 @media (max-width: 520px) {
   .trust-stats-intro {
-    margin-bottom: 24px;
+    margin-bottom: 18px;
   }
 
   .trust-stats-intro--home {
-    margin: 0.35rem auto 1.25rem;
+    margin: 0.15rem auto 0.9rem;
   }
 
   /* Stay 2×2 on phones — a 1-column stack wastes first-screen space */
   .trust-stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px 10px;
-    padding: 10px 12px;
+    gap: 6px 8px;
+    padding: 10px 10px;
   }
 
   .trust-stat-card--compact {
     gap: 8px;
+    min-height: 44px;
   }
 
   .trust-stat-card__thumb {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
 
   .trust-stat-card__icon {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
 
   .trust-stat-card__body strong {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .trust-stat-card__body span {
-    font-size: 0.72rem;
-    line-height: 1.25;
+    font-size: 0.68rem;
+    line-height: 1.2;
   }
 }
 
