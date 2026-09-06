@@ -1,0 +1,74 @@
+/* Mobile scroll feel — less paint while flicking up/down on phones. */
+
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Sticky chrome: solid paint is far cheaper than live blur while scrolling */
+  .site-header,
+  header.site-header,
+  header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: #fff;
+  }
+
+  .hero-search,
+  .hero-search-pill {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Keep ticker moving, but cheaper (no pause-on-hover jank) */
+  .ticker {
+    animation-duration: 110s;
+  }
+  .ticker:hover {
+    animation-play-state: running;
+  }
+
+  /*
+   * Defer layout/paint for below-fold blocks until they approach the viewport.
+   * Popular + trust stay eager (first shopping screen).
+   */
+  .steps-section,
+  .checker-section,
+  .umrah-promo-section,
+  .why-section,
+  .regional-promo,
+  .newsletter-section,
+  .site-footer,
+  footer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
+
+  .regional-promo {
+    contain-intrinsic-size: auto 1100px;
+  }
+
+  .why-section {
+    contain-intrinsic-size: auto 1400px;
+  }
+
+  /* Avoid hover-driven transform work on touch devices */
+  .popular-country,
+  .step-card,
+  .card,
+  .regional-promo__card,
+  .why-card {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .ticker {
+    animation: none;
+    transform: none;
+  }
+}
