@@ -16,6 +16,12 @@ export type PopularSeasonId =
 
 export type PopularSeasonConfig = {
   id: PopularSeasonId;
+  /**
+   * Season word for the Popular headline:
+   * “Popular destinations this {seasonWord}”.
+   */
+  seasonWord: "winter" | "spring" | "summer" | "fall";
+  /** Short kicker on plan pages (e.g. “This fall”). */
   label: string;
   /** Locked brand / campaign destinations (shown first). Countries only. */
   anchors: readonly string[];
@@ -31,7 +37,8 @@ export type PopularSeasonConfig = {
 export const POPULAR_SEASONS: Record<PopularSeasonId, PopularSeasonConfig> = {
   "winter-sun": {
     id: "winter-sun",
-    label: "Winter sun",
+    seasonWord: "winter",
+    label: "This winter",
     anchors: ["jamaica", "mexico", "usa"],
     fallbacks: [
       "turkey",
@@ -46,7 +53,8 @@ export const POPULAR_SEASONS: Record<PopularSeasonId, PopularSeasonConfig> = {
   },
   "pilgrimage-spring": {
     id: "pilgrimage-spring",
-    label: "Pilgrimage spring",
+    seasonWord: "spring",
+    label: "This spring",
     anchors: ["saudi-arabia", "turkey", "uae"],
     fallbacks: [
       "uk",
@@ -61,7 +69,8 @@ export const POPULAR_SEASONS: Record<PopularSeasonId, PopularSeasonConfig> = {
   },
   summer: {
     id: "summer",
-    label: "Summer travel",
+    seasonWord: "summer",
+    label: "This summer",
     anchors: ["france", "italy", "spain"],
     fallbacks: [
       "turkey",
@@ -76,7 +85,8 @@ export const POPULAR_SEASONS: Record<PopularSeasonId, PopularSeasonConfig> = {
   },
   "hajj-fall": {
     id: "hajj-fall",
-    label: "Hajj & fall travel",
+    seasonWord: "fall",
+    label: "This fall",
     anchors: ["saudi-arabia", "turkey", "uae"],
     fallbacks: [
       "uk",
@@ -141,6 +151,13 @@ export function resolvePopularSeason(date: Date = new Date()): PopularSeasonConf
   if (month >= 4 && month <= 6) return POPULAR_SEASONS["pilgrimage-spring"];
   if (month === 7 || month === 8) return POPULAR_SEASONS.summer;
   return POPULAR_SEASONS["hajj-fall"];
+}
+
+/** Homepage Popular section title — rotates with the season calendar. */
+export function popularDestinationsHeading(
+  season: PopularSeasonConfig = resolvePopularSeason(),
+): string {
+  return `Popular destinations this ${season.seasonWord}`;
 }
 
 export function trendingLabelToCardId(label: string): string | null {

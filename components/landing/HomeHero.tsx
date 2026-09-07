@@ -17,10 +17,15 @@ export function HomeHero() {
           No Matter Where You Are.
         </h1>
         <p className="hero-lede">
-          High-speed eSIM data in 190+ countries — ready when you land.
-          <br />
-          Hassle-free travel, skip the kiosk, roaming, and hidden fees, and keep
-          your number.
+          <span className="hero-lede__short">
+            High-speed eSIM data in 190+ countries — ready when you land.
+          </span>
+          <span className="hero-lede__full">
+            High-speed eSIM data in 190+ countries — ready when you land.
+            <br />
+            Hassle-free travel, skip the kiosk, roaming, and hidden fees, and keep
+            your number.
+          </span>
         </p>
         <HeroSearch />
       </div>

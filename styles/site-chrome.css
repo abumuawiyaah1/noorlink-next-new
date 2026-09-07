@@ -27,6 +27,20 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
+@media (max-width: 768px) {
+  .site-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: #ffffff;
+  }
+
+  .site-header--dark {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: #05191a;
+  }
+}
+
 .site-header--dark {
   background: rgba(5, 25, 26, 0.92);
   border-bottom-color: rgba(255, 255, 255, 0.08);
@@ -449,6 +463,10 @@
 
 .trust-proof-banner--pilgrim {
   margin: 0 auto 1.15rem;
+}
+
+.trust-proof-banner--after-compare {
+  margin: 1.25rem auto 0.25rem;
 }
 
 /* NoorLink Secure Stripe trust strip (original layout + cut payment marks) */

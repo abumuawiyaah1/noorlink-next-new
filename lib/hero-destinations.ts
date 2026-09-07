@@ -5,8 +5,8 @@ import {
   searchCountryTemplateHints,
 } from "@/lib/country-templates";
 import {
+  getRegionalProduct,
   plansPathForRegion,
-  regionalSearchMatches,
 } from "@/lib/regional-products";
 
 export type HeroDestination = {
@@ -140,11 +140,22 @@ export const popularPills = [
   { label: "Europe", query: "Europe", destinationId: "europe" },
 ] as const;
 
+const countryDestinations = () =>
+  heroDestinations.filter((dest) => dest.type === "country");
+
+function isCountrySearchResult(id: string): boolean {
+  const slug = id.trim().toLowerCase();
+  if (!slug || slug.startsWith("regional-")) return false;
+  return !getRegionalProduct(slug);
+}
+
+/** Search suggestions are countries only — regional packs are offered on the plan page. */
 export function filterDestinations(query: string): HeroDestination[] {
   const q = query.trim().toLowerCase();
-  if (!q) return heroDestinations.slice(0, 6);
+  const countries = countryDestinations();
+  if (!q) return countries.slice(0, 6);
 
-  const featured = heroDestinations.filter(
+  const featured = countries.filter(
     (dest) =>
       dest.label.toLowerCase().includes(q) ||
       dest.keywords.some(
@@ -154,21 +165,8 @@ export function filterDestinations(query: string): HeroDestination[] {
       ),
   );
 
-  const regionalMatches = regionalSearchMatches(query).map((product) => ({
-    id: product.routeSlug,
-    label: product.displayName,
-    flag: product.flag,
-    type: "region" as const,
-    href: plansPathForRegion(product.routeSlug),
-    keywords: [product.routeSlug, product.shortName.toLowerCase()],
-  }));
-
-  const featuredIds = new Set(featured.map((dest) => dest.id));
-  const regionalFeatured = regionalMatches.filter((dest) => !featuredIds.has(dest.id));
-
-  const combinedFeatured = [...regionalFeatured, ...featured];
-
   const generated = searchCountryTemplateHints(query)
+    .filter((hint) => isCountrySearchResult(hint.slug))
     .map((hint) => ({
       id: hint.slug,
       label: hint.name,
@@ -177,13 +175,13 @@ export function filterDestinations(query: string): HeroDestination[] {
       href: plansPathForCountry(hint.slug),
       keywords: [hint.slug, hint.name.toLowerCase(), ...(hint.aliases ?? [])],
     }))
-    .filter((dest) => !combinedFeatured.some((existing) => existing.id === dest.id));
+    .filter((dest) => !featured.some((existing) => existing.id === dest.id));
 
-  const combined = [...combinedFeatured, ...generated];
+  const combined = [...featured, ...generated];
   if (combined.length > 0) return combined.slice(0, 8);
 
   const fallback = destinationCardFromQuery(query);
-  if (!fallback) return [];
+  if (!fallback || !isCountrySearchResult(fallback.id)) return [];
 
   return [
     {

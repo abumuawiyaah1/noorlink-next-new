@@ -14,6 +14,7 @@ import {
   buildHybridPopularCountryIds,
   cardsForPopularIds,
   defaultPopularCountryCards,
+  popularDestinationsHeading,
   resolvePopularSeason,
   type PopularSeasonId,
 } from "@/lib/popular-countries";
@@ -36,7 +37,7 @@ export function PopularCountries() {
   const [cards, setCards] = useState<PopularCard[]>(() =>
     withReasons(defaultPopularCountryCards(), season.id),
   );
-  const [seasonLabel, setSeasonLabel] = useState(season.label);
+  const [heading, setHeading] = useState(() => popularDestinationsHeading(season));
   const livePrices = useLiveStartingPrices(cards.map((card) => card.priceCountryId));
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export function PopularCountries() {
         season: nextSeason,
         trending,
       });
-      setSeasonLabel(nextSeason.label);
+      setHeading(popularDestinationsHeading(nextSeason));
       setCards(withReasons(cardsForPopularIds(ids), nextSeason.id));
     }
 
@@ -65,12 +66,7 @@ export function PopularCountries() {
     <section className="popular-countries" aria-labelledby="popular-countries-heading">
       <div className="container">
         <div className="popular-countries__header">
-          <span className="why-kicker">{seasonLabel} picks</span>
-          <h2 id="popular-countries-heading">Popular destinations</h2>
-          <p>
-            Eight countries worth opening right now — hover for why, then pick a
-            plan.
-          </p>
+          <h2 id="popular-countries-heading">{heading}</h2>
         </div>
 
         <div className="popular-countries__grid" role="list">
@@ -96,9 +92,9 @@ export function PopularCountries() {
                     alt={`${card.title} travel destination`}
                     width={400}
                     height={400}
-                    loading={index < 4 ? "eager" : "lazy"}
+                    loading={index < 2 ? "eager" : "lazy"}
                     decoding="async"
-                    fetchPriority={index < 4 ? "high" : "auto"}
+                    fetchPriority={index < 2 ? "high" : "auto"}
                   />
                   <span className="popular-country__flag" aria-hidden="true">
                     {flag}

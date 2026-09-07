@@ -188,7 +188,7 @@ export function HeroSearch() {
                   <span className="hero-search-dropdown__text">
                     <span className="hero-search-dropdown__label">{dest.label}</span>
                     <span className="hero-search-dropdown__meta">
-                      {dest.type === "region" ? "Region" : "Country"} · View plans
+                      Country · View plans
                     </span>
                   </span>
                 </span>

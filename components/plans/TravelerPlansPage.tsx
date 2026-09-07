@@ -545,7 +545,6 @@ export function TravelerPlansPage({
 
             <div className="plans-reassurance">
               <span>Ready before you fly</span>
-              <span>We&apos;ve got you covered</span>
               <span>24/7 support when you need it</span>
             </div>
 
