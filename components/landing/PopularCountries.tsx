@@ -14,6 +14,7 @@ import {
   buildHybridPopularCountryIds,
   cardsForPopularIds,
   defaultPopularCountryCards,
+  popularDestinationsHeading,
   resolvePopularSeason,
   type PopularSeasonId,
 } from "@/lib/popular-countries";
@@ -36,7 +37,7 @@ export function PopularCountries() {
   const [cards, setCards] = useState<PopularCard[]>(() =>
     withReasons(defaultPopularCountryCards(), season.id),
   );
-  const [seasonLabel, setSeasonLabel] = useState(season.label);
+  const [heading, setHeading] = useState(() => popularDestinationsHeading(season));
   const livePrices = useLiveStartingPrices(cards.map((card) => card.priceCountryId));
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export function PopularCountries() {
         season: nextSeason,
         trending,
       });
-      setSeasonLabel(nextSeason.label);
+      setHeading(popularDestinationsHeading(nextSeason));
       setCards(withReasons(cardsForPopularIds(ids), nextSeason.id));
     }
 
@@ -65,8 +66,7 @@ export function PopularCountries() {
     <section className="popular-countries" aria-labelledby="popular-countries-heading">
       <div className="container">
         <div className="popular-countries__header">
-          <span className="why-kicker">{seasonLabel} picks</span>
-          <h2 id="popular-countries-heading">Popular destinations</h2>
+          <h2 id="popular-countries-heading">{heading}</h2>
           <p>
             Eight countries worth opening right now — tap one to see plans.
           </p>

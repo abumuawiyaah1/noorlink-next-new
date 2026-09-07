@@ -134,7 +134,7 @@ const SEASON_STORIES: Record<
   },
   "hajj-fall": {
     "saudi-arabia": {
-      reason: "Hajj & fall travel",
+      reason: "Umrah in cooler weather",
       tips: ["Focus days in Makkah and Madinah", "Quiet evening reflection walks"],
     },
     turkey: {
