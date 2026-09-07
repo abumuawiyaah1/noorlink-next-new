@@ -93,12 +93,9 @@ export function DeviceChecker() {
         <div className="check-icon-large">
           <PhoneDeviceIcon className="check-icon-large__svg" />
         </div>
-        <h2 style={{ fontSize: "2rem", color: "var(--primary)" }}>
+        <h2 style={{ fontSize: "2rem", color: "var(--primary)", marginBottom: 30 }}>
           Is your phone compatible?
         </h2>
-        <p style={{ color: "var(--text-muted)", marginBottom: 30 }}>
-          Check instantly if your device supports eSIM technology.
-        </p>
         <div className="checker-box">
           <div className="check-input-group">
             <input
