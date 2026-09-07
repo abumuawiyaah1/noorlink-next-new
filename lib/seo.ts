@@ -69,20 +69,28 @@ export const ROOT_METADATA: Metadata = {
     "Instant high-speed travel eSIM data in 190+ countries. Install before you fly — no physical SIM, no roaming shock.",
   icons: { icon: "/images/favicon.png" },
   openGraph: {
+    title: "NoorLink | Instant Travel eSIMs",
+    description:
+      "Install before you fly. Travel eSIM data in 190+ countries, plus dedicated Hajj & Umrah coverage for Makkah and Madinah.",
+    url: SITE_URL,
     siteName: SITE_NAME,
     type: "website",
     locale: "en_US",
     images: [
       {
-        url: DEFAULT_OG_IMAGE,
+        url: absoluteUrl(DEFAULT_OG_IMAGE),
         width: 1200,
         height: 630,
-        alt: "NoorLink travel eSIM",
+        alt: "NoorLink — install before you fly",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     site: "@noorlink",
+    title: "NoorLink | Instant Travel eSIMs",
+    description:
+      "Install before you fly. Travel eSIM data in 190+ countries, plus dedicated Hajj & Umrah coverage.",
+    images: [absoluteUrl(DEFAULT_OG_IMAGE)],
   },
 };
