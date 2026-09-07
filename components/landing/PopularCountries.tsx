@@ -67,9 +67,6 @@ export function PopularCountries() {
       <div className="container">
         <div className="popular-countries__header">
           <h2 id="popular-countries-heading">{heading}</h2>
-          <p>
-            Eight countries worth opening right now — tap one to see plans.
-          </p>
         </div>
 
         <div className="popular-countries__grid" role="list">
