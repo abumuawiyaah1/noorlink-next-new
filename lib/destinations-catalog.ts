@@ -1,6 +1,6 @@
 import { plansPathForCountry } from "@/lib/country-slugs";
 import { getCountryImage, getCountryImageUrl } from "@/lib/country-images";
-import { plansPathForRegion } from "@/lib/regional-products";
+import { getRegionalProduct, plansPathForRegion } from "@/lib/regional-products";
 import {
   COUNTRY_TEMPLATE_HINTS,
   destinationCardFromHint,
@@ -666,7 +666,11 @@ export const DESTINATION_CARDS: DestinationCard[] = [
 ];
 
 export function isSingleCountryDestination(card: DestinationCard): boolean {
-  return !card.priceCountryId.startsWith("regional-");
+  const id = card.priceCountryId.trim().toLowerCase();
+  if (!id || id.startsWith("regional-")) return false;
+  // Regional pack route slugs (europe, caribbean, global, …) are not countries.
+  if (getRegionalProduct(id) || getRegionalProduct(card.id)) return false;
+  return true;
 }
 
 function resolveDestinationCardById(
