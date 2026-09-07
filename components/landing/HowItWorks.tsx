@@ -9,7 +9,6 @@ export function HowItWorks() {
         <TrustProofBanner className="trust-proof-banner--steps" />
         <div className="steps-header">
           <h2>How it works</h2>
-          <p>Install before you fly — three calm steps to data on arrival.</p>
         </div>
         <div className="steps-grid">
           {HOW_IT_WORKS_STEPS.map((step) => (

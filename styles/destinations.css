@@ -159,19 +159,23 @@
             font-weight: 700;
         }
 
-        /* Multi-country region cards: flags only on hover */
+        /* Multi-country region cards: clip imagery; flags overlay inside on hover */
         .dest-grid .region-card {
-            overflow: visible;
+            overflow: hidden;
+        }
+        .dest-grid .region-card .card-media {
+            overflow: hidden;
+            border-radius: calc(var(--radius-card-lg) - 1px) calc(var(--radius-card-lg) - 1px) 0 0;
         }
         .dest-grid .region-card .card-body {
             position: relative;
-            overflow: visible;
         }
         .dest-grid .region-flag-preview {
             position: absolute;
             left: 12px;
             right: 12px;
-            bottom: calc(100% - 8px);
+            top: 12px;
+            bottom: auto;
             z-index: 8;
             pointer-events: none;
         }
