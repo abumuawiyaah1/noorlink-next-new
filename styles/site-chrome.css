@@ -465,6 +465,10 @@
   margin: 0 auto 1.15rem;
 }
 
+.trust-proof-banner--after-compare {
+  margin: 1.25rem auto 0.25rem;
+}
+
 /* NoorLink Secure Stripe trust strip (original layout + cut payment marks) */
 .secure-trust--card {
   background: #f3f7f7;

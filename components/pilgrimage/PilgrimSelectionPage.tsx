@@ -593,7 +593,12 @@ export function PilgrimSelectionPage({
                 </button>
               </div>
 
-              <TrustProofBanner className="trust-proof-banner--pilgrim" />
+              <a
+                href="#pilgrim-plans"
+                className="pilgrim-choose-plan"
+              >
+                Choose your plan
+              </a>
 
               <div className="plans-reassurance">
                 <span>Ready Before You Fly</span>
@@ -605,12 +610,14 @@ export function PilgrimSelectionPage({
 
               <PilgrimageInspiration />
 
-              <h2 className="plans-picker__title">Choose Your Pilgrimage Plan</h2>
-              <p className="plans-picker__hint">
-                Fixed Saudi packs or honest day-pass unlimited (3GB/day, then 1 Mbps).
-                The price you see is the price you pay — not surprises, not hidden
-                fees. Hotspot is included on every plan below.
-              </p>
+              <div id="pilgrim-plans" className="plans-picker">
+                <h2 className="plans-picker__title">Choose Your Pilgrimage Plan</h2>
+                <p className="plans-picker__hint">
+                  Fixed Saudi packs or honest day-pass unlimited (3GB/day, then 1 Mbps).
+                  The price you see is the price you pay — not surprises, not hidden
+                  fees. Hotspot is included on every plan below.
+                </p>
+              </div>
             </>
           )}
 
@@ -933,6 +940,7 @@ export function PilgrimSelectionPage({
                 </tbody>
               </table>
             </div>
+            <TrustProofBanner className="trust-proof-banner--pilgrim trust-proof-banner--after-compare" />
           </section>
         </div>
 

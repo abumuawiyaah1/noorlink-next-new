@@ -654,6 +654,40 @@
   box-shadow: var(--shadow-card);
 }
 
+.pilgrim-choose-plan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 22rem);
+  margin: 0 auto 1.15rem;
+  min-height: 48px;
+  padding: 0.85rem 1.35rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent, #ff9500);
+  color: var(--primary-dark, #05191a);
+  font-family: var(--font-brand);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(255, 149, 0, 0.28);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.pilgrim-choose-plan:hover,
+.pilgrim-choose-plan:focus-visible {
+  background: var(--accent-hover, #e68600);
+  transform: translateY(-1px);
+}
+
+#pilgrim-plans {
+  scroll-margin-top: 6.5rem;
+}
+
+.plans-picker {
+  margin-top: 0.5rem;
+}
+
 .pilgrim-compare__title {
   padding: 0.85rem 1rem 0;
   margin: 0;
