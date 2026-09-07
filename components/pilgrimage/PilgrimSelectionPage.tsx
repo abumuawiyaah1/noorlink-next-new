@@ -602,7 +602,6 @@ export function PilgrimSelectionPage({
 
               <div className="plans-reassurance">
                 <span>Ready Before You Fly</span>
-                <span>We&apos;ve Got You Covered</span>
                 <span>24/7 WhatsApp Support</span>
               </div>
 
