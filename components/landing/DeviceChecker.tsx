@@ -96,9 +96,6 @@ export function DeviceChecker() {
         <h2 style={{ fontSize: "2rem", color: "var(--primary)" }}>
           Is your phone compatible?
         </h2>
-        <p style={{ color: "var(--text-muted)", marginBottom: 30 }}>
-          Check instantly if your device supports eSIM technology.
-        </p>
         <div className="checker-box">
           <div className="check-input-group">
             <input
