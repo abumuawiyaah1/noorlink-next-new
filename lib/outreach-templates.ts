@@ -2,6 +2,7 @@ export type OutreachTemplateId =
   | "gifted_collab"
   | "follow_up"
   | "group_trip_code"
+  | "masjid_umrah_group"
   | "thank_you_posted";
 
 export type OutreachMessageTemplate = {
@@ -78,6 +79,35 @@ Reply with your preferred code name and the trip date if you have one, and I'll 
 
 Jorge
 NoorLink · noorlink.co`,
+  },
+  {
+    id: "masjid_umrah_group",
+    label: "Masjid / Islamic center Umrah",
+    description:
+      "Community partnership — organizer eSIMs, pilgrim discount, optional pre-departure install tip.",
+    subject: "Saudi eSIM support for your Umrah group",
+    eyebrow: "Community partnership",
+    title: "Connectivity for your pilgrims — before they fly",
+    ctaLabel: "Hajj & Umrah plans",
+    ctaHref: "https://noorlink.co/hajj-umrah",
+    body: `Assalamu alaikum {{name}},
+
+I'm Jorge, Founder of NoorLink (noorlink.co). We provide travel eSIMs for Umrah and Hajj — pilgrims install before they fly and get Saudi data on landing, so they aren't stuck in airport SIM lines or expensive roaming.
+
+We're reaching out because {{handle}} organizes or promotes Umrah for your community. We'd like to support your group in a practical way:
+
+• Complimentary Saudi eSIMs for trip organizers / ameers
+• A community code for pilgrims (typically 5% off, with a center commission on qualifying sales)
+• Optional short pre-departure tip (email or Zoom): install before you fly, Nusuk, maps
+
+We don't compete with your travel agent or package — only connectivity.
+
+If helpful, reply with the best contact for your Umrah coordinator and your preferred community code name (e.g. {{code_hint}}). Happy to align with your trip dates.
+
+JazakAllahu khairan,
+Jorge
+Founder, NoorLink
+support@noorlink.co · noorlink.co/partners`,
   },
   {
     id: "thank_you_posted",

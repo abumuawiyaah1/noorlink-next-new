@@ -130,12 +130,24 @@ export function OutreachCrmPage() {
       const body = (await res.json()) as {
         contacts?: OutreachContact[];
         error?: string;
+        seeded?: boolean;
+        merged?: number;
+        patched?: number;
       };
       if (!res.ok) {
         setError(body.error ?? "Could not load contacts.");
         return;
       }
       setContacts(body.contacts ?? []);
+      if (seed && ((body.merged ?? 0) > 0 || (body.patched ?? 0) > 0)) {
+        const parts: string[] = [];
+        if (body.seeded) parts.push(`Seeded ${body.merged} contacts`);
+        else if ((body.merged ?? 0) > 0)
+          parts.push(`Added ${body.merged} new contacts`);
+        if ((body.patched ?? 0) > 0)
+          parts.push(`updated ${body.patched} with sent status`);
+        setSuccess(`${parts.join("; ")}.`);
+      }
     } catch {
       setError("Could not load the outreach databank.");
     } finally {

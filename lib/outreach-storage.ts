@@ -143,19 +143,142 @@ export async function deleteOutreachContact(id: string): Promise<void> {
   await writeManifest({ ...manifest, contacts: next });
 }
 
+function outreachSeedKey(row: {
+  email?: string;
+  profileUrl?: string;
+  name?: string;
+  handle?: string;
+}): string {
+  const email = row.email?.trim().toLowerCase();
+  if (email) return `e:${email}`;
+  const url = row.profileUrl?.trim().toLowerCase();
+  if (url) return `u:${url}`;
+  return `n:${(row.name ?? "").trim().toLowerCase()}|${(row.handle ?? "").trim().toLowerCase()}`;
+}
+
+/** Empty CRM → full seed. Existing CRM → append missing + patch known outreach progress from seed. */
 export async function seedOutreachContactsIfEmpty(): Promise<{
   seeded: boolean;
+  merged: number;
+  patched: number;
   count: number;
 }> {
   const manifest = await readManifest();
-  if (manifest.contacts.length > 0) {
-    return { seeded: false, count: manifest.contacts.length };
+  const stamp = nowIso();
+
+  if (manifest.contacts.length === 0) {
+    const contacts = OUTREACH_SEED_CONTACTS.map((row) =>
+      normalizeContact({ ...row, createdAt: stamp, updatedAt: stamp }),
+    );
+    await writeManifest({ version: 1, contacts });
+    return {
+      seeded: true,
+      merged: contacts.length,
+      patched: 0,
+      count: contacts.length,
+    };
   }
 
-  const stamp = nowIso();
-  const contacts = OUTREACH_SEED_CONTACTS.map((row) =>
-    normalizeContact({ ...row, createdAt: stamp, updatedAt: stamp }),
+  const byKey = new Map(
+    manifest.contacts.map((c) => [outreachSeedKey(c), c] as const),
   );
-  await writeManifest({ version: 1, contacts });
-  return { seeded: true, count: contacts.length };
+  let merged = 0;
+  let patched = 0;
+
+  for (const row of OUTREACH_SEED_CONTACTS) {
+    const key = outreachSeedKey(row);
+    const existing = byKey.get(key);
+    if (!existing) {
+      // Also try profileUrl-only match (e.g. renamed Muslims Go Travel)
+      const byUrl = row.profileUrl.trim()
+        ? manifest.contacts.find(
+            (c) =>
+              c.profileUrl.trim().toLowerCase() ===
+              row.profileUrl.trim().toLowerCase(),
+          )
+        : undefined;
+      if (byUrl) {
+        const next = applySeedProgress(byUrl, row, stamp);
+        if (next) {
+          const idx = manifest.contacts.findIndex((c) => c.id === byUrl.id);
+          manifest.contacts[idx] = next;
+          patched += 1;
+        }
+        continue;
+      }
+      const contact = normalizeContact({
+        ...row,
+        createdAt: stamp,
+        updatedAt: stamp,
+      });
+      manifest.contacts.push(contact);
+      byKey.set(key, contact);
+      merged += 1;
+      continue;
+    }
+
+    const next = applySeedProgress(existing, row, stamp);
+    if (next) {
+      const idx = manifest.contacts.findIndex((c) => c.id === existing.id);
+      manifest.contacts[idx] = next;
+      byKey.set(key, next);
+      patched += 1;
+    }
+  }
+
+  if (merged > 0 || patched > 0) {
+    await writeManifest(manifest);
+  }
+
+  return {
+    seeded: false,
+    merged,
+    patched,
+    count: manifest.contacts.length,
+  };
+}
+
+/** Copy email / messaged status / notes from seed onto an existing contact when seed is ahead. */
+function applySeedProgress(
+  existing: OutreachContact,
+  seed: (typeof OUTREACH_SEED_CONTACTS)[number],
+  stamp: string,
+): OutreachContact | null {
+  let changed = false;
+  const patch: Partial<OutreachContact> = {};
+
+  if (seed.email.trim() && !existing.email.trim()) {
+    patch.email = seed.email.trim();
+    changed = true;
+  }
+  if (
+    seed.name.trim() &&
+    seed.name.trim() !== existing.name.trim() &&
+    (existing.name.includes("Naima") ||
+      seed.status === "messaged" ||
+      seed.email.trim())
+  ) {
+    patch.name = seed.name.trim();
+    changed = true;
+  }
+  if (seed.status === "messaged" && existing.status === "to_contact") {
+    patch.status = "messaged";
+    patch.messageSent = seed.messageSent || existing.messageSent;
+    patch.contactedAt = seed.contactedAt || stamp;
+    patch.lastEmailAt = seed.lastEmailAt || existing.lastEmailAt;
+    patch.lastEmailSubject =
+      seed.lastEmailSubject || existing.lastEmailSubject;
+    changed = true;
+  }
+  if (
+    seed.notes.trim() &&
+    seed.notes.trim() !== existing.notes.trim() &&
+    (seed.status === "messaged" || seed.notes.includes("EMAIL SENT") || seed.notes.includes("DM SENT"))
+  ) {
+    patch.notes = seed.notes.trim();
+    changed = true;
+  }
+
+  if (!changed) return null;
+  return normalizeContact(patch, existing);
 }
