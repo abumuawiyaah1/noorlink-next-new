@@ -82,7 +82,7 @@ const COUNTRY_NETWORKS: Record<string, readonly string[]> = {
 };
 
 const REGIONAL_NETWORKS: Record<TemplateRegionKey, readonly string[]> = {
-  "north-america": ["T-Mobile", "AT&T", "Rogers"],
+  "north-america": ["T-Mobile", "AT&T", "Rogers", "Telcel"],
   "south-america": ["Claro", "Movistar", "Entel"],
   europe: ["Vodafone", "Orange", "Deutsche Telekom"],
   "asia-pacific": ["Singtel", "AIS", "China Mobile"],

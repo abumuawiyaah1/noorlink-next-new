@@ -166,7 +166,7 @@ export function RegionalWorldMap() {
               textAnchor="middle"
               className="regional-map__global-sub"
             >
-              100+
+              193
             </text>
           </a>
         </svg>
@@ -179,7 +179,7 @@ export function RegionalWorldMap() {
             <h3>{REGIONAL_PRODUCTS.global.displayName}</h3>
             <p>{REGIONAL_PRODUCTS.global.heroTagline}</p>
             <p className="regional-map__panel-meta">
-              {REGIONAL_PRODUCTS.global.countries.length}+ featured destinations
+              Covers {REGIONAL_PRODUCTS.global.countries.length} countries · One QR
             </p>
             <Link
               href={plansPathForRegion("global")}

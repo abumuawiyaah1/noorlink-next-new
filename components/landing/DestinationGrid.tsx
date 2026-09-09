@@ -27,7 +27,7 @@ const destinations: {
   {
     id: "americas",
     title: "Americas",
-    subtitle: "USA, Canada & more",
+    subtitle: "USA, Canada & Mexico",
     image: getCountryImageUrl("americas"),
     routeSlug: "north-america",
     flagId: "americas",
@@ -51,7 +51,7 @@ const destinations: {
   {
     id: "asia",
     title: "Asia & Oceania",
-    subtitle: "Japan, Thailand, Australia…",
+    subtitle: "Japan, Thailand, Singapore…",
     image: getCountryImageUrl("asia"),
     routeSlug: "asia-pacific",
     flagId: "asia",
