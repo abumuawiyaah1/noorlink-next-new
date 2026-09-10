@@ -18,7 +18,7 @@ import {
   isPilgrimageOrder,
   PILGRIM_GIFT_GUIDES,
 } from "@/lib/pilgrim-gift-guides";
-import { lookupOrderByPaymentIntent, lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
+import { lookupOrder, lookupOrderByPaymentIntent, lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
 import { isSafeQrCodeUrl, safeExternalHref } from "@/lib/safe-url";
 
 const EMAIL_STORAGE_KEY = "nl_checkout_email";
@@ -39,6 +39,7 @@ function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const paymentIntentId = searchParams.get("payment_intent");
+  const orderIdParam = searchParams.get("orderId") ?? searchParams.get("order_id");
   const giftReturn = searchParams.get("gift") === "1";
   const countryParam = formatCountryLabel(searchParams.get("country") ?? "");
   const priceParam = searchParams.get("price");
@@ -46,7 +47,9 @@ function SuccessContent() {
   const planParam = searchParams.get("plan");
 
   const [order, setOrder] = useState<LookedUpOrder | null>(null);
-  const [loading, setLoading] = useState(Boolean(sessionId || paymentIntentId));
+  const [loading, setLoading] = useState(
+    Boolean(sessionId || paymentIntentId || orderIdParam),
+  );
 
   const refresh = useCallback(async () => {
     const lookupEmail = resolveLookupEmail(emailParam);
@@ -68,11 +71,17 @@ function SuccessContent() {
       const result = await lookupOrderByPaymentIntent(paymentIntentId, lookupEmail);
       if (result.order) setOrder(result.order);
       setLoading(false);
+      return;
     }
-  }, [sessionId, paymentIntentId, emailParam]);
+    if (orderIdParam && lookupEmail) {
+      const result = await lookupOrder(lookupEmail, orderIdParam);
+      if (result.order) setOrder(result.order);
+      setLoading(false);
+    }
+  }, [sessionId, paymentIntentId, orderIdParam, emailParam]);
 
   useEffect(() => {
-    if (!sessionId && !paymentIntentId) {
+    if (!sessionId && !paymentIntentId && !(orderIdParam && emailParam)) {
       setLoading(false);
       return;
     }
@@ -83,7 +92,15 @@ function SuccessContent() {
       void refresh();
     }, 8000);
     return () => window.clearInterval(timer);
-  }, [sessionId, paymentIntentId, refresh, order?.fulfillmentPending, order?.qrCodeUrl]);
+  }, [
+    sessionId,
+    paymentIntentId,
+    orderIdParam,
+    emailParam,
+    refresh,
+    order?.fulfillmentPending,
+    order?.qrCodeUrl,
+  ]);
 
   const country = formatCountryLabel(order?.country ?? countryParam);
   const email = order?.email ?? emailParam;

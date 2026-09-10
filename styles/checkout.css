@@ -439,6 +439,12 @@
     .checkout-express__divider span {
         white-space: nowrap;
     }
+    .checkout-paypal {
+        margin: 12px 0 4px;
+    }
+    .checkout-paypal__host {
+        min-height: 44px;
+    }
 
     /* —— Fast checkout: one path, less time to hesitate —— */
     &.nl-checkout--fast {

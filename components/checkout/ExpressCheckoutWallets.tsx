@@ -170,7 +170,7 @@ function ExpressCheckoutInner({
             applePay: "auto",
             googlePay: "auto",
             link: "auto",
-            paypal: "never",
+            paypal: "auto",
             amazonPay: "never",
           },
           layout: { maxColumns: 1, maxRows: 3, overflow: "auto" },

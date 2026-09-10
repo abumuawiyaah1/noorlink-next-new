@@ -32,6 +32,7 @@ import {
 } from "@/lib/affiliate-link";
 import { resolveAffiliate, type ResolvedAffiliate } from "@/lib/affiliate-api";
 import { ExpressCheckoutWallets } from "@/components/checkout/ExpressCheckoutWallets";
+import { PayPalCheckoutButton } from "@/components/checkout/PayPalCheckoutButton";
 
 const EMAIL_STORAGE_KEY = "nl_checkout_email";
 const PHONE_MQ = "(max-width: 768px)";
@@ -376,6 +377,22 @@ export function ModernCheckoutPage() {
                   onError={(message) => setError(message || null)}
                 />
 
+                <PayPalCheckoutButton
+                  payload={{
+                    email,
+                    country,
+                    price,
+                    flag: flag || undefined,
+                    travelDate: travelDate || undefined,
+                    packageId: packageId || undefined,
+                    promoCode: appliedPromo || undefined,
+                    affiliateRef: affiliateRef || undefined,
+                    wantsTopUp: wantsTopUp || undefined,
+                  }}
+                  disabled={submitting}
+                  onError={(message) => setError(message || null)}
+                />
+
                 <button
                   type="submit"
                   className={`pay-btn${submitting ? " loading" : ""}`}
@@ -619,6 +636,22 @@ export function ModernCheckoutPage() {
                     affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
                   }}
+                  onError={(message) => setError(message || null)}
+                />
+
+                <PayPalCheckoutButton
+                  payload={{
+                    email,
+                    country,
+                    price,
+                    flag: flag || undefined,
+                    travelDate: travelDate || undefined,
+                    packageId: packageId || undefined,
+                    promoCode: appliedPromo || undefined,
+                    affiliateRef: affiliateRef || undefined,
+                    wantsTopUp: wantsTopUp || undefined,
+                  }}
+                  disabled={submitting}
                   onError={(message) => setError(message || null)}
                 />
 
