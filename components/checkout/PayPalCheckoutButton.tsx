@@ -77,7 +77,7 @@ async function loadPayPalSdk(
   if (window.paypal) return window.paypal;
 
   if (!paypalSdkPromise) {
-    paypalSdkPromise = new Promise((resolve) => {
+    paypalSdkPromise = new Promise<PayPalNamespace | null>((resolve) => {
       const existing = document.querySelector<HTMLScriptElement>(
         'script[data-nl-paypal-sdk="1"]',
       );
@@ -163,7 +163,10 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    let buttons: { close?: () => Promise<void> } | null = null;
+    let buttons: {
+      render: (el: HTMLElement) => Promise<void>;
+      close?: () => Promise<void>;
+    } | null = null;
     const isCancelled = () => cancelled;
 
     async function boot() {
