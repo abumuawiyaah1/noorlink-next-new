@@ -39,17 +39,32 @@ export async function validatePromoCode(
       body: JSON.stringify(body),
     });
 
-    const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+    const rawText = await res.text();
+    let data: Record<string, unknown> = {};
+    try {
+      data = rawText ? (JSON.parse(rawText) as Record<string, unknown>) : {};
+    } catch {
+      data = {};
+    }
+
     if (!res.ok) {
       const detail = data.detail;
+      const message =
+        typeof detail === "string"
+          ? detail
+          : typeof data.message === "string"
+            ? data.message
+            : null;
+      // Backend occasionally returns bare 500 HTML/text for unknown codes —
+      // treat as invalid promo so checkout stays usable.
       return {
         valid: false,
         error:
-          typeof detail === "string"
-            ? detail
-            : typeof data.message === "string"
-              ? data.message
-              : "Could not validate promo code.",
+          message && !/^internal server error$/i.test(message)
+            ? message
+            : res.status >= 500
+              ? "Promo could not be checked right now. Try again, or continue without a code."
+              : "Invalid promo code.",
       };
     }
 

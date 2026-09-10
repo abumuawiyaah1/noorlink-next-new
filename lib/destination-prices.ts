@@ -62,22 +62,30 @@ export async function fetchDestinationStartingPrices(
 
   debug("destination-prices", "fetching starting prices", { count: ids.length });
 
-  const entries = await Promise.all(
-    ids.map(async (countryId) => {
-      try {
-        const response = await fetchPlansByCountryCached(countryId, {
-          revalidateSeconds: DESTINATION_PRICE_REVALIDATE_SECONDS,
-          timeoutMs: DESTINATION_PRICE_TIMEOUT_MS,
-        });
-        const price = cheapestStartingPrice(response.plans ?? []);
-        if (!price) return null;
-        return [countryId, price] as const;
-      } catch (error) {
-        debugError("destination-prices", "Failed for", countryId, error);
-        return null;
-      }
-    }),
-  );
+  /** Cap parallel upstream plan calls so Cloudflare Workers stay under CPU/subrequest limits. */
+  const CONCURRENCY = 6;
+  const entries: Array<readonly [string, DestinationStartingPrice] | null> = [];
+
+  for (let i = 0; i < ids.length; i += CONCURRENCY) {
+    const chunk = ids.slice(i, i + CONCURRENCY);
+    const chunkResults = await Promise.all(
+      chunk.map(async (countryId) => {
+        try {
+          const response = await fetchPlansByCountryCached(countryId, {
+            revalidateSeconds: DESTINATION_PRICE_REVALIDATE_SECONDS,
+            timeoutMs: DESTINATION_PRICE_TIMEOUT_MS,
+          });
+          const price = cheapestStartingPrice(response.plans ?? []);
+          if (!price) return null;
+          return [countryId, price] as const;
+        } catch (error) {
+          debugError("destination-prices", "Failed for", countryId, error);
+          return null;
+        }
+      }),
+    );
+    entries.push(...chunkResults);
+  }
 
   const prices: DestinationPriceMap = {};
   for (const entry of entries) {

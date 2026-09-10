@@ -90,17 +90,25 @@ export function normalizePlansResponse(
  */
 export async function pingPlansApi(
   countryId: string,
-  options?: { serverSide?: boolean },
+  options?: { serverSide?: boolean; revalidateSeconds?: number; timeoutMs?: number },
 ): Promise<PlansConnectivityResult> {
   const baseUrl = options?.serverSide ? SERVER_API_BASE : API_BASE;
   const url = plansApiUrl(countryId, baseUrl);
   const timestamp = new Date().toISOString();
+  /** Align with plan page `revalidate = 300` so Workers reuse warm plan JSON. */
+  const revalidateSeconds = options?.revalidateSeconds ?? 300;
+  const timeoutMs = options?.timeoutMs ?? (options?.serverSide ? 4000 : undefined);
 
   try {
     const res = await fetch(url, {
       method: "GET",
       headers: { Accept: "application/json" },
-      cache: "no-store",
+      ...(options?.serverSide
+        ? {
+            next: { revalidate: revalidateSeconds },
+            ...(timeoutMs ? { signal: AbortSignal.timeout(timeoutMs) } : {}),
+          }
+        : { cache: "no-store" as const }),
     });
 
     if (!res.ok) {
