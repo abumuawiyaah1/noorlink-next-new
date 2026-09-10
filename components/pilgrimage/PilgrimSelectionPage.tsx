@@ -516,8 +516,13 @@ export function PilgrimSelectionPage({
         return [tier.connectedVariants.gb10.price, tier.connectedVariants.gb20.price];
       }
       if (tier.key === "unlimited" && tier.unlimitedVariants) {
-        const { d7, d10, d14 } = tier.unlimitedVariants;
-        return [d7.price, d10.price, ...(d14 ? [d14.price] : [])];
+        const { d1, d7, d10, d14 } = tier.unlimitedVariants;
+        return [
+          ...(d1 ? [d1.price] : []),
+          d7.price,
+          d10.price,
+          ...(d14 ? [d14.price] : []),
+        ];
       }
       if (typeof tier.plan?.price === "number") return [tier.plan.price];
       return [];
