@@ -16,7 +16,7 @@ const BENEFITS: ReadonlyArray<{
     body: "QR code by email minutes after checkout — no mail, no airport SIM swap.",
     media: {
       type: "image",
-      src: "/images/trust-stats/qr-delivery-card.webp",
+      src: "/images/trust-stats/qr-delivery.webp",
       alt: "Phone showing eSIM ready email with QR code",
     },
   },
@@ -25,7 +25,7 @@ const BENEFITS: ReadonlyArray<{
     body: "One checkout connects you to local networks across six continents.",
     media: {
       type: "image",
-      src: "/images/trust-stats/countries-card.webp",
+      src: "/images/trust-stats/countries.webp",
       alt: "Globe highlighting international travel destinations",
     },
   },
@@ -34,7 +34,7 @@ const BENEFITS: ReadonlyArray<{
     body: "Share data with a laptop or travel companion at no extra cost.",
     media: {
       type: "image",
-      src: "/images/trust-stats/hotspot-share-card.webp",
+      src: "/images/trust-stats/hotspot.webp",
       alt: "Phone beside a laptop ready to share data via hotspot",
     },
   },
@@ -57,7 +57,7 @@ const BENEFITS: ReadonlyArray<{
     body: "WhatsApp support around the clock — reach a human in minutes.",
     media: {
       type: "image",
-      src: "/images/trust-stats/support-card.webp",
+      src: "/images/trust-stats/support.webp",
       alt: "Support agent helping a customer by phone and chat",
     },
   },
@@ -77,8 +77,8 @@ function WhyCardMedia({ media }: { media: BenefitMedia }) {
       <Image
         src={media.src}
         alt={media.alt}
-        width={560}
-        height={240}
+        width={800}
+        height={800}
         sizes="(max-width: 600px) 92vw, (max-width: 900px) 46vw, 380px"
         className="why-card__image"
       />

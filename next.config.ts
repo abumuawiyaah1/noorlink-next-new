@@ -30,7 +30,7 @@ const securityHeaders = [
       "form-action 'self' https://checkout.stripe.com https://www.paypal.com https://www.sandbox.paypal.com",
       "frame-ancestors 'none'",
       "img-src 'self' data: https: blob:",
-      "font-src 'self' https://fonts.gstatic.com https://cdn-cookieyes.com data:",
+      "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn-cookieyes.com data:",
       // CookieYes banner styles load from their CDN
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn-cookieyes.com",
       // Stripe + CookieYes + PayPal Smart Buttons SDK
