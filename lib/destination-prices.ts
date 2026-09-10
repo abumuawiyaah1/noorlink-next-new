@@ -1,5 +1,5 @@
 import { DESTINATION_CARDS } from "@/lib/destinations-catalog";
-import { debug, debugError } from "@/lib/debug";
+import { debug, warnAlways } from "@/lib/debug";
 import { fetchPlansByCountryCached } from "@/lib/plans-api";
 import type { EsimPlan } from "@/lib/plans-api";
 
@@ -11,7 +11,8 @@ export type DestinationStartingPrice = {
 export type DestinationPriceMap = Record<string, DestinationStartingPrice>;
 
 export const DESTINATION_PRICE_REVALIDATE_SECONDS = 300;
-export const DESTINATION_PRICE_TIMEOUT_MS = 2500;
+/** Slightly above common backend p95 so 8-region batches time out less often. */
+export const DESTINATION_PRICE_TIMEOUT_MS = 4000;
 export const MAX_DESTINATION_PRICE_COUNTRIES = 24;
 
 export function formatFromPrice(
@@ -79,7 +80,21 @@ export async function fetchDestinationStartingPrices(
           if (!price) return null;
           return [countryId, price] as const;
         } catch (error) {
-          debugError("destination-prices", "Failed for", countryId, error);
+          const timedOut =
+            error instanceof Error &&
+            (error.name === "TimeoutError" ||
+              error.name === "AbortError" ||
+              /timeout|aborted/i.test(error.message));
+          if (timedOut) {
+            warnAlways(
+              "destination-prices",
+              "Timed out for",
+              countryId,
+              "(price chip skipped)",
+            );
+          } else {
+            warnAlways("destination-prices", "Failed for", countryId, error);
+          }
           return null;
         }
       }),

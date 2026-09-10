@@ -1,7 +1,7 @@
 import { API_BASE } from "@/lib/api-client";
 import { SERVER_API_BASE } from "@/lib/api-server";
 import { normalizeCountrySlug } from "@/lib/country-slugs";
-import { debug, debugError } from "@/lib/debug";
+import { debug, debugError, warnAlways } from "@/lib/debug";
 import { normalizePlansResponse } from "@/lib/plans-diagnostics";
 
 export type PricingStrategy = "MANUAL" | "AUTOMATED";
@@ -89,6 +89,12 @@ async function parsePlansResponse(
   return normalizePlansResponse(payload);
 }
 
+function isAbortOrTimeoutError(err: unknown): boolean {
+  if (!(err instanceof Error)) return false;
+  if (err.name === "TimeoutError" || err.name === "AbortError") return true;
+  return /aborted due to timeout|The operation was aborted/i.test(err.message);
+}
+
 function wrapPlansNetworkError(
   err: unknown,
   url: string,
@@ -105,11 +111,13 @@ function wrapPlansNetworkError(
         ? err.message
         : "Unable to load plans.";
 
-  debugError("plans-api", "Network or unexpected error", {
-    url,
-    countryId,
-    error: err,
-  });
+  const payload = { url, countryId, error: err };
+  if (isAbortOrTimeoutError(err)) {
+    // Soft: destination price chips often race a short budget; not a site outage.
+    warnAlways("plans-api", "Plans fetch timed out", payload);
+  } else {
+    debugError("plans-api", "Network or unexpected error", payload);
+  }
   return new Error(message);
 }
 

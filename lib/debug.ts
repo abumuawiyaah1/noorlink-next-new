@@ -30,6 +30,12 @@ export function debugWarn(scope: string, ...args: DebugArgs): void {
   console.warn(stamp(scope), ...args);
 }
 
+/** Always emit a warning (including production) — use for soft/retryable failures. */
+export function warnAlways(scope: string, ...args: DebugArgs): void {
+  // eslint-disable-next-line no-console
+  console.warn(stamp(scope), ...args);
+}
+
 export function debugError(scope: string, ...args: DebugArgs): void {
   // Always surface errors — even in production — so failures are visible.
   // eslint-disable-next-line no-console
