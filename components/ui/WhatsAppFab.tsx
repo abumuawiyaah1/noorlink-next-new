@@ -15,8 +15,8 @@ function WhatsAppGlyph() {
     <svg
       className="whatsapp-float__icon"
       viewBox="0 0 24 24"
-      width="22"
-      height="22"
+      width="24"
+      height="24"
       aria-hidden="true"
       focusable="false"
     >
