@@ -16,6 +16,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SecureCheckoutTrust } from "@/components/ui/SecureCheckoutTrust";
 import { createCheckoutSession } from "@/lib/checkout-api";
+import { resolveCheckoutFlag } from "@/lib/country-flags";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { validatePromoCode } from "@/lib/promo-api";
 import { isSafeStripeCheckoutUrl } from "@/lib/safe-url";
@@ -64,7 +65,7 @@ export function ModernCheckoutPage() {
   const useFastCheckout = isPhone && !preferFullCheckout;
 
   const country = formatCountryLabel(searchParams.get("country") ?? "Your destination");
-  const flag = searchParams.get("flag") ?? "🌍";
+  const flag = resolveCheckoutFlag(searchParams.get("flag"), country);
   const packageId = searchParams.get("packageId") ?? searchParams.get("package_id");
   const plan = searchParams.get("plan") ?? "Selected plan";
   const price = parsePrice(searchParams.get("price"));
@@ -194,11 +195,12 @@ export function ModernCheckoutPage() {
     event.preventDefault();
     setError(null);
 
-    if (!email.trim()) {
+    const trimmedEmail = email.trim();
+    if (trimmedEmail && !trimmedEmail.includes("@")) {
       setError(
         useFastCheckout
-          ? "Enter your email for the QR code."
-          : "Please enter your email address.",
+          ? "Check that email, or leave it blank and enter it on Stripe."
+          : "Please enter a valid email, or leave it blank for Stripe.",
       );
       return;
     }
@@ -216,14 +218,16 @@ export function ModernCheckoutPage() {
     setSubmitting(true);
 
     try {
-      try {
-        window.localStorage.setItem(EMAIL_STORAGE_KEY, email.trim());
-      } catch {
-        /* ignore */
+      if (trimmedEmail) {
+        try {
+          window.localStorage.setItem(EMAIL_STORAGE_KEY, trimmedEmail);
+        } catch {
+          /* ignore */
+        }
       }
 
       const result = await createCheckoutSession({
-        email: email.trim(),
+        email: trimmedEmail || undefined,
         country,
         price,
         flag: flag || undefined,
@@ -294,12 +298,12 @@ export function ModernCheckoutPage() {
 
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-email">
-                    Email for your QR code
+                    Email for your QR code{" "}
+                    <span className="form-label-optional">(optional)</span>
                   </label>
                   <input
                     id="checkout-email"
                     type="email"
-                    required
                     autoComplete="email"
                     autoFocus
                     inputMode="email"
@@ -308,6 +312,9 @@ export function ModernCheckoutPage() {
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="you@example.com"
                   />
+                  <p className="checkout-fast__hint">
+                    Skip for now if you want — Stripe will ask for email before you pay.
+                  </p>
                 </div>
 
                 <div className="form-group">
@@ -484,17 +491,17 @@ export function ModernCheckoutPage() {
                   1. Contact Information
                 </h2>
                 <div className="form-note">
-                  We use this to send two emails: your payment confirmation first,
-                  then your QR code and install details.
+                  Optional here — we need an email for your QR code. If you skip
+                  it, Stripe asks on the next step so the sale still goes through.
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label className="form-label" htmlFor="checkout-email">
-                    Email address
+                    Email address{" "}
+                    <span className="form-label-optional">(optional)</span>
                   </label>
                   <input
                     id="checkout-email"
                     type="email"
-                    required
                     autoComplete="email"
                     autoFocus
                     className="form-input"

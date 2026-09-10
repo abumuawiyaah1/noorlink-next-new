@@ -51,12 +51,16 @@ export function SiteHeader({
 
         <button
           type="button"
-          className="mobile-toggle"
+          className={`mobile-toggle${menuOpen ? " is-open" : ""}`}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          <i className="fas fa-bars" aria-hidden="true" />
+          <span className="mobile-toggle__bars" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </span>
         </button>
       </div>
     </header>

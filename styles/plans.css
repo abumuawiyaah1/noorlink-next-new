@@ -867,11 +867,11 @@
             font-size: 0.85rem; 
         }
         
-        /* WHATSAPP FLOAT */
+        /* WHATSAPP FLOAT — shared FAB styles; mobile sizing in whatsapp-fab.css */
         .whatsapp-float { 
             position: fixed; 
-            bottom: 30px; 
-            right: 30px; 
+            bottom: max(1.25rem, env(safe-area-inset-bottom, 0px)); 
+            right: max(1.25rem, env(safe-area-inset-right, 0px)); 
             background-color: var(--whatsapp); 
             color: white; 
             width: 64px; 
@@ -890,8 +890,6 @@
             transform: scale(1.1);
             box-shadow: 0 15px 35px rgba(37,211,102,0.6);
         }
-        
-        .whatsapp-float::before { content: "💬"; }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {

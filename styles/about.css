@@ -112,8 +112,7 @@
         .footer-list a:hover { color: var(--accent); transform: translateX(5px); }
         .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; font-size: 0.85rem; }
         
-        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background-color: var(--whatsapp); color: white; width: 64px; height: 64px; border-radius: 50%; text-align: center; font-size: 32px; line-height: 64px; box-shadow: 0 10px 25px rgba(37,211,102,0.4); z-index: 10000; text-decoration: none; }
-        .whatsapp-float::before { content: "💬"; }
+        .whatsapp-float { position: fixed; bottom: max(1.25rem, env(safe-area-inset-bottom, 0px)); right: max(1.25rem, env(safe-area-inset-right, 0px)); background-color: var(--whatsapp); color: white; width: 64px; height: 64px; border-radius: 50%; text-align: center; font-size: 32px; line-height: 64px; box-shadow: 0 10px 25px rgba(37,211,102,0.4); z-index: 10000; text-decoration: none; }
 
         @media (max-width: 768px) {
             .mobile-toggle { display: block; }

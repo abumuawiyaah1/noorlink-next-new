@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import "@/styles/cookieyes-mobile.css";
 
 const TITLE = "We value your privacy";
 const BAD_TITLE = /we\s+a\s+noorlink|value your privacy/i;

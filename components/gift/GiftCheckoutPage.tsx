@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { createCheckoutSession } from "@/lib/checkout-api";
+import { resolveCheckoutFlag } from "@/lib/country-flags";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { isSafeStripeCheckoutUrl } from "@/lib/safe-url";
 
@@ -22,7 +23,7 @@ function parsePrice(value: string | null): number {
 function GiftCheckoutContent() {
   const searchParams = useSearchParams();
   const country = formatCountryLabel(searchParams.get("country") ?? "Your destination");
-  const flag = searchParams.get("flag") ?? "🌍";
+  const flag = resolveCheckoutFlag(searchParams.get("flag"), country);
   const packageId = searchParams.get("packageId") ?? searchParams.get("package_id");
   const plan = searchParams.get("plan") ?? "Selected plan";
   const price = parsePrice(searchParams.get("price"));

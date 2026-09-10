@@ -3,7 +3,7 @@ import { attributionPayloadForCheckout } from "@/lib/attribution";
 import { debug, debugError } from "@/lib/debug";
 
 export type CheckoutSessionPayload = {
-  email: string;
+  email?: string;
   country: string;
   price: number;
   flag?: string;
@@ -45,10 +45,11 @@ export async function createCheckoutSession(
   const url = `${base}/api/checkout/session`;
 
   const body: Record<string, unknown> = {
-    email: payload.email.trim(),
     country: payload.country,
     price: payload.price,
   };
+  const email = payload.email?.trim();
+  if (email) body.email = email;
   if (payload.flag) body.flag = payload.flag;
   if (payload.phone) body.phone = payload.phone.trim();
   if (payload.travelDate) body.travelDate = payload.travelDate;

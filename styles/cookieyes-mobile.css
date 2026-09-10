@@ -1,0 +1,82 @@
+/**
+ * Compact CookieYes banner on phones — keep consent visible without covering the shop UI.
+ * CookieYes injects .cky-* nodes; these overrides only shrink layout on small screens.
+ */
+
+@media (max-width: 768px) {
+  .cky-consent-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .cky-consent-bar,
+  .cky-notice,
+  .cky-box {
+    padding: 10px 12px !important;
+    margin: 0 !important;
+    border-radius: 12px 12px 0 0 !important;
+    box-shadow: 0 -4px 20px rgba(5, 25, 26, 0.12) !important;
+  }
+
+  .cky-title,
+  .cky-notice-title,
+  h2.cky-title {
+    font-size: 0.95rem !important;
+    line-height: 1.25 !important;
+    margin: 0 0 4px !important;
+  }
+
+  .cky-notice-descrip,
+  .cky-notice-desc,
+  .cky-notice-content p,
+  .cky-consent-bar p {
+    font-size: 0.75rem !important;
+    line-height: 1.35 !important;
+    margin: 0 0 8px !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .cky-notice-btn-wrapper,
+  .cky-btn-wrapper,
+  .cky-button-wrapper {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-top: 4px !important;
+  }
+
+  .cky-btn {
+    min-height: 36px !important;
+    padding: 6px 12px !important;
+    font-size: 0.78rem !important;
+    line-height: 1.2 !important;
+    border-radius: 8px !important;
+    flex: 1 1 auto !important;
+  }
+
+  /* Preference / detail modal — keep usable but not full-bleed huge */
+  .cky-modal,
+  .cky-preference-center {
+    max-height: min(78vh, 560px) !important;
+    overflow: auto !important;
+    border-radius: 12px !important;
+  }
+
+  .cky-preference-header,
+  .cky-preference-body,
+  .cky-preference-footer {
+    padding: 10px 12px !important;
+  }
+
+  .cky-revisit-bottom,
+  .cky-btn-revisit-bottom,
+  .cky-revisit-bottom-left,
+  .cky-revisit-bottom-right {
+    width: 40px !important;
+    height: 40px !important;
+    bottom: max(5.5rem, calc(env(safe-area-inset-bottom, 0px) + 4.5rem)) !important;
+  }
+}

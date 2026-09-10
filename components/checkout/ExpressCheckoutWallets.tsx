@@ -13,7 +13,7 @@ import { attributionPayloadForCheckout } from "@/lib/attribution";
 import { debug, debugError } from "@/lib/debug";
 
 type ExpressPayload = {
-  email: string;
+  email?: string;
   country: string;
   price: number;
   flag?: string;
@@ -76,12 +76,17 @@ function ExpressCheckoutInner({
       return;
     }
 
+    const walletEmail =
+      payload.email?.trim() ||
+      event.billingDetails?.email?.trim() ||
+      "";
+
     try {
       const body: Record<string, unknown> = {
-        email: payload.email.trim(),
         country: payload.country,
         price: payload.price,
       };
+      if (walletEmail) body.email = walletEmail;
       if (payload.flag) body.flag = payload.flag;
       if (payload.travelDate) body.travelDate = payload.travelDate;
       if (payload.packageId) body.packageId = payload.packageId;
@@ -118,14 +123,19 @@ function ExpressCheckoutInner({
         "";
       if (!clientSecret) throw new Error("Missing payment secret.");
 
-      const returnUrl = `${window.location.origin}/success?email=${encodeURIComponent(payload.email.trim())}`;
+      const returnUrl = walletEmail
+        ? `${window.location.origin}/success?email=${encodeURIComponent(walletEmail)}`
+        : `${window.location.origin}/success`;
+      const confirmParams: {
+        return_url: string;
+        receipt_email?: string;
+      } = { return_url: returnUrl };
+      if (walletEmail) confirmParams.receipt_email = walletEmail;
+
       const { error } = await stripe.confirmPayment({
         elements,
         clientSecret,
-        confirmParams: {
-          return_url: returnUrl,
-          receipt_email: payload.email.trim(),
-        },
+        confirmParams,
       });
 
       if (error) {
@@ -143,17 +153,14 @@ function ExpressCheckoutInner({
   }
 
   if (disabled) {
-    return (
-      <p className="checkout-express__hint">
-        Enter your email above to enable Apple Pay, Google Pay, or Link.
-      </p>
-    );
+    return null;
   }
 
   return (
     <div className={`checkout-express__element${busy ? " is-busy" : ""}`}>
       <ExpressCheckoutElement
         options={{
+          emailRequired: true,
           buttonType: {
             applePay: "buy",
             googlePay: "buy",
@@ -185,7 +192,6 @@ function ExpressCheckoutInner({
 export function ExpressCheckoutWallets(props: Props) {
   const [stripe, setStripe] = useState<Awaited<ReturnType<typeof loadStripe>>>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const emailOk = props.payload.email.includes("@") && props.payload.email.includes(".");
 
   useEffect(() => {
     let cancelled = false;
@@ -236,7 +242,7 @@ export function ExpressCheckoutWallets(props: Props) {
       <Elements stripe={stripe} options={options} key={props.amountCents}>
         <ExpressCheckoutInner
           payload={props.payload}
-          disabled={props.disabled || !emailOk}
+          disabled={props.disabled}
           onError={props.onError}
         />
       </Elements>

@@ -203,3 +203,16 @@ export function resolveCountryFlag(
   if (trimmed) return trimmed;
   return getCountryFlag(countryId);
 }
+
+/**
+ * Checkout / gift URLs may omit `flag` (old links, manual URLs).
+ * Prefer the query flag when present; otherwise derive from country label.
+ */
+export function resolveCheckoutFlag(
+  flagParam: string | null | undefined,
+  countryLabel: string,
+): string {
+  const trimmed = flagParam?.trim();
+  if (trimmed) return trimmed;
+  return flagForCountryLabel(countryLabel);
+}

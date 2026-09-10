@@ -1,7 +1,8 @@
 .whatsapp-float {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  /* Sit above home indicator / cookie bars on phones */
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  right: max(1.25rem, env(safe-area-inset-right, 0px));
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -15,7 +16,7 @@
   line-height: 1;
   box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
 .whatsapp-float:hover {
@@ -24,12 +25,32 @@
   color: #fff;
 }
 
+.whatsapp-float:focus-visible {
+  outline: 3px solid rgba(15, 61, 62, 0.45);
+  outline-offset: 3px;
+}
+
+/* Payment flows: keep Pay CTA clear — support is still on Success / Support pages */
+.whatsapp-float--hidden {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
   .whatsapp-float {
-    width: 56px;
-    height: 56px;
-    font-size: 28px;
-    bottom: 20px;
-    right: 20px;
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+    /* Clear “This week” chips, CookieYes, and home-indicator */
+    bottom: max(7.25rem, calc(env(safe-area-inset-bottom, 0px) + 6.25rem));
+    right: max(0.85rem, env(safe-area-inset-right, 0px));
+    box-shadow: 0 8px 18px rgba(37, 211, 102, 0.35);
+  }
+
+  .whatsapp-float:hover {
+    transform: none;
+  }
+
+  .whatsapp-float:active {
+    transform: scale(0.96);
   }
 }

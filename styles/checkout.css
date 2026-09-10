@@ -134,6 +134,10 @@
         font-weight: 600;
         margin-bottom: 8px;
     }
+    .form-label-optional {
+        font-weight: 500;
+        color: var(--text-muted);
+    }
     .form-note {
         margin: -4px 0 16px;
         padding: 12px 14px;
@@ -221,6 +225,10 @@
     }
     .summary-plan__flag {
         font-size: 1.8rem;
+        line-height: 1;
+        flex-shrink: 0;
+        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+          "Twemoji Mozilla", sans-serif;
     }
     .summary-plan p {
         font-size: 0.85rem;
