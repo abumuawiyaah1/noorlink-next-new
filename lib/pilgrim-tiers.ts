@@ -46,7 +46,7 @@ export const PILGRIM_TIER_META: PilgrimTierMeta[] = [
       "3GB/day at full speed, then up to 1 Mbps — for travelers who do not want to count gigabytes.",
     highlights: [
       "3GB/day full speed · then 1 Mbps",
-      "Choose 7 or 10 day trip length",
+      "Pick your trip length",
       "Hotspot included",
     ],
   },
@@ -59,9 +59,11 @@ export type PilgrimTierOffer = PilgrimTierMeta & {
     gb10: EsimPlan;
     gb20: EsimPlan;
   };
-  /** Umrah Unlimited: traveler picks trip length (1d test + 14d when catalog has them). */
+  /** Umrah Unlimited: traveler picks trip length from catalog day-pass options. */
   unlimitedVariants?: {
     d1?: EsimPlan;
+    d3?: EsimPlan;
+    d5?: EsimPlan;
     d7: EsimPlan;
     d10: EsimPlan;
     d14?: EsimPlan;
@@ -69,7 +71,31 @@ export type PilgrimTierOffer = PilgrimTierMeta & {
 };
 
 export type ConnectedPilgrimDataGb = 10 | 20;
-export type UmrahUnlimitedDays = 1 | 7 | 10 | 14;
+export type UmrahUnlimitedDays = 1 | 3 | 5 | 7 | 10 | 14;
+
+const UNLIMITED_DAY_ORDER: UmrahUnlimitedDays[] = [1, 3, 5, 7, 10, 14];
+
+function unlimitedVariantForDays(
+  variants: NonNullable<PilgrimTierOffer["unlimitedVariants"]>,
+  days: UmrahUnlimitedDays,
+): EsimPlan | undefined {
+  switch (days) {
+    case 1:
+      return variants.d1;
+    case 3:
+      return variants.d3;
+    case 5:
+      return variants.d5;
+    case 7:
+      return variants.d7;
+    case 10:
+      return variants.d10;
+    case 14:
+      return variants.d14;
+    default:
+      return undefined;
+  }
+}
 
 export type PilgrimPlanCopy = {
   description: string;
@@ -257,13 +283,18 @@ export function resolveUmrahUnlimitedPlan(
   days: UmrahUnlimitedDays,
 ): EsimPlan {
   if (tier.unlimitedVariants) {
-    if (days === 1) {
-      return tier.unlimitedVariants.d1 ?? tier.unlimitedVariants.d7;
-    }
-    if (days === 7) return tier.unlimitedVariants.d7;
+    const match = unlimitedVariantForDays(tier.unlimitedVariants, days);
+    if (match) return match;
     if (days === 14) {
       return tier.unlimitedVariants.d14 ?? tier.unlimitedVariants.d10;
     }
+    if (days === 1 || days === 3 || days === 5) {
+      return (
+        unlimitedVariantForDays(tier.unlimitedVariants, days) ??
+        tier.unlimitedVariants.d7
+      );
+    }
+    if (days === 7) return tier.unlimitedVariants.d7;
     return tier.unlimitedVariants.d10;
   }
   if (tier.plan && tier.plan.durationDays === days) return tier.plan;
@@ -272,17 +303,16 @@ export function resolveUmrahUnlimitedPlan(
   return tier.plan ?? PILGRIM_FALLBACK_PLANS.unlimited;
 }
 
-/** Available unlimited trip lengths (1d/14d only when the catalog has a live SKU). */
+/** Available unlimited trip lengths from the live catalog (7/10 always offered). */
 export function availableUmrahUnlimitedDays(
   tier: PilgrimTierOffer,
 ): UmrahUnlimitedDays[] {
   const variants = tier.unlimitedVariants;
   if (!variants) return [7, 10];
-  const days: UmrahUnlimitedDays[] = [];
-  if (variants.d1) days.push(1);
-  days.push(7, 10);
-  if (variants.d14) days.push(14);
-  return days;
+  return UNLIMITED_DAY_ORDER.filter((days) => {
+    if (days === 7 || days === 10) return true;
+    return Boolean(unlimitedVariantForDays(variants, days));
+  });
 }
 
 export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
@@ -299,11 +329,19 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
     fixed[1] ??
     null;
   const unlimitedGb1 = pickUmrahUnlimitedPlan(plans, 1);
+  const unlimitedGb3 = pickUmrahUnlimitedPlan(plans, 3);
+  const unlimitedGb5 = pickUmrahUnlimitedPlan(plans, 5);
   const unlimitedGb7 = pickUmrahUnlimitedPlan(plans, 7);
   const unlimitedGb10 = pickUmrahUnlimitedPlan(plans, 10);
   const unlimitedGb14 = pickUmrahUnlimitedPlan(plans, 14);
   const unlimited =
-    unlimitedGb10 ?? unlimitedGb7 ?? unlimitedGb1 ?? unlimitedGb14 ?? null;
+    unlimitedGb10 ??
+    unlimitedGb7 ??
+    unlimitedGb5 ??
+    unlimitedGb3 ??
+    unlimitedGb1 ??
+    unlimitedGb14 ??
+    null;
   const basic =
     fixed.find(
       (p) =>
@@ -336,6 +374,8 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
     if (meta.key === "unlimited") {
       offer.unlimitedVariants = {
         ...(unlimitedGb1 ? { d1: unlimitedGb1 } : {}),
+        ...(unlimitedGb3 ? { d3: unlimitedGb3 } : {}),
+        ...(unlimitedGb5 ? { d5: unlimitedGb5 } : {}),
         d7: unlimitedGb7 ?? UNLIMITED_FALLBACK_7,
         d10: unlimitedGb10 ?? PILGRIM_FALLBACK_PLANS.unlimited,
         ...(unlimitedGb14 ? { d14: unlimitedGb14 } : {}),
