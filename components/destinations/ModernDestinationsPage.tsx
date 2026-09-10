@@ -126,7 +126,7 @@ export function ModernDestinationsPage({
         <div className="container">
           <h1>Find Your Destination</h1>
           <p style={{ opacity: 0.8 }}>
-            Browse trending countries, then open live plans — the “From” price is the cheapest plan you can actually buy.
+            The price you see is the price you pay.
           </p>
         </div>
       </div>
