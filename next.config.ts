@@ -27,17 +27,17 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       "base-uri 'self'",
-      "form-action 'self' https://checkout.stripe.com",
+      "form-action 'self' https://checkout.stripe.com https://www.paypal.com https://www.sandbox.paypal.com",
       "frame-ancestors 'none'",
       "img-src 'self' data: https: blob:",
       "font-src 'self' https://fonts.gstatic.com https://cdn-cookieyes.com data:",
       // CookieYes banner styles load from their CDN
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn-cookieyes.com",
-      // CookieYes consent script (required for GDPR/CCPA banner)
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://embed.tawk.to https://cdn-cookieyes.com",
-      "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://checkout.stripe.com https://embed.tawk.to",
-      // CookieYes logs consent + loads banner config (*.cookieyes.com per their CSP docs)
-      "connect-src 'self' https://api.noorlink.co http://127.0.0.1:8000 http://localhost:8000 https://api.stripe.com https://*.tawk.to wss://*.tawk.to https://cdn-cookieyes.com https://*.cookieyes.com",
+      // Stripe + CookieYes + PayPal Smart Buttons SDK
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://embed.tawk.to https://cdn-cookieyes.com https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com",
+      "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://checkout.stripe.com https://embed.tawk.to https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com",
+      // CookieYes + PayPal checkout APIs
+      "connect-src 'self' https://api.noorlink.co http://127.0.0.1:8000 http://localhost:8000 https://api.stripe.com https://*.tawk.to wss://*.tawk.to https://cdn-cookieyes.com https://*.cookieyes.com https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://*.paypalobjects.com",
     ].join("; "),
   },
 ];

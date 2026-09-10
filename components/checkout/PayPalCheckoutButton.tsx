@@ -53,16 +53,24 @@ async function loadPayPalSdk(clientId: string): Promise<PayPalNamespace | null> 
         'script[data-nl-paypal-sdk="1"]',
       );
       if (existing) {
-        existing.addEventListener("load", () => resolve(window.paypal ?? null));
-        existing.addEventListener("error", () => resolve(null));
+        if (window.paypal) {
+          resolve(window.paypal);
+          return;
+        }
+        const done = () => resolve(window.paypal ?? null);
+        existing.addEventListener("load", done);
+        existing.addEventListener("error", done);
+        window.setTimeout(done, 8000);
         return;
       }
       const script = document.createElement("script");
       script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture`;
       script.async = true;
       script.dataset.nlPaypalSdk = "1";
-      script.onload = () => resolve(window.paypal ?? null);
-      script.onerror = () => resolve(null);
+      const finish = () => resolve(window.paypal ?? null);
+      script.onload = finish;
+      script.onerror = finish;
+      window.setTimeout(finish, 8000);
       document.body.appendChild(script);
     });
   }
