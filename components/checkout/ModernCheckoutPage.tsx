@@ -91,6 +91,14 @@ export function ModernCheckoutPage() {
     searchParams.get("wantsTopup") === "true";
 
   useEffect(() => {
+    if (searchParams.get("canceled") === "1") {
+      setError(
+        "Payment was canceled. Your plan is still selected — tap pay when you’re ready. Do not keep refreshing.",
+      );
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     if (!affiliateRef) return;
     rememberRef(affiliateRef);
     void resolveAffiliate(affiliateRef).then(setAffiliateInfo);

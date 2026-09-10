@@ -50,34 +50,55 @@ function SuccessContent() {
   const [loading, setLoading] = useState(
     Boolean(sessionId || paymentIntentId || orderIdParam),
   );
+  const [pollCount, setPollCount] = useState(0);
+  const [lookupError, setLookupError] = useState<string | null>(null);
+  const [pollingStopped, setPollingStopped] = useState(false);
 
-  const refresh = useCallback(async () => {
+  const MAX_POLLS = 20;
+
+  const refresh = useCallback(async (): Promise<{
+    order: LookedUpOrder | null;
+    hardFail: boolean;
+    error?: string;
+  }> => {
     const lookupEmail = resolveLookupEmail(emailParam);
     if (sessionId) {
       if (!lookupEmail) {
         setLoading(false);
-        return;
+        return { order: null, hardFail: false };
       }
       const result = await lookupOrderBySession(sessionId, lookupEmail);
       if (result.order) setOrder(result.order);
       setLoading(false);
-      return;
+      const status = result.status ?? 0;
+      const hardFail = Boolean(result.error && status >= 500);
+      if (hardFail) setLookupError(result.error ?? "Lookup temporarily unavailable.");
+      return { order: result.order, hardFail, error: result.error };
     }
     if (paymentIntentId) {
       if (!lookupEmail) {
         setLoading(false);
-        return;
+        return { order: null, hardFail: false };
       }
       const result = await lookupOrderByPaymentIntent(paymentIntentId, lookupEmail);
       if (result.order) setOrder(result.order);
       setLoading(false);
-      return;
+      const status = result.status ?? 0;
+      const hardFail = Boolean(result.error && status >= 500);
+      if (hardFail) setLookupError(result.error ?? "Lookup temporarily unavailable.");
+      return { order: result.order, hardFail, error: result.error };
     }
     if (orderIdParam && lookupEmail) {
       const result = await lookupOrder(lookupEmail, orderIdParam);
       if (result.order) setOrder(result.order);
       setLoading(false);
+      const status = result.status ?? 0;
+      const hardFail = Boolean(result.error && status >= 500);
+      if (hardFail) setLookupError(result.error ?? "Lookup temporarily unavailable.");
+      return { order: result.order, hardFail, error: result.error };
     }
+    setLoading(false);
+    return { order: null, hardFail: false };
   }, [sessionId, paymentIntentId, orderIdParam, emailParam]);
 
   useEffect(() => {
@@ -85,21 +106,49 @@ function SuccessContent() {
       setLoading(false);
       return;
     }
-    void refresh();
-    const pending = order?.fulfillmentPending ?? true;
-    if (!pending && order?.qrCodeUrl) return;
-    const timer = window.setInterval(() => {
-      void refresh();
-    }, 8000);
-    return () => window.clearInterval(timer);
+    if (pollingStopped) return;
+    if (order && !order.fulfillmentPending && order.qrCodeUrl) return;
+    if (pollCount >= MAX_POLLS) {
+      setPollingStopped(true);
+      setLookupError(
+        (prev) =>
+          prev ??
+          "We’re still preparing your eSIM. Stop refreshing payment — open My eSIMs or contact support with your email.",
+      );
+      return;
+    }
+
+    let cancelled = false;
+    const delay = pollCount === 0 ? 0 : Math.min(30_000, Math.round(8000 * Math.pow(1.35, pollCount - 1)));
+    const timer = window.setTimeout(() => {
+      void (async () => {
+        const result = await refresh();
+        if (cancelled) return;
+        if (result.hardFail) {
+          setPollingStopped(true);
+          return;
+        }
+        if (result.order && !result.order.fulfillmentPending && result.order.qrCodeUrl) {
+          setPollingStopped(true);
+          return;
+        }
+        setPollCount((n) => n + 1);
+      })();
+    }, delay);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
   }, [
     sessionId,
     paymentIntentId,
     orderIdParam,
     emailParam,
     refresh,
-    order?.fulfillmentPending,
-    order?.qrCodeUrl,
+    order,
+    pollCount,
+    pollingStopped,
   ]);
 
   const country = formatCountryLabel(order?.country ?? countryParam);
@@ -187,6 +236,12 @@ function SuccessContent() {
             ) : null}
           </p>
         </div>
+
+        {lookupError ? (
+          <p className="error-message" role="alert" style={{ marginTop: 16 }}>
+            {lookupError}
+          </p>
+        ) : null}
 
         {order && !isGiftPurchase ? <OrderUsageSummary order={order} /> : null}
 

@@ -48,7 +48,13 @@ export type SupportMessageItem = {
 
 async function parseLookupResponse(
   response: Response,
-): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string; message?: string }> {
+): Promise<{
+  found: boolean;
+  order: LookedUpOrder | null;
+  error?: string;
+  message?: string;
+  status?: number;
+}> {
   const data = (await response.json().catch(() => ({}))) as {
     found?: boolean;
     order?: LookedUpOrder | null;
@@ -57,12 +63,13 @@ async function parseLookupResponse(
   };
   if (!response.ok) {
     const error = data.detail ?? data.message ?? "Could not look up this order.";
-    return { found: false, order: null, error };
+    return { found: false, order: null, error, status: response.status };
   }
   return {
     found: Boolean(data.found),
     order: data.order ?? null,
     message: data.message,
+    status: response.status,
   };
 }
 
@@ -70,7 +77,7 @@ export async function lookupOrder(
   email: string,
   orderId: string,
   options?: { refresh?: boolean },
-): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string }> {
+): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string; status?: number }> {
   const params = new URLSearchParams({
     email: email.trim(),
     orderId: orderId.trim(),
@@ -95,6 +102,7 @@ export async function lookupOrder(
       found: false,
       order: null,
       error: err instanceof Error ? err.message : "Lookup failed.",
+      status: 0,
     };
   }
 }
@@ -102,7 +110,13 @@ export async function lookupOrder(
 export async function lookupOrderBySession(
   sessionId: string,
   email: string,
-): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string; message?: string }> {
+): Promise<{
+  found: boolean;
+  order: LookedUpOrder | null;
+  error?: string;
+  message?: string;
+  status?: number;
+}> {
   const params = new URLSearchParams({
     sessionId: sessionId.trim(),
     email: email.trim(),
@@ -119,6 +133,7 @@ export async function lookupOrderBySession(
       found: false,
       order: null,
       error: err instanceof Error ? err.message : "Lookup failed.",
+      status: 0,
     };
   }
 }
@@ -126,7 +141,13 @@ export async function lookupOrderBySession(
 export async function lookupOrderByPaymentIntent(
   paymentIntentId: string,
   email: string,
-): Promise<{ found: boolean; order: LookedUpOrder | null; error?: string; message?: string }> {
+): Promise<{
+  found: boolean;
+  order: LookedUpOrder | null;
+  error?: string;
+  message?: string;
+  status?: number;
+}> {
   const params = new URLSearchParams({
     paymentIntentId: paymentIntentId.trim(),
     email: email.trim(),
@@ -145,6 +166,7 @@ export async function lookupOrderByPaymentIntent(
       found: false,
       order: null,
       error: err instanceof Error ? err.message : "Lookup failed.",
+      status: 0,
     };
   }
 }

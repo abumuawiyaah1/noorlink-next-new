@@ -104,16 +104,24 @@ export async function createCheckoutSession(
 
   if (!res.ok) {
     const detail = data.detail;
-    const message =
+    const upstreamMessage =
       typeof detail === "string"
         ? detail
         : typeof data.error === "string"
           ? data.error
           : typeof data.message === "string"
             ? data.message
-            : rawText && !rawText.startsWith("<")
-              ? rawText.slice(0, 240)
-              : `Payment setup failed (${res.status}).`;
+            : "";
+    const message =
+      res.status === 502 || res.status === 503 || res.status === 504
+        ? upstreamMessage && !upstreamMessage.startsWith("<")
+          ? upstreamMessage
+          : "Checkout is temporarily unavailable. Please wait a moment and try again — do not keep refreshing payment."
+        : upstreamMessage && !upstreamMessage.startsWith("<")
+          ? upstreamMessage
+          : rawText && !rawText.startsWith("<")
+            ? rawText.slice(0, 240)
+            : `Payment setup failed (${res.status}).`;
     debugError("checkout", "session failed", { status: res.status, message });
     return { success: false, error: message };
   }
