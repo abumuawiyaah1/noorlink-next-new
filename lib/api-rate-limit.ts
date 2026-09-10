@@ -28,8 +28,13 @@ function ruleForPath(apiPath: string): RateLimitRule | null {
 }
 
 function edgeCache(): Cache | null {
-  const storage = caches as CacheStorage & { default?: Cache };
-  return storage.default ?? null;
+  try {
+    if (typeof caches === "undefined") return null;
+    const storage = caches as CacheStorage & { default?: Cache };
+    return storage.default ?? null;
+  } catch {
+    return null;
+  }
 }
 
 async function countInWindow(
