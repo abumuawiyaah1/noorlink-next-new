@@ -8,7 +8,6 @@ import {
   useEffect,
   useMemo,
   useState,
-  useSyncExternalStore,
 } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { FunnelSteps } from "@/components/layout/FunnelSteps";
@@ -43,19 +42,19 @@ function parsePrice(value: string | null): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function subscribePhoneMq(onChange: () => void) {
-  const mq = window.matchMedia(PHONE_MQ);
-  mq.addEventListener("change", onChange);
-  return () => mq.removeEventListener("change", onChange);
-}
-
-function getPhoneMqSnapshot() {
-  return window.matchMedia(PHONE_MQ).matches;
-}
-
-/** Phone → fast checkout. Desktop SSR/default → original full form. */
-function useIsPhoneCheckout() {
-  return useSyncExternalStore(subscribePhoneMq, getPhoneMqSnapshot, () => false);
+/**
+ * null until mounted — avoids SSR→phone remount that tears down PayPal/Stripe mid-fetch.
+ */
+function useIsPhoneCheckout(): boolean | null {
+  const [isPhone, setIsPhone] = useState<boolean | null>(null);
+  useEffect(() => {
+    const mq = window.matchMedia(PHONE_MQ);
+    setIsPhone(mq.matches);
+    const onChange = () => setIsPhone(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return isPhone;
 }
 
 export function ModernCheckoutPage() {
@@ -63,7 +62,7 @@ export function ModernCheckoutPage() {
   const isPhone = useIsPhoneCheckout();
   const [preferFullCheckout, setPreferFullCheckout] = useState(false);
   /** Fast one-page on phones; original form on desktop or when they choose card/more options. */
-  const useFastCheckout = isPhone && !preferFullCheckout;
+  const useFastCheckout = Boolean(isPhone) && !preferFullCheckout;
 
   const country = formatCountryLabel(searchParams.get("country") ?? "Your destination");
   const flag = resolveCheckoutFlag(searchParams.get("flag"), country);
@@ -267,6 +266,23 @@ export function ModernCheckoutPage() {
     }
   }
 
+  // Wait until viewport is known so we don't mount PayPal on desktop tree then remount on phone.
+  if (isPhone === null) {
+    return (
+      <div className="nl-checkout">
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
+        <SiteHeader />
+        <main id="main-content">
+          <div className="container" style={{ padding: "2rem 1rem" }}>
+            <p className="checkout-express__hint">Loading checkout…</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   if (useFastCheckout) {
     return (
       <div className="nl-checkout nl-checkout--fast">
@@ -313,9 +329,6 @@ export function ModernCheckoutPage() {
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="you@example.com"
                   />
-                  <p className="checkout-fast__hint">
-                    Skip for now if you want — Stripe will ask for email before you pay.
-                  </p>
                 </div>
 
                 <div className="form-group">

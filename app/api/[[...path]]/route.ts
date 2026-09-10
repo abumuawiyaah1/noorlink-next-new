@@ -106,7 +106,10 @@ async function proxyToBackend(req: Request, ctx: Ctx): Promise<Response> {
     }
   });
 
-  return new Response(upstream.body, {
+  // Buffer the body — streaming upstream.body through to the browser can
+  // surface as TypeError: Failed to fetch under concurrent checkout boots.
+  const body = await upstream.arrayBuffer();
+  return new Response(body, {
     status: upstream.status,
     statusText: upstream.statusText,
     headers: outHeaders,

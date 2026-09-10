@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { API_BASE } from "@/lib/api-client";
 import { attributionPayloadForCheckout } from "@/lib/attribution";
 import { debug, debugError } from "@/lib/debug";
@@ -30,6 +30,7 @@ type PayPalConfig = {
 };
 
 type PayPalNamespace = {
+  FUNDING?: { PAYPAL?: string };
   Buttons: (options: Record<string, unknown>) => {
     render: (el: HTMLElement) => Promise<void>;
     close?: () => Promise<void>;
@@ -44,9 +45,37 @@ declare global {
 
 let paypalSdkPromise: Promise<PayPalNamespace | null> | null = null;
 
-async function loadPayPalSdk(clientId: string): Promise<PayPalNamespace | null> {
+function sdkHost(mode?: string): string {
+  return mode === "live" ? "www.paypal.com" : "www.sandbox.paypal.com";
+}
+
+/** Prefer public env (no proxy round-trip); fall back to API config. */
+async function resolvePayPalConfig(): Promise<PayPalConfig | null> {
+  const envClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID?.trim();
+  const envMode = process.env.NEXT_PUBLIC_PAYPAL_MODE?.trim() || "sandbox";
+  if (envClientId) {
+    return { enabled: true, clientId: envClientId, mode: envMode };
+  }
+
+  try {
+    const res = await fetch(`${API_BASE || ""}/api/checkout/paypal/config`, {
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as PayPalConfig;
+  } catch (err) {
+    debugError("checkout", "paypal config fetch failed", err);
+    return null;
+  }
+}
+
+async function loadPayPalSdk(
+  clientId: string,
+  mode?: string,
+): Promise<PayPalNamespace | null> {
   if (typeof window === "undefined") return null;
   if (window.paypal) return window.paypal;
+
   if (!paypalSdkPromise) {
     paypalSdkPromise = new Promise((resolve) => {
       const existing = document.querySelector<HTMLScriptElement>(
@@ -60,20 +89,31 @@ async function loadPayPalSdk(clientId: string): Promise<PayPalNamespace | null> 
         const done = () => resolve(window.paypal ?? null);
         existing.addEventListener("load", done);
         existing.addEventListener("error", done);
-        window.setTimeout(done, 8000);
+        window.setTimeout(done, 12000);
         return;
       }
+
       const script = document.createElement("script");
-      script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture`;
+      // Only the PayPal wallet button — hide Pay Later / card / Venmo stacks.
+      script.src = `https://${sdkHost(mode)}/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture&disable-funding=paylater,card,credit,venmo`;
       script.async = true;
       script.dataset.nlPaypalSdk = "1";
-      const finish = () => resolve(window.paypal ?? null);
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        resolve(window.paypal ?? null);
+      };
       script.onload = finish;
       script.onerror = finish;
-      window.setTimeout(finish, 8000);
+      window.setTimeout(finish, 12000);
       document.body.appendChild(script);
+    }).then((paypal) => {
+      if (!paypal) paypalSdkPromise = null;
+      return paypal;
     });
   }
+
   return paypalSdkPromise;
 }
 
@@ -95,39 +135,64 @@ function checkoutBody(payload: PayPalCheckoutPayload): Record<string, unknown> {
   return body;
 }
 
+async function waitForHost(
+  ref: RefObject<HTMLDivElement | null>,
+  cancelled: () => boolean,
+): Promise<HTMLDivElement | null> {
+  for (let i = 0; i < 20; i++) {
+    if (cancelled()) return null;
+    if (ref.current) return ref.current;
+    await new Promise((r) => window.setTimeout(r, 50));
+  }
+  return ref.current;
+}
+
 export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
   const hostRef = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const payloadRef = useRef(payload);
+  const disabledRef = useRef(disabled);
+  const onErrorRef = useRef(onError);
+  payloadRef.current = payload;
+  disabledRef.current = disabled;
+  onErrorRef.current = onError;
+
+  const [status, setStatus] = useState<"loading" | "ready" | "hidden">("loading");
+
+  const packageId = payload.packageId ?? "";
+  const price = payload.price;
 
   useEffect(() => {
     let cancelled = false;
     let buttons: { close?: () => Promise<void> } | null = null;
+    const isCancelled = () => cancelled;
 
     async function boot() {
-      setLoading(true);
       try {
-        const res = await fetch(`${API_BASE}/api/checkout/paypal/config`, {
-          headers: { Accept: "application/json" },
-        });
-        if (!res.ok) {
-          setVisible(false);
-          return;
-        }
-        const data = (await res.json()) as PayPalConfig;
-        if (!data.enabled || !data.clientId) {
-          setVisible(false);
-          return;
-        }
-        const paypal = await loadPayPalSdk(data.clientId);
-        if (cancelled || !paypal || !hostRef.current) {
-          setVisible(false);
+        const data = await resolvePayPalConfig();
+        if (cancelled) return;
+        if (!data?.enabled || !data.clientId) {
+          setStatus("hidden");
           return;
         }
 
-        setVisible(true);
-        hostRef.current.innerHTML = "";
+        const paypal = await loadPayPalSdk(data.clientId, data.mode);
+        if (cancelled) return;
+        if (!paypal) {
+          debugError("checkout", "paypal sdk missing after load");
+          setStatus("hidden");
+          return;
+        }
+
+        const host = await waitForHost(hostRef, isCancelled);
+        if (cancelled || !host) {
+          if (!cancelled) setStatus("hidden");
+          return;
+        }
+
+        host.innerHTML = "";
         buttons = paypal.Buttons({
+          // Force a single PayPal button even if an older SDK bundle is cached.
+          fundingSource: paypal.FUNDING?.PAYPAL ?? "paypal",
           style: {
             layout: "vertical",
             color: "gold",
@@ -135,17 +200,25 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
             label: "paypal",
             height: 44,
           },
-          onClick: (_data: unknown, actions: { reject: () => unknown; resolve: () => unknown }) => {
-            if (disabled) {
-              onError?.("Checkout is busy. Please wait a moment.");
+          onClick: (
+            _data: unknown,
+            actions: { reject: () => unknown; resolve: () => unknown },
+          ) => {
+            const current = payloadRef.current;
+            if (disabledRef.current) {
+              onErrorRef.current?.("Checkout is busy. Please wait a moment.");
               return actions.reject();
             }
-            if (!payload.packageId?.trim()) {
-              onError?.("Missing plan. Please go back and select a plan again.");
+            if (!current.packageId?.trim()) {
+              onErrorRef.current?.(
+                "Missing plan. Please go back and select a plan again.",
+              );
               return actions.reject();
             }
-            if (payload.price <= 0) {
-              onError?.("Invalid plan price. Please go back and select a plan again.");
+            if (current.price <= 0) {
+              onErrorRef.current?.(
+                "Invalid plan price. Please go back and select a plan again.",
+              );
               return actions.reject();
             }
             return actions.resolve();
@@ -158,22 +231,22 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(checkoutBody(payload)),
+              body: JSON.stringify(checkoutBody(payloadRef.current)),
             });
-            const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+            const body = (await res.json().catch(() => ({}))) as Record<string, unknown>;
             if (!res.ok) {
-              const detail = data.detail;
+              const detail = body.detail;
               throw new Error(
                 typeof detail === "string"
                   ? detail
-                  : typeof data.message === "string"
-                    ? data.message
+                  : typeof body.message === "string"
+                    ? body.message
                     : "Could not start PayPal.",
               );
             }
             const id =
-              (typeof data.paypalOrderId === "string" && data.paypalOrderId) ||
-              (typeof data.paypal_order_id === "string" && data.paypal_order_id) ||
+              (typeof body.paypalOrderId === "string" && body.paypalOrderId) ||
+              (typeof body.paypal_order_id === "string" && body.paypal_order_id) ||
               "";
             if (!id) throw new Error("PayPal order id missing.");
             return id;
@@ -181,7 +254,7 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
           onApprove: async (data: { orderID?: string }) => {
             const paypalOrderId = data.orderID;
             if (!paypalOrderId) {
-              onError?.("PayPal approval missing order id.");
+              onErrorRef.current?.("PayPal approval missing order id.");
               return;
             }
             debug("checkout", "paypal capture →");
@@ -210,7 +283,7 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
               "";
             const email =
               (typeof result.email === "string" && result.email) ||
-              payload.email?.trim() ||
+              payloadRef.current.email?.trim() ||
               "";
             const params = new URLSearchParams();
             if (orderId) params.set("orderId", orderId);
@@ -220,20 +293,20 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
           },
           onError: (err: unknown) => {
             debugError("checkout", "paypal button error", err);
-            onError?.(
+            onErrorRef.current?.(
               err instanceof Error ? err.message : "PayPal could not complete payment.",
             );
           },
           onCancel: () => {
-            onError?.("");
+            onErrorRef.current?.("");
           },
         });
-        await buttons.render(hostRef.current);
+        await buttons.render(host);
+        if (!cancelled) setStatus("ready");
       } catch (err) {
+        if (cancelled) return;
         debugError("checkout", "paypal boot failed", err);
-        if (!cancelled) setVisible(false);
-      } finally {
-        if (!cancelled) setLoading(false);
+        setStatus("hidden");
       }
     }
 
@@ -242,26 +315,14 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
       cancelled = true;
       void buttons?.close?.();
     };
-  }, [
-    disabled,
-    onError,
-    payload.affiliateRef,
-    payload.country,
-    payload.email,
-    payload.flag,
-    payload.packageId,
-    payload.price,
-    payload.promoCode,
-    payload.travelDate,
-    payload.wantsTopUp,
-  ]);
+  }, [packageId, price]);
 
-  if (!visible && !loading) return null;
+  if (status === "hidden") return null;
 
   return (
     <div className="checkout-paypal">
       <p className="checkout-express__label">Pay with PayPal</p>
-      {loading && !visible ? (
+      {status === "loading" ? (
         <p className="checkout-express__hint">Loading PayPal…</p>
       ) : null}
       <div ref={hostRef} className="checkout-paypal__host" />

@@ -227,7 +227,8 @@ export function ExpressCheckoutWallets(props: Props) {
   );
 
   if (loadError) {
-    return <p className="checkout-express__hint">{loadError}</p>;
+    // Soft-fail: wallets are optional; don't scare users with raw network errors.
+    return null;
   }
 
   if (!stripe || props.amountCents < 50) {
