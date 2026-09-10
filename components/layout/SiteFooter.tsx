@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FooterSocialLinks } from "@/components/layout/FooterSocialLinks";
+import { SUPPORT_EMAIL } from "@/lib/support-contact";
 
 export function SiteFooter() {
   return (
@@ -17,6 +18,7 @@ export function SiteFooter() {
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/refund">Refunds</Link>
+          <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
         </nav>
         <div className="site-footer__meta">
           <FooterSocialLinks />

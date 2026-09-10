@@ -9,6 +9,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { OrderLookupCard } from "@/components/orders/OrderLookupCard";
 import { submitContactForm } from "@/lib/contact-api";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
+import { SUPPORT_EMAIL } from "@/lib/support-contact";
 import "@/styles/help-pages.css";
 
 function SupportContent() {
@@ -67,6 +68,8 @@ function SupportContent() {
               </p>
               <p style={{ marginTop: 12 }}>
                 <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>Open WhatsApp</a>
+                {" · "}
+                <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
                 {" · "}
                 <Link href="/faq">Read FAQs</Link>
               </p>

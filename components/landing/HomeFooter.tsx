@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FooterSocialLinks } from "@/components/layout/FooterSocialLinks";
 import { SecureCheckoutTrust } from "@/components/ui/SecureCheckoutTrust";
+import { SUPPORT_EMAIL } from "@/lib/support-contact";
 
 export function HomeFooter() {
   return (
@@ -17,6 +18,8 @@ export function HomeFooter() {
             Mountain Road Pl NE, Suite R
             <br />
             Albuquerque, NM 87110
+            <br />
+            <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
           </p>
           <FooterSocialLinks />
           <SecureCheckoutTrust

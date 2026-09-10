@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { linkifyNoorlinkEmails } from "@/lib/support-contact";
 
 type PolicySection = {
   title: string;
@@ -23,6 +24,22 @@ type PolicyPageShellProps = {
   topContent?: ReactNode;
   children?: ReactNode;
 };
+
+function LinkedPolicyText({ text }: { text: string }) {
+  return (
+    <>
+      {linkifyNoorlinkEmails(text).map((part, index) =>
+        typeof part === "string" ? (
+          <span key={`t-${index}`}>{part}</span>
+        ) : (
+          <a key={`a-${index}`} href={part.href}>
+            {part.label}
+          </a>
+        ),
+      )}
+    </>
+  );
+}
 
 export function PolicyPageShell({
   title,
@@ -63,18 +80,26 @@ export function PolicyPageShell({
             {sections.map((section) => (
               <section key={section.title} className="legal-section">
                 <h2>{section.title}</h2>
-                {section.body?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                {section.body?.map((paragraph) => (
+                  <p key={paragraph}>
+                    <LinkedPolicyText text={paragraph} />
+                  </p>
+                ))}
                 {section.bullets ? (
                   <ul>
                     {section.bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
+                      <li key={bullet}>
+                        <LinkedPolicyText text={bullet} />
+                      </li>
                     ))}
                   </ul>
                 ) : null}
                 {section.orderedBullets ? (
                   <ol>
                     {section.orderedBullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
+                      <li key={bullet}>
+                        <LinkedPolicyText text={bullet} />
+                      </li>
                     ))}
                   </ol>
                 ) : null}

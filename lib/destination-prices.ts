@@ -63,7 +63,7 @@ export async function fetchDestinationStartingPrices(
   debug("destination-prices", "fetching starting prices", { count: ids.length });
 
   /** Cap parallel upstream plan calls so Cloudflare Workers stay under CPU/subrequest limits. */
-  const CONCURRENCY = 6;
+  const CONCURRENCY = 3;
   const entries: Array<readonly [string, DestinationStartingPrice] | null> = [];
 
   for (let i = 0; i < ids.length; i += CONCURRENCY) {

@@ -101,6 +101,18 @@
   background: #f3f7f7;
 }
 
+.trust-stat-card__thumb--icon {
+  background: var(--accent-soft, #fff4e5);
+  border-color: rgba(255, 149, 0, 0.28);
+  color: var(--primary, #0f3d3e);
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.trust-stat-card__thumb--icon .fa-whatsapp {
+  color: #25d366;
+}
+
 .trust-stat-card__icon {
   width: 44px;
   height: 44px;
@@ -196,6 +208,10 @@
   .trust-stat-card__thumb {
     width: 36px;
     height: 36px;
+  }
+
+  .trust-stat-card__thumb--icon {
+    font-size: 1rem;
   }
 
   .trust-stat-card__icon {
