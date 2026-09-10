@@ -200,11 +200,67 @@
             font-weight: 600;
             cursor: pointer;
         }
+        .order-topup__btn--package {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            border-radius: 12px;
+            min-width: 140px;
+            text-align: left;
+        }
+        .order-topup__btn-label {
+            font-size: 0.9rem;
+            line-height: 1.25;
+        }
+        .order-topup__btn-price {
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
         .order-topup__btn:hover:not(:disabled) {
             background: var(--primary);
             color: #fff;
         }
         .order-topup__btn:disabled { opacity: 0.6; cursor: wait; }
+
+        .order-topup__pay {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 320px;
+        }
+        .order-topup__selected {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.92rem;
+            color: #334155;
+        }
+        .order-topup__change {
+            border: none;
+            background: transparent;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+        }
+        .order-topup__btn--card {
+            border-radius: 12px;
+            width: 100%;
+            background: #FF9500;
+            border-color: #FF9500;
+            color: #05191A;
+        }
+        .order-topup__btn--card:hover:not(:disabled) {
+            background: #e68600;
+            border-color: #e68600;
+            color: #05191A;
+        }
+        .order-topup__paypal-host {
+            min-height: 40px;
+        }
 
         .order-support-thread {
             margin-top: 16px;

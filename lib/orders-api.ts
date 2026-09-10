@@ -149,13 +149,28 @@ export async function lookupOrderByPaymentIntent(
   }
 }
 
+export type TopUpPackageOffer = {
+  offerId: string;
+  slug?: string | null;
+  packageCode?: string | null;
+  name: string;
+  dataLabel?: string | null;
+  days?: number | null;
+  periodNum?: number | null;
+  daypass?: boolean;
+  retailUsd: number;
+};
+
 export async function fetchTopUpOptions(
   email: string,
   orderId: string,
 ): Promise<{
   success: boolean;
   supported: boolean;
+  mode?: "wallet" | "access_package" | string | null;
   amountsUsd?: number[];
+  packages?: TopUpPackageOffer[];
+  paypalAvailable?: boolean;
   reason?: string;
 }> {
   const params = new URLSearchParams({
@@ -168,13 +183,19 @@ export async function fetchTopUpOptions(
     const data = (await response.json().catch(() => ({}))) as {
       success?: boolean;
       supported?: boolean;
+      mode?: string | null;
       amountsUsd?: number[];
+      packages?: TopUpPackageOffer[];
+      paypalAvailable?: boolean;
       reason?: string;
     };
     return {
       success: Boolean(data.success),
       supported: Boolean(data.supported),
+      mode: data.mode,
       amountsUsd: data.amountsUsd,
+      packages: data.packages,
+      paypalAvailable: Boolean(data.paypalAvailable),
       reason: data.reason,
     };
   } catch (err) {
@@ -189,7 +210,11 @@ export async function fetchTopUpOptions(
 export async function createTopUpSession(input: {
   orderId: string;
   email: string;
-  fundUsd: number;
+  fundUsd?: number;
+  offerId?: string;
+  packageSlug?: string | null;
+  packageCode?: string | null;
+  periodNum?: number | null;
 }): Promise<{
   success: boolean;
   checkoutUrl?: string;
@@ -197,14 +222,20 @@ export async function createTopUpSession(input: {
 }> {
   const url = `${API_BASE}/api/orders/topup/session`;
   try {
+    const body: Record<string, unknown> = {
+      orderId: input.orderId.trim(),
+      email: input.email.trim(),
+    };
+    if (input.fundUsd != null) body.fundUsd = input.fundUsd;
+    if (input.offerId) body.offerId = input.offerId;
+    if (input.packageSlug) body.packageSlug = input.packageSlug;
+    if (input.packageCode) body.packageCode = input.packageCode;
+    if (input.periodNum != null) body.periodNum = input.periodNum;
+
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        orderId: input.orderId.trim(),
-        email: input.email.trim(),
-        fundUsd: input.fundUsd,
-      }),
+      body: JSON.stringify(body),
     });
     const data = (await response.json().catch(() => ({}))) as {
       success?: boolean;
@@ -226,6 +257,114 @@ export async function createTopUpSession(input: {
     return {
       success: false,
       message: err instanceof Error ? err.message : "Top-up checkout failed.",
+    };
+  }
+}
+
+function topUpSelectionBody(input: {
+  orderId: string;
+  email: string;
+  fundUsd?: number;
+  offerId?: string;
+  packageSlug?: string | null;
+  packageCode?: string | null;
+  periodNum?: number | null;
+}): Record<string, unknown> {
+  const body: Record<string, unknown> = {
+    orderId: input.orderId.trim(),
+    email: input.email.trim(),
+  };
+  if (input.fundUsd != null) body.fundUsd = input.fundUsd;
+  if (input.offerId) body.offerId = input.offerId;
+  if (input.packageSlug) body.packageSlug = input.packageSlug;
+  if (input.packageCode) body.packageCode = input.packageCode;
+  if (input.periodNum != null) body.periodNum = input.periodNum;
+  return body;
+}
+
+export async function createTopUpPayPalOrder(input: {
+  orderId: string;
+  email: string;
+  fundUsd?: number;
+  offerId?: string;
+  packageSlug?: string | null;
+  packageCode?: string | null;
+  periodNum?: number | null;
+}): Promise<{
+  success: boolean;
+  paypalOrderId?: string;
+  message?: string;
+}> {
+  const url = `${API_BASE}/api/orders/topup/paypal/create`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(topUpSelectionBody(input)),
+    });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      paypalOrderId?: string;
+      message?: string;
+      detail?: string;
+    };
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message ?? data.detail ?? "PayPal top-up failed.",
+      };
+    }
+    return {
+      success: Boolean(data.success),
+      paypalOrderId: data.paypalOrderId,
+      message: data.message,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: err instanceof Error ? err.message : "PayPal top-up failed.",
+    };
+  }
+}
+
+export async function captureTopUpPayPal(input: {
+  orderId: string;
+  email: string;
+  paypalOrderId: string;
+}): Promise<{
+  success: boolean;
+  message?: string;
+}> {
+  const url = `${API_BASE}/api/orders/topup/paypal/capture`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        orderId: input.orderId.trim(),
+        email: input.email.trim(),
+        paypalOrderId: input.paypalOrderId,
+      }),
+    });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      message?: string;
+      detail?: string;
+    };
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message ?? data.detail ?? "PayPal capture failed.",
+      };
+    }
+    return {
+      success: Boolean(data.success),
+      message: data.message,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: err instanceof Error ? err.message : "PayPal capture failed.",
     };
   }
 }
