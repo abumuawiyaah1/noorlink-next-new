@@ -192,6 +192,9 @@ export function ModernDestinationsPage({
                   alt={`${card.title} — travel eSIM destination`}
                   priority={index < 3}
                 />
+                {regional ? (
+                  <RegionFlagPreview routeSlug={regional.routeSlug} />
+                ) : null}
                 <div className="card-body">
                   <h3>
                     <span className="card-flag" aria-hidden="true">
@@ -205,9 +208,6 @@ export function ModernDestinationsPage({
                       <li key={tip}>{tip}</li>
                     ))}
                   </ul>
-                  {regional ? (
-                    <RegionFlagPreview routeSlug={regional.routeSlug} />
-                  ) : null}
                   <span
                     className={`card-price${livePrice ? "" : " is-pending"}`}
                     aria-busy={!livePrice}

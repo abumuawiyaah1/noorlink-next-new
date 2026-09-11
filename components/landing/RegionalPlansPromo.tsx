@@ -61,6 +61,7 @@ export function RegionalPlansPromo() {
                     {product.flag}
                   </span>
                 </div>
+                <RegionFlagPreview routeSlug={routeSlug} previewCount={10} />
                 <div className="regional-promo__body">
                   {featured && (
                     <span className="regional-promo__label">Island escape</span>
@@ -69,7 +70,6 @@ export function RegionalPlansPromo() {
                   <span className="regional-promo__meta">
                     {product.countries.length} destinations
                   </span>
-                  <RegionFlagPreview routeSlug={routeSlug} previewCount={10} />
                   <span
                     className={`regional-promo__price${hasPrice ? "" : " is-pending"}`}
                   >

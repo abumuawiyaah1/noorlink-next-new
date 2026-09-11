@@ -400,6 +400,7 @@
             flex-shrink: 0;
             overflow: hidden;
             background: #0f3d3e;
+            border-radius: calc(var(--radius-card) - 3px) calc(var(--radius-card) - 3px) 0 0;
         }
         .popular-country__img {
             display: block;
