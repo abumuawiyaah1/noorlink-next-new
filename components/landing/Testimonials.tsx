@@ -21,9 +21,6 @@ export function Testimonials() {
         <div className="reviews-header">
           <span className="why-kicker">Reviews</span>
           <h2 id="reviews-heading">What travelers say.</h2>
-          <p>
-            Stars, country, and a short preview from real Trustpilot reviews.
-          </p>
         </div>
 
         <div className="reviews-grid">
