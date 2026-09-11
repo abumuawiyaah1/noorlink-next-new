@@ -67,13 +67,15 @@ export type PilgrimTierOffer = PilgrimTierMeta & {
     d7: EsimPlan;
     d10: EsimPlan;
     d14?: EsimPlan;
+    d15?: EsimPlan;
+    d30?: EsimPlan;
   };
 };
 
 export type ConnectedPilgrimDataGb = 10 | 20;
-export type UmrahUnlimitedDays = 1 | 3 | 5 | 7 | 10 | 14;
+export type UmrahUnlimitedDays = 1 | 3 | 5 | 7 | 10 | 14 | 15 | 30;
 
-const UNLIMITED_DAY_ORDER: UmrahUnlimitedDays[] = [1, 3, 5, 7, 10, 14];
+const UNLIMITED_DAY_ORDER: UmrahUnlimitedDays[] = [1, 3, 5, 7, 10, 14, 15, 30];
 
 function unlimitedVariantForDays(
   variants: NonNullable<PilgrimTierOffer["unlimitedVariants"]>,
@@ -92,6 +94,10 @@ function unlimitedVariantForDays(
       return variants.d10;
     case 14:
       return variants.d14;
+    case 15:
+      return variants.d15;
+    case 30:
+      return variants.d30;
     default:
       return undefined;
   }
@@ -334,6 +340,8 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
   const unlimitedGb7 = pickUmrahUnlimitedPlan(plans, 7);
   const unlimitedGb10 = pickUmrahUnlimitedPlan(plans, 10);
   const unlimitedGb14 = pickUmrahUnlimitedPlan(plans, 14);
+  const unlimitedGb15 = pickUmrahUnlimitedPlan(plans, 15);
+  const unlimitedGb30 = pickUmrahUnlimitedPlan(plans, 30);
   const unlimited =
     unlimitedGb10 ??
     unlimitedGb7 ??
@@ -379,6 +387,8 @@ export function resolvePilgrimTiers(plans: EsimPlan[]): PilgrimTierOffer[] {
         d7: unlimitedGb7 ?? UNLIMITED_FALLBACK_7,
         d10: unlimitedGb10 ?? PILGRIM_FALLBACK_PLANS.unlimited,
         ...(unlimitedGb14 ? { d14: unlimitedGb14 } : {}),
+        ...(unlimitedGb15 ? { d15: unlimitedGb15 } : {}),
+        ...(unlimitedGb30 ? { d30: unlimitedGb30 } : {}),
       };
       offer.plan = offer.unlimitedVariants.d10;
     }
