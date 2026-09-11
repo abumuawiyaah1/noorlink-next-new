@@ -39,7 +39,7 @@ export function Testimonials() {
     <section className="reviews-section" aria-labelledby="reviews-heading">
       <div className="container">
         <div className="reviews-header">
-          <span className="why-kicker">Reviews</span>
+          <span className="why-kicker reviews-header__kicker">1000+ reviews</span>
           <h2 id="reviews-heading">What travelers say on Trustpilot</h2>
           <p
             className="reviews-header__score"

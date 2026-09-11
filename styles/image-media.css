@@ -993,6 +993,11 @@
   margin: 0 auto 44px;
 }
 
+.reviews-header__kicker {
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+}
+
 .reviews-header h2 {
   margin: 0;
   font-size: clamp(1.9rem, 3.5vw, 2.7rem);
