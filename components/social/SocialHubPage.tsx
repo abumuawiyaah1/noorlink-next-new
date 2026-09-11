@@ -142,6 +142,24 @@ export function SocialHubPage({ onLogout }: { onLogout: () => void }) {
                   </dd>
                 </div>
                 <div>
+                  <dt>Facebook short bio</dt>
+                  <dd>
+                    <pre className="social-hub-copy social-hub-copy--compact">
+                      {SOCIAL_PROFILE_COPY.facebookBio}
+                    </pre>
+                    <CopyButton text={SOCIAL_PROFILE_COPY.facebookBio} />
+                  </dd>
+                </div>
+                <div>
+                  <dt>Facebook About</dt>
+                  <dd>
+                    <pre className="social-hub-copy social-hub-copy--compact">
+                      {SOCIAL_PROFILE_COPY.facebookAbout}
+                    </pre>
+                    <CopyButton text={SOCIAL_PROFILE_COPY.facebookAbout} />
+                  </dd>
+                </div>
+                <div>
                   <dt>Website line</dt>
                   <dd>{SOCIAL_PROFILE_COPY.websiteLine}</dd>
                 </div>

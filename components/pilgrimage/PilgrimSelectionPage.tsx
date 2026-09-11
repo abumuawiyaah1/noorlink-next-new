@@ -325,8 +325,8 @@ export function PilgrimSelectionPage({
   );
   const [loading, setLoading] = useState(!initialData && !initialError);
   const [error, setError] = useState<string | null>(initialError);
-  const [purchaseFocus, setPurchaseFocus] = useState<PurchaseFocus>("saudi");
-  const [selectedTier, setSelectedTier] = useState<PilgrimTierKey>("connected");
+  const [purchaseFocus, setPurchaseFocus] = useState<PurchaseFocus | null>(null);
+  const [selectedTier, setSelectedTier] = useState<PilgrimTierKey | null>(null);
   const [connectedDataGb, setConnectedDataGb] = useState<ConnectedPilgrimDataGb>(10);
   const [umrahUnlimitedDays, setUmrahUnlimitedDays] =
     useState<UmrahUnlimitedDays>(10);
@@ -437,13 +437,8 @@ export function PilgrimSelectionPage({
   }, [initialData, initialMeData]);
 
   const activeTier = useMemo(() => {
-    const selected = tiers.find((tier) => tier.key === selectedTier) ?? null;
-    return (
-      selected ??
-      tiers.find((tier) => tier.recommended) ??
-      tiers.find((tier) => tier.plan) ??
-      null
-    );
+    if (!selectedTier) return null;
+    return tiers.find((tier) => tier.key === selectedTier) ?? null;
   }, [tiers, selectedTier]);
 
   const activeRouteMeta = useMemo(
@@ -457,6 +452,7 @@ export function PilgrimSelectionPage({
   );
 
   const activePlan = useMemo(() => {
+    if (!purchaseFocus) return null;
     if (purchaseFocus === "route") return activeRoutePlan;
     if (!activeTier) return null;
     if (activeTier.key === "connected") {
@@ -475,6 +471,7 @@ export function PilgrimSelectionPage({
   ]);
 
   const activePlanLabel = useMemo(() => {
+    if (!purchaseFocus || !activePlan) return "";
     if (purchaseFocus === "route") {
       return brandedRoutePlanName(activeRouteMeta, activeRoutePlan);
     }
@@ -488,6 +485,7 @@ export function PilgrimSelectionPage({
     return activeTier.title;
   }, [
     purchaseFocus,
+    activePlan,
     activeRouteMeta,
     activeRoutePlan,
     activeTier,
@@ -516,7 +514,7 @@ export function PilgrimSelectionPage({
         return [tier.connectedVariants.gb10.price, tier.connectedVariants.gb20.price];
       }
       if (tier.key === "unlimited" && tier.unlimitedVariants) {
-        const { d1, d3, d5, d7, d10, d14 } = tier.unlimitedVariants;
+        const { d1, d3, d5, d7, d10, d14, d15, d30 } = tier.unlimitedVariants;
         return [
           ...(d1 ? [d1.price] : []),
           ...(d3 ? [d3.price] : []),
@@ -524,6 +522,8 @@ export function PilgrimSelectionPage({
           d7.price,
           d10.price,
           ...(d14 ? [d14.price] : []),
+          ...(d15 ? [d15.price] : []),
+          ...(d30 ? [d30.price] : []),
         ];
       }
       if (typeof tier.plan?.price === "number") return [tier.plan.price];
@@ -614,9 +614,10 @@ export function PilgrimSelectionPage({
 
               <h2 className="plans-picker__title">Choose Your Pilgrimage Plan</h2>
               <p className="plans-picker__hint">
-                Fixed Saudi packs or honest day-pass unlimited (3GB/day, then 1 Mbps).
-                The price you see is the price you pay — not surprises, not hidden
-                fees. Hotspot is included on every plan below.
+                Tap a plan to select it, then continue from the bar below. Fixed
+                Saudi packs or honest day-pass unlimited (3GB/day, then 1 Mbps).
+                The price you see is the price you pay — hotspot included on every
+                plan.
               </p>
             </>
           )}

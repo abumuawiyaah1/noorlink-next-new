@@ -129,27 +129,18 @@ function sortPlans(plans: EsimPlan[]): EsimPlan[] {
 function PlanRow({
   plan,
   countryName,
-  flag,
   isRegional,
-  promo,
-  refCode,
-  wantsTopUp,
   selected,
   onSelect,
 }: {
   plan: EsimPlan;
   countryName: string;
-  flag?: string;
   isRegional?: boolean;
-  promo?: string;
-  refCode?: string;
-  wantsTopUp?: boolean;
   selected: boolean;
   onSelect: (planId: string) => void;
 }) {
   const badge = badgeLabel(plan);
   const best = plan.displayBadge === "best_choice";
-  const href = checkoutHref(plan, countryName, flag, isRegional, promo, refCode, wantsTopUp);
   const copy = describeEsimPlan(plan, {
     countryLabel: countryName,
     isRegional,
@@ -182,13 +173,16 @@ function PlanRow({
         )}
       </span>
       {badge ? <span className="plans-row__badge">{badge}</span> : <span />}
-      <a
-        href={href}
+      <button
+        type="button"
         className="plans-row__cta"
-        onClick={(event) => event.stopPropagation()}
+        onClick={(event) => {
+          event.stopPropagation();
+          onSelect(plan.id);
+        }}
       >
-        {selected ? "Continue" : "Select"}
-      </a>
+        {selected ? "Selected" : "Select"}
+      </button>
       <div className="plans-row__details">
         <p className="plans-row__desc">{copy.description}</p>
         <ul className="plans-row__highlights">
@@ -279,22 +273,14 @@ function PlanSection({
   label,
   plans,
   countryName,
-  flag,
   isRegional,
-  promo,
-  refCode,
-  wantsTopUp,
   selectedPlanId,
   onSelectPlan,
 }: {
   label: string;
   plans: EsimPlan[];
   countryName: string;
-  flag?: string;
   isRegional?: boolean;
-  promo?: string;
-  refCode?: string;
-  wantsTopUp?: boolean;
   selectedPlanId: string | null;
   onSelectPlan: (planId: string) => void;
 }) {
@@ -310,11 +296,7 @@ function PlanSection({
             key={plan.id}
             plan={plan}
             countryName={countryName}
-            flag={flag}
             isRegional={isRegional}
-            promo={promo}
-            refCode={refCode}
-            wantsTopUp={wantsTopUp}
             selected={selectedPlanId === plan.id}
             onSelect={onSelectPlan}
           />
@@ -415,6 +397,32 @@ export function TravelerPlansPage({
     if (all.length === 0) return null;
     return all.reduce((best, plan) => (plan.price < best.price ? plan : best));
   }, [data]);
+
+  const selectedPlan = useMemo(() => {
+    if (!selectedPlanId || !data?.plans) return null;
+    return data.plans.find((plan) => plan.id === selectedPlanId) ?? null;
+  }, [data, selectedPlanId]);
+
+  const selectedCheckoutHref = useMemo(() => {
+    if (!selectedPlan) return "#";
+    return checkoutHref(
+      selectedPlan,
+      checkoutCountryName,
+      flag,
+      Boolean(regional),
+      promo,
+      refCode,
+      wantsTopUp,
+    );
+  }, [
+    selectedPlan,
+    checkoutCountryName,
+    flag,
+    regional,
+    promo,
+    refCode,
+    wantsTopUp,
+  ]);
 
   return (
     <>
@@ -551,8 +559,8 @@ export function TravelerPlansPage({
 
             <h2 className="plans-picker__title">Choose your package</h2>
             <p className="plans-picker__hint">
-              Hover or tap a plan to see what is included. Then continue to secure
-              Stripe checkout — the price you see is the price you pay.
+              Tap a plan to select it. Then continue to secure Stripe checkout —
+              the price you see is the price you pay.
             </p>
             <label className="plans-topup-pref">
               <input
@@ -571,16 +579,33 @@ export function TravelerPlansPage({
                   label={section.label}
                   plans={data.planGroups[section.id] ?? []}
                   countryName={checkoutCountryName}
-                  flag={flag}
                   isRegional={Boolean(regional)}
-                  promo={promo}
-            refCode={refCode}
-                  wantsTopUp={wantsTopUp}
                   selectedPlanId={selectedPlanId}
                   onSelectPlan={setSelectedPlanId}
                 />
               ))}
             </div>
+
+            {selectedPlan && (
+              <div className="plans-desktop-cta">
+                <div>
+                  <p className="plans-desktop-cta__label">Your Selection</p>
+                  <p className="plans-desktop-cta__plan">
+                    {formatDataAmount(selectedPlan)} ·{" "}
+                    {formatDuration(selectedPlan.durationDays)}
+                  </p>
+                </div>
+                <div className="plans-desktop-cta__price">
+                  <PsychologicalPrice
+                    parts={selectedPlan.formattedPriceParts}
+                    currency={selectedPlan.currency}
+                  />
+                </div>
+                <a href={selectedCheckoutHref} className="plans-desktop-cta__button">
+                  Continue to Checkout
+                </a>
+              </div>
+            )}
 
             <PlansFaq countryName={checkoutCountryName} regional={regional} />
 
@@ -594,6 +619,24 @@ export function TravelerPlansPage({
         )}
       </div>
     </main>
+      {selectedPlan && (
+        <div className="plans-sticky-cta" role="region" aria-label="Purchase">
+          <div className="plans-sticky-cta__meta">
+            <span className="plans-sticky-cta__label">Selected Plan</span>
+            <span className="plans-sticky-cta__plan">
+              {formatDataAmount(selectedPlan)} ·{" "}
+              {formatDuration(selectedPlan.durationDays)}
+            </span>
+            <PsychologicalPrice
+              parts={selectedPlan.formattedPriceParts}
+              currency={selectedPlan.currency}
+            />
+          </div>
+          <a href={selectedCheckoutHref} className="plans-sticky-cta__button">
+            Continue
+          </a>
+        </div>
+      )}
       <SiteFooter />
       <CompatibilityModal
         isOpen={compatOpen}

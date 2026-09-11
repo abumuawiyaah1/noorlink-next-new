@@ -15,3 +15,8 @@ tsconfig.tsbuildinfo
 
 # Local PDF build deps (do not commit)
 .pdf-tools/
+
+# Locust run artifacts
+loadtest/report.html
+loadtest/results_*.csv
+loadtest/results_*.html

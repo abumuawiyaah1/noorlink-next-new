@@ -138,8 +138,19 @@ export const SOCIAL_BRAND_ASSETS = [
 ] as const;
 
 export const SOCIAL_PROFILE_COPY = {
-  instagramBio: `Stay connected abroad — eSIM for 190+ destinations
-Install before you fly · Support when you need it`,
+  instagramBio: `Stay connected abroad — travel eSIM
+Hajj & Umrah · 190+ destinations
+Install before you fly`,
+  facebookBio: `Travel eSIM for 190+ countries. Install before you fly. Hajj & Umrah coverage for Makkah and Madinah.`,
+  facebookAbout: `NoorLink is a travel eSIM for people who need data that works when they land.
+
+Install before you fly. Get a QR by email. Stay connected in 190+ destinations — including Hajj and Umrah plans for Makkah and Madinah.
+
+We sell under our own brand. Support is on WhatsApp and email when something goes wrong.
+
+Shop plans: https://noorlink.co/destinations
+Hajj & Umrah: https://noorlink.co/hajj-umrah
+Support: support@noorlink.co · WhatsApp 718-472-9390`,
   websiteLine: "noorlink.co",
   category: "Telecommunication company",
 } as const;
