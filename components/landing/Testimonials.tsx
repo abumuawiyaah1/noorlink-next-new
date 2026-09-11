@@ -6,20 +6,30 @@ import {
 } from "@/lib/review-links";
 import { TRUSTPILOT_QUOTES } from "@/lib/trustpilot-quotes";
 
+/** Trustpilot-style green star tiles (filled / empty). */
 function Stars({
   count,
   className,
+  size = "md",
 }: {
   count: number;
   className?: string;
+  size?: "sm" | "md";
 }) {
   const filled = Math.max(0, Math.min(5, Math.round(count)));
   return (
-    <span className={className} aria-hidden="true">
-      <span className="review-card__stars-filled">{"★".repeat(filled)}</span>
-      <span className="review-card__stars-empty">
-        {"☆".repeat(Math.max(0, 5 - filled))}
-      </span>
+    <span
+      className={`tp-stars tp-stars--${size}${className ? ` ${className}` : ""}`}
+      aria-hidden="true"
+    >
+      {Array.from({ length: 5 }, (_, i) => (
+        <span
+          key={i}
+          className={`tp-stars__tile${i < filled ? " tp-stars__tile--on" : ""}`}
+        >
+          ★
+        </span>
+      ))}
     </span>
   );
 }
@@ -35,7 +45,7 @@ export function Testimonials() {
             className="reviews-header__score"
             aria-label={`${TRUSTPILOT_TRUST_LABEL}, ${TRUSTPILOT_TRUST_SCORE} out of 5 on Trustpilot`}
           >
-            <Stars count={TRUSTPILOT_STAR_DISPLAY} className="reviews-header__stars" />
+            <Stars count={TRUSTPILOT_STAR_DISPLAY} size="md" />
             <span className="reviews-header__score-value">
               {TRUSTPILOT_TRUST_SCORE}
             </span>
@@ -70,7 +80,7 @@ export function Testimonials() {
                 className="review-card__stars"
                 aria-label={`${quote.stars} out of 5 stars`}
               >
-                <Stars count={quote.stars} />
+                <Stars count={quote.stars} size="sm" />
               </p>
 
               <p className="review-card__preview">“{quote.preview}”</p>

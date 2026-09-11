@@ -1014,14 +1014,8 @@
   line-height: 1;
 }
 
-.reviews-header__stars {
-  font-size: 1.25rem;
-  letter-spacing: 0.08em;
-  line-height: 1;
-}
-
 .reviews-header__score-value {
-  color: var(--accent);
+  color: #00b67a;
   font-size: 1.35rem;
   letter-spacing: 0.02em;
 }
@@ -1030,6 +1024,41 @@
   color: var(--text-muted);
   font-size: 0.92rem;
   font-weight: 700;
+}
+
+/* Trustpilot-style green star tiles */
+.tp-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  line-height: 1;
+}
+
+.tp-stars__tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  background: #dcdce6;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tp-stars__tile--on {
+  background: #00b67a;
+}
+
+.tp-stars--sm .tp-stars__tile {
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+}
+
+.tp-stars--md .tp-stars__tile {
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
 }
 
 .reviews-header p {
@@ -1125,17 +1154,7 @@
 .review-card__stars {
   margin: 0;
   padding-left: 10px;
-  font-size: 1.15rem;
-  letter-spacing: 0.08em;
   line-height: 1;
-}
-
-.review-card__stars-filled {
-  color: var(--accent);
-}
-
-.review-card__stars-empty {
-  color: rgba(15, 61, 62, 0.18);
 }
 
 .review-card__preview {
