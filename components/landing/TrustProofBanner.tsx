@@ -1,25 +1,21 @@
-import {
-  TRUSTPILOT_PROFILE_URL,
-  trustpilotProofLabel,
-} from "@/lib/review-links";
+import { TRUSTPILOT_PROFILE_URL } from "@/lib/review-links";
 
 type TrustProofBannerProps = {
   className?: string;
 };
 
-/** Slim Trustpilot social-proof line (score + review count). */
-export function TrustProofBanner({ className = "" }: TrustProofBannerProps) {
-  const label = trustpilotProofLabel();
+const LABEL = "Read all reviews on Trustpilot";
 
+/** Slim Trustpilot link — no score or review count on-site. */
+export function TrustProofBanner({ className = "" }: TrustProofBannerProps) {
   return (
     <a
       className={`trust-proof-banner${className ? ` ${className}` : ""}`}
       href={TRUSTPILOT_PROFILE_URL}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`${label} — open Trustpilot reviews`}
     >
-      {label}
+      {LABEL}
     </a>
   );
 }

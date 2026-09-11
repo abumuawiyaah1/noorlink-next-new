@@ -1,14 +1,15 @@
-import {
-  TRUSTPILOT_PROFILE_URL,
-  trustpilotProofLabel,
-} from "@/lib/review-links";
+import { TRUSTPILOT_PROFILE_URL } from "@/lib/review-links";
 import { TRUSTPILOT_QUOTES } from "@/lib/trustpilot-quotes";
 
 function Stars({ count }: { count: number }) {
   return (
     <p className="review-card__stars" aria-label={`${count} out of 5 stars`}>
-      {"★".repeat(count)}
-      <span aria-hidden="true">{"☆".repeat(Math.max(0, 5 - count))}</span>
+      <span className="review-card__stars-filled" aria-hidden="true">
+        {"★".repeat(count)}
+      </span>
+      <span className="review-card__stars-empty" aria-hidden="true">
+        {"☆".repeat(Math.max(0, 5 - count))}
+      </span>
     </p>
   );
 }
@@ -18,32 +19,37 @@ export function Testimonials() {
     <section className="reviews-section" aria-labelledby="reviews-heading">
       <div className="container">
         <div className="reviews-header">
-          <span className="why-kicker">Trustpilot reviews</span>
+          <span className="why-kicker">Reviews</span>
           <h2 id="reviews-heading">What travelers say.</h2>
           <p>
-            Real reviews from travelers on Trustpilot —{" "}
-            {trustpilotProofLabel()}.
+            Stars, country, and a short preview from real Trustpilot reviews.
           </p>
         </div>
 
         <div className="reviews-grid">
           {TRUSTPILOT_QUOTES.map((quote) => (
-            <article key={`${quote.name}-${quote.title}`} className="review-card">
-              <div className="review-card__author">
+            <article
+              key={`${quote.name}-${quote.country}`}
+              className="review-card"
+            >
+              <div className="review-card__top">
                 <span className="review-card__avatar" aria-hidden="true">
                   {quote.initial}
                 </span>
-                <div>
+                <div className="review-card__meta">
                   <p className="review-card__name">{quote.name}</p>
-                  <p className="review-card__place">
-                    <span aria-hidden="true">{quote.flag} </span>
-                    {quote.place}
+                  <p className="review-card__country">
+                    <span className="review-card__flag" aria-hidden="true">
+                      {quote.flag}
+                    </span>
+                    {quote.country}
                   </p>
                 </div>
               </div>
+
               <Stars count={quote.stars} />
-              <h3 className="review-card__title">{quote.title}</h3>
-              <p className="review-card__text">{quote.text}</p>
+
+              <p className="review-card__preview">“{quote.preview}”</p>
             </article>
           ))}
         </div>
