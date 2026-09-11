@@ -1001,6 +1001,37 @@
   line-height: 1.1;
 }
 
+.reviews-header__score {
+  margin: 16px 0 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: var(--primary);
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.reviews-header__stars {
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.reviews-header__score-value {
+  color: var(--accent);
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+}
+
+.reviews-header__score-label {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
 .reviews-header p {
   margin: 12px 0 0;
   color: var(--text-muted);

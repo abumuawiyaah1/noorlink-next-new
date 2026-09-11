@@ -2,13 +2,22 @@
 const TRUSTPILOT_REVIEW_URL =
   process.env.NEXT_PUBLIC_TRUSTPILOT_REVIEW_URL?.trim() || "";
 
-/** Public profile — on-site we only link here (“Read all reviews on Trustpilot”). */
+/** Public profile — linked from “Read all reviews on Trustpilot”. */
 const TRUSTPILOT_PROFILE_URL =
   process.env.NEXT_PUBLIC_TRUSTPILOT_PROFILE_URL?.trim() ||
   "https://www.trustpilot.com/review/noorlink.co";
 
 const GOOGLE_REVIEW_URL =
   process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL?.trim() || "";
+
+/**
+ * Overall Trustpilot score for the reviews header (no review count on-site).
+ * Last checked: 2026-09-10 → Excellent · 4.3
+ */
+export const TRUSTPILOT_TRUST_SCORE = 4.3;
+export const TRUSTPILOT_TRUST_LABEL = "Excellent";
+/** Rounded star fill for the header (4.3 → 4 full + visual). */
+export const TRUSTPILOT_STAR_DISPLAY = 4;
 
 export function reviewPagePath(orderId?: string): string {
   if (!orderId?.trim()) return "/review";
