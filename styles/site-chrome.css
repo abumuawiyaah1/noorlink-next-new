@@ -456,12 +456,14 @@
   box-shadow: none;
 }
 
-/* Slim social proof until public reviews are ready */
+/* Slim Trustpilot social proof (score + review count) */
 .trust-proof-banner {
+  display: block;
   margin: 0 auto;
   max-width: 42rem;
   padding: 0.55rem 1.1rem;
   text-align: center;
+  text-decoration: none;
   font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -472,6 +474,19 @@
   border: 2px solid transparent;
   border-radius: var(--radius-pill);
   box-shadow: 0 4px 14px rgba(15, 61, 62, 0.06);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.trust-proof-banner:hover,
+.trust-proof-banner:focus-visible {
+  box-shadow: 0 6px 18px rgba(15, 61, 62, 0.1);
+  outline: none;
+}
+
+.trust-proof-banner:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(255, 149, 0, 0.35),
+    0 6px 18px rgba(15, 61, 62, 0.1);
 }
 
 .trust-proof-banner--home {

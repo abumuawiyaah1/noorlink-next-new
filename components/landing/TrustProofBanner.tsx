@@ -1,15 +1,25 @@
+import {
+  TRUSTPILOT_PROFILE_URL,
+  trustpilotProofLabel,
+} from "@/lib/review-links";
+
 type TrustProofBannerProps = {
   className?: string;
 };
 
-/** Slim social-proof line until public reviews are ready to feature. */
+/** Slim Trustpilot social-proof line (score + review count). */
 export function TrustProofBanner({ className = "" }: TrustProofBannerProps) {
+  const label = trustpilotProofLabel();
+
   return (
-    <p
+    <a
       className={`trust-proof-banner${className ? ` ${className}` : ""}`}
-      role="status"
+      href={TRUSTPILOT_PROFILE_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${label} — open Trustpilot reviews`}
     >
-      Trusted by Travelers in 20+ Countries
-    </p>
+      {label}
+    </a>
   );
 }
