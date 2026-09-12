@@ -23,7 +23,7 @@ function formatRetail(usd: number): string {
 }
 
 export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
-  const [mode, setMode] = useState<"wallet" | "access_package" | null>(null);
+  const [mode, setMode] = useState<"wallet" | "package" | null>(null);
   const [amounts, setAmounts] = useState<number[]>([]);
   const [packages, setPackages] = useState<TopUpPackageOffer[]>([]);
   const [paypalAvailable, setPaypalAvailable] = useState(false);
@@ -44,8 +44,11 @@ export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
         setReason(result.reason ?? "Top-up is not available for this plan.");
         return;
       }
-      if (result.mode === "access_package" && result.packages?.length) {
-        setMode("access_package");
+      if (
+        (result.mode === "access_package" || result.mode === "zesimo_package") &&
+        result.packages?.length
+      ) {
+        setMode("package");
         setPackages(result.packages);
         return;
       }
@@ -62,18 +65,28 @@ export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
   }, [email, orderNumber]);
 
   if (loading) {
-    return null;
+    return (
+      <div className="order-topup">
+        <p className="order-usage__fine-print">Checking top-up options…</p>
+      </div>
+    );
   }
 
   const hasWallet = mode === "wallet" && amounts.length > 0;
-  const hasPackages = mode === "access_package" && packages.length > 0;
+  const hasPackages = mode === "package" && packages.length > 0;
 
   if (!hasWallet && !hasPackages) {
     if (reason) {
       return (
-        <p className="order-usage__fine-print" style={{ marginTop: 12 }}>
-          {reason}
-        </p>
+        <div className="order-topup order-topup--unavailable">
+          <div className="order-usage__label-row">
+            <span>Top-up</span>
+            <strong>Not available on this plan</strong>
+          </div>
+          <p className="order-usage__fine-print" style={{ marginTop: 8 }}>
+            {reason}
+          </p>
+        </div>
       );
     }
     return null;

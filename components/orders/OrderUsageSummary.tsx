@@ -5,6 +5,8 @@ import type { LookedUpOrder } from "@/lib/orders-api";
 type OrderUsageSummaryProps = {
   order: LookedUpOrder;
   compact?: boolean;
+  onRefreshUsage?: () => void;
+  refreshing?: boolean;
 };
 
 function usagePercent(order: LookedUpOrder): number | null {
@@ -15,11 +17,17 @@ function usagePercent(order: LookedUpOrder): number | null {
   return Math.min(100, Math.round((used / total) * 100));
 }
 
-export function OrderUsageSummary({ order, compact = false }: OrderUsageSummaryProps) {
+export function OrderUsageSummary({
+  order,
+  compact = false,
+  onRefreshUsage,
+  refreshing = false,
+}: OrderUsageSummaryProps) {
   const pct = usagePercent(order);
   const showData = order.dataTotalGb != null && order.dataRemainingGb != null;
   const showDays =
     order.validityDays != null && order.daysRemaining != null;
+  const showWallet = order.walletBalanceUsd != null;
   const activationLabel = (() => {
     const status = (order.activationStatus ?? "").toLowerCase();
     if (status === "active" || status === "installed" || status === "activated") {
@@ -34,7 +42,15 @@ export function OrderUsageSummary({ order, compact = false }: OrderUsageSummaryP
     return null;
   })();
 
-  if (!showData && !showDays && !order.fulfillmentPending && !activationLabel) {
+  const canShowPanel =
+    showData ||
+    showDays ||
+    showWallet ||
+    order.fulfillmentPending ||
+    activationLabel ||
+    onRefreshUsage;
+
+  if (!canShowPanel) {
     return null;
   }
 
@@ -42,8 +58,8 @@ export function OrderUsageSummary({ order, compact = false }: OrderUsageSummaryP
     <div className={`order-usage${compact ? " order-usage--compact" : ""}`}>
       {order.fulfillmentPending ? (
         <p className="order-usage__pending" role="status">
-          Your QR code is being prepared — usually within 1–2 minutes. This page
-          refreshes automatically.
+          Your QR code is being prepared — usually within a few minutes. Check
+          back here or wait for the delivery email.
         </p>
       ) : null}
 
@@ -58,6 +74,20 @@ export function OrderUsageSummary({ order, compact = false }: OrderUsageSummaryP
               Usage updated {new Date(order.usageSyncedAt).toLocaleString()}
             </p>
           ) : null}
+        </div>
+      ) : null}
+
+      {showWallet ? (
+        <div className="order-usage__block">
+          <div className="order-usage__label-row">
+            <span>Wallet balance</span>
+            <strong>
+              ${Number(order.walletBalanceUsd).toFixed(2)} remaining
+            </strong>
+          </div>
+          <p className="order-usage__fine-print" style={{ marginTop: 6 }}>
+            Pay-as-you-go line — top up below when you need more data.
+          </p>
         </div>
       ) : null}
 
@@ -82,6 +112,28 @@ export function OrderUsageSummary({ order, compact = false }: OrderUsageSummaryP
               <span style={{ width: `${pct}%` }} />
             </div>
           ) : null}
+          {order.dataUsedGb != null ? (
+            <p className="order-usage__fine-print" style={{ marginTop: 6 }}>
+              {order.dataUsedGb} GB used
+              {order.usagePct != null ? ` (${order.usagePct}%)` : ""}
+            </p>
+          ) : null}
+        </div>
+      ) : !order.fulfillmentPending && !showWallet ? (
+        <div className="order-usage__block">
+          <div className="order-usage__label-row">
+            <span>Data usage</span>
+            <strong>
+              {order.dataTotalGb != null
+                ? `${order.dataTotalGb} GB plan`
+                : "Live usage unavailable"}
+            </strong>
+          </div>
+          <p className="order-usage__fine-print" style={{ marginTop: 6 }}>
+            {order.dataTotalGb != null
+              ? "Plan size is on file. Live remaining data appears after the eSIM is installed and the network reports usage."
+              : "We could not pull live usage for this line yet. Refresh after install, or message support with your order ID."}
+          </p>
         </div>
       ) : null}
 
@@ -95,6 +147,17 @@ export function OrderUsageSummary({ order, compact = false }: OrderUsageSummaryP
             </strong>
           </div>
         </div>
+      ) : null}
+
+      {onRefreshUsage ? (
+        <button
+          type="button"
+          className="order-usage__refresh"
+          onClick={onRefreshUsage}
+          disabled={refreshing}
+        >
+          {refreshing ? "Refreshing usage…" : "Refresh usage"}
+        </button>
       ) : null}
 
       {!compact ? (

@@ -189,7 +189,7 @@ export async function fetchTopUpOptions(
 ): Promise<{
   success: boolean;
   supported: boolean;
-  mode?: "wallet" | "access_package" | string | null;
+  mode?: "wallet" | "access_package" | "zesimo_package" | string | null;
   amountsUsd?: number[];
   packages?: TopUpPackageOffer[];
   paypalAvailable?: boolean;

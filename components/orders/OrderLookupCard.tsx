@@ -34,6 +34,7 @@ export function OrderLookupCard({
   const [order, setOrder] = useState<LookedUpOrder | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [refreshingUsage, setRefreshingUsage] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [resendMessage, setResendMessage] = useState<string | null>(null);
 
@@ -65,6 +66,22 @@ export function OrderLookupCard({
     order &&
     ["delivered", "active", "suspended"].includes(order.status ?? "") &&
     Boolean(order.orderNumber);
+
+  async function handleRefreshUsage() {
+    if (!email.trim() || !orderId.trim()) return;
+    setRefreshingUsage(true);
+    setError(null);
+    const result = await lookupOrder(email, orderId, { refresh: true });
+    setRefreshingUsage(false);
+    if (!result.found || !result.order) {
+      setError(
+        result.error ??
+          "Could not refresh usage. Try again in a moment.",
+      );
+      return;
+    }
+    setOrder(result.order);
+  }
 
   async function handleResendQr() {
     if (!order?.orderNumber) return;
@@ -151,13 +168,23 @@ export function OrderLookupCard({
             <span className="lookup-status">{order.status ?? "unknown"}</span>
           </div>
 
-          <OrderUsageSummary order={order} compact />
+          <OrderUsageSummary
+            order={order}
+            compact
+            refreshing={refreshingUsage}
+            onRefreshUsage={
+              ["delivered", "active", "suspended"].includes(order.status ?? "")
+                ? handleRefreshUsage
+                : undefined
+            }
+          />
 
           {order.qrCodeUrl || order.iosTapLink || order.lpaString ? (
             <EsimInstallPanel order={order} compact />
           ) : null}
 
-          {order.topupSupported && order.orderNumber ? (
+          {["delivered", "active", "suspended"].includes(order.status ?? "") &&
+          order.orderNumber ? (
             <OrderTopUpCard orderNumber={order.orderNumber} email={email} />
           ) : null}
 
