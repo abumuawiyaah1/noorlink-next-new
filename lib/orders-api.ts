@@ -181,6 +181,13 @@ export type TopUpPackageOffer = {
   periodNum?: number | null;
   daypass?: boolean;
   retailUsd: number;
+  retailCents?: number | null;
+};
+
+export type TopUpAmountOffer = {
+  fundUsd: number;
+  retailCents: number;
+  retailUsd: number;
 };
 
 export async function fetchTopUpOptions(
@@ -191,6 +198,7 @@ export async function fetchTopUpOptions(
   supported: boolean;
   mode?: "wallet" | "access_package" | "zesimo_package" | string | null;
   amountsUsd?: number[];
+  amountOffers?: TopUpAmountOffer[];
   packages?: TopUpPackageOffer[];
   paypalAvailable?: boolean;
   reason?: string;
@@ -207,6 +215,7 @@ export async function fetchTopUpOptions(
       supported?: boolean;
       mode?: string | null;
       amountsUsd?: number[];
+      amountOffers?: TopUpAmountOffer[];
       packages?: TopUpPackageOffer[];
       paypalAvailable?: boolean;
       reason?: string;
@@ -216,6 +225,7 @@ export async function fetchTopUpOptions(
       supported: Boolean(data.supported),
       mode: data.mode,
       amountsUsd: data.amountsUsd,
+      amountOffers: data.amountOffers,
       packages: data.packages,
       paypalAvailable: Boolean(data.paypalAvailable),
       reason: data.reason,
@@ -279,6 +289,56 @@ export async function createTopUpSession(input: {
     return {
       success: false,
       message: err instanceof Error ? err.message : "Top-up checkout failed.",
+    };
+  }
+}
+
+export async function createTopUpPaymentIntent(input: {
+  orderId: string;
+  email: string;
+  fundUsd?: number;
+  offerId?: string;
+  packageSlug?: string | null;
+  packageCode?: string | null;
+  periodNum?: number | null;
+}): Promise<{
+  success: boolean;
+  clientSecret?: string;
+  paymentIntentId?: string;
+  retailCents?: number;
+  message?: string;
+}> {
+  const url = `${API_BASE}/api/orders/topup/payment-intent`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(topUpSelectionBody(input)),
+    });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      clientSecret?: string;
+      paymentIntentId?: string;
+      retailCents?: number;
+      message?: string;
+    };
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message ?? "Could not start wallet payment.",
+      };
+    }
+    return {
+      success: Boolean(data.success),
+      clientSecret: data.clientSecret,
+      paymentIntentId: data.paymentIntentId,
+      retailCents: data.retailCents,
+      message: data.message,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: err instanceof Error ? err.message : "Could not start wallet payment.",
     };
   }
 }

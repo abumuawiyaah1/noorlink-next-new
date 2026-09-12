@@ -251,6 +251,38 @@
             gap: 10px;
             max-width: 320px;
         }
+        .order-topup__express {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .order-topup__express-label {
+            margin: 0;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #5b6b6c;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .order-topup__express-element.is-busy {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .order-topup__express-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 4px 0 2px;
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+        .order-topup__express-divider::before,
+        .order-topup__express-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e5e7eb;
+        }
         .order-topup__selected {
             display: flex;
             align-items: center;

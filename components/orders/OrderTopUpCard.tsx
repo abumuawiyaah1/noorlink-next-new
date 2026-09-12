@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { TopUpExpressWallets } from "@/components/orders/TopUpExpressWallets";
 import { TopUpPayPalButton, type TopUpPayPalSelection } from "@/components/orders/TopUpPayPalButton";
 import {
   createTopUpSession,
   fetchTopUpOptions,
+  type TopUpAmountOffer,
   type TopUpPackageOffer,
 } from "@/lib/orders-api";
 
@@ -25,6 +27,7 @@ function formatRetail(usd: number): string {
 export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
   const [mode, setMode] = useState<"wallet" | "package" | null>(null);
   const [amounts, setAmounts] = useState<number[]>([]);
+  const [amountOffers, setAmountOffers] = useState<TopUpAmountOffer[]>([]);
   const [packages, setPackages] = useState<TopUpPackageOffer[]>([]);
   const [paypalAvailable, setPaypalAvailable] = useState(false);
   const [reason, setReason] = useState<string | null>(null);
@@ -52,9 +55,10 @@ export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
         setPackages(result.packages);
         return;
       }
-      if (result.amountsUsd?.length) {
+      if (result.amountsUsd?.length || result.amountOffers?.length) {
         setMode("wallet");
-        setAmounts(result.amountsUsd);
+        setAmounts(result.amountsUsd ?? result.amountOffers?.map((o) => o.fundUsd) ?? []);
+        setAmountOffers(result.amountOffers ?? []);
         return;
       }
       setReason(result.reason ?? "Top-up is not available for this plan.");
@@ -96,16 +100,28 @@ export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
     selection?.kind === "package"
       ? packages.find((p) => p.offerId === selection.offerId)
       : null;
+  const selectedWalletOffer =
+    selection?.kind === "wallet"
+      ? amountOffers.find((o) => Math.abs(o.fundUsd - selection.fundUsd) < 0.01)
+      : null;
   const selectedLabel =
     selection?.kind === "wallet"
       ? `$${selection.fundUsd} data`
       : selectedOffer?.name ?? null;
   const selectedRetail =
     selection?.kind === "wallet"
-      ? null
+      ? selectedWalletOffer
+        ? formatRetail(selectedWalletOffer.retailUsd)
+        : null
       : selectedOffer
         ? formatRetail(selectedOffer.retailUsd)
         : null;
+  const amountCents =
+    selection?.kind === "wallet"
+      ? selectedWalletOffer?.retailCents ??
+        Math.round(selection.fundUsd * 1.35 * 100)
+      : selectedOffer?.retailCents ??
+        (selectedOffer ? Math.round(selectedOffer.retailUsd * 100) : 0);
 
   async function payWithCard() {
     if (!selection) return;
@@ -198,6 +214,15 @@ export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
               Change
             </button>
           </div>
+          <TopUpExpressWallets
+            orderNumber={orderNumber}
+            email={email}
+            selection={selection}
+            amountCents={amountCents}
+            disabled={submitting}
+            onBusy={setSubmitting}
+            onError={(message) => setError(message || null)}
+          />
           <button
             type="button"
             className="order-topup__btn order-topup__btn--card"
