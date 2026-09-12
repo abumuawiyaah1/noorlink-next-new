@@ -11,6 +11,8 @@ function DashboardContent() {
   const searchParams = useSearchParams();
   const initialEmail = searchParams.get("email") ?? "";
   const initialOrderId = searchParams.get("orderId") ?? "";
+  const initialToken = searchParams.get("myEsimsToken") ?? "";
+  const topupSuccess = searchParams.get("topup") === "1";
 
   return (
     <>
@@ -18,11 +20,13 @@ function DashboardContent() {
       <Breadcrumbs items={[{ href: "/", label: "Home" }, { label: "My eSIMs" }]} />
       <div id="login-view">
         <OrderLookupCard
-          title="My eSIMs — usage, install & top-up"
-          description="Enter the email and order ID from checkout to see data remaining, install your QR, and top up when this plan supports it."
-          submitLabel="View My eSIM"
+          title="Your eSIM"
+          description="Use the email and order ID from your confirmation (looks like NL-…)."
+          submitLabel="Open my eSIM"
           initialEmail={initialEmail}
           initialOrderId={initialOrderId}
+          initialToken={initialToken}
+          topupSuccess={topupSuccess}
         />
       </div>
       <SiteFooter />

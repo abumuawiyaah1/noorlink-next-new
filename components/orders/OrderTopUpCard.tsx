@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { TopUpExpressWallets } from "@/components/orders/TopUpExpressWallets";
 import { TopUpPayPalButton, type TopUpPayPalSelection } from "@/components/orders/TopUpPayPalButton";
+import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import {
   createTopUpSession,
   fetchTopUpOptions,
@@ -13,6 +14,7 @@ import {
 type OrderTopUpCardProps = {
   orderNumber: string;
   email: string;
+  countryPlansHref?: string;
 };
 
 function formatRetail(usd: number): string {
@@ -24,7 +26,11 @@ function formatRetail(usd: number): string {
   }).format(usd);
 }
 
-export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
+export function OrderTopUpCard({
+  orderNumber,
+  email,
+  countryPlansHref = "/plans",
+}: OrderTopUpCardProps) {
   const [mode, setMode] = useState<"wallet" | "package" | null>(null);
   const [amounts, setAmounts] = useState<number[]>([]);
   const [amountOffers, setAmountOffers] = useState<TopUpAmountOffer[]>([]);
@@ -90,6 +96,10 @@ export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
           <p className="order-usage__fine-print" style={{ marginTop: 8 }}>
             {reason}
           </p>
+          <div className="order-topup__next">
+            <a href={countryPlansHref}>Buy a new plan for this destination</a>
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>Message us on WhatsApp</a>
+          </div>
         </div>
       );
     }
@@ -152,8 +162,8 @@ export function OrderTopUpCard({ orderNumber, email }: OrderTopUpCardProps) {
       </div>
       <p className="order-usage__fine-print" style={{ marginBottom: 12 }}>
         {hasPackages
-          ? "Add another pack onto this eSIM — same install, more data and days."
-          : "Pay-as-you-go top-up — funds are added to your existing line. Install stays the same."}
+          ? "Same install. No new QR — just more data and days on this line."
+          : "Same install. Funds go onto this pay-as-you-go line."}
       </p>
 
       {!selection ? (

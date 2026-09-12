@@ -29,7 +29,9 @@
             padding: 40px; border-radius: var(--radius-card-lg);
             width: 100%; max-width: 450px; text-align: center;
             box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+            background: var(--surface);
         }
+        .login-card--wide { max-width: 560px; }
         .login-card h1 { font-size: 1.8rem; margin-bottom: 10px; color: var(--primary); }
         .login-card p { color: var(--text-muted); margin-bottom: 30px; font-size: 0.95rem; }
         
@@ -57,9 +59,98 @@
             display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 16px;
         }
         .lookup-status {
-            text-transform: capitalize; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0;
+            text-transform: none; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0;
             border-radius: var(--radius-pill); padding: 6px 12px; font-size: 0.78rem; font-weight: 800; white-space: nowrap;
         }
+        .lookup-status--ready { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+        .lookup-status--active { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+        .lookup-status--low { background: #fff7ed; color: #b45309; border-color: #fde68a; }
+        .lookup-status--pending { background: #f3f7f7; color: #0F3D3E; border-color: #d1e0e0; }
+        .lookup-status--expired,
+        .lookup-status--neutral { background: #f3f4f6; color: #4b5563; border-color: #e5e7eb; }
+        .myesims-kicker {
+            margin: 0 0 4px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600;
+        }
+        .lookup-result h1 { margin-bottom: 0; }
+        .myesims-banner {
+            margin-bottom: 14px; padding: 12px 14px; border-radius: 12px; font-weight: 700; font-size: 0.92rem; text-align: left;
+        }
+        .myesims-banner--success { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+        .myesims-banner--low { background: #fff7ed; color: #9a3412; border: 1px solid #fed7aa; }
+        .myesims-help { margin-top: 18px; text-align: left; }
+        .myesims-help__toggle {
+            background: none; border: none; padding: 0; cursor: pointer;
+            color: var(--primary); font-weight: 700; font-size: 0.92rem; font-family: inherit;
+        }
+        .myesims-help__body {
+            margin-top: 12px; padding: 14px; border-radius: 12px; background: #f3f7f7; border: 1px solid #e5e7eb;
+        }
+        .myesims-help__body p { margin: 0 0 10px; color: #334155; font-size: 0.9rem; }
+        .myesims-help__body a { color: var(--primary); font-weight: 700; }
+        .myesims-details {
+            margin: 16px 0; text-align: left; border: 1px solid #e5e7eb; border-radius: 12px; padding: 10px 14px;
+        }
+        .myesims-details summary {
+            cursor: pointer; font-weight: 700; color: var(--primary); font-size: 0.9rem;
+        }
+        .myesims-details p { margin: 8px 0 0; color: #334155; font-size: 0.9rem; }
+        .myesims-install-toggle { margin: 12px 0; text-align: left; }
+        .order-usage__hero {
+            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 12px;
+        }
+        .order-usage__hero-stat {
+            text-align: left; padding: 14px; border-radius: 14px; background: #f3f7f7; border: 1px solid #e5e7eb;
+        }
+        .order-usage__hero-stat span {
+            display: block; font-size: 0.78rem; font-weight: 700; color: #5b6b6c; text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .order-usage__hero-stat strong {
+            display: block; margin-top: 6px; font-size: 2rem; line-height: 1; color: var(--primary);
+        }
+        .order-usage__hero-stat strong small {
+            margin-left: 4px; font-size: 0.95rem; font-weight: 700; color: #5b6b6c;
+        }
+        .order-usage__hero-stat--muted { font-size: 1.35rem !important; }
+        .order-usage__hero-stat em {
+            display: block; margin-top: 6px; font-style: normal; font-size: 0.82rem; color: #6b7280;
+        }
+        @media (max-width: 520px) {
+            .order-usage__hero { grid-template-columns: 1fr; }
+        }
+        .myesims-list-head {
+            display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; text-align: left; margin-bottom: 18px;
+        }
+        .myesims-list-head p { margin-bottom: 0; }
+        .myesims-list-head__btn { width: auto; margin-top: 0; padding: 10px 14px; }
+        .myesims-cards { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+        .myesims-card {
+            width: 100%; text-align: left; border: 1px solid #e5e7eb; background: #fff; border-radius: 14px;
+            padding: 14px 16px; cursor: pointer; font-family: inherit;
+        }
+        .myesims-card:hover { border-color: var(--accent); }
+        .myesims-card__top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+        .myesims-card__top strong { color: var(--primary); font-size: 1rem; }
+        .myesims-card__top span {
+            font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 999px; background: #f3f7f7; color: #0F3D3E;
+        }
+        .myesims-card--low .myesims-card__top span { background: #fff7ed; color: #9a3412; }
+        .myesims-card--active .myesims-card__top span { background: #ecfdf5; color: #047857; }
+        .myesims-card__meta, .myesims-card__stats { margin: 6px 0 0; color: #6b7280; font-size: 0.88rem; }
+        .myesims-switcher { margin: 0 0 16px; text-align: left; }
+        .myesims-switcher > span {
+            display: block; margin-bottom: 8px; font-size: 0.78rem; font-weight: 700; color: #5b6b6c; text-transform: uppercase;
+        }
+        .myesims-switcher__row { display: flex; flex-wrap: wrap; gap: 8px; }
+        .myesims-switcher__chip {
+            border: 1px solid #e5e7eb; background: #fff; border-radius: 999px; padding: 8px 12px;
+            font-size: 0.82rem; font-weight: 700; color: var(--primary); cursor: pointer; font-family: inherit;
+        }
+        .myesims-switcher__chip.is-active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .order-topup__next {
+            display: flex; flex-direction: column; gap: 8px; margin-top: 12px; text-align: left;
+        }
+        .order-topup__next a { color: var(--primary); font-weight: 700; text-decoration: none; }
+        .order-topup__next a:hover { color: #b36a00; }
         .lookup-actions {
             display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0 8px;
         }

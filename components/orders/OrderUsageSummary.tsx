@@ -1,10 +1,12 @@
 "use client";
 
 import type { LookedUpOrder } from "@/lib/orders-api";
+import type { CustomerStatus } from "@/lib/my-esims";
 
 type OrderUsageSummaryProps = {
   order: LookedUpOrder;
   compact?: boolean;
+  customerStatus?: CustomerStatus;
   onRefreshUsage?: () => void;
   refreshing?: boolean;
 };
@@ -20,6 +22,7 @@ function usagePercent(order: LookedUpOrder): number | null {
 export function OrderUsageSummary({
   order,
   compact = false,
+  customerStatus,
   onRefreshUsage,
   refreshing = false,
 }: OrderUsageSummaryProps) {
@@ -28,26 +31,13 @@ export function OrderUsageSummary({
   const showDays =
     order.validityDays != null && order.daysRemaining != null;
   const showWallet = order.walletBalanceUsd != null;
-  const activationLabel = (() => {
-    const status = (order.activationStatus ?? "").toLowerCase();
-    if (status === "active" || status === "installed" || status === "activated") {
-      return "Installed & active";
-    }
-    if (status === "provisioned") {
-      return "Ready to install — not activated yet";
-    }
-    if (status === "expired") {
-      return "Plan expired";
-    }
-    return null;
-  })();
 
   const canShowPanel =
     showData ||
     showDays ||
     showWallet ||
     order.fulfillmentPending ||
-    activationLabel ||
+    customerStatus ||
     onRefreshUsage;
 
   if (!canShowPanel) {
@@ -58,95 +48,80 @@ export function OrderUsageSummary({
     <div className={`order-usage${compact ? " order-usage--compact" : ""}`}>
       {order.fulfillmentPending ? (
         <p className="order-usage__pending" role="status">
-          Your QR code is being prepared — usually within a few minutes. Check
-          back here or wait for the delivery email.
+          Your QR is being prepared — usually within a few minutes. Stay on this
+          page or wait for the delivery email.
         </p>
       ) : null}
 
-      {activationLabel ? (
-        <div className="order-usage__block">
-          <div className="order-usage__label-row">
-            <span>Activation</span>
-            <strong>{activationLabel}</strong>
+      <div className="order-usage__hero">
+        {showData ? (
+          <div className="order-usage__hero-stat">
+            <span>Data left</span>
+            <strong>
+              {order.dataRemainingGb}
+              <small>GB</small>
+            </strong>
+            {order.dataTotalGb != null ? (
+              <em>of {order.dataTotalGb} GB</em>
+            ) : null}
           </div>
-          {order.usageSyncedAt ? (
-            <p className="order-usage__fine-print" style={{ marginTop: 6 }}>
-              Usage updated {new Date(order.usageSyncedAt).toLocaleString()}
-            </p>
-          ) : null}
+        ) : showWallet ? (
+          <div className="order-usage__hero-stat">
+            <span>Wallet left</span>
+            <strong>
+              ${Number(order.walletBalanceUsd).toFixed(2)}
+            </strong>
+            <em>pay-as-you-go</em>
+          </div>
+        ) : !order.fulfillmentPending ? (
+          <div className="order-usage__hero-stat">
+            <span>Data</span>
+            <strong className="order-usage__hero-stat--muted">
+              {order.dataTotalGb != null ? `${order.dataTotalGb} GB` : "—"}
+            </strong>
+            <em>
+              {customerStatus?.installed
+                ? "Remaining data appears after the network reports usage. Tap refresh after you connect."
+                : "Install first — remaining data shows after you’re on the network."}
+            </em>
+          </div>
+        ) : null}
+
+        {showDays ? (
+          <div className="order-usage__hero-stat">
+            <span>Days left</span>
+            <strong>
+              {order.daysRemaining}
+              <small>{order.daysRemaining === 1 ? "day" : "days"}</small>
+            </strong>
+            {order.validityDays != null ? (
+              <em>{order.validityDays}-day plan</em>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+
+      {showData && pct != null ? (
+        <div
+          className="order-usage__bar"
+          role="progressbar"
+          aria-valuenow={pct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label="Data used"
+        >
+          <span style={{ width: `${pct}%` }} />
         </div>
       ) : null}
 
-      {showWallet ? (
-        <div className="order-usage__block">
-          <div className="order-usage__label-row">
-            <span>Wallet balance</span>
-            <strong>
-              ${Number(order.walletBalanceUsd).toFixed(2)} remaining
-            </strong>
-          </div>
-          <p className="order-usage__fine-print" style={{ marginTop: 6 }}>
-            Pay-as-you-go line — top up below when you need more data.
-          </p>
-        </div>
-      ) : null}
-
-      {showData ? (
-        <div className="order-usage__block">
-          <div className="order-usage__label-row">
-            <span>Data remaining</span>
-            <strong>
-              {order.dataRemainingGb} GB
-              {order.dataTotalGb != null ? ` of ${order.dataTotalGb} GB` : ""}
-            </strong>
-          </div>
-          {pct != null ? (
-            <div
-              className="order-usage__bar"
-              role="progressbar"
-              aria-valuenow={pct}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label="Data used"
-            >
-              <span style={{ width: `${pct}%` }} />
-            </div>
-          ) : null}
-          {order.dataUsedGb != null ? (
-            <p className="order-usage__fine-print" style={{ marginTop: 6 }}>
-              {order.dataUsedGb} GB used
-              {order.usagePct != null ? ` (${order.usagePct}%)` : ""}
-            </p>
-          ) : null}
-        </div>
-      ) : !order.fulfillmentPending && !showWallet ? (
-        <div className="order-usage__block">
-          <div className="order-usage__label-row">
-            <span>Data usage</span>
-            <strong>
-              {order.dataTotalGb != null
-                ? `${order.dataTotalGb} GB plan`
-                : "Live usage unavailable"}
-            </strong>
-          </div>
-          <p className="order-usage__fine-print" style={{ marginTop: 6 }}>
-            {order.dataTotalGb != null
-              ? "Plan size is on file. Live remaining data appears after the eSIM is installed and the network reports usage."
-              : "We could not pull live usage for this line yet. Refresh after install, or message support with your order ID."}
-          </p>
-        </div>
-      ) : null}
-
-      {showDays ? (
-        <div className="order-usage__block">
-          <div className="order-usage__label-row">
-            <span>Validity</span>
-            <strong>
-              {order.daysRemaining} day{order.daysRemaining === 1 ? "" : "s"} left
-              {order.validityDays != null ? ` (${order.validityDays}-day plan)` : ""}
-            </strong>
-          </div>
-        </div>
+      {showData && order.dataUsedGb != null ? (
+        <p className="order-usage__fine-print" style={{ marginTop: 8 }}>
+          {order.dataUsedGb} GB used
+          {order.usagePct != null ? ` (${order.usagePct}%)` : ""}
+          {order.usageSyncedAt
+            ? ` · updated ${new Date(order.usageSyncedAt).toLocaleString()}`
+            : ""}
+        </p>
       ) : null}
 
       {onRefreshUsage ? (
@@ -156,7 +131,7 @@ export function OrderUsageSummary({
           onClick={onRefreshUsage}
           disabled={refreshing}
         >
-          {refreshing ? "Refreshing usage…" : "Refresh usage"}
+          {refreshing ? "Refreshing…" : "Refresh usage"}
         </button>
       ) : null}
 

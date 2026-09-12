@@ -37,7 +37,7 @@ export function EsimInstallPanel({ order, compact = false }: EsimInstallPanelPro
         <p className="esim-install__eyebrow">NoorLink eSIM</p>
         <h2 className="esim-install__title">Install your eSIM</h2>
         <p className="esim-install__lede">
-          Scan the branded QR, or tap a one-tap link on your phone if you can’t scan.
+          Install on Wi‑Fi before you fly. Scan the QR, or tap a one-tap link on this phone.
         </p>
       </header>
 

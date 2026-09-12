@@ -107,6 +107,124 @@ export async function lookupOrder(
   }
 }
 
+export type MyEsimCard = {
+  orderNumber?: string;
+  packageName?: string;
+  country?: string;
+  flag?: string;
+  status?: string;
+  activationStatus?: string;
+  dataRemainingGb?: number | null;
+  dataTotalGb?: number | null;
+  daysRemaining?: number | null;
+  walletBalanceUsd?: number | null;
+  fulfillmentPending?: boolean;
+  createdAt?: string | null;
+};
+
+export async function requestMyEsimsLink(email: string): Promise<{
+  success: boolean;
+  message?: string;
+}> {
+  const url = `${API_BASE}/api/orders/my-esims/request-link`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email.trim() }),
+    });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      message?: string;
+      detail?: string;
+    };
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.detail ?? data.message ?? "Could not send the link.",
+      };
+    }
+    return {
+      success: Boolean(data.success),
+      message: data.message,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: err instanceof Error ? err.message : "Could not send the link.",
+    };
+  }
+}
+
+export async function fetchMyEsimsByToken(token: string): Promise<{
+  success: boolean;
+  email?: string;
+  orders: MyEsimCard[];
+  message?: string;
+}> {
+  const params = new URLSearchParams({ token: token.trim() });
+  const url = `${API_BASE}/api/orders/my-esims?${params.toString()}`;
+  try {
+    const response = await fetch(url, { method: "GET" });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      email?: string;
+      orders?: MyEsimCard[];
+      message?: string;
+      detail?: string;
+    };
+    if (!response.ok) {
+      return {
+        success: false,
+        orders: [],
+        message: data.detail ?? data.message ?? "Could not open My eSIMs.",
+      };
+    }
+    return {
+      success: Boolean(data.success),
+      email: data.email,
+      orders: data.orders ?? [],
+      message: data.message,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      orders: [],
+      message: err instanceof Error ? err.message : "Could not open My eSIMs.",
+    };
+  }
+}
+
+export async function fetchSiblingEsims(
+  email: string,
+  orderId: string,
+): Promise<{
+  success: boolean;
+  orders: MyEsimCard[];
+  message?: string;
+}> {
+  const params = new URLSearchParams({
+    email: email.trim(),
+    orderId: orderId.trim(),
+  });
+  const url = `${API_BASE}/api/orders/siblings?${params.toString()}`;
+  try {
+    const response = await fetch(url, { method: "GET" });
+    const data = (await response.json().catch(() => ({}))) as {
+      success?: boolean;
+      orders?: MyEsimCard[];
+      message?: string;
+    };
+    return {
+      success: Boolean(data.success),
+      orders: data.orders ?? [],
+      message: data.message,
+    };
+  } catch {
+    return { success: false, orders: [] };
+  }
+}
+
 export async function lookupOrderBySession(
   sessionId: string,
   email: string,
