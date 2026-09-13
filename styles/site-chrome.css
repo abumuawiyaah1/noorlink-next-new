@@ -113,16 +113,17 @@
 
 .site-header .btn-nav:hover,
 .site-header .btn-nav:focus-visible {
-  background: var(--accent, #ff9500) !important;
-  color: #05191a !important;
-  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.28);
+  background: #145254 !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(15, 61, 62, 0.28);
   outline: none;
 }
 
 .site-header .btn-nav.is-active,
 .site-header .btn-nav[aria-current="page"] {
-  background: var(--accent, #ff9500) !important;
-  color: #05191a !important;
+  background: var(--primary) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(15, 61, 62, 0.18);
 }
 
 .site-header--dark .btn-nav {

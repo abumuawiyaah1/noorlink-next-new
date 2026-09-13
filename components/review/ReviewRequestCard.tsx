@@ -35,12 +35,12 @@ export function ReviewRequestCard({
             href={publicUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-nav"
+            className="review-request__btn"
           >
             {publicLabel}
           </a>
         ) : null}
-        <Link href={feedbackHref} className="btn-nav btn-nav--secondary">
+        <Link href={feedbackHref} className="review-request__btn">
           Share private feedback
         </Link>
       </div>

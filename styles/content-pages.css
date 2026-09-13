@@ -602,6 +602,29 @@
   justify-content: flex-start;
 }
 
+.review-request__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill, 999px);
+  border: 1px solid rgba(15, 61, 62, 0.18);
+  background: #fff;
+  color: var(--primary, #0f3d3e);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.review-request__btn:hover,
+.review-request__btn:focus-visible {
+  border-color: var(--accent, #ff9500);
+  color: #b36a00;
+  outline: none;
+}
+
 .review-page__details {
   max-width: 720px;
   margin: 0 auto 48px;

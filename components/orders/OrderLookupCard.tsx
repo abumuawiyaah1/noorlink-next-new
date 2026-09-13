@@ -524,7 +524,7 @@ export function OrderLookupCard({
             <div className="myesims-install-toggle">
               <button
                 type="button"
-                className="lookup-action-btn"
+                className="order-usage__refresh"
                 onClick={() => setInstallOpen((open) => !open)}
               >
                 {installOpen ? "Hide install QR" : "Show install QR again"}
@@ -567,6 +567,7 @@ export function OrderLookupCard({
           {!qrHref ? (
             <Link
               href={`/support?subject=${encodeURIComponent("Install / QR code")}&email=${encodeURIComponent(email)}&orderId=${encodeURIComponent(order.orderNumber ?? orderId)}`}
+              className="order-usage__refresh"
             >
               QR missing? Contact support
             </Link>
@@ -575,7 +576,7 @@ export function OrderLookupCard({
           {canResendQr ? (
             <button
               type="button"
-              className="lookup-action-btn"
+              className="order-usage__refresh"
               onClick={handleResendQr}
               disabled={resendLoading}
             >
@@ -583,7 +584,12 @@ export function OrderLookupCard({
             </button>
           ) : null}
 
-          <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp help</a>
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}`}
+            className="order-usage__refresh"
+          >
+            WhatsApp help
+          </a>
         </div>
 
         {resendMessage ? (
