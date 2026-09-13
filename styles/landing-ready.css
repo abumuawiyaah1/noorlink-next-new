@@ -1,4 +1,50 @@
 /* Before-you-fly visual guide — brand tokens only (styles/tokens.css). */
+
+.landing-ready-tag-wrap {
+  margin: 12px 0 14px;
+  text-align: left;
+}
+
+.landing-ready-tag {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  max-width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, #fff);
+  color: var(--primary);
+  text-decoration: none;
+  font-family: var(--font-brand);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.25;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.landing-ready-tag:hover,
+.landing-ready-tag:focus-visible {
+  border-color: var(--accent);
+  color: var(--primary);
+  outline: none;
+}
+
+.landing-ready-tag__brand {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+.landing-ready-tag__brand span {
+  color: var(--accent);
+}
+
+.landing-ready-tag__label {
+  color: var(--primary);
+}
+
 .landing-ready {
   margin: 14px 0 16px;
   padding: var(--space-4);

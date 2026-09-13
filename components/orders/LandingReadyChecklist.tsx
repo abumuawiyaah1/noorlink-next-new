@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import "@/styles/landing-ready.css";
 
@@ -18,6 +19,22 @@ type GuideStep = {
   image: string;
   alt: string;
 };
+
+const GUIDE_HREF = "/help/before-you-fly";
+
+/** Compact My eSIMs tag — opens the full picture guide. */
+export function LandingReadyTag() {
+  return (
+    <p className="landing-ready-tag-wrap">
+      <Link href={GUIDE_HREF} className="landing-ready-tag">
+        <span className="landing-ready-tag__brand">
+          Noor<span>Link</span>
+        </span>
+        <span className="landing-ready-tag__label">Before you fly — make data ready</span>
+      </Link>
+    </p>
+  );
+}
 
 const IPHONE_STEPS: GuideStep[] = [
   {
