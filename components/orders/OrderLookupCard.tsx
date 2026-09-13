@@ -22,7 +22,9 @@ import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import {
   forgetRememberedEmail,
   readRememberedEmail,
+  readRememberedOrderId,
   rememberEmail,
+  rememberOrderId,
   resolveCustomerStatus,
 } from "@/lib/my-esims";
 
@@ -85,13 +87,17 @@ export function OrderLookupCard({
   const [rememberedHint, setRememberedHint] = useState(false);
 
   useEffect(() => {
-    if (initialEmail) return;
-    const remembered = readRememberedEmail();
-    if (remembered) {
-      setEmail(remembered);
+    if (initialEmail && initialOrderId) return;
+    const rememberedEmail = initialEmail.trim() || readRememberedEmail();
+    const rememberedOrder = initialOrderId.trim() || readRememberedOrderId();
+    if (rememberedEmail) {
+      setEmail(rememberedEmail);
       setRememberedHint(true);
     }
-  }, [initialEmail]);
+    if (rememberedOrder) {
+      setOrderId(rememberedOrder);
+    }
+  }, [initialEmail, initialOrderId]);
 
   useEffect(() => {
     if (!initialToken) {
@@ -162,6 +168,7 @@ export function OrderLookupCard({
       return;
     }
     rememberEmail(cleanEmail);
+    rememberOrderId(result.order.orderNumber ?? cleanOrderId);
     setEmail(cleanEmail);
     setOrderId(result.order.orderNumber ?? cleanOrderId);
     setOrder(result.order);
@@ -180,9 +187,11 @@ export function OrderLookupCard({
 
   useEffect(() => {
     if (initialToken) return;
-    if (!initialEmail.trim() || !initialOrderId.trim()) return;
-    void openOrder(initialEmail, initialOrderId);
-    // Prefill deep-link once on mount.
+    const emailToOpen = (initialEmail || readRememberedEmail()).trim();
+    const orderToOpen = (initialOrderId || readRememberedOrderId()).trim();
+    if (!emailToOpen || !orderToOpen) return;
+    void openOrder(emailToOpen, orderToOpen);
+    // Auto-open once from deep link or this device’s saved order.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialToken, initialEmail, initialOrderId]);
 
@@ -417,22 +426,24 @@ export function OrderLookupCard({
 
         {rememberedHint ? (
           <p className="order-lookup-note">
-            We’ll remember this email on this device.{" "}
+            Saved on this browser — email and last order.{" "}
             <button
               type="button"
               className="lookup-action-btn"
               onClick={() => {
                 forgetRememberedEmail();
                 setEmail("");
+                setOrderId("");
                 setRememberedHint(false);
               }}
             >
-              Clear saved email
+              Clear saved details
             </button>
           </p>
         ) : (
           <p className="order-lookup-note">
-            After you open an eSIM, we’ll remember your email on this device for next time.
+            After you open an eSIM, we’ll remember your email and order ID on this
+            browser for next time.
           </p>
         )}
       </div>

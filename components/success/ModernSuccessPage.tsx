@@ -20,6 +20,7 @@ import {
 } from "@/lib/pilgrim-gift-guides";
 import { lookupOrder, lookupOrderByPaymentIntent, lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
 import { isSafeQrCodeUrl, safeExternalHref } from "@/lib/safe-url";
+import { rememberEmail, rememberOrderId } from "@/lib/my-esims";
 
 const EMAIL_STORAGE_KEY = "nl_checkout_email";
 
@@ -150,6 +151,12 @@ function SuccessContent() {
     pollCount,
     pollingStopped,
   ]);
+
+  useEffect(() => {
+    if (!order?.orderNumber) return;
+    if (order.email) rememberEmail(order.email);
+    rememberOrderId(order.orderNumber);
+  }, [order?.orderNumber, order?.email]);
 
   const country = formatCountryLabel(order?.country ?? countryParam);
   const email = order?.email ?? emailParam;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TopUpExpressWallets } from "@/components/orders/TopUpExpressWallets";
 import { TopUpPayPalButton, type TopUpPayPalSelection } from "@/components/orders/TopUpPayPalButton";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
@@ -10,6 +10,9 @@ import {
   type TopUpAmountOffer,
   type TopUpPackageOffer,
 } from "@/lib/orders-api";
+
+/** Wait before hover-opens — these are existing customers, not a hard sell. */
+const HOVER_OPEN_DELAY_MS = 550;
 
 type OrderTopUpCardProps = {
   orderNumber: string;
@@ -47,6 +50,16 @@ export function OrderTopUpCard({
   const [open, setOpen] = useState(defaultOpen);
   const [hovered, setHovered] = useState(false);
   const [suppressHover, setSuppressHover] = useState(false);
+  const hoverTimerRef = useRef<number | null>(null);
+
+  function clearHoverTimer() {
+    if (hoverTimerRef.current != null) {
+      window.clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+  }
+
+  useEffect(() => () => clearHoverTimer(), []);
 
   useEffect(() => {
     let cancelled = false;
@@ -81,6 +94,7 @@ export function OrderTopUpCard({
   }, [email, orderNumber]);
 
   useEffect(() => {
+    clearHoverTimer();
     setOpen(defaultOpen);
     setSelection(null);
     setError(null);
@@ -177,11 +191,15 @@ export function OrderTopUpCard({
     <div
       className={`order-topup${expanded ? " is-open" : " order-topup--collapsed"}`}
       onMouseEnter={() => {
-        if (window.matchMedia("(hover: hover)").matches) {
+        if (!window.matchMedia("(hover: hover)").matches) return;
+        if (suppressHover || open || selection) return;
+        clearHoverTimer();
+        hoverTimerRef.current = window.setTimeout(() => {
           setHovered(true);
-        }
+        }, HOVER_OPEN_DELAY_MS);
       }}
       onMouseLeave={() => {
+        clearHoverTimer();
         setHovered(false);
         setSuppressHover(false);
       }}
@@ -191,8 +209,10 @@ export function OrderTopUpCard({
         className="order-topup__toggle"
         aria-expanded={expanded}
         onClick={() => {
+          clearHoverTimer();
           if (expanded) {
             setOpen(false);
+            setHovered(false);
             setSuppressHover(true);
             setSelection(null);
             setError(null);
@@ -204,7 +224,7 @@ export function OrderTopUpCard({
       >
         <span className="order-topup__toggle-kicker">Need more data?</span>
         <span className="order-topup__toggle-action">
-          {expanded ? "Hide options" : "Add data to this eSIM"}
+          {expanded ? "Hide options" : "See options"}
         </span>
       </button>
 

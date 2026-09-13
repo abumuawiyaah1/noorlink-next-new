@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export type NavItem = { href: string; label: string; highlight?: boolean };
@@ -21,11 +22,18 @@ type SiteHeaderProps = {
   variant?: "light" | "dark";
 };
 
+function navItemIsActive(pathname: string, href: string): boolean {
+  const path = href.split("#")[0] || "/";
+  if (path === "/") return pathname === "/";
+  return pathname === path || pathname.startsWith(`${path}/`);
+}
+
 export function SiteHeader({
   nav = DEFAULT_NAV,
   logoClassName = "logo-text",
   variant = "light",
 }: SiteHeaderProps) {
+  const pathname = usePathname() || "/";
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -37,16 +45,22 @@ export function SiteHeader({
         </Link>
 
         <nav className={`nav-links${menuOpen ? " active" : ""}`} id="navLinks">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={item.highlight ? "btn-nav" : undefined}
-              onClick={() => setMenuOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {nav.map((item) => {
+            const active = navItemIsActive(pathname, item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={[item.highlight ? "btn-nav" : null, active ? "is-active" : null]
+                  .filter(Boolean)
+                  .join(" ") || undefined}
+                aria-current={active ? "page" : undefined}
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <button

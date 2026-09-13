@@ -74,18 +74,32 @@
   font-size: 0.92rem;
   color: var(--text-main);
   text-decoration: none;
+  transition: color 0.15s ease;
 }
 
 .site-header--dark .nav-links a {
   color: rgba(255, 255, 255, 0.88);
 }
 
-.site-header .nav-links a:hover {
-  color: var(--primary);
+.site-header .nav-links a:hover,
+.site-header .nav-links a:focus-visible {
+  color: var(--accent, #ff9500);
+  outline: none;
 }
 
-.site-header--dark .nav-links a:hover {
-  color: var(--accent);
+.site-header--dark .nav-links a:hover,
+.site-header--dark .nav-links a:focus-visible {
+  color: var(--accent, #ff9500);
+}
+
+.site-header .nav-links a.is-active,
+.site-header .nav-links a[aria-current="page"] {
+  color: var(--accent, #ff9500);
+}
+
+.site-header--dark .nav-links a.is-active,
+.site-header--dark .nav-links a[aria-current="page"] {
+  color: var(--accent, #ff9500);
 }
 
 .site-header .btn-nav {
@@ -94,6 +108,21 @@
   padding: 9px 20px;
   border-radius: var(--radius-pill);
   box-shadow: 0 4px 10px rgba(15, 61, 62, 0.2);
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.site-header .btn-nav:hover,
+.site-header .btn-nav:focus-visible {
+  background: var(--accent, #ff9500) !important;
+  color: #05191a !important;
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.28);
+  outline: none;
+}
+
+.site-header .btn-nav.is-active,
+.site-header .btn-nav[aria-current="page"] {
+  background: var(--accent, #ff9500) !important;
+  color: #05191a !important;
 }
 
 .site-header--dark .btn-nav {
@@ -164,10 +193,13 @@
 .site-crumbs a {
   color: var(--primary);
   text-decoration: none;
+  transition: color 0.15s ease;
 }
 
-.site-crumbs a:hover {
+.site-crumbs a:hover,
+.site-crumbs a:focus-visible {
   color: var(--accent);
+  outline: none;
 }
 
 .site-crumbs__sep {
@@ -204,10 +236,13 @@
   color: #94a3b8;
   text-decoration: none;
   font-weight: 600;
+  transition: color 0.15s ease;
 }
 
-.site-footer a:hover {
+.site-footer a:hover,
+.site-footer a:focus-visible {
   color: var(--accent);
+  outline: none;
 }
 
 .site-footer__brand {

@@ -3,6 +3,7 @@
 import type { LookedUpOrder } from "@/lib/orders-api";
 
 export const MY_ESIMS_EMAIL_KEY = "nl_myesims_email";
+export const MY_ESIMS_ORDER_KEY = "nl_myesims_order";
 
 export type CustomerStatusTone = "ready" | "active" | "low" | "pending" | "expired" | "neutral";
 
@@ -33,10 +34,43 @@ export function rememberEmail(email: string): void {
   }
 }
 
+export function readRememberedOrderId(): string {
+  if (typeof window === "undefined") return "";
+  try {
+    return (window.localStorage.getItem(MY_ESIMS_ORDER_KEY) || "").trim().toUpperCase();
+  } catch {
+    return "";
+  }
+}
+
+export function rememberOrderId(orderId: string): void {
+  if (typeof window === "undefined") return;
+  const normalized = orderId
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9-]/g, "");
+  if (!normalized) return;
+  try {
+    window.localStorage.setItem(MY_ESIMS_ORDER_KEY, normalized);
+  } catch {
+    /* ignore */
+  }
+}
+
 export function forgetRememberedEmail(): void {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.removeItem(MY_ESIMS_EMAIL_KEY);
+    window.localStorage.removeItem(MY_ESIMS_ORDER_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+export function forgetRememberedOrderId(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(MY_ESIMS_ORDER_KEY);
   } catch {
     /* ignore */
   }
