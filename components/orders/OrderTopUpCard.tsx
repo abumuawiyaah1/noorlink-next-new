@@ -15,6 +15,8 @@ type OrderTopUpCardProps = {
   orderNumber: string;
   email: string;
   countryPlansHref?: string;
+  /** Start expanded (e.g. when running low on data). */
+  defaultOpen?: boolean;
 };
 
 function formatRetail(usd: number): string {
@@ -30,6 +32,7 @@ export function OrderTopUpCard({
   orderNumber,
   email,
   countryPlansHref = "/plans",
+  defaultOpen = false,
 }: OrderTopUpCardProps) {
   const [mode, setMode] = useState<"wallet" | "package" | null>(null);
   const [amounts, setAmounts] = useState<number[]>([]);
@@ -41,6 +44,9 @@ export function OrderTopUpCard({
   const [selection, setSelection] = useState<TopUpPayPalSelection | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [open, setOpen] = useState(defaultOpen);
+  const [hovered, setHovered] = useState(false);
+  const [suppressHover, setSuppressHover] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -74,10 +80,21 @@ export function OrderTopUpCard({
     };
   }, [email, orderNumber]);
 
+  useEffect(() => {
+    setOpen(defaultOpen);
+    setSelection(null);
+    setError(null);
+    setHovered(false);
+    setSuppressHover(false);
+  }, [orderNumber, defaultOpen]);
+
   if (loading) {
     return (
-      <div className="order-topup">
-        <p className="order-usage__fine-print">Checking top-up options…</p>
+      <div className="order-topup order-topup--collapsed">
+        <button type="button" className="order-topup__toggle" disabled>
+          <span className="order-topup__toggle-kicker">Need more data?</span>
+          <span className="order-topup__toggle-action">Checking options…</span>
+        </button>
       </div>
     );
   }
@@ -105,6 +122,8 @@ export function OrderTopUpCard({
     }
     return null;
   }
+
+  const expanded = Boolean(selection) || open || (hovered && !suppressHover);
 
   const selectedOffer =
     selection?.kind === "package"
@@ -155,109 +174,142 @@ export function OrderTopUpCard({
   }
 
   return (
-    <div className="order-topup">
-      <div className="order-usage__label-row">
-        <span>Need more data?</span>
-        <strong>Add data to this eSIM</strong>
-      </div>
-      <p className="order-usage__fine-print" style={{ marginBottom: 12 }}>
-        {hasPackages
-          ? "Same install. No new QR — just more data and days on this line."
-          : "Same install. Funds go onto this pay-as-you-go line."}
-      </p>
+    <div
+      className={`order-topup${expanded ? " is-open" : " order-topup--collapsed"}`}
+      onMouseEnter={() => {
+        if (window.matchMedia("(hover: hover)").matches) {
+          setHovered(true);
+        }
+      }}
+      onMouseLeave={() => {
+        setHovered(false);
+        setSuppressHover(false);
+      }}
+    >
+      <button
+        type="button"
+        className="order-topup__toggle"
+        aria-expanded={expanded}
+        onClick={() => {
+          if (expanded) {
+            setOpen(false);
+            setSuppressHover(true);
+            setSelection(null);
+            setError(null);
+            return;
+          }
+          setOpen(true);
+          setSuppressHover(false);
+        }}
+      >
+        <span className="order-topup__toggle-kicker">Need more data?</span>
+        <span className="order-topup__toggle-action">
+          {expanded ? "Hide options" : "Add data to this eSIM"}
+        </span>
+      </button>
 
-      {!selection ? (
-        hasPackages ? (
-          <div className="order-topup__amounts">
-            {packages.map((offer) => (
-              <button
-                key={offer.offerId}
-                type="button"
-                className="order-topup__btn order-topup__btn--package"
-                onClick={() =>
-                  setSelection({
-                    kind: "package",
-                    offerId: offer.offerId,
-                    packageSlug: offer.slug,
-                    packageCode: offer.packageCode,
-                    periodNum: offer.periodNum,
-                  })
-                }
-              >
-                <span className="order-topup__btn-label">{offer.name}</span>
-                <span className="order-topup__btn-price">
-                  {formatRetail(offer.retailUsd)}
+      {expanded ? (
+        <div className="order-topup__body">
+          <p className="order-usage__fine-print" style={{ marginBottom: 12 }}>
+            {hasPackages
+              ? "Same install. No new QR — just more data and days on this line."
+              : "Same install. Funds go onto this pay-as-you-go line."}
+          </p>
+
+          {!selection ? (
+            hasPackages ? (
+              <div className="order-topup__amounts">
+                {packages.map((offer) => (
+                  <button
+                    key={offer.offerId}
+                    type="button"
+                    className="order-topup__btn order-topup__btn--package"
+                    onClick={() =>
+                      setSelection({
+                        kind: "package",
+                        offerId: offer.offerId,
+                        packageSlug: offer.slug,
+                        packageCode: offer.packageCode,
+                        periodNum: offer.periodNum,
+                      })
+                    }
+                  >
+                    <span className="order-topup__btn-label">{offer.name}</span>
+                    <span className="order-topup__btn-price">
+                      {formatRetail(offer.retailUsd)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="order-topup__amounts">
+                {amounts.map((amount) => (
+                  <button
+                    key={amount}
+                    type="button"
+                    className="order-topup__btn"
+                    onClick={() => setSelection({ kind: "wallet", fundUsd: amount })}
+                  >
+                    ${amount} data
+                  </button>
+                ))}
+              </div>
+            )
+          ) : (
+            <div className="order-topup__pay">
+              <div className="order-topup__selected">
+                <span>
+                  Selected: <strong>{selectedLabel}</strong>
+                  {selectedRetail ? ` · ${selectedRetail}` : null}
                 </span>
-              </button>
-            ))}
-          </div>
-        ) : (
-          <div className="order-topup__amounts">
-            {amounts.map((amount) => (
+                <button
+                  type="button"
+                  className="order-topup__change"
+                  disabled={submitting}
+                  onClick={() => {
+                    setSelection(null);
+                    setError(null);
+                  }}
+                >
+                  Change
+                </button>
+              </div>
+              <TopUpExpressWallets
+                orderNumber={orderNumber}
+                email={email}
+                selection={selection}
+                amountCents={amountCents}
+                disabled={submitting}
+                onBusy={setSubmitting}
+                onError={(message) => setError(message || null)}
+              />
               <button
-                key={amount}
                 type="button"
-                className="order-topup__btn"
-                onClick={() => setSelection({ kind: "wallet", fundUsd: amount })}
+                className="order-topup__btn order-topup__btn--card"
+                disabled={submitting}
+                onClick={() => void payWithCard()}
               >
-                ${amount} data
+                {submitting ? "Starting…" : "Pay with card"}
               </button>
-            ))}
-          </div>
-        )
-      ) : (
-        <div className="order-topup__pay">
-          <div className="order-topup__selected">
-            <span>
-              Selected: <strong>{selectedLabel}</strong>
-              {selectedRetail ? ` · ${selectedRetail}` : null}
-            </span>
-            <button
-              type="button"
-              className="order-topup__change"
-              disabled={submitting}
-              onClick={() => {
-                setSelection(null);
-                setError(null);
-              }}
-            >
-              Change
-            </button>
-          </div>
-          <TopUpExpressWallets
-            orderNumber={orderNumber}
-            email={email}
-            selection={selection}
-            amountCents={amountCents}
-            disabled={submitting}
-            onBusy={setSubmitting}
-            onError={(message) => setError(message || null)}
-          />
-          <button
-            type="button"
-            className="order-topup__btn order-topup__btn--card"
-            disabled={submitting}
-            onClick={() => void payWithCard()}
-          >
-            {submitting ? "Starting…" : "Pay with card"}
-          </button>
-          {paypalAvailable ? (
-            <TopUpPayPalButton
-              orderNumber={orderNumber}
-              email={email}
-              selection={selection}
-              disabled={submitting}
-              onBusy={setSubmitting}
-              onError={(message) => setError(message || null)}
-            />
+              {paypalAvailable ? (
+                <TopUpPayPalButton
+                  orderNumber={orderNumber}
+                  email={email}
+                  selection={selection}
+                  disabled={submitting}
+                  onBusy={setSubmitting}
+                  onError={(message) => setError(message || null)}
+                />
+              ) : null}
+            </div>
+          )}
+
+          {error ? (
+            <p className="error-message" role="alert">
+              {error}
+            </p>
           ) : null}
         </div>
-      )}
-
-      {error ? (
-        <p className="error-message" role="alert">
-          {error}
-        </p>
       ) : null}
     </div>
   );

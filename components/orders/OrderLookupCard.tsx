@@ -531,6 +531,7 @@ export function OrderLookupCard({
             orderNumber={order.orderNumber}
             email={email}
             countryPlansHref={plansHref}
+            defaultOpen={Boolean(status?.runningLow)}
           />
         ) : null}
 
