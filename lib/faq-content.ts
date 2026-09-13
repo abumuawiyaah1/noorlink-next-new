@@ -13,6 +13,10 @@ export const FAQ_GROUPS: FaqGroup[] = [
         q: "When does my plan start?",
         a: "Typically when you install the eSIM and connect to a supported network in the destination country.",
       },
+      {
+        q: "I installed the eSIM but have no internet after landing — why?",
+        a: "Installed is not enough. Before you fly: turn the travel line ON, turn Data Roaming ON for that line, and set Cellular / Mobile Data to the travel line (not Primary). See the picture guide at https://noorlink.co/help/before-you-fly.",
+      },
     ],
   },
   {

@@ -72,6 +72,8 @@ function SupportContent() {
                 <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
                 {" · "}
                 <Link href="/faq">Read FAQs</Link>
+                {" · "}
+                <Link href="/help/before-you-fly">Before you fly guide</Link>
               </p>
             </article>
             <article className="help-card">
@@ -82,6 +84,8 @@ function SupportContent() {
               </p>
               <p style={{ marginTop: 12 }}>
                 <Link href="/dashboard">Look up My eSIMs</Link>
+                {" · "}
+                <Link href="/help/before-you-fly">Data ready checklist</Link>
                 {" · "}
                 <Link href="/refund">Refund policy</Link>
               </p>

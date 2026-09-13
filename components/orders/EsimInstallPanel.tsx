@@ -101,9 +101,15 @@ export function EsimInstallPanel({ order, compact = false }: EsimInstallPanelPro
           ) : null}
 
           <ol className="esim-install__steps">
-            <li>Connect to Wi‑Fi before you install.</li>
-            <li>Scan the QR or tap Install on this phone.</li>
-            <li>After landing, turn on the NoorLink line and enable data roaming.</li>
+            <li>Connect to Wi‑Fi and install (scan QR or tap Install).</li>
+            <li>
+              Before you fly: turn your travel line ON, turn Data Roaming ON for
+              that line, and set Cellular Data to the travel line (not Primary).
+            </li>
+            <li>
+              After landing: Airplane Mode off. If no data, toggle Airplane Mode
+              once and re-check those three settings. Never tap Delete eSIM.
+            </li>
           </ol>
         </div>
       </div>

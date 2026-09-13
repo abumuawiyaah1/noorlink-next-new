@@ -17,6 +17,7 @@ import { EsimInstallPanel } from "@/components/orders/EsimInstallPanel";
 import { OrderTopUpCard } from "@/components/orders/OrderTopUpCard";
 import { OrderSupportThread } from "@/components/orders/OrderSupportThread";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
+import { LandingReadyChecklist } from "@/components/orders/LandingReadyChecklist";
 import { formatCountryLabel } from "@/lib/country-slugs";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import {
@@ -518,6 +519,8 @@ export function OrderLookupCard({
             Running low — add data below without installing again.
           </div>
         ) : null}
+
+        <LandingReadyChecklist installed={Boolean(status?.installed)} />
 
         {(order.qrCodeUrl || order.iosTapLink || order.lpaString) ? (
           status?.installed ? (

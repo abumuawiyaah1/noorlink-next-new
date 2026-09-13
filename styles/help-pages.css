@@ -17,6 +17,18 @@
   font-weight: 800;
 }
 
+.help-hero__brand {
+  margin: 0 0 12px;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.help-hero__brand span {
+  color: var(--accent);
+}
+
 .help-hero p {
   margin: 0 auto;
   max-width: 560px;

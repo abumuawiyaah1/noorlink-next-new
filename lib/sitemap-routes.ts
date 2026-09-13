@@ -68,6 +68,11 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
     { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.5 },
     { url: absoluteUrl("/faq"), changeFrequency: "monthly", priority: 0.6 },
     { url: absoluteUrl("/support"), changeFrequency: "monthly", priority: 0.5 },
+    {
+      url: absoluteUrl("/help/before-you-fly"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     { url: absoluteUrl("/newsletter"), changeFrequency: "weekly", priority: 0.6 },
     { url: absoluteUrl("/partners"), changeFrequency: "monthly", priority: 0.4 },
     { url: absoluteUrl("/partners/terms"), changeFrequency: "yearly", priority: 0.2 },

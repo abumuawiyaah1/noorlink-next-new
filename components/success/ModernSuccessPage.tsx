@@ -9,6 +9,8 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { OrderUsageSummary } from "@/components/orders/OrderUsageSummary";
 import { EsimInstallPanel } from "@/components/orders/EsimInstallPanel";
+import { LandingReadyChecklist } from "@/components/orders/LandingReadyChecklist";
+import { rememberEmail, rememberOrderId, resolveCustomerStatus } from "@/lib/my-esims";
 import { GiftEsimCard } from "@/components/success/GiftEsimCard";
 import { ReferAFriendCard } from "@/components/success/ReferAFriendCard";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
@@ -20,7 +22,6 @@ import {
 } from "@/lib/pilgrim-gift-guides";
 import { lookupOrder, lookupOrderByPaymentIntent, lookupOrderBySession, type LookedUpOrder } from "@/lib/orders-api";
 import { isSafeQrCodeUrl, safeExternalHref } from "@/lib/safe-url";
-import { rememberEmail, rememberOrderId } from "@/lib/my-esims";
 
 const EMAIL_STORAGE_KEY = "nl_checkout_email";
 
@@ -259,6 +260,13 @@ function SuccessContent() {
           <EsimInstallPanel order={order} />
         ) : null}
 
+        {order && !isGiftPurchase && !order.fulfillmentPending ? (
+          <LandingReadyChecklist
+            installed={resolveCustomerStatus(order).installed}
+            preview
+          />
+        ) : null}
+
         {qrHref && order && !order.fulfillmentPending && !isGiftPurchase ? (
           <ReviewRequestCard orderId={order.orderNumber} compact />
         ) : null}
@@ -354,7 +362,10 @@ function SuccessContent() {
               <ol className="install-steps">
                 <li>Use Wi‑Fi before you install.</li>
                 <li>Scan the QR or open a one-tap install link on your phone.</li>
-                <li>After landing, turn the NoorLink line on and enable data roaming.</li>
+                <li>
+                  Before you fly: travel line ON, Data Roaming ON, Cellular Data =
+                  travel line (see visual guide above).
+                </li>
               </ol>
               <p className="email-note">
                 Check inbox and spam/junk. If nothing arrives within 10 minutes,

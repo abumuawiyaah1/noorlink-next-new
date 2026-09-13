@@ -47,7 +47,9 @@ export function ModernFaqPage() {
             <div className="help-card faq-help-card">
               <h2>Need more help?</h2>
               <p>
-                Visit the <Link href="/support">Support page</Link>, use WhatsApp,
+                Start with the{" "}
+                <Link href="/help/before-you-fly">before you fly picture guide</Link>,
+                visit the <Link href="/support">Support page</Link>, use WhatsApp,
                 or track your order before contacting us.
               </p>
             </div>
