@@ -135,13 +135,22 @@ export function OrderLookupCard({
     setError(null);
     setLoading(true);
     setResendMessage(null);
-    let result = await lookupOrder(nextEmail, nextOrderId);
+    const cleanEmail = nextEmail.trim().toLowerCase();
+    const cleanOrderId = nextOrderId
+      .trim()
+      .toUpperCase()
+      .replace(/[^A-Z0-9-]/g, "");
+    let result = await lookupOrder(cleanEmail, cleanOrderId);
     if (
       result.found &&
       result.order &&
       ["delivered", "active", "suspended"].includes(result.order.status ?? "")
     ) {
-      result = await lookupOrder(nextEmail, nextOrderId, { refresh: true });
+      const refreshed = await lookupOrder(cleanEmail, cleanOrderId, { refresh: true });
+      // Keep the first successful lookup if live usage refresh fails.
+      if (refreshed.found && refreshed.order) {
+        result = refreshed;
+      }
     }
     setLoading(false);
     if (!result.found || !result.order) {
@@ -152,22 +161,30 @@ export function OrderLookupCard({
       );
       return;
     }
-    rememberEmail(nextEmail);
-    setEmail(nextEmail);
-    setOrderId(result.order.orderNumber ?? nextOrderId);
+    rememberEmail(cleanEmail);
+    setEmail(cleanEmail);
+    setOrderId(result.order.orderNumber ?? cleanOrderId);
     setOrder(result.order);
     setListMode(false);
-    const status = resolveCustomerStatus(result.order);
-    setInstallOpen(!status.installed);
+    const nextStatus = resolveCustomerStatus(result.order);
+    setInstallOpen(!nextStatus.installed);
 
     const siblingResult = await fetchSiblingEsims(
-      nextEmail,
-      result.order.orderNumber ?? nextOrderId,
+      cleanEmail,
+      result.order.orderNumber ?? cleanOrderId,
     );
     if (siblingResult.success) {
       setSiblings(siblingResult.orders);
     }
   }
+
+  useEffect(() => {
+    if (initialToken) return;
+    if (!initialEmail.trim() || !initialOrderId.trim()) return;
+    void openOrder(initialEmail, initialOrderId);
+    // Prefill deep-link once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialToken, initialEmail, initialOrderId]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
