@@ -131,12 +131,14 @@ function PlanRow({
   countryName,
   isRegional,
   selected,
+  checkoutHref,
   onSelect,
 }: {
   plan: EsimPlan;
   countryName: string;
   isRegional?: boolean;
   selected: boolean;
+  checkoutHref: string;
   onSelect: (planId: string) => void;
 }) {
   const badge = badgeLabel(plan);
@@ -173,16 +175,16 @@ function PlanRow({
         )}
       </span>
       {badge ? <span className="plans-row__badge">{badge}</span> : <span />}
-      <button
-        type="button"
+      <a
+        href={checkoutHref}
         className="plans-row__cta"
         onClick={(event) => {
           event.stopPropagation();
           onSelect(plan.id);
         }}
       >
-        {selected ? "Selected" : "Select"}
-      </button>
+        Checkout
+      </a>
       <div className="plans-row__details">
         <p className="plans-row__desc">{copy.description}</p>
         <ul className="plans-row__highlights">
@@ -273,16 +275,24 @@ function PlanSection({
   label,
   plans,
   countryName,
+  flag,
   isRegional,
   selectedPlanId,
   onSelectPlan,
+  promo,
+  refCode,
+  wantsTopUp,
 }: {
   label: string;
   plans: EsimPlan[];
   countryName: string;
+  flag?: string;
   isRegional?: boolean;
   selectedPlanId: string | null;
   onSelectPlan: (planId: string) => void;
+  promo?: string;
+  refCode?: string;
+  wantsTopUp?: boolean;
 }) {
   const sorted = sortPlans(plans);
   if (sorted.length === 0) return null;
@@ -298,6 +308,15 @@ function PlanSection({
             countryName={countryName}
             isRegional={isRegional}
             selected={selectedPlanId === plan.id}
+            checkoutHref={checkoutHref(
+              plan,
+              countryName,
+              flag,
+              isRegional,
+              promo,
+              refCode,
+              wantsTopUp,
+            )}
             onSelect={onSelectPlan}
           />
         ))}
@@ -559,7 +578,7 @@ export function TravelerPlansPage({
 
             <h2 className="plans-picker__title">Choose your package</h2>
             <p className="plans-picker__hint">
-              Tap a plan to select it. Then continue to secure Stripe checkout —
+              Tap <strong>Checkout</strong> on a plan to open secure Stripe checkout —
               the price you see is the price you pay.
             </p>
             <label className="plans-topup-pref">
@@ -579,9 +598,13 @@ export function TravelerPlansPage({
                   label={section.label}
                   plans={data.planGroups[section.id] ?? []}
                   countryName={checkoutCountryName}
+                  flag={flag}
                   isRegional={Boolean(regional)}
                   selectedPlanId={selectedPlanId}
                   onSelectPlan={setSelectedPlanId}
+                  promo={promo}
+                  refCode={refCode}
+                  wantsTopUp={wantsTopUp}
                 />
               ))}
             </div>
