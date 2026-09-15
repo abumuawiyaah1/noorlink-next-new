@@ -124,6 +124,8 @@ export type MyEsimCard = {
   usageMode?: "wallet" | "data_gb" | string | null;
   walletBalanceUsd?: number | null;
   walletChargedUsd?: number | null;
+  usagePct?: number | null;
+  usageSyncedAt?: string | null;
   fulfillmentPending?: boolean;
   createdAt?: string | null;
 };

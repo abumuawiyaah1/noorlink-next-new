@@ -56,6 +56,8 @@ function cardToLookupStub(card: MyEsimCard, email: string): LookedUpOrder {
     usageMode: card.usageMode,
     walletBalanceUsd: card.walletBalanceUsd,
     walletChargedUsd: card.walletChargedUsd,
+    usagePct: card.usagePct,
+    usageSyncedAt: card.usageSyncedAt,
     fulfillmentPending: card.fulfillmentPending,
     createdAt: card.createdAt ?? undefined,
   };
