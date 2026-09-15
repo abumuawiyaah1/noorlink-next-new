@@ -12,11 +12,18 @@ type OrderUsageSummaryProps = {
 };
 
 function usagePercent(order: LookedUpOrder): number | null {
+  if (order.usagePct != null) {
+    return Math.min(100, Math.max(0, Math.round(order.usagePct)));
+  }
   const total = order.dataTotalGb;
   const remaining = order.dataRemainingGb;
   if (total == null || total <= 0 || remaining == null) return null;
   const used = Math.max(0, total - remaining);
   return Math.min(100, Math.round((used / total) * 100));
+}
+
+function formatUsd(value: number): string {
+  return `$${Number(value).toFixed(2)}`;
 }
 
 export function OrderUsageSummary({
@@ -26,11 +33,23 @@ export function OrderUsageSummary({
   onRefreshUsage,
   refreshing = false,
 }: OrderUsageSummaryProps) {
-  const pct = usagePercent(order);
-  const showData = order.dataTotalGb != null && order.dataRemainingGb != null;
+  const isWallet =
+    order.usageMode === "wallet" ||
+    (order.walletBalanceUsd != null && order.dataRemainingGb == null);
+
+  const usedGb =
+    order.dataUsedGb != null
+      ? order.dataUsedGb
+      : order.dataTotalGb != null && order.dataRemainingGb != null
+        ? Math.max(0, Number(order.dataTotalGb) - Number(order.dataRemainingGb))
+        : null;
+
+  const showData =
+    !isWallet && order.dataTotalGb != null && order.dataRemainingGb != null;
   const showDays =
     order.validityDays != null && order.daysRemaining != null;
-  const showWallet = order.walletBalanceUsd != null;
+  const showWallet = isWallet && order.walletBalanceUsd != null;
+  const pct = usagePercent(order);
 
   const canShowPanel =
     showData ||
@@ -38,7 +57,8 @@ export function OrderUsageSummary({
     showWallet ||
     order.fulfillmentPending ||
     customerStatus ||
-    onRefreshUsage;
+    onRefreshUsage ||
+    usedGb != null;
 
   if (!canShowPanel) {
     return null;
@@ -68,9 +88,7 @@ export function OrderUsageSummary({
         ) : showWallet ? (
           <div className="order-usage__hero-stat">
             <span>Wallet left</span>
-            <strong>
-              ${Number(order.walletBalanceUsd).toFixed(2)}
-            </strong>
+            <strong>{formatUsd(Number(order.walletBalanceUsd))}</strong>
             <em>pay-as-you-go</em>
           </div>
         ) : !order.fulfillmentPending ? (
@@ -84,6 +102,14 @@ export function OrderUsageSummary({
                 ? "Remaining data appears after the network reports usage. Tap refresh after you connect."
                 : "Install first — remaining data shows after you’re on the network."}
             </em>
+          </div>
+        ) : null}
+
+        {showWallet && order.walletChargedUsd != null ? (
+          <div className="order-usage__hero-stat">
+            <span>Used</span>
+            <strong>{formatUsd(Number(order.walletChargedUsd))}</strong>
+            <em>data charged</em>
           </div>
         ) : null}
 
@@ -101,7 +127,7 @@ export function OrderUsageSummary({
         ) : null}
       </div>
 
-      {showData && pct != null ? (
+      {(showData || showWallet) && pct != null ? (
         <div
           className="order-usage__bar"
           role="progressbar"
@@ -114,12 +140,21 @@ export function OrderUsageSummary({
         </div>
       ) : null}
 
-      {showData && order.dataUsedGb != null ? (
+      {showData && usedGb != null ? (
         <p className="order-usage__fine-print" style={{ marginTop: 8 }}>
-          {order.dataUsedGb} GB used
-          {order.usagePct != null ? ` (${order.usagePct}%)` : ""}
+          {usedGb} GB used
+          {pct != null ? ` (${pct}%)` : ""}
           {order.usageSyncedAt
             ? ` · updated ${new Date(order.usageSyncedAt).toLocaleString()}`
+            : ""}
+        </p>
+      ) : null}
+
+      {showWallet && order.usageSyncedAt ? (
+        <p className="order-usage__fine-print" style={{ marginTop: 8 }}>
+          Updated {new Date(order.usageSyncedAt).toLocaleString()}
+          {order.walletFundedUsd != null
+            ? ` · funded ${formatUsd(Number(order.walletFundedUsd))}`
             : ""}
         </p>
       ) : null}

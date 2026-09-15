@@ -51,8 +51,11 @@ function cardToLookupStub(card: MyEsimCard, email: string): LookedUpOrder {
     activationStatus: card.activationStatus,
     dataRemainingGb: card.dataRemainingGb,
     dataTotalGb: card.dataTotalGb,
+    dataUsedGb: card.dataUsedGb,
     daysRemaining: card.daysRemaining,
+    usageMode: card.usageMode,
     walletBalanceUsd: card.walletBalanceUsd,
+    walletChargedUsd: card.walletChargedUsd,
     fulfillmentPending: card.fulfillmentPending,
     createdAt: card.createdAt ?? undefined,
   };
@@ -319,10 +322,21 @@ export function OrderLookupCard({
                   {card.orderNumber ? ` · ${card.orderNumber}` : ""}
                 </p>
                 <p className="myesims-card__stats">
-                  {card.walletBalanceUsd != null
-                    ? `$${Number(card.walletBalanceUsd).toFixed(2)} wallet`
+                  {card.usageMode === "wallet" || card.walletBalanceUsd != null
+                    ? [
+                        card.walletBalanceUsd != null
+                          ? `$${Number(card.walletBalanceUsd).toFixed(2)} left`
+                          : null,
+                        card.walletChargedUsd != null
+                          ? `$${Number(card.walletChargedUsd).toFixed(2)} used`
+                          : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ") || "Open for details"
                     : card.dataRemainingGb != null
-                      ? `${card.dataRemainingGb} GB left`
+                      ? `${card.dataRemainingGb} GB left${
+                          card.dataUsedGb != null ? ` · ${card.dataUsedGb} GB used` : ""
+                        }`
                       : card.dataTotalGb != null
                         ? `${card.dataTotalGb} GB plan`
                         : "Open for details"}

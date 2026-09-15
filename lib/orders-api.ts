@@ -32,9 +32,12 @@ export type LookedUpOrder = {
   activatedAt?: string | null;
   usageSyncedAt?: string | null;
   usagePct?: number | null;
+  usageMode?: "wallet" | "data_gb" | string | null;
   topupSupported?: boolean;
   topupReason?: string | null;
   walletBalanceUsd?: number | null;
+  walletChargedUsd?: number | null;
+  walletFundedUsd?: number | null;
 };
 
 export type SupportMessageItem = {
@@ -116,8 +119,11 @@ export type MyEsimCard = {
   activationStatus?: string;
   dataRemainingGb?: number | null;
   dataTotalGb?: number | null;
+  dataUsedGb?: number | null;
   daysRemaining?: number | null;
+  usageMode?: "wallet" | "data_gb" | string | null;
   walletBalanceUsd?: number | null;
+  walletChargedUsd?: number | null;
   fulfillmentPending?: boolean;
   createdAt?: string | null;
 };
