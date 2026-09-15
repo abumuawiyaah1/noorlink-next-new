@@ -1,10 +1,27 @@
-"use client";
-
 import { HeroSearch } from "@/components/landing/HeroSearch";
+import { SITE_IMAGES } from "@/lib/site-images";
 
 export function HomeHero() {
   return (
     <section className="hero">
+      <picture className="hero__media" aria-hidden="true">
+        <source
+          media="(max-width: 768px)"
+          srcSet={SITE_IMAGES.heroMobile}
+          type="image/webp"
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="hero__img"
+          src={SITE_IMAGES.hero}
+          alt=""
+          width={1600}
+          height={1600}
+          decoding="async"
+          fetchPriority="high"
+        />
+      </picture>
+      <div className="hero__overlay" aria-hidden="true" />
       <div className="container hero-content">
         <p className="hero-brand" aria-label="NoorLink">
           <span className="hero-brand__noor">Noor</span>
