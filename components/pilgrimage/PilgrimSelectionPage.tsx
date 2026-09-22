@@ -556,8 +556,8 @@ export function PilgrimSelectionPage({
             <div className="plans-page__brand">
               <span className="plans-page__eyebrow">{PILGRIMAGE_BRAND_LINE}</span>
               <p className="plans-page__tagline">
-                Hajj &amp; Umrah — install at home, stay connected the moment you
-                arrive in Saudi Arabia.
+                Umrah eSIM and Hajj eSIM for Saudi Arabia — install before you fly,
+                stay connected in Makkah and Madinah.
               </p>
             </div>
             <div className="plans-page__search-wrap">
@@ -568,11 +568,12 @@ export function PilgrimSelectionPage({
                 🇸🇦
               </span>
               <span className="plans-page__destination-name">
-                Stay Connected in al-Haramayn
+                Umrah eSIM &amp; Hajj eSIM for Makkah and Madinah
               </span>
             </h1>
             <p className="plans-page__regional-sub">
-              Makkah &amp; Madinah eSIM · Hotspot Included · 24/7 WhatsApp Support
+              Saudi Arabia travel eSIM · Hotspot included · Free phone check · 24/7
+              WhatsApp support
             </p>
           </header>
         </CountryPlansHero>
@@ -583,10 +584,10 @@ export function PilgrimSelectionPage({
               <div className="plans-trust">
                 <div className="plans-trust__copy">
                   <p className="plans-trust__network">
-                    Saudi Arabia coverage · Makkah &amp; Madinah ready
+                    Umrah &amp; Hajj coverage · Makkah &amp; Madinah ready
                   </p>
                   <p className="plans-trust__meta">
-                    Install Before You Fly
+                    Install before you fly
                     {cheapest != null ? ` · From $${cheapest.toFixed(2)}` : ""}
                   </p>
                 </div>
@@ -596,7 +597,7 @@ export function PilgrimSelectionPage({
                   onClick={() => setCompatibilityOpen(true)}
                 >
                   <PhoneDeviceIcon className="plans-trust__compat-phone" />
-                  Check Compatibility
+                  Free phone check
                 </button>
               </div>
 
@@ -612,7 +613,7 @@ export function PilgrimSelectionPage({
 
               <PilgrimageInspiration />
 
-              <h2 className="plans-picker__title">Choose Your Pilgrimage Plan</h2>
+              <h2 className="plans-picker__title">Choose your Umrah or Hajj eSIM plan</h2>
               <p className="plans-picker__hint">
                 Tap a plan to select it, then continue from the bar below. Fixed
                 Saudi packs or honest day-pass unlimited (3GB/day, then 1 Mbps).

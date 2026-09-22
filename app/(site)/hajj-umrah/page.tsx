@@ -12,9 +12,9 @@ export const revalidate = 300;
 const SAUDI_COUNTRY_ID = "saudi-arabia";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Hajj & Umrah eSIM Plans | NoorLink",
+  title: "Umrah eSIM & Hajj eSIM — Makkah and Madinah Data | NoorLink",
   description:
-    `${PILGRIMAGE_BRAND_LINE}. Premium Umrah and Hajj eSIM plans — install at home, stay connected in Makkah and Madinah. Multi-stop Saudi + Turkey and Saudi + Egypt options available.`,
+    `${PILGRIMAGE_BRAND_LINE}. Buy an Umrah eSIM or Hajj eSIM for Saudi Arabia — install before you fly, stay connected in Makkah and Madinah. Free phone compatibility check. Hotspot included.`,
   path: "/hajj-umrah",
   image: getCountryImage("saudi-arabia"),
 });
