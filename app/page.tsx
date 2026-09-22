@@ -5,9 +5,9 @@ import { buildPageMetadata } from "@/lib/seo";
 import { SITE_IMAGES } from "@/lib/site-images";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "NoorLink | Instant Travel eSIMs",
+  title: "NoorLink | Travel eSIM — Free Phone Compatibility Check",
   description:
-    "Enjoy hassle-free travel with instant high-speed eSIM data in 190+ countries. Install before you fly — no physical SIM required.",
+    "Travel eSIM data in 190+ countries. Free phone compatibility check before you buy — confirm your device supports eSIM, then install before you fly.",
   path: "/",
   image: SITE_IMAGES.heroOg,
 });

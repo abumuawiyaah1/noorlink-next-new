@@ -659,6 +659,13 @@
             background-position: center;
         }
         .checker-section > * { position: relative; z-index: 1; }
+        .checker-seo-lead {
+            max-width: 36rem;
+            margin: 12px auto 0;
+            color: #334155;
+            font-size: 1.05rem;
+            line-height: 1.55;
+        }
         .checker-box { 
             /* GRADIENT BORDER */
             background: linear-gradient(white, white) padding-box,

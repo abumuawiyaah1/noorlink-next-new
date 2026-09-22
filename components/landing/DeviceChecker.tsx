@@ -88,14 +88,18 @@ export function DeviceChecker() {
   }
 
   return (
-    <section className="checker-section">
+    <section id="device-checker" className="checker-section" aria-labelledby="device-checker-heading">
       <div className="container">
         <div className="check-icon-large">
           <PhoneDeviceIcon className="check-icon-large__svg" />
         </div>
-        <h2 style={{ fontSize: "2rem", color: "var(--primary)" }}>
-          Is your phone compatible?
+        <h2 id="device-checker-heading" style={{ fontSize: "2rem", color: "var(--primary)" }}>
+          Free phone check — is your device eSIM compatible?
         </h2>
+        <p className="checker-seo-lead">
+          Free travel eSIM compatibility check for your phone. Confirm it supports
+          eSIM and is carrier-unlocked before you buy.
+        </p>
         <div className="checker-box">
           <div className="check-input-group">
             <input
@@ -103,7 +107,7 @@ export function DeviceChecker() {
               className="check-input"
               value={query}
               placeholder="e.g. iPhone 14, Samsung S23"
-              aria-label="Device model"
+              aria-label="Phone model for free eSIM compatibility check"
               onChange={(event) => setQuery(event.target.value)}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
@@ -118,7 +122,7 @@ export function DeviceChecker() {
               disabled={busy}
               onClick={() => void runCheck()}
             >
-              {busy ? "Checking…" : "Check Device"}
+              {busy ? "Checking…" : "Check for free"}
             </button>
           </div>
           {result && (
