@@ -19,6 +19,18 @@ export function UmrahPromo() {
                   View Hajj &amp; Umrah plans
                 </Link>
                 <Link
+                  href="/help/umrah-esim-before-you-fly"
+                  className="promo-cta-secondary"
+                >
+                  Install before you fly
+                </Link>
+                <Link
+                  href="/help/hajj-umrah-phone-check"
+                  className="promo-cta-secondary"
+                >
+                  Free phone check
+                </Link>
+                <Link
                   href="/newsletter/2027-01-ramadan-special"
                   className="promo-cta-secondary"
                 >

@@ -41,6 +41,58 @@
   padding: 0 24px 64px;
 }
 
+.help-inner--guide {
+  display: grid;
+  gap: 16px;
+  margin-top: -36px;
+  max-width: 720px;
+}
+
+.help-inner--guide .help-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+}
+
+.help-guide-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.help-guide-cta__primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff9500;
+  color: #05191a;
+  font-weight: 800;
+  text-decoration: none;
+  border-radius: var(--radius-control);
+  padding: 12px 22px;
+}
+
+.help-guide-cta__primary:hover {
+  filter: brightness(1.05);
+}
+
+.help-guide-cta__secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #0f3d3e;
+  color: #0f3d3e;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--radius-control);
+  padding: 11px 20px;
+  background: #fff;
+}
+
+.help-guide-cta__secondary:hover {
+  background: #f3f7f7;
+}
+
 .help-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

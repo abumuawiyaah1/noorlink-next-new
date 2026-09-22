@@ -74,6 +74,14 @@ function SupportContent() {
                 <Link href="/faq">Read FAQs</Link>
                 {" · "}
                 <Link href="/help/before-you-fly">Before you fly guide</Link>
+                {" · "}
+                <Link href="/help/umrah-esim-before-you-fly">
+                  Umrah eSIM before you fly
+                </Link>
+                {" · "}
+                <Link href="/help/hajj-umrah-phone-check">
+                  Hajj &amp; Umrah phone check
+                </Link>
               </p>
             </article>
             <article className="help-card">

@@ -73,6 +73,16 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: absoluteUrl("/help/umrah-esim-before-you-fly"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: absoluteUrl("/help/hajj-umrah-phone-check"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     { url: absoluteUrl("/newsletter"), changeFrequency: "weekly", priority: 0.6 },
     { url: absoluteUrl("/partners"), changeFrequency: "monthly", priority: 0.4 },
     { url: absoluteUrl("/partners/terms"), changeFrequency: "yearly", priority: 0.2 },
