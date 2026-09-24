@@ -10,6 +10,14 @@ import {
   type OutreachTemplateId,
 } from "@/lib/outreach-templates";
 import {
+  OUTREACH_FOLLOW_UP_AFTER_DAYS,
+  contactNeedsFollowUp,
+  contactReadyForFirstEmail,
+  daysSinceOutreachTouch,
+  matchesOutreachQueueFilter,
+  type OutreachQueueFilter,
+} from "@/lib/outreach-follow-up";
+import {
   OUTREACH_PLATFORM_LABELS,
   OUTREACH_STATUS_LABELS,
   OUTREACH_WAVE_LABELS,
@@ -40,6 +48,15 @@ const EMPTY_DRAFT: ContactDraft = {
 };
 
 function draftFromContact(contact: OutreachContact): ContactDraft {
+  const toDateInput = (value: string) => {
+    const trimmed = value.trim();
+    if (!trimmed) return "";
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+    const ms = Date.parse(trimmed);
+    if (!Number.isFinite(ms)) return trimmed.slice(0, 10);
+    return new Date(ms).toISOString().slice(0, 10);
+  };
+
   return {
     name: contact.name,
     handle: contact.handle,
@@ -52,8 +69,8 @@ function draftFromContact(contact: OutreachContact): ContactDraft {
     messageSent: contact.messageSent,
     promoCode: contact.promoCode,
     notes: contact.notes,
-    contactedAt: contact.contactedAt,
-    repliedAt: contact.repliedAt,
+    contactedAt: toDateInput(contact.contactedAt),
+    repliedAt: toDateInput(contact.repliedAt),
     lastEmailAt: contact.lastEmailAt ?? "",
     lastEmailSubject: contact.lastEmailSubject ?? "",
   };
@@ -65,7 +82,8 @@ export function OutreachCrmPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<OutreachStatus | "all">("all");
+  const [queueFilter, setQueueFilter] =
+    useState<OutreachQueueFilter>("follow_up_due");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [draft, setDraft] = useState<ContactDraft>(EMPTY_DRAFT);
   const [saving, setSaving] = useState(false);
@@ -88,10 +106,18 @@ export function OutreachCrmPage() {
     [templateId],
   );
 
+  const queueCounts = useMemo(() => {
+    const followUpDue = contacts.filter((c) => contactNeedsFollowUp(c)).length;
+    const readyFirstEmail = contacts.filter((c) =>
+      contactReadyForFirstEmail(c),
+    ).length;
+    return { followUpDue, readyFirstEmail };
+  }, [contacts]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return contacts.filter((c) => {
-      if (statusFilter !== "all" && c.status !== statusFilter) return false;
+    const list = contacts.filter((c) => {
+      if (!matchesOutreachQueueFilter(c, queueFilter)) return false;
       if (!q) return true;
       return (
         c.name.toLowerCase().includes(q) ||
@@ -101,7 +127,15 @@ export function OutreachCrmPage() {
         c.promoCode.toLowerCase().includes(q)
       );
     });
-  }, [contacts, query, statusFilter]);
+    if (queueFilter === "follow_up_due") {
+      return [...list].sort((a, b) => {
+        const da = daysSinceOutreachTouch(a) ?? 0;
+        const db = daysSinceOutreachTouch(b) ?? 0;
+        return db - da;
+      });
+    }
+    return list;
+  }, [contacts, query, queueFilter]);
 
   function applyTemplate(
     template: OutreachMessageTemplate,
@@ -173,7 +207,18 @@ export function OutreachCrmPage() {
       setIsNew(false);
       const next = draftFromContact(selected);
       setDraft(next);
-      applyTemplate(activeTemplate, {
+      const preferFollowUp = contactNeedsFollowUp(selected);
+      const nextTemplateId: OutreachTemplateId = preferFollowUp
+        ? "follow_up"
+        : contactReadyForFirstEmail(selected) &&
+            selected.notes.toLowerCase().includes("masjid_umrah_group")
+          ? "masjid_umrah_group"
+          : "gifted_collab";
+      const template =
+        OUTREACH_MESSAGE_TEMPLATES.find((t) => t.id === nextTemplateId) ??
+        OUTREACH_MESSAGE_TEMPLATES[0];
+      setTemplateId(template.id);
+      applyTemplate(template, {
         name: next.name,
         handle: next.handle,
         code: next.promoCode,
@@ -395,12 +440,18 @@ export function OutreachCrmPage() {
         />
         <select
           className="outreach-select"
-          value={statusFilter}
+          value={queueFilter}
           onChange={(event) =>
-            setStatusFilter(event.target.value as OutreachStatus | "all")
+            setQueueFilter(event.target.value as OutreachQueueFilter)
           }
         >
-          <option value="all">All statuses</option>
+          <option value="follow_up_due">
+            Follow-up due ({queueCounts.followUpDue})
+          </option>
+          <option value="ready_first_email">
+            Ready to first-email ({queueCounts.readyFirstEmail})
+          </option>
+          <option value="all">All contacts</option>
           {(Object.keys(OUTREACH_STATUS_LABELS) as OutreachStatus[]).map(
             (status) => (
               <option key={status} value={status}>
@@ -417,6 +468,21 @@ export function OutreachCrmPage() {
           Add creator
         </button>
       </div>
+
+      {queueCounts.followUpDue > 0 && queueFilter !== "follow_up_due" ? (
+        <p className="outreach-banner">
+          {queueCounts.followUpDue} creator
+          {queueCounts.followUpDue === 1 ? "" : "s"} due for a follow-up (
+          {OUTREACH_FOLLOW_UP_AFTER_DAYS}+ days, no reply).{" "}
+          <button
+            type="button"
+            className="outreach-link"
+            onClick={() => setQueueFilter("follow_up_due")}
+          >
+            Show queue
+          </button>
+        </p>
+      ) : null}
 
       {error ? <p className="outreach-error">{error}</p> : null}
       {success ? <p className="outreach-success">{success}</p> : null}
@@ -447,6 +513,11 @@ export function OutreachCrmPage() {
                     <span className="outreach-list__meta">
                       {contact.handle || contact.email || "No handle"} ·{" "}
                       {OUTREACH_STATUS_LABELS[contact.status]}
+                      {contactNeedsFollowUp(contact)
+                        ? ` · Follow-up due (${daysSinceOutreachTouch(contact)}d)`
+                        : contactReadyForFirstEmail(contact)
+                          ? " · Ready to email"
+                          : ""}
                     </span>
                   </button>
                 </li>

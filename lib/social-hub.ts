@@ -84,6 +84,21 @@ See Umrah & Hajj plans → noorlink.co/hajj-umrah
 
 #Umrah #Hajj #eSIM #NoorLink`,
   },
+  {
+    id: "fall_umrah_prep",
+    label: "Fall Umrah prep (Sep)",
+    text: `Planning Umrah this fall or winter?
+
+One calm habit that saves a lot of stress: install your eSIM at home — not in the Jeddah queue.
+
+• Saudi data ready when you land
+• Maps, WhatsApp, and group chats without roaming surprises
+• Hotspot included for travel companions
+
+Start with a pilgrimage plan → noorlink.co/hajj-umrah
+
+#Umrah #Hajj #eSIM #NoorLink #InstallBeforeYouFly`,
+  },
 ] as const;
 
 export const SOCIAL_KEY_LINKS = [
