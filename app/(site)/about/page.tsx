@@ -6,7 +6,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "About NoorLink | Travel eSIM",
   description:
-    "NoorLink helps travelers stay connected with instant eSIM data in 190+ countries. Calm, practical connectivity — install before you fly.",
+    "NoorLink started after a family trip to Egypt with no data. Travel eSIM so you install before you fly and land connected.",
   path: "/about",
 });
 
