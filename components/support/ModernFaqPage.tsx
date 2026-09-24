@@ -49,7 +49,9 @@ export function ModernFaqPage() {
               <p>
                 Start with the{" "}
                 <Link href="/help/before-you-fly">before you fly picture guide</Link>,
-                visit the <Link href="/support">Support page</Link>, use WhatsApp,
+                compare providers on the{" "}
+                <Link href="/compare">eSIM comparison</Link> page, visit the{" "}
+                <Link href="/support">Support page</Link>, use WhatsApp,
                 or track your order before contacting us.
               </p>
             </div>

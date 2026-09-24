@@ -112,8 +112,8 @@ export function WhyNoorLink() {
           <Link href="/destinations" className="why-cta__btn">
             Browse destinations
           </Link>
-          <Link href="/faq" className="why-cta__link">
-            Still have questions? Read the FAQ →
+          <Link href="/compare" className="why-cta__link">
+            Compare NoorLink with other eSIMs →
           </Link>
         </div>
       </div>

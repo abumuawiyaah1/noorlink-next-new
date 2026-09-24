@@ -123,8 +123,8 @@ export function ModernAboutPage() {
               <Link href="/destinations" className="content-button">
                 Explore destinations
               </Link>
-              <Link href="/faq" className="content-button content-button--ghost">
-                Read the FAQ
+              <Link href="/compare" className="content-button content-button--ghost">
+                Compare eSIM providers
               </Link>
             </div>
           </section>

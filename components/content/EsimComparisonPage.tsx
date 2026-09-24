@@ -4,8 +4,12 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import {
   ESIM_COMPARE_DISCLAIMER,
+  ESIM_COMPARE_FAQS,
+  ESIM_COMPARE_GUIDES,
   ESIM_COMPARE_PROVIDERS,
   ESIM_COMPARE_ROWS,
+  ESIM_COMPARE_UPDATED_ISO,
+  ESIM_COMPARE_UPDATED_LABEL,
   type CompareCell,
 } from "@/lib/esim-comparison";
 import "@/styles/esim-compare.css";
@@ -34,18 +38,42 @@ export function EsimComparisonPage() {
       <main className="content-page esim-compare-page">
         <section className="content-hero content-hero--compact">
           <div className="content-hero__inner">
-            <span className="content-kicker">Compare eSIM providers</span>
-            <h1>NoorLink vs popular travel eSIMs</h1>
+            <span className="content-kicker">Travel eSIM comparison</span>
+            <h1>eSIM comparison: NoorLink vs Airalo, Holafly &amp; more</h1>
             <p>
-              A calm side-by-side of what matters when you travel — coverage,
-              hotspot, support, and whether pilgrimage plans are built for the
-              trip you are actually taking.
+              Compare popular travel eSIM providers on coverage, hotspot, support,
+              and dedicated Hajj &amp; Umrah plans — so you pick for the trip you
+              are actually taking, not just the biggest catalog.
+            </p>
+            <p className="esim-compare__updated">
+              Chart updated{" "}
+              <time dateTime={ESIM_COMPARE_UPDATED_ISO}>
+                {ESIM_COMPARE_UPDATED_LABEL}
+              </time>
             </p>
           </div>
         </section>
 
         <div className="content-shell esim-compare-shell">
+          <nav className="esim-compare-toc" aria-label="On this page">
+            <p className="esim-compare-toc__label">On this page</p>
+            <ul>
+              <li>
+                <a href="#feature-chart">Feature chart</a>
+              </li>
+              {ESIM_COMPARE_GUIDES.map((guide) => (
+                <li key={guide.id}>
+                  <a href={`#${guide.id}`}>{guide.title}</a>
+                </li>
+              ))}
+              <li>
+                <a href="#compare-faq">Comparison FAQ</a>
+              </li>
+            </ul>
+          </nav>
+
           <section
+            id="feature-chart"
             className="esim-compare"
             aria-labelledby="esim-compare-heading"
           >
@@ -137,25 +165,91 @@ export function EsimComparisonPage() {
               <li>
                 <strong>Hajj &amp; Umrah profiles</strong>
                 <span>
-                  Dedicated pilgrimage plans with hotspot — not only a generic
-                  Saudi listing.
+                  Dedicated{" "}
+                  <Link href="/hajj-umrah">pilgrimage plans</Link> with hotspot —
+                  not only a generic Saudi listing.
                 </span>
               </li>
               <li>
                 <strong>WhatsApp help that stays with you</strong>
                 <span>
                   Real answers when you are installing at home or already on the
-                  ground.
+                  ground — start at{" "}
+                  <Link href="/support">Support</Link>.
                 </span>
               </li>
               <li>
                 <strong>Install before you fly</strong>
                 <span>
-                  Guides and a free device check so setup happens on Wi‑Fi, not
-                  in an airport queue.
+                  Use the{" "}
+                  <Link href="/help/before-you-fly">before-you-fly guide</Link>{" "}
+                  and{" "}
+                  <Link href="/help/hajj-umrah-phone-check">
+                    free device check
+                  </Link>{" "}
+                  so setup happens on Wi‑Fi, not in an airport queue.
                 </span>
               </li>
             </ul>
+          </section>
+
+          <section
+            className="esim-compare-guides"
+            aria-labelledby="esim-compare-guides-heading"
+          >
+            <div className="content-section-head">
+              <span className="content-kicker">Guides</span>
+              <h2 id="esim-compare-guides-heading">
+                How to choose a travel eSIM
+              </h2>
+              <p>
+                Short answers to the searches travelers actually make — written
+                for clarity, not hype.
+              </p>
+            </div>
+
+            <div className="esim-compare-guides__list">
+              {ESIM_COMPARE_GUIDES.map((guide) => (
+                <article
+                  key={guide.id}
+                  id={guide.id}
+                  className="esim-compare-guide"
+                >
+                  <h3>{guide.title}</h3>
+                  <p>{guide.body}</p>
+                  <ul className="esim-compare-guide__links">
+                    {guide.links.map((link) => (
+                      <li key={link.href}>
+                        <Link href={link.href}>{link.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section
+            id="compare-faq"
+            className="esim-compare-faq"
+            aria-labelledby="esim-compare-faq-heading"
+          >
+            <div className="content-section-head">
+              <span className="content-kicker">FAQ</span>
+              <h2 id="esim-compare-faq-heading">Comparison FAQ</h2>
+              <p>
+                Quick answers before you buy. More setup detail lives in the{" "}
+                <Link href="/faq">full FAQ</Link>.
+              </p>
+            </div>
+            <div className="esim-compare-faq__list">
+              {ESIM_COMPARE_FAQS.map((item) => (
+                <article key={item.q} className="esim-compare-faq__item">
+                  <h3>{item.q}</h3>
+                  <p>{item.a}</p>
+                </article>
+              ))}
+            </div>
           </section>
 
           <section className="content-cta">
@@ -171,7 +265,10 @@ export function EsimComparisonPage() {
               <Link href="/destinations" className="content-button">
                 Browse destinations
               </Link>
-              <Link href="/hajj-umrah" className="content-button content-button--ghost">
+              <Link
+                href="/hajj-umrah"
+                className="content-button content-button--ghost"
+              >
                 Hajj &amp; Umrah plans
               </Link>
             </div>

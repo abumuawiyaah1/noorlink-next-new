@@ -139,6 +139,152 @@
   line-height: 1.6;
 }
 
+.esim-compare__updated {
+  margin: 16px auto 0;
+  max-width: 40rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.9rem;
+}
+
+.esim-compare-toc {
+  margin: 0 0 28px;
+  padding: 16px 18px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+}
+
+.esim-compare-toc__label {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.esim-compare-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.esim-compare-toc a {
+  color: var(--primary);
+  font-weight: 650;
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.esim-compare-toc a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.esim-compare-guides {
+  margin-top: 48px;
+}
+
+.esim-compare-guides__list {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.esim-compare-guide {
+  padding: 22px 22px 18px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+  scroll-margin-top: 88px;
+}
+
+.esim-compare-guide h3 {
+  margin: 0 0 10px;
+  color: var(--primary);
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+.esim-compare-guide p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.esim-compare-guide__links {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+}
+
+.esim-compare-guide__links a {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.esim-compare-guide__links a:hover {
+  color: var(--accent-hover);
+}
+
+.esim-compare-faq {
+  margin-top: 48px;
+  scroll-margin-top: 88px;
+}
+
+.esim-compare-faq__list {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.esim-compare-faq__item {
+  padding: 18px 20px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+}
+
+.esim-compare-faq__item h3 {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.esim-compare-faq__item p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.esim-compare-spotlight__list a {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+#feature-chart {
+  scroll-margin-top: 88px;
+}
+
+@media (min-width: 900px) {
+  .esim-compare-guides__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .esim-compare-spotlight {
   margin-top: 48px;
 }

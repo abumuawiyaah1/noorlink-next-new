@@ -18,6 +18,9 @@ export function UmrahPromo() {
                 <Link href="/hajj-umrah" className="btn-nav promo-cta">
                   View Hajj &amp; Umrah plans
                 </Link>
+                <Link href="/compare#hajj-umrah" className="promo-cta-secondary">
+                  Compare Umrah eSIMs
+                </Link>
                 <Link
                   href="/help/umrah-esim-before-you-fly"
                   className="promo-cta-secondary"
