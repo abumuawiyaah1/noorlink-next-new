@@ -349,3 +349,131 @@
     padding: 12px 10px;
   }
 }
+
+.esim-compare-trust {
+  margin-top: 48px;
+  scroll-margin-top: 88px;
+}
+
+.esim-compare-trust__score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 18px 0 0;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.esim-compare-trust__score-value {
+  font-size: 1.35rem;
+}
+
+.esim-compare-trust__score-label {
+  color: var(--text-muted);
+  font-weight: 650;
+  font-size: 0.95rem;
+}
+
+.esim-compare-trust__stars {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.esim-compare-trust__star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  background: #dfe3e8;
+  color: #fff;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.esim-compare-trust__star.is-on {
+  background: #00b67a;
+}
+
+.esim-compare-trust__stars--sm .esim-compare-trust__star {
+  width: 16px;
+  height: 16px;
+  font-size: 0.62rem;
+}
+
+.esim-compare-trust__grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.esim-compare-trust__card {
+  padding: 18px 18px 16px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+}
+
+.esim-compare-trust__card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.esim-compare-trust__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(15, 61, 62, 0.1);
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.esim-compare-trust__name {
+  margin: 0;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.esim-compare-trust__country {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.esim-compare-trust__card-stars {
+  margin: 12px 0 0;
+}
+
+.esim-compare-trust__preview {
+  margin: 10px 0 0;
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+.esim-compare-trust__footer {
+  margin: 18px 0 0;
+}
+
+.esim-compare-trust__footer a {
+  color: var(--primary);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.esim-compare-trust__footer a:hover {
+  color: var(--accent-hover);
+}
+
+@media (min-width: 800px) {
+  .esim-compare-trust__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

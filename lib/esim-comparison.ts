@@ -257,7 +257,7 @@ export type EsimCompareFaq = { q: string; a: string };
 export const ESIM_COMPARE_FAQS: EsimCompareFaq[] = [
   {
     q: "How is NoorLink different from Airalo or Holafly?",
-    a: "Airalo focuses on a large self-serve catalog. Holafly is known for unlimited-style plans that may limit hotspot. NoorLink emphasizes dedicated Hajj and Umrah plans, hotspot included, WhatsApp support, and install-before-you-fly education for practical travelers.",
+    a: "Airalo focuses on a large self-serve catalog. Holafly is known for unlimited-style plans that may limit hotspot. NoorLink emphasizes dedicated Hajj and Umrah plans, hotspot included, WhatsApp support, and install-before-you-fly education — backed by independent Trustpilot reviews from real travelers.",
   },
   {
     q: "Does NoorLink include hotspot?",

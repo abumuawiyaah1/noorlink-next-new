@@ -12,6 +12,7 @@ import {
   ESIM_COMPARE_UPDATED_LABEL,
   type CompareCell,
 } from "@/lib/esim-comparison";
+import { CompareTrustpilotProof } from "@/components/content/CompareTrustpilotProof";
 import "@/styles/esim-compare.css";
 
 function CellBadge({ cell }: { cell: CompareCell }) {
@@ -60,6 +61,9 @@ export function EsimComparisonPage() {
             <ul>
               <li>
                 <a href="#feature-chart">Feature chart</a>
+              </li>
+              <li>
+                <a href="#trustpilot">Trustpilot reviews</a>
               </li>
               {ESIM_COMPARE_GUIDES.map((guide) => (
                 <li key={guide.id}>
@@ -152,6 +156,8 @@ export function EsimComparisonPage() {
 
             <p className="esim-compare__disclaimer">{ESIM_COMPARE_DISCLAIMER}</p>
           </section>
+
+          <CompareTrustpilotProof />
 
           <section
             className="esim-compare-spotlight"
