@@ -8,6 +8,7 @@ export type NavItem = { href: string; label: string; highlight?: boolean };
 
 const DEFAULT_NAV: NavItem[] = [
   { href: "/about", label: "About" },
+  { href: "/compare", label: "Compare" },
   { href: "/hajj-umrah", label: "Hajj & Umrah" },
   { href: "/destinations", label: "Destinations" },
   { href: "/support", label: "Support" },

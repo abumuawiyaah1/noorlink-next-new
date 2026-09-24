@@ -41,6 +41,15 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
     ],
   },
+  {
+    title: "Choosing a provider",
+    items: [
+      {
+        q: "How does NoorLink compare to other travel eSIMs?",
+        a: "See our side-by-side eSIM comparison with Airalo, Holafly, Nomad, and more — covering hotspot, Hajj & Umrah plans, and support: https://noorlink.co/compare",
+      },
+    ],
+  },
 ];
 
 export function faqPageJsonLd(): Record<string, unknown> {

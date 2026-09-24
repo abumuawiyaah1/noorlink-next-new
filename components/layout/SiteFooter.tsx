@@ -11,6 +11,7 @@ export function SiteFooter() {
         </Link>
         <nav className="site-footer__links" aria-label="Footer">
           <Link href="/destinations">Destinations</Link>
+          <Link href="/compare">Compare</Link>
           <Link href="/faq">FAQ</Link>
           <Link href="/support">Support</Link>
           <Link href="/partners#apply">Partners</Link>

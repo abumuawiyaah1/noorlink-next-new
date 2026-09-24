@@ -32,6 +32,7 @@ export function HomeFooter() {
           <h4>Company</h4>
           <nav className="footer-list" aria-label="Company">
             <Link href="/about">About Us</Link>
+            <Link href="/compare">Compare eSIMs</Link>
             <Link href="/newsletter">Newsletter Archive</Link>
             <Link href="/support">Contact Support</Link>
             <Link href="/partners#apply">Partners</Link>
