@@ -477,3 +477,229 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+.esim-compare-page {
+  padding-bottom: 96px;
+}
+
+.esim-compare-audience,
+.esim-compare-plans,
+.esim-compare-check {
+  margin-top: 48px;
+  scroll-margin-top: 88px;
+}
+
+.esim-compare-audience__list {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.esim-compare-audience__list li {
+  display: grid;
+  gap: 4px;
+  padding: 18px 20px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+}
+
+.esim-compare-audience__list strong {
+  color: var(--primary);
+  font-size: 1.02rem;
+}
+
+.esim-compare-audience__list span {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.esim-compare-inline-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.esim-compare-plans__grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.esim-compare-plans__card {
+  display: grid;
+  gap: 6px;
+  padding: 18px 18px 16px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.esim-compare-plans__card:hover {
+  border-color: rgba(255, 149, 0, 0.45);
+  transform: translateY(-1px);
+}
+
+.esim-compare-plans__flag {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.esim-compare-plans__card strong {
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.esim-compare-plans__blurb {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.esim-compare-plans__price {
+  margin-top: 6px;
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.esim-compare-plans__price.is-pending {
+  color: var(--text-muted);
+  font-weight: 650;
+}
+
+.esim-compare-plans__more {
+  margin: 16px 0 0;
+}
+
+.esim-compare-plans__more a {
+  color: var(--primary);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.esim-compare-check {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 26px;
+  border-radius: var(--radius-card-lg);
+  background: var(--surface);
+  border: 1px solid rgba(255, 149, 0, 0.28);
+  box-shadow: 0 10px 24px rgba(15, 61, 62, 0.06);
+}
+
+.esim-compare-check h2 {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  line-height: 1.2;
+}
+
+.esim-compare-check p {
+  margin: 0;
+  max-width: 36rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.esim-compare-check__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.esim-compare-sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(243, 245, 247, 0.94);
+  border-top: 1px solid rgba(15, 61, 62, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.esim-compare-sticky__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+
+.esim-compare-sticky__copy {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.esim-compare-sticky__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.esim-compare-sticky__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.88rem;
+}
+
+.esim-compare-sticky__btn--primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.esim-compare-sticky__btn--accent {
+  background: var(--accent);
+  color: var(--primary-dark);
+}
+
+.esim-compare-sticky__btn--ghost {
+  background: #fff;
+  color: var(--primary);
+  border: 1px solid rgba(15, 61, 62, 0.16);
+}
+
+@media (min-width: 800px) {
+  .esim-compare-audience__list,
+  .esim-compare-plans__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .esim-compare-sticky__copy {
+    display: none;
+  }
+
+  .esim-compare-sticky__actions {
+    width: 100%;
+  }
+
+  .esim-compare-sticky__btn {
+    flex: 1 1 auto;
+  }
+}

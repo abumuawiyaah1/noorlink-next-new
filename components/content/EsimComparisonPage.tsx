@@ -13,6 +13,8 @@ import {
   type CompareCell,
 } from "@/lib/esim-comparison";
 import { CompareTrustpilotProof } from "@/components/content/CompareTrustpilotProof";
+import { CompareStickyCta } from "@/components/content/CompareStickyCta";
+import { CompareLiveDestinations } from "@/components/content/CompareLiveDestinations";
 import "@/styles/esim-compare.css";
 
 function CellBadge({ cell }: { cell: CompareCell }) {
@@ -61,6 +63,15 @@ export function EsimComparisonPage() {
             <ul>
               <li>
                 <a href="#feature-chart">Feature chart</a>
+              </li>
+              <li>
+                <a href="#who-its-for">Who it’s for</a>
+              </li>
+              <li>
+                <a href="#live-plans">Live starting prices</a>
+              </li>
+              <li>
+                <a href="#phone-check">Phone check</a>
               </li>
               <li>
                 <a href="#trustpilot">Trustpilot reviews</a>
@@ -155,6 +166,86 @@ export function EsimComparisonPage() {
             </div>
 
             <p className="esim-compare__disclaimer">{ESIM_COMPARE_DISCLAIMER}</p>
+          </section>
+
+          <section
+            id="who-its-for"
+            className="esim-compare-audience"
+            aria-labelledby="esim-compare-audience-heading"
+          >
+            <div className="content-section-head">
+              <span className="content-kicker">Who it’s for</span>
+              <h2 id="esim-compare-audience-heading">
+                Pick NoorLink if this sounds like your trip
+              </h2>
+            </div>
+            <ul className="esim-compare-audience__list">
+              <li>
+                <strong>Umrah or Hajj</strong>
+                <span>
+                  You want pilgrimage plans with hotspot — not only a generic
+                  Saudi country pack.
+                </span>
+              </li>
+              <li>
+                <strong>Family or group travel</strong>
+                <span>
+                  You may share data with a companion’s phone or a laptop on the
+                  road.
+                </span>
+              </li>
+              <li>
+                <strong>Prefer human help</strong>
+                <span>
+                  You want WhatsApp support and clear install-before-you-fly
+                  steps, not only an app store listing.
+                </span>
+              </li>
+            </ul>
+            <div className="esim-compare-inline-cta">
+              <Link href="/destinations" className="content-button">
+                Browse destinations
+              </Link>
+              <Link
+                href="/hajj-umrah"
+                className="content-button content-button--ghost"
+              >
+                Hajj &amp; Umrah plans
+              </Link>
+            </div>
+          </section>
+
+          <CompareLiveDestinations />
+
+          <section
+            id="phone-check"
+            className="esim-compare-check"
+            aria-labelledby="esim-compare-check-heading"
+          >
+            <div>
+              <span className="content-kicker">Before you buy</span>
+              <h2 id="esim-compare-check-heading">
+                Not sure your phone works with eSIM?
+              </h2>
+              <p>
+                Run a free compatibility check, then install on home Wi‑Fi so
+                you’re ready when you land — not stuck in an airport SIM line.
+              </p>
+            </div>
+            <div className="esim-compare-check__actions">
+              <Link
+                href="/help/hajj-umrah-phone-check"
+                className="content-button"
+              >
+                Free phone check
+              </Link>
+              <Link
+                href="/help/before-you-fly"
+                className="content-button content-button--ghost"
+              >
+                Install before you fly
+              </Link>
+            </div>
           </section>
 
           <CompareTrustpilotProof />
@@ -281,6 +372,7 @@ export function EsimComparisonPage() {
           </section>
         </div>
       </main>
+      <CompareStickyCta />
       <SiteFooter />
     </>
   );
