@@ -97,12 +97,12 @@ export function SocialHubPage({ onLogout }: { onLogout: () => void }) {
             <div className="content-section-head">
               <span className="content-kicker">October · Week 1</span>
               <h2 id="social-edu-heading">
-                Educational posts — tourism first (IG + Facebook)
+                Educational posts — NoorLink voice (IG + Facebook)
               </h2>
               <p>
-                Destination and season education for fall Europe. Connectivity
-                stays in the bio or a soft last line — not the headline. Same
-                square creative + caption for Facebook and Instagram.
+                Traveler education with our point of view: calm arrival days,
+                family reachability, and install-before-you-fly. Approve copy
+                before new creatives — old images may not match this voice yet.
               </p>
             </div>
             <div className="social-hub-edu-grid">

@@ -1,6 +1,6 @@
 /**
- * Educational social posts — tourism & pilgrimage literacy first.
- * Soft NoorLink presence; connectivity is optional, never the headline.
+ * Educational social posts — tourism & pilgrimage literacy in NoorLink voice.
+ * Discuss / approve copy before new creatives. Connectivity supports the traveler story; it is never a generic tourism-board post.
  */
 
 export type EducationalSocialPost = {
@@ -10,113 +10,126 @@ export type EducationalSocialPost = {
   weekLabel: string;
   imagePath: string;
   imageAlt: string;
+  /** Why this post is NoorLink (internal note for the team). */
+  brandWhy: string;
   caption: string;
   storyLine: string;
   ctaUrl: string;
-  /** How hard to push product in this post */
   productWeight: "none" | "soft" | "light";
 };
 
-/** October 2026 — Week 1 (Europe shoulder season). */
+/**
+ * October 2026 — Week 1 (approved direction: on-brand traveler education).
+ * Creatives still need a redesign pass to match this voice — do not ship old generic city-guide art with this copy.
+ */
 export const EDUCATIONAL_SOCIAL_POSTS: EducationalSocialPost[] = [
   {
     id: "oct_w1_shoulder",
-    title: "Why October is kinder to Paris & London",
-    topic: "Season",
+    title: "Fall trips are easier when arrival day is calm",
+    topic: "Season + arrival",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-shoulder-season.png",
-    imageAlt: "Travel note — why October is kinder for Paris and London",
-    productWeight: "none",
-    caption: `Why October is kinder to Paris and London
+    imageAlt: "NoorLink travel note — calm fall arrival",
+    brandWhy:
+      "We care about the moment travelers land tired and need things to work — not postcard tourism copy.",
+    productWeight: "soft",
+    caption: `Fall is a beautiful time for a city trip.
 
-Summer is beautiful — and crowded. October often gives you:
-• Softer queues at big sights
-• Cooler weather for long walks
-• Evenings that still feel open, without peak-season rush
+It’s also when a lot of stress shows up on arrival day — maps, rides, messages home, coordinating with family.
 
-You won’t get perfect weather every day. You will get a calmer pace — which is what most first-timers actually need.
+That’s the part we built NoorLink around.
 
-Save this if you’re planning a fall city break.
+October often means softer crowds in places like Paris and London. Use that calmer season well: plan the neighborhood, plan the first evening, and sort connectivity before you fly — not in the airport queue.
 
-#Paris #London #FallTravel #ShoulderSeason #TravelTips #CityBreak`,
-    storyLine: "October = softer crowds + better walking weather in Paris & London.",
-    ctaUrl: "https://noorlink.co/destinations",
+Travel should be about the place you came to see.
+
+#FallTravel #TravelTips #CityBreak #InstallBeforeYouFly #NoorLink`,
+    storyLine:
+      "Fall trips feel better when arrival day is calm. Sort the basics before you fly.",
+    ctaUrl: "https://noorlink.co/help/before-you-fly",
   },
   {
     id: "oct_w1_paris",
-    title: "First time in Paris? Three calm neighborhoods",
-    topic: "Destination",
+    title: "Paris tip: choose a base that doesn’t exhaust you",
+    topic: "Destination + traveler energy",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-paris-neighborhoods.png",
-    imageAlt: "Travel note — three calm Paris neighborhoods for first-timers",
+    imageAlt: "NoorLink travel note — calm Paris base for first-timers",
+    brandWhy:
+      "Practical traveler advice from our ‘don’t make the trip harder than it is’ ethos — same energy as our Egypt founding story.",
     productWeight: "none",
-    caption: `First time in Paris? Start with a calm base — not the busiest postcard corner.
+    caption: `First time in Paris?
 
-Three neighborhoods that work well for first-timers:
-• Le Marais — walkable, cafés, easy evenings
+Don’t only plan the landmarks. Plan where you’ll recover.
+
+A calm base makes the whole trip softer:
+• Le Marais — walkable evenings
 • Saint-Germain — classic Left Bank pace
-• Canal Saint-Martin area — local walks, softer nights
+• Near Canal Saint-Martin — local walks, quieter nights
 
-You can still visit the icons. You just sleep somewhere that doesn’t exhaust you before breakfast.
+You can still see the icons. You just won’t start every morning already tired.
 
-Where would you base yourself?
+We obsess over the small traveler details — because that’s usually what ruins a good trip.
 
-#Paris #VisitParis #TravelGuide #FirstTimer #CityBreak #TravelTips`,
-    storyLine: "Paris tip: base in Le Marais, Saint-Germain, or near Canal Saint-Martin.",
+#Paris #TravelTips #FirstTimer #CityBreak #NoorLink`,
+    storyLine:
+      "Paris tip from us: pick a calm base first — then the landmarks.",
     ctaUrl: "https://noorlink.co/plans/france",
   },
   {
     id: "oct_w1_london",
-    title: "First time in London? Three calm bases",
-    topic: "Destination",
+    title: "London tip: make the first day simple",
+    topic: "Destination + first-day logistics",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-london-bases.png",
-    imageAlt: "Travel note — three calm London bases for first-timers",
-    productWeight: "none",
-    caption: `First time in London? Pick a base that makes the Tube simple.
+    imageAlt: "NoorLink travel note — simple first day in London",
+    brandWhy:
+      "Logistics-first care (Tube, family, not getting stranded) — brand DNA from landing without data in Egypt.",
+    productWeight: "soft",
+    caption: `London is wonderful — and big.
 
-Three calm options:
-• South Kensington — museums, parks, straightforward connections
-• Bloomsbury — central, walkable, quieter evenings
-• Greenwich — river views, more space, still linked in
+For a first trip, make day one simple:
+• South Kensington — museums + easy connections
+• Bloomsbury — central and walkable
+• Greenwich — more space, still linked in
 
-London rewards travelers who don’t try to “do everything” from one overloaded hotel street.
+The goal isn’t to “do London.” It’s to land, get settled, message family, and move with a clear head.
 
-Save this for your next UK trip.
+That’s the traveler problem we care about — at home and abroad.
 
-#London #VisitLondon #TravelGuide #UKTravel #CityBreak #TravelTips`,
-    storyLine: "London tip: South Ken, Bloomsbury, or Greenwich as a calm first base.",
+If you want data ready when you land, install before you fly.
+
+#London #UKTravel #TravelTips #CityBreak #NoorLink`,
+    storyLine:
+      "London day-one tip: simple base, clear head, family reachable.",
     ctaUrl: "https://noorlink.co/plans/united-kingdom",
   },
   {
-    id: "oct_w1_reel",
-    title: "Shoulder season in 20 seconds",
-    topic: "Reel cover",
+    id: "oct_w1_habit",
+    title: "One habit that protects the whole trip",
+    topic: "Traveler habit",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-shoulder-reel.png",
-    imageAlt: "Reel cover — shoulder season travel tips in 20 seconds",
-    productWeight: "soft",
-    caption: `Shoulder season in 20 seconds 🍂
+    imageAlt: "NoorLink travel note — install before you fly habit",
+    brandWhy:
+      "Core brand promise stated as education, not a product ad — our founding lesson.",
+    productWeight: "light",
+    caption: `One habit that protects almost any trip:
 
-1. Fewer queues
-2. Cooler long walks
-3. Clearer plans (less peak chaos)
+Install your travel eSIM at home — not after you land.
 
-October is one of the best windows for Paris and London if you want the city — not the crowd pressure.
+Why we repeat this:
+• You can test it on stable Wi‑Fi
+• Arrival day stays about the trip, not a SIM shop
+• Family can reach you when plans change
 
-Planning a fall trip? Start with the neighborhood, not the packing list.
+Whether it’s a fall city break or Umrah later this season — preparation beats scrambling.
 
-(When you’re ready for data abroad: install before you fly — link in bio.)
+Guide: noorlink.co/help/before-you-fly
 
-#ShoulderSeason #FallTravel #Paris #London #TravelShorts #TravelTips #NoorLink`,
-    storyLine: "Fewer queues. Cooler walks. Clearer plans. That’s October.",
-    ctaUrl: "https://noorlink.co/destinations",
+#TravelTips #InstallBeforeYouFly #eSIM #UmrahPrep #NoorLink`,
+    storyLine:
+      "Protect the trip: install before you fly — not in the airport queue.",
+    ctaUrl: "https://noorlink.co/help/before-you-fly",
   },
 ];
-
-/** Older eSIM-heavy creatives kept for archive / reuse — not the active pack. */
-export const ARCHIVE_PRODUCT_EDU_POSTS = [
-  "edu-install-before-fly.png",
-  "edu-hotspot-included.png",
-  "edu-umrah-on-arrival.png",
-] as const;
