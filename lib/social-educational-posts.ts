@@ -1,86 +1,122 @@
 /**
- * Ready-to-publish educational posts for Instagram + Facebook.
- * Same caption works on both; pair with the matching square image.
+ * Educational social posts — tourism & pilgrimage literacy first.
+ * Soft NoorLink presence; connectivity is optional, never the headline.
  */
 
 export type EducationalSocialPost = {
   id: string;
   title: string;
   topic: string;
-  /** Square creative in /public */
+  weekLabel: string;
   imagePath: string;
   imageAlt: string;
-  /** Suggested Facebook / IG feed caption */
   caption: string;
-  /** Optional shorter line for Stories / pin comment */
   storyLine: string;
   ctaUrl: string;
+  /** How hard to push product in this post */
+  productWeight: "none" | "soft" | "light";
 };
 
+/** October 2026 — Week 1 (Europe shoulder season). */
 export const EDUCATIONAL_SOCIAL_POSTS: EducationalSocialPost[] = [
   {
-    id: "install_before_fly",
-    title: "Install before you fly",
-    topic: "Setup habit",
-    imagePath: "/images/social/edu-install-before-fly.png",
-    imageAlt: "NoorLink tip — install your eSIM before you fly",
-    caption: `The calmest travel eSIM habit:
+    id: "oct_w1_shoulder",
+    title: "Why October is kinder to Paris & London",
+    topic: "Season",
+    weekLabel: "October · Week 1",
+    imagePath: "/images/social/oct-w1-shoulder-season.png",
+    imageAlt: "Travel note — why October is kinder for Paris and London",
+    productWeight: "none",
+    caption: `Why October is kinder to Paris and London
 
-Install at home — not in the airport queue.
+Summer is beautiful — and crowded. October often gives you:
+• Softer queues at big sights
+• Cooler weather for long walks
+• Evenings that still feel open, without peak-season rush
 
-1. Buy your plan early
-2. Scan the QR on home Wi‑Fi
-3. Keep the line off until you land
-4. Turn data roaming on for the travel eSIM when you arrive
+You won’t get perfect weather every day. You will get a calmer pace — which is what most first-timers actually need.
 
-Maps, messages, and rides work when you need them.
+Save this if you’re planning a fall city break.
 
-Guide → noorlink.co/help/before-you-fly
-Plans → noorlink.co/destinations
-
-#eSIM #TravelTips #InstallBeforeYouFly #NoorLink #StayConnected`,
-    storyLine: "Install on home Wi‑Fi. Land ready. → noorlink.co/help/before-you-fly",
-    ctaUrl: "https://noorlink.co/help/before-you-fly",
-  },
-  {
-    id: "hotspot_included",
-    title: "Hotspot included",
-    topic: "Sharing data",
-    imagePath: "/images/social/edu-hotspot-included.png",
-    imageAlt: "NoorLink tip — hotspot included on travel eSIM plans",
-    caption: `Traveling with family or a laptop?
-
-Hotspot matters more than “unlimited” marketing.
-
-On NoorLink, hotspot is included — so you can share maps, tickets, or a quick call without buying a second SIM on day one.
-
-Always check the plan page for your destination, then install before you fly.
-
-Browse plans → noorlink.co/destinations
-
-#eSIM #TravelTips #Hotspot #FamilyTravel #NoorLink`,
-    storyLine: "Hotspot included — share maps without a second SIM. → noorlink.co/destinations",
+#Paris #London #FallTravel #ShoulderSeason #TravelTips #CityBreak`,
+    storyLine: "October = softer crowds + better walking weather in Paris & London.",
     ctaUrl: "https://noorlink.co/destinations",
   },
   {
-    id: "umrah_on_arrival",
-    title: "Umrah data on arrival",
-    topic: "Pilgrimage",
-    imagePath: "/images/social/edu-umrah-on-arrival.png",
-    imageAlt: "NoorLink tip — Umrah eSIM data that works on arrival",
-    caption: `Umrah is smoother when data works on landing.
+    id: "oct_w1_paris",
+    title: "First time in Paris? Three calm neighborhoods",
+    topic: "Destination",
+    weekLabel: "October · Week 1",
+    imagePath: "/images/social/oct-w1-paris-neighborhoods.png",
+    imageAlt: "Travel note — three calm Paris neighborhoods for first-timers",
+    productWeight: "none",
+    caption: `First time in Paris? Start with a calm base — not the busiest postcard corner.
 
-Dedicated pilgrimage plans for Makkah and Madinah — with hotspot — so group chats, maps, and family updates aren’t stuck in an airport SIM line.
+Three neighborhoods that work well for first-timers:
+• Le Marais — walkable, cafés, easy evenings
+• Saint-Germain — classic Left Bank pace
+• Canal Saint-Martin area — local walks, softer nights
 
-• Install before you fly
-• Free phone check if you’re unsure
-• WhatsApp support if you need a hand
+You can still visit the icons. You just sleep somewhere that doesn’t exhaust you before breakfast.
 
-Plans → noorlink.co/hajj-umrah
-Phone check → noorlink.co/help/hajj-umrah-phone-check
+Where would you base yourself?
 
-#Umrah #Hajj #eSIM #Makkah #Madinah #NoorLink`,
-    storyLine: "Umrah data ready on arrival. Install at home. → noorlink.co/hajj-umrah",
-    ctaUrl: "https://noorlink.co/hajj-umrah",
+#Paris #VisitParis #TravelGuide #FirstTimer #CityBreak #TravelTips`,
+    storyLine: "Paris tip: base in Le Marais, Saint-Germain, or near Canal Saint-Martin.",
+    ctaUrl: "https://noorlink.co/plans/france",
+  },
+  {
+    id: "oct_w1_london",
+    title: "First time in London? Three calm bases",
+    topic: "Destination",
+    weekLabel: "October · Week 1",
+    imagePath: "/images/social/oct-w1-london-bases.png",
+    imageAlt: "Travel note — three calm London bases for first-timers",
+    productWeight: "none",
+    caption: `First time in London? Pick a base that makes the Tube simple.
+
+Three calm options:
+• South Kensington — museums, parks, straightforward connections
+• Bloomsbury — central, walkable, quieter evenings
+• Greenwich — river views, more space, still linked in
+
+London rewards travelers who don’t try to “do everything” from one overloaded hotel street.
+
+Save this for your next UK trip.
+
+#London #VisitLondon #TravelGuide #UKTravel #CityBreak #TravelTips`,
+    storyLine: "London tip: South Ken, Bloomsbury, or Greenwich as a calm first base.",
+    ctaUrl: "https://noorlink.co/plans/united-kingdom",
+  },
+  {
+    id: "oct_w1_reel",
+    title: "Shoulder season in 20 seconds",
+    topic: "Reel cover",
+    weekLabel: "October · Week 1",
+    imagePath: "/images/social/oct-w1-shoulder-reel.png",
+    imageAlt: "Reel cover — shoulder season travel tips in 20 seconds",
+    productWeight: "soft",
+    caption: `Shoulder season in 20 seconds 🍂
+
+1. Fewer queues
+2. Cooler long walks
+3. Clearer plans (less peak chaos)
+
+October is one of the best windows for Paris and London if you want the city — not the crowd pressure.
+
+Planning a fall trip? Start with the neighborhood, not the packing list.
+
+(When you’re ready for data abroad: install before you fly — link in bio.)
+
+#ShoulderSeason #FallTravel #Paris #London #TravelShorts #TravelTips #NoorLink`,
+    storyLine: "Fewer queues. Cooler walks. Clearer plans. That’s October.",
+    ctaUrl: "https://noorlink.co/destinations",
   },
 ];
+
+/** Older eSIM-heavy creatives kept for archive / reuse — not the active pack. */
+export const ARCHIVE_PRODUCT_EDU_POSTS = [
+  "edu-install-before-fly.png",
+  "edu-hotspot-included.png",
+  "edu-umrah-on-arrival.png",
+] as const;

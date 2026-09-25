@@ -84,56 +84,6 @@ See Umrah & Hajj plans → noorlink.co/hajj-umrah
 
 #Umrah #Hajj #eSIM #NoorLink`,
   },
-  {
-    id: "edu_install",
-    label: "Edu: Install before you fly",
-    text: `The calmest travel eSIM habit:
-
-Install at home — not in the airport queue.
-
-1. Buy your plan early
-2. Scan the QR on home Wi‑Fi
-3. Keep the line off until you land
-4. Turn data roaming on for the travel eSIM when you arrive
-
-Maps, messages, and rides work when you need them.
-
-Guide → noorlink.co/help/before-you-fly
-Plans → noorlink.co/destinations
-
-#eSIM #TravelTips #InstallBeforeYouFly #NoorLink #StayConnected`,
-  },
-  {
-    id: "edu_hotspot",
-    label: "Edu: Hotspot included",
-    text: `Traveling with family or a laptop?
-
-Hotspot matters more than “unlimited” marketing.
-
-On NoorLink, hotspot is included — so you can share maps, tickets, or a quick call without buying a second SIM on day one.
-
-Always check the plan page for your destination, then install before you fly.
-
-Browse plans → noorlink.co/destinations
-
-#eSIM #TravelTips #Hotspot #FamilyTravel #NoorLink`,
-  },
-  {
-    id: "edu_umrah",
-    label: "Edu: Umrah on arrival",
-    text: `Umrah is smoother when data works on landing.
-
-Dedicated pilgrimage plans for Makkah and Madinah — with hotspot — so group chats, maps, and family updates aren’t stuck in an airport SIM line.
-
-• Install before you fly
-• Free phone check if you’re unsure
-• WhatsApp support if you need a hand
-
-Plans → noorlink.co/hajj-umrah
-Phone check → noorlink.co/help/hajj-umrah-phone-check
-
-#Umrah #Hajj #eSIM #Makkah #Madinah #NoorLink`,
-  },
 ] as const;
 
 export const SOCIAL_KEY_LINKS = [

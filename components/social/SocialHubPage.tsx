@@ -95,12 +95,14 @@ export function SocialHubPage({ onLogout }: { onLogout: () => void }) {
 
           <section className="social-hub-section" aria-labelledby="social-edu-heading">
             <div className="content-section-head">
-              <span className="content-kicker">This week’s pack</span>
-              <h2 id="social-edu-heading">Educational posts (IG + Facebook)</h2>
+              <span className="content-kicker">October · Week 1</span>
+              <h2 id="social-edu-heading">
+                Educational posts — tourism first (IG + Facebook)
+              </h2>
               <p>
-                Same square creative and caption for both platforms. Download the
-                image, copy the caption, post on Facebook via Business Suite, then
-                paste on Instagram @noorlinkesim.
+                Destination and season education for fall Europe. Connectivity
+                stays in the bio or a soft last line — not the headline. Same
+                square creative + caption for Facebook and Instagram.
               </p>
             </div>
             <div className="social-hub-edu-grid">
@@ -111,7 +113,9 @@ export function SocialHubPage({ onLogout }: { onLogout: () => void }) {
                     <img src={post.imagePath} alt={post.imageAlt} />
                   </div>
                   <div className="social-hub-edu-card__body">
-                    <p className="social-hub-edu-card__topic">{post.topic}</p>
+                    <p className="social-hub-edu-card__topic">
+                      {post.weekLabel} · {post.topic}
+                    </p>
                     <h3>{post.title}</h3>
                     <div className="social-hub-edu-card__actions">
                       <a
