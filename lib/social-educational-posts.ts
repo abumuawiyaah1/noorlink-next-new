@@ -1,6 +1,6 @@
 /**
- * Educational social posts — tourism & pilgrimage literacy in NoorLink voice.
- * Discuss / approve copy before new creatives. Connectivity supports the traveler story; it is never a generic tourism-board post.
+ * Educational social posts — educate first, inform second.
+ * Product/eSIM belongs in bio or a rare soft closer — never the point of the post.
  */
 
 export type EducationalSocialPost = {
@@ -10,126 +10,130 @@ export type EducationalSocialPost = {
   weekLabel: string;
   imagePath: string;
   imageAlt: string;
-  /** Why this post is NoorLink (internal note for the team). */
+  /** Internal: why NoorLink would publish this (not shown on social). */
   brandWhy: string;
   caption: string;
   storyLine: string;
+  /** Optional bio destination — not pushed hard in caption. */
   ctaUrl: string;
   productWeight: "none" | "soft" | "light";
 };
 
 /**
- * October 2026 — Week 1 (approved direction: on-brand traveler education).
- * Creatives still need a redesign pass to match this voice — do not ship old generic city-guide art with this copy.
+ * October 2026 — Week 1
+ * Pure traveler education. No eSIM pitch in captions.
  */
 export const EDUCATIONAL_SOCIAL_POSTS: EducationalSocialPost[] = [
   {
     id: "oct_w1_shoulder",
-    title: "Fall trips are easier when arrival day is calm",
-    topic: "Season + arrival",
+    title: "Why fall city breaks feel different",
+    topic: "Season",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-shoulder-season.png",
-    imageAlt: "NoorLink travel note — calm fall arrival",
-    brandWhy:
-      "We care about the moment travelers land tired and need things to work — not postcard tourism copy.",
-    productWeight: "soft",
-    caption: `Fall is a beautiful time for a city trip.
+    imageAlt: "Travel education — why fall city breaks feel different",
+    brandWhy: "Season literacy builds trust before any product mention.",
+    productWeight: "none",
+    caption: `Why fall city breaks feel different
 
-It’s also when a lot of stress shows up on arrival day — maps, rides, messages home, coordinating with family.
+Summer travel is loud: heat, lines, packed trains, rushed dinners.
 
-That’s the part we built NoorLink around.
+October in cities like Paris and London often gives you something quieter:
+• Shorter queues at popular places
+• Weather made for walking
+• Evenings that don’t feel like a stampede
 
-October often means softer crowds in places like Paris and London. Use that calmer season well: plan the neighborhood, plan the first evening, and sort connectivity before you fly — not in the airport queue.
+It isn’t perfect weather every day. It is a better pace for most first-timers.
 
-Travel should be about the place you came to see.
+If you’re choosing between “peak summer” and “early fall,” fall usually treats travelers more kindly.
 
-#FallTravel #TravelTips #CityBreak #InstallBeforeYouFly #NoorLink`,
-    storyLine:
-      "Fall trips feel better when arrival day is calm. Sort the basics before you fly.",
-    ctaUrl: "https://noorlink.co/help/before-you-fly",
+Save this for planning season.
+
+#FallTravel #Paris #London #ShoulderSeason #TravelEducation #CityBreak`,
+    storyLine: "Fall city breaks: softer crowds, better walking weather, calmer pace.",
+    ctaUrl: "https://noorlink.co/newsletter",
   },
   {
     id: "oct_w1_paris",
-    title: "Paris tip: choose a base that doesn’t exhaust you",
-    topic: "Destination + traveler energy",
+    title: "First time in Paris? Think about where you’ll rest",
+    topic: "Destination",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-paris-neighborhoods.png",
-    imageAlt: "NoorLink travel note — calm Paris base for first-timers",
-    brandWhy:
-      "Practical traveler advice from our ‘don’t make the trip harder than it is’ ethos — same energy as our Egypt founding story.",
+    imageAlt: "Travel education — choosing a calm base in Paris",
+    brandWhy: "Practical trip design — our traveler-care POV without selling.",
     productWeight: "none",
-    caption: `First time in Paris?
+    caption: `First time in Paris? Think about where you’ll rest
 
-Don’t only plan the landmarks. Plan where you’ll recover.
+Most people only plan museums and photos.
 
-A calm base makes the whole trip softer:
-• Le Marais — walkable evenings
-• Saint-Germain — classic Left Bank pace
-• Near Canal Saint-Martin — local walks, quieter nights
+The quieter decision is where you sleep and recover:
+• Le Marais — walkable, easy evenings
+• Saint-Germain — classic Left Bank rhythm
+• Near Canal Saint-Martin — softer nights, local walks
 
-You can still see the icons. You just won’t start every morning already tired.
+You can still see the famous places.
+A calm base just means you won’t start every morning already tired.
 
-We obsess over the small traveler details — because that’s usually what ruins a good trip.
+That’s often the difference between loving Paris and enduring it.
 
-#Paris #TravelTips #FirstTimer #CityBreak #NoorLink`,
-    storyLine:
-      "Paris tip from us: pick a calm base first — then the landmarks.",
-    ctaUrl: "https://noorlink.co/plans/france",
+#Paris #VisitParis #TravelEducation #FirstTimer #TravelTips`,
+    storyLine: "Paris tip: plan where you’ll rest, not only what you’ll see.",
+    ctaUrl: "https://noorlink.co/newsletter",
   },
   {
     id: "oct_w1_london",
-    title: "London tip: make the first day simple",
-    topic: "Destination + first-day logistics",
+    title: "London is big — make day one small",
+    topic: "Destination",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-london-bases.png",
-    imageAlt: "NoorLink travel note — simple first day in London",
-    brandWhy:
-      "Logistics-first care (Tube, family, not getting stranded) — brand DNA from landing without data in Egypt.",
-    productWeight: "soft",
-    caption: `London is wonderful — and big.
+    imageAlt: "Travel education — keeping London day one simple",
+    brandWhy: "Arrival-day calm is our DNA; here it’s pure education.",
+    productWeight: "none",
+    caption: `London is big — make day one small
 
-For a first trip, make day one simple:
-• South Kensington — museums + easy connections
-• Bloomsbury — central and walkable
-• Greenwich — more space, still linked in
+First-timers often try to “do the whole city” on arrival day.
 
-The goal isn’t to “do London.” It’s to land, get settled, message family, and move with a clear head.
+A kinder approach:
+1. Choose a simple base (South Kensington, Bloomsbury, or Greenwich work well)
+2. Learn one Tube line you’ll actually use
+3. Keep the first evening light — walk, eat, sleep
 
-That’s the traveler problem we care about — at home and abroad.
+London rewards travelers who don’t rush the opening hours of the trip.
 
-If you want data ready when you land, install before you fly.
+Save this if UK is on your list this fall.
 
-#London #UKTravel #TravelTips #CityBreak #NoorLink`,
-    storyLine:
-      "London day-one tip: simple base, clear head, family reachable.",
-    ctaUrl: "https://noorlink.co/plans/united-kingdom",
+#London #VisitLondon #UKTravel #TravelEducation #FirstTimer`,
+    storyLine: "London tip: big city, small day one. Base → one Tube line → early night.",
+    ctaUrl: "https://noorlink.co/newsletter",
   },
   {
-    id: "oct_w1_habit",
-    title: "One habit that protects the whole trip",
-    topic: "Traveler habit",
+    id: "oct_w1_arrival",
+    title: "The first hour after landing matters more than people think",
+    topic: "Traveler literacy",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-shoulder-reel.png",
-    imageAlt: "NoorLink travel note — install before you fly habit",
+    imageAlt: "Travel education — the first hour after landing",
     brandWhy:
-      "Core brand promise stated as education, not a product ad — our founding lesson.",
-    productWeight: "light",
-    caption: `One habit that protects almost any trip:
+      "Closest to our founding story, still framed as education — no product pitch.",
+    productWeight: "none",
+    caption: `The first hour after landing matters more than people think
 
-Install your travel eSIM at home — not after you land.
+That’s when travelers usually need:
+• Directions that work
+• A way to message family
+• A clear path to the hotel
 
-Why we repeat this:
-• You can test it on stable Wi‑Fi
-• Arrival day stays about the trip, not a SIM shop
-• Family can reach you when plans change
+When that hour is chaotic, the whole first day feels heavier — even if the destination is beautiful.
 
-Whether it’s a fall city break or Umrah later this season — preparation beats scrambling.
+So before any trip (city break or Umrah later in the season), ask one planning question:
 
-Guide: noorlink.co/help/before-you-fly
+“What will make arrival simple?”
 
-#TravelTips #InstallBeforeYouFly #eSIM #UmrahPrep #NoorLink`,
-    storyLine:
-      "Protect the trip: install before you fly — not in the airport queue.",
-    ctaUrl: "https://noorlink.co/help/before-you-fly",
+Not fancy. Just simple.
+
+That’s the kind of travel thinking we believe in.
+
+#TravelEducation #TravelTips #ArrivalDay #UmrahPrep #FamilyTravel`,
+    storyLine: "Before any trip: what will make the first hour after landing simple?",
+    ctaUrl: "https://noorlink.co/newsletter",
   },
 ];
