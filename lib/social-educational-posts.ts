@@ -23,8 +23,7 @@ export type EducationalSocialPost = {
 export const EDUCATIONAL_SOCIAL_POSTS: EducationalSocialPost[] = [
   {
     id: "oct_w1_battery_drain",
-    title:
-      "Did you know why your phone battery drains faster when you're traveling? Here's how to fix that",
+    title: "Why your battery dies faster abroad — here's how to fix it",
     topic: "Phone literacy",
     weekLabel: "October · Week 1 · Post 1",
     imagePath: "/images/social/oct-w1-shoulder-reel.png",
@@ -32,7 +31,7 @@ export const EDUCATIONAL_SOCIAL_POSTS: EducationalSocialPost[] = [
     brandWhy:
       "Travel phone literacy in our lane — calm expert tone, soft help close.",
     productWeight: "soft",
-    caption: `Did you know why your phone battery drains faster when you're traveling? Here's how to fix that
+    caption: `Why your battery dies faster abroad — here's how to fix it
 
 If you're planning a fall trip — or Umrah later this season — you might notice something frustrating:
 
@@ -72,7 +71,7 @@ Quick checklist before you fly
 Save this so it's handy when you land.
 
 Questions about checking eSIM compatibility before you fly? Comment or message us — we're happy to help you prepare. Calm arrival days start at home.`,
-    captionShort: `Did you know why your phone battery drains faster when you're traveling? Here's how to fix that
+    captionShort: `Why your battery dies faster abroad — here's how to fix it
 
 It isn't only maps and photos. Abroad, your phone often:
 1) Hunts unfamiliar cell towers harder
@@ -88,7 +87,7 @@ Before you fly: offline maps, unlocked phone, dial *#06# to check for an EID (eS
 
 Save this for landing day. Questions on device readiness? Message us — we're happy to help.`,
     storyLine:
-      "Did you know why your battery dies faster abroad? Tower hunting, background sync, roaming loops — fixes in our latest post.",
+      "Why your battery dies faster abroad — and how to fix it. Save our latest post.",
     ctaUrl: "https://noorlink.co/help/hajj-umrah-phone-check",
   },
 ];
