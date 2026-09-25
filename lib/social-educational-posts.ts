@@ -26,8 +26,8 @@ export const EDUCATIONAL_SOCIAL_POSTS: EducationalSocialPost[] = [
     title: "Why your battery dies faster abroad — here's how to fix it",
     topic: "Phone literacy",
     weekLabel: "October · Week 1 · Post 1",
-    imagePath: "/images/social/oct-w1-shoulder-reel.png",
-    imageAlt: "Why phone battery drains faster when traveling",
+    imagePath: "/images/social/oct-w1-battery-drain.png",
+    imageAlt: "Why your battery dies faster abroad — here's how to fix it",
     brandWhy:
       "Travel phone literacy in our lane — calm expert tone, soft help close.",
     productWeight: "soft",
