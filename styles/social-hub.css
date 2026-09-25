@@ -491,3 +491,56 @@
     height: 200px;
   }
 }
+
+.social-hub-edu-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.social-hub-edu-card {
+  display: grid;
+  gap: 16px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.social-hub-edu-card__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: #f3f7f7;
+}
+
+.social-hub-edu-card__body {
+  padding: 0 18px 18px;
+}
+
+.social-hub-edu-card__topic {
+  margin: 0 0 4px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.social-hub-edu-card h3 {
+  margin: 0 0 12px;
+  color: var(--primary);
+}
+
+.social-hub-edu-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .social-hub-edu-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
