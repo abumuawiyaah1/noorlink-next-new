@@ -24,7 +24,7 @@ export const EDUCATIONAL_SOCIAL_POSTS: EducationalSocialPost[] = [
   {
     id: "oct_w1_battery_drain",
     title:
-      "The hidden reason your phone battery drains faster when traveling (and how to fix it)",
+      "Did you know why your phone battery drains faster when you're traveling? Here's how to fix that",
     topic: "Phone literacy",
     weekLabel: "October · Week 1 · Post 1",
     imagePath: "/images/social/oct-w1-shoulder-reel.png",
@@ -32,26 +32,26 @@ export const EDUCATIONAL_SOCIAL_POSTS: EducationalSocialPost[] = [
     brandWhy:
       "Travel phone literacy in our lane — calm expert tone, soft help close.",
     productWeight: "soft",
-    caption: `The hidden reason your phone battery drains faster when traveling (and how to fix it)
+    caption: `Did you know why your phone battery drains faster when you're traveling? Here's how to fix that
 
-If you’re planning a fall trip — or Umrah later this season — you might notice something frustrating:
+If you're planning a fall trip — or Umrah later this season — you might notice something frustrating:
 
-Your phone battery dies much faster abroad… even when you aren’t using it much.
+Your phone battery dies much faster abroad… even when you aren't using it much.
 
-It isn’t only photos and maps.
-There’s a technical reason your phone works overtime in unfamiliar cities — and a few simple fixes.
+It isn't only photos and maps.
+There's a technical reason your phone works overtime in unfamiliar cities — and a few simple fixes.
 
 1) The “cell tower hunting” loop
-Abroad, your phone keeps searching for signal across towers it doesn’t know well. If the local signal is weak or patchy, the cellular modem raises power to stay connected.
+Abroad, your phone keeps searching for signal across towers it doesn't know well. If the local signal is weak or patchy, the cellular modem raises power to stay connected.
 
 The fix:
-When you’re moving a lot (train, bus, dense sightseeing), turn on Low Power Mode. It reduces how often the phone aggressively polls for signal and can save a lot of battery.
+When you're moving a lot (train, bus, dense sightseeing), turn on Low Power Mode. It reduces how often the phone aggressively polls for signal and can save a lot of battery.
 
 2) Background sync in crowded places
 Airports, stations, and busy tourist spots are congested. When speeds drop, background tasks (photo backup, email sync) take longer — so the processor stays busy in your pocket.
 
 The fix:
-Turn off Background App Refresh for non-essential apps while you’re out exploring.
+Turn off Background App Refresh for non-essential apps while you're out exploring.
 • iPhone: Settings → General → Background App Refresh
 • Android: Settings → Connections / Network → Data usage (or Battery → Background usage, depending on device)
 
@@ -59,7 +59,7 @@ Turn off Background App Refresh for non-essential apps while you’re out explor
 If your home line still has Data Roaming ON without a usable local data plan, the phone may keep trying to handshake with local networks. That loop burns power — and can risk unexpected roaming charges.
 
 The fix:
-• If you’re not using home-network roaming, turn Data Roaming OFF on your primary line before takeoff.
+• If you're not using home-network roaming, turn Data Roaming OFF on your primary line before takeoff.
 • If you still need the primary line for SMS / verification codes, keep it for Voice & SMS only, and use a separate travel data line for internet.
 
 Quick checklist before you fly
@@ -67,14 +67,14 @@ Quick checklist before you fly
 2. Confirm your phone is carrier-unlocked
 3. Dial *#06# — if you see an EID, your phone supports eSIM profiles
 4. Turn on Low Power Mode during long transit days
-5. Switch off background refresh for apps you don’t need abroad
+5. Switch off background refresh for apps you don't need abroad
 
-Save this so it’s handy when you land.
+Save this so it's handy when you land.
 
-Questions about checking eSIM compatibility before you fly? Comment or message us — we’re happy to help you prepare. Calm arrival days start at home.`,
-    captionShort: `Why your phone battery dies faster abroad (and how to fix it)
+Questions about checking eSIM compatibility before you fly? Comment or message us — we're happy to help you prepare. Calm arrival days start at home.`,
+    captionShort: `Did you know why your phone battery drains faster when you're traveling? Here's how to fix that
 
-It’s not only maps and photos. Abroad, your phone often:
+It isn't only maps and photos. Abroad, your phone often:
 1) Hunts unfamiliar cell towers harder
 2) Burns power on slow background sync in crowded places
 3) Keeps trying data roaming handshakes on your home line
@@ -86,9 +86,9 @@ Fixes:
 
 Before you fly: offline maps, unlocked phone, dial *#06# to check for an EID (eSIM support).
 
-Save this for landing day. Questions on device readiness? Message us — we’re happy to help.`,
+Save this for landing day. Questions on device readiness? Message us — we're happy to help.`,
     storyLine:
-      "Battery dying abroad? Tower hunting + background sync + roaming loops. Fixes in our latest post — save it.",
+      "Did you know why your battery dies faster abroad? Tower hunting, background sync, roaming loops — fixes in our latest post.",
     ctaUrl: "https://noorlink.co/help/hajj-umrah-phone-check",
   },
 ];
