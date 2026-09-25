@@ -1,6 +1,6 @@
 /**
- * Educational social posts — educate first, inform second.
- * Product/eSIM belongs in bio or a rare soft closer — never the point of the post.
+ * October 2026 — Week 1 educational posts (copy only; creatives later).
+ * Value-first: checklist / decision / day-one plan. No eSIM sales pitch.
  */
 
 export type EducationalSocialPost = {
@@ -10,130 +10,129 @@ export type EducationalSocialPost = {
   weekLabel: string;
   imagePath: string;
   imageAlt: string;
-  /** Internal: why NoorLink would publish this (not shown on social). */
   brandWhy: string;
   caption: string;
   storyLine: string;
-  /** Optional bio destination — not pushed hard in caption. */
   ctaUrl: string;
   productWeight: "none" | "soft" | "light";
 };
 
-/**
- * October 2026 — Week 1
- * Pure traveler education. No eSIM pitch in captions.
- */
 export const EDUCATIONAL_SOCIAL_POSTS: EducationalSocialPost[] = [
   {
-    id: "oct_w1_shoulder",
-    title: "Why fall city breaks feel different",
-    topic: "Season",
+    id: "oct_w1_fall_vs_summer",
+    title: "Fall vs summer city break — which should you book?",
+    topic: "Decision tool",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-shoulder-season.png",
-    imageAlt: "Travel education — why fall city breaks feel different",
-    brandWhy: "Season literacy builds trust before any product mention.",
+    imageAlt: "Fall vs summer city break decision guide",
+    brandWhy: "Gives a usable decision — not vibes.",
     productWeight: "none",
-    caption: `Why fall city breaks feel different
+    caption: `Fall vs summer city break — which should you book?
 
-Summer travel is loud: heat, lines, packed trains, rushed dinners.
+Use this simple guide:
 
-October in cities like Paris and London often gives you something quieter:
-• Shorter queues at popular places
-• Weather made for walking
-• Evenings that don’t feel like a stampede
+Book SUMMER if:
+• Kids are off school and dates are fixed
+• You want long daylight and outdoor evenings
+• You can handle heat + bigger crowds
 
-It isn’t perfect weather every day. It is a better pace for most first-timers.
+Book FALL (Sep–Oct) if:
+• You prefer walking all day without melting
+• You want shorter lines at popular places
+• You’re a first-timer who needs a calmer pace
 
-If you’re choosing between “peak summer” and “early fall,” fall usually treats travelers more kindly.
+For Paris and London, fall is often kinder to first-timers — not because it’s “more magical,” but because the city is easier to move through.
 
-Save this for planning season.
+Screenshot this before you pick dates.
 
-#FallTravel #Paris #London #ShoulderSeason #TravelEducation #CityBreak`,
-    storyLine: "Fall city breaks: softer crowds, better walking weather, calmer pace.",
+#FallTravel #SummerTravel #Paris #London #TravelPlanning #TravelEducation`,
+    storyLine: "Fall vs summer: walk comfort + shorter lines vs long daylight + school holidays.",
     ctaUrl: "https://noorlink.co/newsletter",
   },
   {
-    id: "oct_w1_paris",
-    title: "First time in Paris? Think about where you’ll rest",
-    topic: "Destination",
+    id: "oct_w1_paris_24h",
+    title: "First 24 hours in Paris — do this, skip that",
+    topic: "Day-one plan",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-paris-neighborhoods.png",
-    imageAlt: "Travel education — choosing a calm base in Paris",
-    brandWhy: "Practical trip design — our traveler-care POV without selling.",
+    imageAlt: "First 24 hours in Paris plan",
+    brandWhy: "Concrete day-one value travelers can follow.",
     productWeight: "none",
-    caption: `First time in Paris? Think about where you’ll rest
+    caption: `First 24 hours in Paris — do this, skip that
 
-Most people only plan museums and photos.
+DO:
+1. Go hotel → drop bags → short neighborhood walk
+2. Eat near your base (not across the city on empty energy)
+3. Learn your closest Metro stop
+4. Sleep early
 
-The quieter decision is where you sleep and recover:
-• Le Marais — walkable, easy evenings
-• Saint-Germain — classic Left Bank rhythm
-• Near Canal Saint-Martin — softer nights, local walks
+SKIP on day one:
+• Marathon museum hopping
+• Crossing the whole city for one photo
+• Late-night “we’ll sleep on the plane” plans
 
-You can still see the famous places.
-A calm base just means you won’t start every morning already tired.
+Best first bases for calm: Le Marais, Saint-Germain, or near Canal Saint-Martin.
 
-That’s often the difference between loving Paris and enduring it.
+Day one is for settling — not collecting landmarks.
 
-#Paris #VisitParis #TravelEducation #FirstTimer #TravelTips`,
-    storyLine: "Paris tip: plan where you’ll rest, not only what you’ll see.",
+Save this for your Paris folder.
+
+#Paris #VisitParis #FirstTimer #TravelPlan #TravelEducation`,
+    storyLine: "Paris day one: settle near your base. Skip the city-wide marathon.",
     ctaUrl: "https://noorlink.co/newsletter",
   },
   {
-    id: "oct_w1_london",
-    title: "London is big — make day one small",
-    topic: "Destination",
+    id: "oct_w1_london_5_steps",
+    title: "London day one: the 5-step calm arrival",
+    topic: "Day-one plan",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-london-bases.png",
-    imageAlt: "Travel education — keeping London day one simple",
-    brandWhy: "Arrival-day calm is our DNA; here it’s pure education.",
+    imageAlt: "London day one five-step calm arrival",
+    brandWhy: "Numbered steps = screenshot value.",
     productWeight: "none",
-    caption: `London is big — make day one small
+    caption: `London day one: the 5-step calm arrival
 
-First-timers often try to “do the whole city” on arrival day.
+1. Know your hotel address offline (screenshot it)
+2. Choose one simple base (South Ken, Bloomsbury, or Greenwich)
+3. Take one clear route in — don’t optimize every transfer yet
+4. Message family that you arrived
+5. Keep evening light: food + short walk + sleep
 
-A kinder approach:
-1. Choose a simple base (South Kensington, Bloomsbury, or Greenwich work well)
-2. Learn one Tube line you’ll actually use
-3. Keep the first evening light — walk, eat, sleep
+London is big. Arrival day is not the day to “see everything.”
 
-London rewards travelers who don’t rush the opening hours of the trip.
+If you only get these 5 right, day two is already easier.
 
-Save this if UK is on your list this fall.
-
-#London #VisitLondon #UKTravel #TravelEducation #FirstTimer`,
-    storyLine: "London tip: big city, small day one. Base → one Tube line → early night.",
+#London #VisitLondon #UKTravel #FirstTimer #TravelEducation #TravelTips`,
+    storyLine: "London arrival: offline address → one base → one route → message family → early night.",
     ctaUrl: "https://noorlink.co/newsletter",
   },
   {
-    id: "oct_w1_arrival",
-    title: "The first hour after landing matters more than people think",
-    topic: "Traveler literacy",
+    id: "oct_w1_arrival_checklist",
+    title: "Before any trip abroad: 7 things that save arrival day",
+    topic: "Checklist",
     weekLabel: "October · Week 1",
     imagePath: "/images/social/oct-w1-shoulder-reel.png",
-    imageAlt: "Travel education — the first hour after landing",
-    brandWhy:
-      "Closest to our founding story, still framed as education — no product pitch.",
+    imageAlt: "Seven things that save arrival day checklist",
+    brandWhy: "Universal checklist — city break or Umrah later — pure utility.",
     productWeight: "none",
-    caption: `The first hour after landing matters more than people think
+    caption: `Before any trip abroad: 7 things that save arrival day
 
-That’s when travelers usually need:
-• Directions that work
-• A way to message family
-• A clear path to the hotel
+Screenshot this checklist:
 
-When that hour is chaotic, the whole first day feels heavier — even if the destination is beautiful.
+1. Phone unlocked (ask your carrier before you fly)
+2. Hotel name + address saved offline
+3. Family / group WhatsApp ready
+4. Pickup or train plan written down
+5. Charger + power bank in your carry-on
+6. Photo of passport / booking confirmations
+7. One offline map area downloaded for your hotel zone
 
-So before any trip (city break or Umrah later in the season), ask one planning question:
+This helps for a fall city break — and for Umrah later in the season.
 
-“What will make arrival simple?”
+Arrival day gets easier when the basics are done at home.
 
-Not fancy. Just simple.
-
-That’s the kind of travel thinking we believe in.
-
-#TravelEducation #TravelTips #ArrivalDay #UmrahPrep #FamilyTravel`,
-    storyLine: "Before any trip: what will make the first hour after landing simple?",
+#TravelChecklist #TravelEducation #FamilyTravel #UmrahPrep #TravelTips`,
+    storyLine: "7 arrival-day savers: unlock, offline address, WhatsApp, pickup plan, charger, docs photo, offline map.",
     ctaUrl: "https://noorlink.co/newsletter",
   },
 ];
