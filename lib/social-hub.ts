@@ -32,6 +32,12 @@ export const SOCIAL_QUICK_LINKS = [
     cta: "Open Page",
   },
   {
+    href: "https://www.linkedin.com/company/",
+    title: "LinkedIn — company page",
+    body: "Educational and professional posts. Paste the approved LinkedIn draft after review — do not post drafts marked For review.",
+    cta: "Open LinkedIn",
+  },
+  {
     href: "https://accountscenter.facebook.com/profiles",
     title: "Accounts Center",
     body: "Confirm Facebook, Instagram, and Page are connected under one Meta login.",
@@ -41,9 +47,11 @@ export const SOCIAL_QUICK_LINKS = [
 
 export const SOCIAL_POST_WORKFLOW = [
   "Upload partner photos or videos in the Media library (or pick a brand asset below).",
-  "Copy a caption template and adjust the destination if needed.",
+  "For educational posts: review Meta + LinkedIn drafts first — do not post while status is For review.",
+  "Copy an approved caption (or promo template) and adjust if needed.",
   "Post to Facebook via Business Suite composer (or the Page timeline).",
   "Post the same image + caption on Instagram (@noorlinkesim) until cross-posting is linked.",
+  "Post the LinkedIn version separately (longer, professional tone).",
   "Reply to comments within 24h — calm, practical tone; point to noorlink.co/destinations when helpful.",
 ] as const;
 
@@ -151,6 +159,7 @@ We sell under our own brand. Support is on WhatsApp and email when something goe
 Shop plans: https://noorlink.co/destinations
 Hajj & Umrah: https://noorlink.co/hajj-umrah
 Support: support@noorlink.co · WhatsApp 718-472-9390`,
+  linkedinAbout: `NoorLink is a travel eSIM for people who need data that works when they land. Install before you fly. 190+ destinations, including Hajj and Umrah coverage for Makkah and Madinah. Practical support when something goes wrong.`,
   websiteLine: "noorlink.co",
   category: "Telecommunication company",
 } as const;
