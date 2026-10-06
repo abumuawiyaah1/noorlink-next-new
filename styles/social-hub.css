@@ -379,9 +379,67 @@
   color: #9a5b00;
 }
 
+.social-hub-status--review {
+  background: rgba(15, 61, 62, 0.08);
+  color: var(--primary);
+}
+
+.social-hub-status--approved {
+  background: rgba(255, 149, 0, 0.16);
+  color: #9a5b00;
+}
+
 .social-hub-status--posted {
   background: rgba(15, 61, 62, 0.1);
   color: var(--primary);
+}
+
+.social-hub-workflow--tight {
+  margin-bottom: 8px;
+}
+
+.social-hub-edu-topics {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.social-hub-edu-topic > h3 {
+  margin: 0 0 14px;
+  color: var(--primary);
+  font-size: 1.15rem;
+}
+
+.social-hub-grid--edu {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.social-hub-edu-platform {
+  margin: 0 0 8px !important;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--primary) !important;
+}
+
+.social-hub-edu-hook {
+  margin: 0 0 12px !important;
+  color: var(--text) !important;
+  font-weight: 600;
+  line-height: 1.5 !important;
+}
+
+.social-hub-edu-count {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.social-hub-edu-notes {
+  margin: 12px 0 0 !important;
+  font-size: 0.88rem;
+  color: var(--text-muted) !important;
+  font-style: italic;
 }
 
 .social-hub-copy-btn--danger {
