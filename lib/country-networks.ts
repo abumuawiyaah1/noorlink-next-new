@@ -79,6 +79,12 @@ const COUNTRY_NETWORKS: Record<string, readonly string[]> = {
   "south-africa": ["Vodacom", "MTN", "Cell C"],
   nigeria: ["MTN", "Airtel", "Glo"],
   morocco: ["Maroc Telecom", "Orange", "Inwi"],
+  kenya: ["Safaricom", "Airtel", "Telkom"],
+  ghana: ["MTN", "Vodafone", "AirtelTigo"],
+  tanzania: ["Vodacom", "Airtel", "Tigo"],
+  uganda: ["MTN", "Airtel", "Uganda Telecom"],
+  rwanda: ["MTN", "Airtel"],
+  senegal: ["Orange", "Free", "Expresso"],
 };
 
 const REGIONAL_NETWORKS: Record<TemplateRegionKey, readonly string[]> = {
