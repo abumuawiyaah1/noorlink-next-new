@@ -13,6 +13,7 @@ import {
   SOCIAL_PROFILE_COPY,
   SOCIAL_QUICK_LINKS,
 } from "@/lib/social-hub";
+import { EDUCATIONAL_SOCIAL_POSTS } from "@/lib/social-educational-posts";
 import "@/styles/content-pages.css";
 import "@/styles/social-hub.css";
 
@@ -90,6 +91,50 @@ export function SocialHubPage({ onLogout }: { onLogout: () => void }) {
                 <li key={step}>{step}</li>
               ))}
             </ol>
+          </section>
+
+          <section className="social-hub-section" aria-labelledby="social-edu-heading">
+            <div className="content-section-head">
+              <span className="content-kicker">October · Week 1</span>
+              <h2 id="social-edu-heading">
+                Educational posts — NoorLink voice (IG + Facebook)
+              </h2>
+              <p>
+                Traveler education with our point of view: calm arrival days,
+                family reachability, and install-before-you-fly. Approve copy
+                before new creatives — old images may not match this voice yet.
+              </p>
+            </div>
+            <div className="social-hub-edu-grid">
+              {EDUCATIONAL_SOCIAL_POSTS.map((post) => (
+                <article key={post.id} className="social-hub-card social-hub-edu-card">
+                  <div className="social-hub-edu-card__media">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={post.imagePath} alt={post.imageAlt} />
+                  </div>
+                  <div className="social-hub-edu-card__body">
+                    <p className="social-hub-edu-card__topic">
+                      {post.weekLabel} · {post.topic}
+                    </p>
+                    <h3>{post.title}</h3>
+                    <div className="social-hub-edu-card__actions">
+                      <a
+                        href={post.imagePath}
+                        download
+                        className="social-hub-card__cta"
+                      >
+                        Download image
+                      </a>
+                      <CopyButton text={post.caption} label="Copy caption" />
+                      <CopyButton text={post.storyLine} label="Copy Story line" />
+                    </div>
+                    <pre className="social-hub-copy social-hub-copy--compact">
+                      {post.caption}
+                    </pre>
+                  </div>
+                </article>
+              ))}
+            </div>
           </section>
 
           <section className="social-hub-section" aria-labelledby="social-captions-heading">
