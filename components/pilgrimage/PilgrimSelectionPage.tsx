@@ -54,6 +54,9 @@ import {
 } from "@/lib/affiliate-link";
 import { PILGRIM_GIFT_GUIDES } from "@/lib/pilgrim-gift-guides";
 import { PILGRIMAGE_BRAND_LINE } from "@/lib/brand";
+import { type Dictionary, getDictionary, t } from "@/lib/i18n/dictionaries";
+import { renderTemplate } from "@/lib/i18n/template";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/hajj-umrah.css";
 import "@/styles/plans-dynamic.css";
 
@@ -71,6 +74,10 @@ type PilgrimSelectionPageProps = {
 };
 
 type PurchaseFocus = "saudi" | "route";
+
+/** Sentinels so localized fallbacks follow the locale after load. */
+const ERROR_NO_PLANS = "__no_plans__";
+const ERROR_LOAD_FAILED = "__load_failed__";
 
 function buildCheckoutHref(
   plan: EsimPlan,
@@ -97,9 +104,9 @@ function buildCheckoutHref(
   return withAttribution(`/checkout?${params.toString()}`, { promo, ref });
 }
 
-function tierBadge(tier: PilgrimTierOffer): string | null {
-  if (tier.recommended) return "Most Popular";
-  if (tier.plan?.displayBadge === "best_choice") return "Best Choice";
+function tierBadge(tier: PilgrimTierOffer): "popular" | "best" | null {
+  if (tier.recommended) return "popular";
+  if (tier.plan?.displayBadge === "best_choice") return "best";
   return null;
 }
 
@@ -144,6 +151,8 @@ function RouteDescriptionWithGccHover({ text }: { text: string }) {
 }
 
 function TierCard({
+  dict,
+  locale,
   tier,
   selected,
   connectedDataGb,
@@ -152,6 +161,8 @@ function TierCard({
   onConnectedDataGbChange,
   onUmrahUnlimitedDaysChange,
 }: {
+  dict: Dictionary;
+  locale: string;
   tier: PilgrimTierOffer;
   selected: boolean;
   connectedDataGb: ConnectedPilgrimDataGb;
@@ -175,13 +186,14 @@ function TierCard({
     plan,
     connectedDataGb,
     umrahUnlimitedDays,
+    locale,
   );
 
   const badge = tierBadge(tier);
 
   return (
     <article
-      className={`pilgrim-card pilgrim-card--selectable${tier.recommended ? " is-recommended" : ""}${selected ? " is-selected" : ""}${badge === "Best Choice" ? " is-best-choice" : ""}`}
+      className={`pilgrim-card pilgrim-card--selectable${tier.recommended ? " is-recommended" : ""}${selected ? " is-selected" : ""}${badge === "best" ? " is-best-choice" : ""}`}
       onClick={onSelect}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
@@ -192,13 +204,13 @@ function TierCard({
       role="button"
       tabIndex={0}
       aria-pressed={selected}
-      aria-label={`Select ${tier.title}`}
+      aria-label={t(dict, "pilgrimagePage.selectAria", { title: tier.title })}
     >
       {badge && (
         <span
-          className={`pilgrim-card__badge${badge === "Best Choice" ? " pilgrim-card__badge--best" : ""}`}
+          className={`pilgrim-card__badge${badge === "best" ? " pilgrim-card__badge--best" : ""}`}
         >
-          {badge}
+          {badge === "best" ? dict.plansPage.bestChoice : dict.pilgrimagePage.mostPopular}
         </span>
       )}
 
@@ -214,8 +226,8 @@ function TierCard({
       </div>
 
       {isConnected && (
-        <div className="pilgrim-data-picker" role="group" aria-label="Data Allowance">
-          <span className="pilgrim-data-picker__label">Data Allowance</span>
+        <div className="pilgrim-data-picker" role="group" aria-label={dict.pilgrimagePage.dataAllowance}>
+          <span className="pilgrim-data-picker__label">{dict.pilgrimagePage.dataAllowance}</span>
           <div className="pilgrim-data-picker__options">
             {([10, 20] as const).map((gb) => {
               const variant =
@@ -236,7 +248,7 @@ function TierCard({
                 >
                   <span className="pilgrim-data-picker__gb">{gb} GB</span>
                   <span className="pilgrim-data-picker__meta">
-                    {variant.durationDays ?? 30} days
+                    {t(dict, "pilgrimagePage.daysShort", { n: variant.durationDays ?? 30 })}
                   </span>
                 </button>
               );
@@ -246,8 +258,8 @@ function TierCard({
       )}
 
       {isUnlimited && (
-        <div className="pilgrim-data-picker" role="group" aria-label="Trip Length">
-          <span className="pilgrim-data-picker__label">Trip Length</span>
+        <div className="pilgrim-data-picker" role="group" aria-label={dict.pilgrimagePage.tripLength}>
+          <span className="pilgrim-data-picker__label">{dict.pilgrimagePage.tripLength}</span>
           <div
             className={`pilgrim-data-picker__options${unlimitedDays.length > 2 ? " pilgrim-data-picker__options--triple" : ""}`}
           >
@@ -264,7 +276,9 @@ function TierCard({
                     onUmrahUnlimitedDaysChange(days);
                   }}
                 >
-                  <span className="pilgrim-data-picker__gb">{days} days</span>
+                  <span className="pilgrim-data-picker__gb">
+                    {t(dict, "pilgrimagePage.daysShort", { n: days })}
+                  </span>
                   <span className="pilgrim-data-picker__meta">3GB/day</span>
                 </button>
               );
@@ -288,7 +302,7 @@ function TierCard({
           onSelect();
         }}
       >
-        {selected ? "Selected" : "Select Plan"}
+        {selected ? dict.pilgrimagePage.selected : dict.pilgrimagePage.selectPlan}
       </button>
     </article>
   );
@@ -315,6 +329,9 @@ export function PilgrimSelectionPage({
   initialPromo = "",
   initialRef = "",
 }: PilgrimSelectionPageProps) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const pil = dict.pilgrimagePage;
   const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
   const [refCode, setRefCode] = useState(() => normalizeRefCode(initialRef));
   const [tiers, setTiers] = useState<PilgrimTierOffer[]>(() =>
@@ -408,7 +425,7 @@ export function PilgrimSelectionPage({
         setRoutePacks(resolvePilgrimRoutePacks(me?.plans ?? []));
 
         if (resolved.length === 0) {
-          setError("No pilgrimage plans are available for Saudi Arabia yet.");
+          setError(ERROR_NO_PLANS);
         }
       } catch (err: unknown) {
         console.error("[PilgrimSelectionPage] Load failed:", {
@@ -419,11 +436,7 @@ export function PilgrimSelectionPage({
 
         setTiers([]);
         setRoutePacks(resolvePilgrimRoutePacks([]));
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to load plans. The service may be temporarily unavailable.",
-        );
+        setError(err instanceof Error ? err.message : ERROR_LOAD_FAILED);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -470,28 +483,20 @@ export function PilgrimSelectionPage({
     umrahUnlimitedDays,
   ]);
 
-  const activePlanLabel = useMemo(() => {
-    if (!purchaseFocus || !activePlan) return "";
+  let activePlanLabel = "";
+  if (purchaseFocus && activePlan) {
     if (purchaseFocus === "route") {
-      return brandedRoutePlanName(activeRouteMeta, activeRoutePlan);
+      activePlanLabel = brandedRoutePlanName(activeRouteMeta, activeRoutePlan);
+    } else if (activeTier) {
+      if (activeTier.key === "connected") {
+        activePlanLabel = `${activeTier.title} · ${connectedDataGb}GB`;
+      } else if (activeTier.key === "unlimited") {
+        activePlanLabel = `${activeTier.title} · ${t(dict, "pilgrimagePage.daysShort", { n: umrahUnlimitedDays })}`;
+      } else {
+        activePlanLabel = activeTier.title;
+      }
     }
-    if (!activeTier) return "";
-    if (activeTier.key === "connected") {
-      return `${activeTier.title} · ${connectedDataGb}GB`;
-    }
-    if (activeTier.key === "unlimited") {
-      return `${activeTier.title} · ${umrahUnlimitedDays} days`;
-    }
-    return activeTier.title;
-  }, [
-    purchaseFocus,
-    activePlan,
-    activeRouteMeta,
-    activeRoutePlan,
-    activeTier,
-    connectedDataGb,
-    umrahUnlimitedDays,
-  ]);
+  }
 
   const checkoutHref = useMemo(() => {
     if (!activePlan) return "#";
@@ -543,37 +548,33 @@ export function PilgrimSelectionPage({
     <>
       <SiteHeader />
       <main className="pilgrim-page plans-page">
-        <CountryPlansHero src={countryImage} alt="Saudi Arabia pilgrimage destination">
+        <CountryPlansHero src={countryImage} alt={pil.heroAlt}>
           <Breadcrumbs
             onDark
             items={[
-              { href: "/", label: "Home" },
-              { href: "/destinations", label: "Destinations" },
-              { label: "Hajj & Umrah" },
+              { href: "/", label: dict.common.home },
+              { href: "/destinations", label: dict.nav.destinations },
+              { label: dict.nav.hajjUmrah },
             ]}
           />
           <header className="plans-page__header">
             <div className="plans-page__brand">
               <span className="plans-page__eyebrow">{PILGRIMAGE_BRAND_LINE}</span>
-              <p className="plans-page__tagline">
-                Umrah eSIM and Hajj eSIM for Saudi Arabia — install before you fly,
-                stay connected in Makkah and Madinah.
-              </p>
+              <p className="plans-page__tagline">{pil.tagline}</p>
             </div>
             <div className="plans-page__search-wrap">
-              <CountrySearch placeholder="Search for another country..." />
+              <CountrySearch placeholder={dict.plansPage.searchOther} />
             </div>
             <h1 className="plans-page__destination">
               <span className="plans-page__destination-flag" aria-hidden="true">
                 🇸🇦
               </span>
               <span className="plans-page__destination-name">
-                Umrah eSIM &amp; Hajj eSIM for Makkah and Madinah
+                {pil.headline}
               </span>
             </h1>
             <p className="plans-page__regional-sub">
-              Saudi Arabia travel eSIM · Hotspot included · Free phone check · 24/7
-              WhatsApp support
+              {pil.regionalSub}
             </p>
           </header>
         </CountryPlansHero>
@@ -584,11 +585,13 @@ export function PilgrimSelectionPage({
               <div className="plans-trust">
                 <div className="plans-trust__copy">
                   <p className="plans-trust__network">
-                    Umrah &amp; Hajj coverage · Makkah &amp; Madinah ready
+                    {pil.trustNetwork}
                   </p>
                   <p className="plans-trust__meta">
-                    Install before you fly
-                    {cheapest != null ? ` · From $${cheapest.toFixed(2)}` : ""}
+                    {dict.common.installBeforeFly}
+                    {cheapest != null
+                      ? ` · ${t(dict, "destinationsPage.fromPrice", { price: `$${cheapest.toFixed(2)}` })}`
+                      : ""}
                   </p>
                 </div>
                 <button
@@ -597,35 +600,30 @@ export function PilgrimSelectionPage({
                   onClick={() => setCompatibilityOpen(true)}
                 >
                   <PhoneDeviceIcon className="plans-trust__compat-phone" />
-                  Free phone check
+                  {dict.home.ctaPhoneCheck}
                 </button>
               </div>
 
               <TrustProofBanner className="trust-proof-banner--pilgrim" />
 
               <div className="plans-reassurance">
-                <span>Ready Before You Fly</span>
-                <span>We&apos;ve Got You Covered</span>
-                <span>24/7 WhatsApp Support</span>
+                <span>{pil.reassurance1}</span>
+                <span>{pil.reassurance2}</span>
+                <span>{pil.reassurance3}</span>
               </div>
 
               <PilgrimCarrierRow />
 
               <PilgrimageInspiration />
 
-              <h2 className="plans-picker__title">Choose your Umrah or Hajj eSIM plan</h2>
-              <p className="plans-picker__hint">
-                Tap a plan to select it, then continue from the bar below. Fixed
-                Saudi packs or honest day-pass unlimited (3GB/day, then 1 Mbps).
-                The price you see is the price you pay — hotspot included on every
-                plan.
-              </p>
+              <h2 className="plans-picker__title">{pil.pickerTitle}</h2>
+              <p className="plans-picker__hint">{pil.pickerHint}</p>
             </>
           )}
 
           {loading && (
             <div className="pilgrim-page__loading" aria-busy="true" aria-live="polite">
-              <p className="pilgrim-page__loading-text">Loading Plans…</p>
+              <p className="pilgrim-page__loading-text">{pil.loadingPlans}</p>
               <div className="pilgrim-grid pilgrim-grid--skeleton" aria-hidden="true">
                 {Array.from({ length: 3 }).map((_, index) => (
                   <div key={index} className="pilgrim-card pilgrim-card--skeleton" />
@@ -636,20 +634,33 @@ export function PilgrimSelectionPage({
 
           {!loading && error && (
             <div className="pilgrim-page__error" role="alert">
-              <p className="pilgrim-page__error-title">Could Not Load Plans</p>
-              <p className="pilgrim-page__error-detail">{error}</p>
+              <p className="pilgrim-page__error-title">{pil.errorTitle}</p>
+              <p className="pilgrim-page__error-detail">
+                {error === ERROR_NO_PLANS
+                  ? pil.noPlans
+                  : error === ERROR_LOAD_FAILED
+                    ? dict.plansPage.loadError
+                    : error}
+              </p>
               <p className="pilgrim-page__error-hint">
-                Please try again shortly, or{" "}
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>message us on WhatsApp</a>.
+                {renderTemplate(pil.errorHint, {
+                  whatsapp: (
+                    <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>
+                      {dict.ordersUi.messageWhatsApp}
+                    </a>
+                  ),
+                })}
               </p>
             </div>
           )}
 
           {!loading && !error && tiers.length > 0 && (
-            <section className="pilgrim-grid" aria-label="Travel profile plans">
+            <section className="pilgrim-grid" aria-label={pil.gridAria}>
               {tiers.map((tier) => (
                 <TierCard
                   key={tier.key}
+                  dict={dict}
+                  locale={locale}
                   tier={tier}
                   selected={purchaseFocus === "saudi" && selectedTier === tier.key}
                   connectedDataGb={connectedDataGb}
@@ -679,12 +690,9 @@ export function PilgrimSelectionPage({
               aria-labelledby="pilgrim-routes-title"
             >
               <h2 id="pilgrim-routes-title" className="pilgrim-routes__title">
-                Also Stopping in Turkey, Egypt, or Morocco?
+                {pil.routesTitle}
               </h2>
-              <p className="pilgrim-routes__hint">
-                One eSIM for your travel stop and your Hajj or Umrah — GCC coverage
-                included as a bonus. Pick the route that matches your trip.
-              </p>
+              <p className="pilgrim-routes__hint">{pil.routesHint}</p>
               <div className="pilgrim-routes__grid">
                 {PILGRIM_ROUTE_META.map((route) => {
                   const selected =
@@ -707,10 +715,10 @@ export function PilgrimSelectionPage({
                       role="button"
                       tabIndex={0}
                       aria-pressed={selected}
-                      aria-label={`Select ${route.title}`}
+                      aria-label={t(dict, "pilgrimagePage.selectAria", { title: route.title })}
                     >
                       {selected && routePack === "premium" && (
-                        <span className="pilgrim-card__badge">Best for Multi-Day</span>
+                        <span className="pilgrim-card__badge">{pil.bestMultiDay}</span>
                       )}
                       <p className="pilgrim-card__tier">{route.subtitle}</p>
                       <h3 className="pilgrim-card__title">
@@ -730,9 +738,9 @@ export function PilgrimSelectionPage({
                       <div
                         className="pilgrim-data-picker"
                         role="group"
-                        aria-label={`${route.title} data allowance`}
+                        aria-label={`${route.title} — ${pil.dataAllowance}`}
                       >
-                        <span className="pilgrim-data-picker__label">Data Allowance</span>
+                        <span className="pilgrim-data-picker__label">{pil.dataAllowance}</span>
                         <div className="pilgrim-data-picker__options">
                           {([
                             ["plus", routePacks.plus] as const,
@@ -757,8 +765,9 @@ export function PilgrimSelectionPage({
                                   {variant.dataGb ?? (key === "plus" ? 5 : 10)} GB
                                 </span>
                                 <span className="pilgrim-data-picker__meta">
-                                  {variant.durationDays ?? (key === "plus" ? 15 : 30)}{" "}
-                                  days
+                                  {t(dict, "pilgrimagePage.daysShort", {
+                                    n: variant.durationDays ?? (key === "plus" ? 15 : 30),
+                                  })}
                                 </span>
                               </button>
                             );
@@ -786,7 +795,7 @@ export function PilgrimSelectionPage({
                           setSelectedRoute(route.key);
                         }}
                       >
-                        {selected ? "Selected" : "Select Plan"}
+                        {selected ? dict.pilgrimagePage.selected : dict.pilgrimagePage.selectPlan}
                       </button>
                     </article>
                   );
@@ -798,7 +807,7 @@ export function PilgrimSelectionPage({
           {!loading && !error && tiers.length > 0 && (
             <div className="pilgrim-support-cta">
               <p className="pilgrim-support-cta__text">
-                Not sure which plan to pick? Our team helps pilgrims every day.
+                {pil.supportCtaText}
               </p>
               <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(HAJJ_WHATSAPP_MESSAGE)}`}
@@ -806,22 +815,21 @@ export function PilgrimSelectionPage({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Ask on WhatsApp
+                {pil.askWhatsApp}
               </a>
             </div>
           )}
 
           {activePlan && (
             <p className="pilgrim-install-note">
-              Install on Wi‑Fi before you fly. Your data package starts when the eSIM
-              connects in a covered country — not at checkout.
+              {pil.installNote}
             </p>
           )}
 
           {activePlan && (
             <div className="pilgrim-desktop-cta">
               <div>
-                <p className="pilgrim-desktop-cta__label">Your Selection</p>
+                <p className="pilgrim-desktop-cta__label">{pil.yourSelection}</p>
                 <p className="pilgrim-desktop-cta__plan">{activePlanLabel}</p>
               </div>
               <div className="pilgrim-desktop-cta__price">
@@ -834,7 +842,7 @@ export function PilgrimSelectionPage({
                 href={checkoutHref}
                 className="pilgrim-desktop-cta__button"
               >
-                Continue to Checkout
+                {pil.continueCheckout}
               </a>
             </div>
           )}
@@ -844,12 +852,9 @@ export function PilgrimSelectionPage({
             aria-labelledby="pilgrim-gift-downloads-title"
           >
             <h2 id="pilgrim-gift-downloads-title" className="pilgrim-gift-downloads__title">
-              Download Before You Fly
+              {pil.giftTitle}
             </h2>
-            <p className="pilgrim-gift-downloads__text">
-              Free al-Haramayn guides for your phone — also included with your
-              pilgrimage eSIM purchase. Not required to use your plan.
-            </p>
+            <p className="pilgrim-gift-downloads__text">{pil.giftText}</p>
             <ul className="pilgrim-gift-downloads__list">
               {PILGRIM_GIFT_GUIDES.map((guide) => (
                 <li key={guide.id}>
@@ -946,9 +951,9 @@ export function PilgrimSelectionPage({
         </div>
 
         {activePlan && (
-          <div className="pilgrim-sticky-cta" role="region" aria-label="Purchase">
+          <div className="pilgrim-sticky-cta" role="region" aria-label={pil.purchaseAria}>
             <div className="pilgrim-sticky-cta__meta">
-              <span className="pilgrim-sticky-cta__label">Selected Plan</span>
+              <span className="pilgrim-sticky-cta__label">{pil.selectedPlan}</span>
               <span className="pilgrim-sticky-cta__plan">{activePlanLabel}</span>
               <PsychologicalPrice
                 parts={stickyParts}
@@ -959,7 +964,7 @@ export function PilgrimSelectionPage({
               href={checkoutHref}
               className="pilgrim-sticky-cta__button"
             >
-              Continue
+              {dict.common.continue}
             </a>
           </div>
         )}

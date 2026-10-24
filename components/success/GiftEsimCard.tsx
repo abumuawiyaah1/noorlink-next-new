@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type Props = {
   buyerEmail?: string | null;
@@ -19,6 +22,9 @@ export function GiftEsimCard({
   price,
   flag,
 }: Props) {
+  const [locale] = useLocaleState();
+  const g = getDictionary(locale).successPage.giftEsim;
+
   const canGift = Boolean(
     buyerEmail?.includes("@") && packageId && country && price && price > 0,
   );
@@ -31,24 +37,19 @@ export function GiftEsimCard({
   if (price != null) giftParams.set("price", String(price));
   if (flag) giftParams.set("flag", flag);
 
-  const giftHref = `/gift?${giftParams.toString()}`;
+  const giftHref = `${localizedPath("/gift", locale)}?${giftParams.toString()}`;
 
   return (
     <div className="loyalty-card card-gift-esim">
-      <p className="gift-esim-kicker">Send a trip gift</p>
-      <h2 className="gift-esim-title">Know someone traveling too?</h2>
-      <p className="gift-esim-copy">
-        Pick a plan, add a short message — they get the eSIM by email, ready to
-        install before they fly.
-      </p>
+      <p className="gift-esim-kicker">{g.kicker}</p>
+      <h2 className="gift-esim-title">{g.title}</h2>
+      <p className="gift-esim-copy">{g.copy}</p>
       {canGift ? (
         <Link href={giftHref} className="btn-nav btn-nav--accent gift-esim-cta">
-          Gift an eSIM
+          {g.cta}
         </Link>
       ) : (
-        <p className="gift-note">
-          Your gift link will appear once your order details load.
-        </p>
+        <p className="gift-note">{g.waiting}</p>
       )}
     </div>
   );

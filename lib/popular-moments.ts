@@ -1,3 +1,9 @@
+import type { Locale } from "@/lib/i18n/config";
+import {
+  localizedDefaultStoryCopy,
+  localizedFestivityCopy,
+  localizedSeasonStoryCopy,
+} from "@/lib/i18n/popular-stories";
 import { getCountryImageUrl } from "@/lib/country-images";
 import type { PopularSeasonId } from "@/lib/popular-countries";
 
@@ -160,11 +166,6 @@ const SEASON_STORIES: Record<
   },
 };
 
-const DEFAULT_TIPS: [string, string] = [
-  "Explore the old city on foot",
-  "Save an evening for a local meal out",
-];
-
 function dayOfYear(month: number, day: number): number {
   return month * 100 + day;
 }
@@ -209,32 +210,44 @@ export function getPopularStory(
   countryId: string,
   seasonId: PopularSeasonId,
   date: Date = new Date(),
+  locale: Locale | string = "en",
 ): PopularStory {
   const festivity = festivityForCountry(countryId, date);
   if (festivity) {
+    const copy =
+      localizedFestivityCopy(festivity.id, locale) ?? {
+        reason: festivity.reason,
+        tips: festivity.tips,
+      };
     return {
       countryId,
-      reason: festivity.reason,
-      tips: festivity.tips,
+      reason: copy.reason,
+      tips: copy.tips,
       image: festivity.image ?? getCountryImageUrl(countryId),
-      momentLabel: festivity.reason,
+      momentLabel: copy.reason,
     };
   }
 
   const seasonal = SEASON_STORIES[seasonId]?.[countryId];
   if (seasonal) {
+    const copy =
+      localizedSeasonStoryCopy(seasonId, countryId, locale) ?? {
+        reason: seasonal.reason,
+        tips: seasonal.tips,
+      };
     return {
       countryId,
-      reason: seasonal.reason,
-      tips: seasonal.tips,
+      reason: copy.reason,
+      tips: copy.tips,
       image: getCountryImageUrl(countryId),
     };
   }
 
+  const fallback = localizedDefaultStoryCopy(locale);
   return {
     countryId,
-    reason: "Popular right now",
-    tips: DEFAULT_TIPS,
+    reason: fallback.reason,
+    tips: fallback.tips,
     image: getCountryImageUrl(countryId),
   };
 }

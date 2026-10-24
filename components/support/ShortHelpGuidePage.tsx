@@ -4,6 +4,9 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/help-pages.css";
 
 export type ShortHelpGuideSection = {
@@ -28,13 +31,19 @@ export function ShortHelpGuidePage({
   primaryCta,
   secondaryCta,
 }: ShortHelpGuidePageProps) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+
   return (
     <>
       <SiteHeader />
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { href: "/support", label: "Support" },
+          { href: localizedPath("/", locale), label: dict.common.home },
+          {
+            href: localizedPath("/support", locale),
+            label: dict.common.support,
+          },
           { label: breadcrumbLabel },
         ]}
       />
@@ -55,11 +64,17 @@ export function ShortHelpGuidePage({
           ))}
 
           <div className="help-guide-cta">
-            <Link href={primaryCta.href} className="help-guide-cta__primary">
+            <Link
+              href={localizedPath(primaryCta.href, locale)}
+              className="help-guide-cta__primary"
+            >
               {primaryCta.label}
             </Link>
             {secondaryCta ? (
-              <Link href={secondaryCta.href} className="help-guide-cta__secondary">
+              <Link
+                href={localizedPath(secondaryCta.href, locale)}
+                className="help-guide-cta__secondary"
+              >
                 {secondaryCta.label}
               </Link>
             ) : null}

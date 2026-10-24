@@ -16,9 +16,10 @@ import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
 import { RegionFlagPreview } from "@/components/ui/RegionFlagPreview";
 import { getCountryFlag } from "@/lib/country-flags";
 import {
-  PENDING_PRICE_LABEL,
   useLiveStartingPrices,
 } from "@/components/destinations/useLiveStartingPrices";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { getRegionalProductByApiId } from "@/lib/regional-products";
 import { fetchTrendingCountrySignals } from "@/lib/analytics-api";
 import {
@@ -38,15 +39,6 @@ import {
   withAttribution,
 } from "@/lib/affiliate-link";
 
-const DESTINATIONS_NAV = [
-  { href: "/about", label: "About" },
-  { href: "/newsletter", label: "Newsletter Archive" },
-  { href: "/destinations", label: "Destinations" },
-  { href: "/support", label: "Support" },
-  { href: "/partners#apply", label: "Partners" },
-  { href: "/dashboard", label: "My eSIMs", highlight: true },
-];
-
 type Props = {
   initialQuery?: string;
   initialRegion?: DestinationFilterId;
@@ -61,6 +53,8 @@ export function ModernDestinationsPage({
   initialRef = "",
 }: Props) {
   const router = useRouter();
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const [query, setQuery] = useState(initialQuery);
   const [region, setRegion] = useState<DestinationFilterId>(initialRegion);
   const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
@@ -108,26 +102,25 @@ export function ModernDestinationsPage({
     if (region === "all" && !trimmed) return trendingCards;
     return filterDestinationCards(query, region);
   }, [query, region, trendingCards]);
+  const showPopularTitle = region === "all" && !query.trim();
   const livePrices = useLiveStartingPrices(
     cards.map((card) => card.priceCountryId),
   );
 
   return (
     <>
-      <SiteHeader nav={DESTINATIONS_NAV} />
+      <SiteHeader />
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { label: "Destinations" },
+          { href: "/", label: t(dict, "common.home") },
+          { label: t(dict, "nav.destinations") },
         ]}
       />
 
       <div className="page-header">
         <div className="container">
-          <h1>Find Your Destination</h1>
-          <p style={{ opacity: 0.8 }}>
-            The price you see is the price you pay.
-          </p>
+          <h1>{t(dict, "destinationsPage.title")}</h1>
+          <p style={{ opacity: 0.8 }}>{t(dict, "destinationsPage.priceNote")}</p>
         </div>
       </div>
 
@@ -144,18 +137,18 @@ export function ModernDestinationsPage({
           <input
             type="search"
             value={query}
-            placeholder="Search for a country..."
-            aria-label="Search destinations"
+            placeholder={t(dict, "destinationsPage.searchPlaceholder")}
+            aria-label={t(dict, "destinationsPage.searchPlaceholder")}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <button type="submit" className="search-btn" aria-label="Search">
+          <button type="submit" className="search-btn" aria-label={t(dict, "common.search")}>
             🔍
           </button>
         </form>
       </div>
 
       <div className="container">
-        <div className="filter-bar" role="tablist" aria-label="Filter by region">
+        <div className="filter-bar" role="tablist" aria-label={t(dict, "destinationsPage.filterAria")}>
           {DESTINATION_FILTERS.map((filter) => (
             <button
               key={filter.id}
@@ -165,15 +158,27 @@ export function ModernDestinationsPage({
               className={`filter-btn${region === filter.id ? " active" : ""}`}
               onClick={() => setRegion(filter.id)}
             >
-              {filter.id === "all" ? `🔥 ${filter.label}` : filter.label}
+              {filter.id === "all"
+                ? `🔥 ${t(dict, `destinationsPage.filters.${filter.id}`)}`
+                : t(dict, `destinationsPage.filters.${filter.id}`)}
             </button>
           ))}
         </div>
 
+        {showPopularTitle && (
+          <h2 className="dest-popular-title">
+            {t(dict, "destinationsPage.popularTitle")}
+          </h2>
+        )}
+
         <div className="dest-grid">
           {cards.map((card, index) => {
             const livePrice = livePrices[card.priceCountryId];
-            const priceLabel = livePrice?.label ?? PENDING_PRICE_LABEL;
+            const priceLabel = livePrice
+              ? t(dict, "destinationsPage.fromPrice", {
+                  price: `$${livePrice.amount.toFixed(2)}`,
+                })
+              : t(dict, "destinationsPage.seePlans");
             const regional = getRegionalProductByApiId(card.priceCountryId);
 
             return (
@@ -183,8 +188,8 @@ export function ModernDestinationsPage({
                 className={`card ${card.className}${regional ? " region-card" : ""}`}
                 aria-label={
                   regional
-                    ? `View ${card.title} regional plans and covered countries, ${priceLabel}`
-                    : `View plans for ${card.title}, ${priceLabel}`
+                    ? `${t(dict, "destinationsPage.seePlans")}: ${card.title}, ${priceLabel}`
+                    : `${t(dict, "destinationsPage.seePlans")}: ${card.title}, ${priceLabel}`
                 }
               >
                 <DestinationCardMedia
@@ -222,7 +227,7 @@ export function ModernDestinationsPage({
 
         {cards.length === 0 && (
           <p style={{ textAlign: "center", padding: "2rem 0", opacity: 0.75 }}>
-            No destinations match your search. Try another region or keyword.
+            {t(dict, "destinationsPage.empty")}
           </p>
         )}
       </div>

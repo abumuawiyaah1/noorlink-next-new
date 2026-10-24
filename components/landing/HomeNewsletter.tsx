@@ -1,9 +1,14 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { subscribeInsider } from "@/lib/newsletter-api";
 
 export function HomeNewsletter() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const n = dict.newsletter;
   const [email, setEmail] = useState("");
   const [destination, setDestination] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -24,8 +29,7 @@ export function HomeNewsletter() {
     if (result.success) {
       setStatus("sent");
       setMessage(
-        result.message ??
-          "You’re on the Insider list. Monthly guides and timed deals — no spam.",
+        result.message ?? n.success,
       );
       setEmail("");
       setDestination("");
@@ -33,7 +37,7 @@ export function HomeNewsletter() {
     }
 
     setStatus("error");
-    setMessage(result.error ?? "Could not join right now. Try support instead.");
+    setMessage(result.error ?? n.error);
   }
 
   return (
@@ -41,24 +45,21 @@ export function HomeNewsletter() {
       <div className="container">
         <div className="newsletter-box">
           <div className="news-text">
-            <div className="news-kicker">NoorLink Insider</div>
-            <h2>Travel updates, not inbox noise.</h2>
-            <p>
-              Destination guides, Hajj &amp; Umrah reminders, and occasional plan
-              updates. Unsubscribe anytime.
-            </p>
+            <div className="news-kicker">{n.kicker}</div>
+            <h2>{n.title}</h2>
+            <p>{n.lede}</p>
             <div className="news-perks">
               <div className="perk">
                 <i className="fas fa-check-circle" aria-hidden="true" />
-                Destination guides
+                {n.perk1}
               </div>
               <div className="perk">
                 <i className="fas fa-check-circle" aria-hidden="true" />
-                Hajj &amp; Umrah notes
+                {n.perk2}
               </div>
               <div className="perk">
                 <i className="fas fa-check-circle" aria-hidden="true" />
-                Plan &amp; delivery tips
+                {n.perk3}
               </div>
             </div>
           </div>
@@ -66,13 +67,13 @@ export function HomeNewsletter() {
             <form onSubmit={(event) => void handleSubmit(event)}>
               <div className="news-input-group">
                 <label className="news-label" htmlFor="insider-email">
-                  Your email
+                  {n.emailLabel}
                 </label>
                 <input
                   id="insider-email"
                   type="email"
                   className="news-input"
-                  placeholder="you@example.com"
+                  placeholder={n.emailPlaceholder}
                   required
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
@@ -80,7 +81,7 @@ export function HomeNewsletter() {
               </div>
               <div className="news-input-group">
                 <label className="news-label" htmlFor="dreamDest">
-                  Next trip (optional)
+                  {n.tripLabel}
                 </label>
                 <select
                   id="dreamDest"
@@ -88,11 +89,11 @@ export function HomeNewsletter() {
                   value={destination}
                   onChange={(event) => setDestination(event.target.value)}
                 >
-                  <option value="">Select a region…</option>
-                  <option value="Umrah">Umrah / Hajj</option>
-                  <option value="Europe">Europe</option>
-                  <option value="Asia">Asia</option>
-                  <option value="Americas">Americas</option>
+                  <option value="">{n.tripSelect}</option>
+                  <option value="Umrah">{n.tripUmrah}</option>
+                  <option value="Europe">{n.tripEurope}</option>
+                  <option value="Asia">{n.tripAsia}</option>
+                  <option value="Americas">{n.tripAmericas}</option>
                 </select>
               </div>
               <button
@@ -100,7 +101,7 @@ export function HomeNewsletter() {
                 className="news-btn"
                 disabled={status === "sending"}
               >
-                {status === "sending" ? "Joining…" : "Join Insider"}
+                {status === "sending" ? n.joining : n.join}
                 <i className="fas fa-arrow-right" aria-hidden="true" />
               </button>
               {message && (
@@ -112,8 +113,8 @@ export function HomeNewsletter() {
                 </p>
               )}
               <p className="news-privacy">
-                We respect your privacy.{" "}
-                <a href="/unsubscribe">Unsubscribe</a> anytime.
+                {n.privacy}{" "}
+                <a href="/unsubscribe">{n.unsubscribe}</a> {n.anytime}
               </p>
             </form>
           </div>

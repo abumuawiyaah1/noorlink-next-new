@@ -9,6 +9,8 @@ import {
 import { loadStripe, type StripeExpressCheckoutElementConfirmEvent } from "@stripe/stripe-js";
 import { useEffect, useMemo, useState } from "react";
 import { API_BASE } from "@/lib/api-client";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { createTopUpPaymentIntent } from "@/lib/orders-api";
 import type { TopUpPayPalSelection } from "@/components/orders/TopUpPayPalButton";
 
@@ -47,6 +49,7 @@ function TopUpExpressInner({
   disabled,
   onBusy,
   onError,
+  loadingLabel,
 }: {
   orderNumber: string;
   email: string;
@@ -54,6 +57,7 @@ function TopUpExpressInner({
   disabled?: boolean;
   onBusy?: (busy: boolean) => void;
   onError?: (message: string) => void;
+  loadingLabel: string;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -142,7 +146,7 @@ function TopUpExpressInner({
         onConfirm={onConfirm}
       />
       {!ready ? (
-        <p className="order-usage__fine-print">Loading Apple Pay / Google Pay…</p>
+        <p className="order-usage__fine-print">{loadingLabel}</p>
       ) : null}
     </div>
   );
@@ -157,6 +161,8 @@ export function TopUpExpressWallets({
   onBusy,
   onError,
 }: Props) {
+  const [locale] = useLocaleState();
+  const c = getDictionary(locale).checkout;
   const [stripe, setStripe] = useState<Awaited<ReturnType<typeof loadStripe>>>(null);
   const [loadError, setLoadError] = useState(false);
 
@@ -194,12 +200,14 @@ export function TopUpExpressWallets({
   }
 
   if (!stripe) {
-    return <p className="order-usage__fine-print">Loading Apple Pay / Google Pay…</p>;
+    return (
+      <p className="order-usage__fine-print">{c.loadingAppleGoogle}</p>
+    );
   }
 
   return (
     <div className="order-topup__express">
-      <p className="order-topup__express-label">Express checkout</p>
+      <p className="order-topup__express-label">{c.expressCheckout}</p>
       <Elements stripe={stripe} options={options} key={amountCents}>
         <TopUpExpressInner
           orderNumber={orderNumber}
@@ -208,10 +216,11 @@ export function TopUpExpressWallets({
           disabled={disabled}
           onBusy={onBusy}
           onError={onError}
+          loadingLabel={c.loadingAppleGoogle}
         />
       </Elements>
       <div className="order-topup__express-divider">
-        <span>or pay another way</span>
+        <span>{c.orPayAnotherWay}</span>
       </div>
     </div>
   );

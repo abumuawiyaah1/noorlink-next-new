@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { fetchOrderSupportMessages, type SupportMessageItem } from "@/lib/orders-api";
 
 type OrderSupportThreadProps = {
@@ -9,6 +12,9 @@ type OrderSupportThreadProps = {
 };
 
 export function OrderSupportThread({ orderNumber, email }: OrderSupportThreadProps) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const ui = dict.ordersUi;
   const [messages, setMessages] = useState<SupportMessageItem[]>([]);
   const [ticketNumber, setTicketNumber] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -31,11 +37,17 @@ export function OrderSupportThread({ orderNumber, email }: OrderSupportThreadPro
     return null;
   }
 
+  const supportHref = `${localizedPath("/support", locale)}?email=${encodeURIComponent(email)}&orderId=${encodeURIComponent(orderNumber)}`;
+
   return (
     <div className="order-support-thread">
       <div className="order-usage__label-row">
-        <span>Support</span>
-        <strong>{ticketNumber ? `Ticket ${ticketNumber}` : "Messages"}</strong>
+        <span>{ui.supportLabel}</span>
+        <strong>
+          {ticketNumber
+            ? t(dict, "ordersUi.ticket", { n: ticketNumber })
+            : ui.messages}
+        </strong>
       </div>
       <ul className="order-support-thread__list">
         {messages.map((msg, index) => (
@@ -48,9 +60,13 @@ export function OrderSupportThread({ orderNumber, email }: OrderSupportThreadPro
             }
           >
             <div className="order-support-thread__meta">
-              <span>{msg.direction === "outbound" ? "NoorLink" : "You"}</span>
+              <span>
+                {msg.direction === "outbound" ? ui.noorlink : ui.you}
+              </span>
               {msg.createdAt ? (
-                <time dateTime={msg.createdAt}>{new Date(msg.createdAt).toLocaleString()}</time>
+                <time dateTime={msg.createdAt}>
+                  {new Date(msg.createdAt).toLocaleString()}
+                </time>
               ) : null}
             </div>
             <p>{msg.body}</p>
@@ -58,11 +74,9 @@ export function OrderSupportThread({ orderNumber, email }: OrderSupportThreadPro
         ))}
       </ul>
       <p className="order-usage__fine-print">
-        Reply by email to continue this thread, or use{" "}
-        <a href={`/support?email=${encodeURIComponent(email)}&orderId=${encodeURIComponent(orderNumber)}`}>
-          Support
-        </a>
-        .
+        {ui.replyByEmailBefore}{" "}
+        <a href={supportHref}>{ui.supportLabel}</a>
+        {ui.replyByEmailAfter}
       </p>
     </div>
   );

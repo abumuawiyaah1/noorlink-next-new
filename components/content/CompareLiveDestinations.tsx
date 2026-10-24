@@ -1,16 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import {
-  PENDING_PRICE_LABEL,
-  useLiveStartingPrices,
-} from "@/components/destinations/useLiveStartingPrices";
+import { useLiveStartingPrices } from "@/components/destinations/useLiveStartingPrices";
 import { getCountryFlag } from "@/lib/country-flags";
 import { DESTINATION_CARDS } from "@/lib/destinations-catalog";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 const COMPARE_DESTINATION_IDS = ["saudi-arabia", "turkey", "egypt"] as const;
 
 export function CompareLiveDestinations() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const c = dict.comparePage;
+
   const cards = COMPARE_DESTINATION_IDS.map((id) =>
     DESTINATION_CARDS.find((card) => card.id === id),
   ).filter((card): card is (typeof DESTINATION_CARDS)[number] => Boolean(card));
@@ -26,14 +30,9 @@ export function CompareLiveDestinations() {
       aria-labelledby="esim-compare-plans-heading"
     >
       <div className="content-section-head">
-        <span className="content-kicker">Live starting prices</span>
-        <h2 id="esim-compare-plans-heading">
-          See what NoorLink plans start at
-        </h2>
-        <p>
-          Real “From” prices for popular trips — Saudi (Hajj &amp; Umrah),
-          Turkey, and Egypt. Tap through to pick a pack.
-        </p>
+        <span className="content-kicker">{c.liveKicker}</span>
+        <h2 id="esim-compare-plans-heading">{c.liveTitle}</h2>
+        <p>{c.liveLede}</p>
       </div>
 
       <div className="esim-compare-plans__grid">
@@ -41,26 +40,27 @@ export function CompareLiveDestinations() {
           const price =
             livePrices[card.priceCountryId]?.label ??
             card.priceLabel ??
-            PENDING_PRICE_LABEL;
+            dict.common.seePlans;
           const hasLive = Boolean(livePrices[card.priceCountryId]);
           const flag = getCountryFlag(card.priceCountryId);
+          const blurb =
+            card.id === "saudi-arabia" ? c.saudiBlurb : card.description;
 
           return (
             <Link
               key={card.id}
-              href={card.href}
+              href={localizedPath(card.href, locale)}
               className="esim-compare-plans__card"
-              aria-label={`${card.title} plans, ${price}`}
+              aria-label={t(dict, "comparePage.plansAria", {
+                title: card.title,
+                price,
+              })}
             >
               <span className="esim-compare-plans__flag" aria-hidden="true">
                 {flag}
               </span>
               <strong>{card.title}</strong>
-              <span className="esim-compare-plans__blurb">
-                {card.id === "saudi-arabia"
-                  ? "Pilgrimage plans for Makkah & Madinah"
-                  : card.description}
-              </span>
+              <span className="esim-compare-plans__blurb">{blurb}</span>
               <span
                 className={`esim-compare-plans__price${hasLive ? "" : " is-pending"}`}
               >
@@ -72,7 +72,9 @@ export function CompareLiveDestinations() {
       </div>
 
       <p className="esim-compare-plans__more">
-        <Link href="/destinations">Browse all destinations →</Link>
+        <Link href={localizedPath("/destinations", locale)}>
+          {c.browseAllDestinations}
+        </Link>
       </p>
     </section>
   );

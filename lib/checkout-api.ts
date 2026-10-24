@@ -14,6 +14,7 @@ export type CheckoutSessionPayload = {
   affiliateRef?: string;
   wantsTopUp?: boolean;
   isGift?: boolean;
+  language?: string;
   gift?: {
     recipientEmail: string;
     recipientName: string;
@@ -57,6 +58,7 @@ export async function createCheckoutSession(
   if (payload.promoCode) body.promoCode = payload.promoCode.trim().toUpperCase();
   if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef.trim().toUpperCase();
   if (payload.wantsTopUp) body.wantsTopUp = true;
+  if (payload.language) body.language = payload.language;
   if (payload.isGift) {
     body.isGift = true;
     if (payload.gift) body.gift = payload.gift;

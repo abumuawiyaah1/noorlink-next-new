@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { API_BASE } from "@/lib/api-client";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import {
   captureTopUpPayPal,
   createTopUpPayPalOrder,
@@ -47,6 +49,8 @@ export function TopUpPayPalButton({
   onError,
   onBusy,
 }: Props) {
+  const [locale] = useLocaleState();
+  const c = getDictionary(locale).checkout;
   const hostRef = useRef<HTMLDivElement | null>(null);
   const selectionRef = useRef(selection);
   const disabledRef = useRef(disabled);
@@ -191,7 +195,7 @@ export function TopUpPayPalButton({
   return (
     <div className="order-topup__paypal">
       {status === "loading" ? (
-        <p className="order-usage__fine-print">Loading PayPal…</p>
+        <p className="order-usage__fine-print">{c.loadingPayPal}</p>
       ) : null}
       <div ref={hostRef} className="order-topup__paypal-host" />
     </div>

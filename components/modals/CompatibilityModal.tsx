@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { fetchCompatibleDevices, type DeviceBrand } from "@/lib/devices-api";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/compatibility-modal.css";
 
 type CompatibilityModalProps = {
@@ -10,6 +12,8 @@ type CompatibilityModalProps = {
 };
 
 export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps) {
+  const [locale] = useLocaleState();
+  const m = getDictionary(locale).compatModal;
   const [brands, setBrands] = useState<DeviceBrand[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,9 +34,7 @@ export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps)
       .catch((err: unknown) => {
         console.error("[CompatibilityModal] Load failed:", err);
         if (!cancelled) {
-          setError(
-            err instanceof Error ? err.message : "Could not load device list.",
-          );
+          setError(err instanceof Error ? err.message : m.loadError);
         }
       })
       .finally(() => {
@@ -42,7 +44,7 @@ export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps)
     return () => {
       cancelled = true;
     };
-  }, [isOpen]);
+  }, [isOpen, m.loadError]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -88,16 +90,14 @@ export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps)
         <div className="compatibility-modal__header">
           <div>
             <h2 id="compatibility-modal-title" className="compatibility-modal__title">
-              eSIM Compatibility Checker
+              {m.title}
             </h2>
-            <p className="compatibility-modal__subtitle">
-              Select your device brand and model to confirm support.
-            </p>
+            <p className="compatibility-modal__subtitle">{m.subtitle}</p>
           </div>
           <button
             type="button"
             className="compatibility-modal__close"
-            aria-label="Close"
+            aria-label={m.close}
             onClick={onClose}
           >
             ×
@@ -105,7 +105,7 @@ export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps)
         </div>
 
         {loading && (
-          <p className="compatibility-modal__loading">Loading devices…</p>
+          <p className="compatibility-modal__loading">{m.loading}</p>
         )}
 
         {error && !loading && (
@@ -116,7 +116,7 @@ export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps)
           <>
             <div className="compatibility-modal__field">
               <label className="compatibility-modal__label" htmlFor="compat-brand">
-                Select Brand
+                {m.selectBrand}
               </label>
               <select
                 id="compat-brand"
@@ -124,7 +124,7 @@ export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps)
                 value={brandId}
                 onChange={(e) => handleBrandChange(e.target.value)}
               >
-                <option value="">Choose a brand…</option>
+                <option value="">{m.chooseBrand}</option>
                 {brands.map((brand) => (
                   <option key={brand.id} value={brand.id}>
                     {brand.name}
@@ -135,7 +135,7 @@ export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps)
 
             <div className="compatibility-modal__field">
               <label className="compatibility-modal__label" htmlFor="compat-model">
-                Select Model
+                {m.selectModel}
               </label>
               <select
                 id="compat-model"
@@ -145,7 +145,7 @@ export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps)
                 onChange={(e) => setModelId(e.target.value)}
               >
                 <option value="">
-                  {selectedBrand ? "Choose a model…" : "Select a brand first"}
+                  {selectedBrand ? m.chooseModel : m.selectBrandFirst}
                 </option>
                 {selectedBrand?.models.map((model) => (
                   <option key={model.id} value={model.id}>
@@ -160,18 +160,18 @@ export function CompatibilityModal({ isOpen, onClose }: CompatibilityModalProps)
         {selectedModel && (
           <div className="compatibility-modal__status">
             <p className="compatibility-modal__status-title">
-              <span aria-hidden="true">✓</span> Success
+              <span aria-hidden="true">✓</span> {m.success}
             </p>
             <p className="compatibility-modal__status-text">
-              Your {selectedBrand?.name} {selectedModel.name} supports eSIM.
-              You&apos;re good to go with NoorLink.
+              {t(getDictionary(locale), "compatModal.successBody", {
+                brand: selectedBrand?.name ?? "",
+                model: selectedModel.name,
+              })}
             </p>
           </div>
         )}
 
-        <p className="compatibility-modal__note">
-          Note: Ensure your device is network unlocked to use an eSIM.
-        </p>
+        <p className="compatibility-modal__note">{m.note}</p>
       </div>
     </div>
   );

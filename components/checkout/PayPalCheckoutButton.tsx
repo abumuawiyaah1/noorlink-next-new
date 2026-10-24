@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 import { API_BASE } from "@/lib/api-client";
 import { attributionPayloadForCheckout } from "@/lib/attribution";
 import { debug, debugError } from "@/lib/debug";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { loadPayPalSdk, resolvePayPalConfig } from "@/lib/paypal-sdk";
 
 export type PayPalCheckoutPayload = {
@@ -16,6 +18,7 @@ export type PayPalCheckoutPayload = {
   promoCode?: string;
   affiliateRef?: string;
   wantsTopUp?: boolean;
+  language?: string;
 };
 
 type Props = {
@@ -37,6 +40,7 @@ function checkoutBody(payload: PayPalCheckoutPayload): Record<string, unknown> {
   if (payload.promoCode) body.promoCode = payload.promoCode;
   if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef;
   if (payload.wantsTopUp) body.wantsTopUp = true;
+  if (payload.language) body.language = payload.language;
   const attribution = attributionPayloadForCheckout();
   if (attribution) body.attribution = attribution;
   return body;
@@ -55,6 +59,8 @@ async function waitForHost(
 }
 
 export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
+  const [locale] = useLocaleState();
+  const c = getDictionary(locale).checkout;
   const hostRef = useRef<HTMLDivElement | null>(null);
   const payloadRef = useRef(payload);
   const disabledRef = useRef(disabled);
@@ -232,9 +238,9 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
 
   return (
     <div className="checkout-paypal">
-      <p className="checkout-express__label">Pay with PayPal</p>
+      <p className="checkout-express__label">{c.payWithPayPal}</p>
       {status === "loading" ? (
-        <p className="checkout-express__hint">Loading PayPal…</p>
+        <p className="checkout-express__hint">{c.loadingPayPal}</p>
       ) : null}
       <div ref={hostRef} className="checkout-paypal__host" />
     </div>

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { PartnerApplicationForm } from "@/components/partners/PartnerApplicationForm";
 import { PartnerLoginPanel } from "@/components/partners/PartnerLoginPanel";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/help-pages.css";
 
 type PortalMode = "apply" | "login";
@@ -14,6 +16,8 @@ function modeFromHash(): PortalMode {
 
 export function PartnersPortal() {
   const [mode, setMode] = useState<PortalMode>("apply");
+  const [locale] = useLocaleState();
+  const p = getDictionary(locale).partnersPage;
 
   useEffect(() => {
     setMode(modeFromHash());
@@ -21,7 +25,9 @@ export function PartnersPortal() {
     function onHashChange() {
       setMode(modeFromHash());
       if (window.location.hash === "#login" || window.location.hash === "#apply") {
-        document.getElementById("partner-portal")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document
+          .getElementById("partner-portal")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
 
@@ -38,12 +44,16 @@ export function PartnersPortal() {
   }
 
   return (
-    <section id="partner-portal" className="partner-portal" aria-labelledby="partner-portal-heading">
+    <section
+      id="partner-portal"
+      className="partner-portal"
+      aria-labelledby="partner-portal-heading"
+    >
       <div className="partner-portal__intro">
-        <h2 id="partner-portal-heading">Apply or sign in</h2>
+        <h2 id="partner-portal-heading">{p.portalTitle}</h2>
       </div>
 
-      <div className="partner-portal__tabs" role="tablist" aria-label="Partner options">
+      <div className="partner-portal__tabs" role="tablist" aria-label={p.portalTabsAria}>
         <button
           type="button"
           role="tab"
@@ -53,7 +63,7 @@ export function PartnersPortal() {
           className={mode === "apply" ? "is-active" : undefined}
           onClick={() => selectMode("apply")}
         >
-          Apply
+          {p.portalTabApply}
         </button>
         <button
           type="button"
@@ -64,7 +74,7 @@ export function PartnersPortal() {
           className={mode === "login" ? "is-active" : undefined}
           onClick={() => selectMode("login")}
         >
-          Sign in to your account
+          {p.portalTabLogin}
         </button>
       </div>
 

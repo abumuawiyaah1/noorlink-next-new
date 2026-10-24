@@ -1,6 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { SecureCheckoutTrust } from "@/components/ui/SecureCheckoutTrust";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type BenefitMedia =
   | { type: "image"; src: string; alt: string }
@@ -87,22 +91,27 @@ function WhyCardMedia({ media }: { media: BenefitMedia }) {
 }
 
 export function WhyNoorLink() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+
   return (
     <section className="why-section" aria-labelledby="why-heading">
       <div className="container">
         <div className="why-header">
-          <span className="why-kicker">Why NoorLink</span>
-          <h2 id="why-heading">Install before you fly. Connect when you land.</h2>
-          <p>Maps, messages, and hotspot — no airport SIM swap.</p>
+          <span className="why-kicker">{dict.why.kicker}</span>
+          <h2 id="why-heading">
+            {dict.common.installBeforeFly}. {dict.why.titleSuffix}
+          </h2>
+          <p>{dict.why.lede}</p>
         </div>
 
         <div className="why-grid">
-          {BENEFITS.map((benefit) => (
+          {BENEFITS.map((benefit, index) => (
             <article key={benefit.title} className="why-card">
               <WhyCardMedia media={benefit.media} />
               <div className="why-card__body">
-                <h3>{benefit.title}</h3>
-                <p>{benefit.body}</p>
+                <h3>{t(dict, `why.benefit${index + 1}Title`)}</h3>
+                <p>{t(dict, `why.benefit${index + 1}Body`)}</p>
               </div>
             </article>
           ))}
@@ -110,10 +119,10 @@ export function WhyNoorLink() {
 
         <div className="why-cta">
           <Link href="/destinations" className="why-cta__btn">
-            Browse destinations
+            {dict.home.ctaDestinations}
           </Link>
           <Link href="/faq" className="why-cta__link">
-            Still have questions? Read the FAQ →
+            {dict.why.faqLink}
           </Link>
         </div>
       </div>

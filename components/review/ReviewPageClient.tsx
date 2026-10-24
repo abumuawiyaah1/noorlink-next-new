@@ -7,47 +7,61 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import {
   GOOGLE_REVIEW_URL,
   TRUSTPILOT_REVIEW_URL,
-  primaryPublicReviewLabel,
   primaryPublicReviewUrl,
   reviewFeedbackPath,
 } from "@/lib/review-links";
 
 function ReviewContent() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const r = dict.reviewPage;
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId") ?? undefined;
   const publicUrl = primaryPublicReviewUrl();
+  const publicLabel = TRUSTPILOT_REVIEW_URL
+    ? r.rateTrustpilot
+    : GOOGLE_REVIEW_URL
+      ? r.rateGoogle
+      : r.ratePublic;
+
+  const feedbackPath = reviewFeedbackPath(orderId, {
+    subject: r.feedbackSubject,
+    message: orderId
+      ? t(dict, "reviewPage.feedbackMessage", { orderId })
+      : undefined,
+  });
+  const feedbackHref = localizedPath(feedbackPath, locale);
 
   return (
     <>
       <SiteHeader />
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { label: "Leave a review" },
+          { href: localizedPath("/", locale), label: dict.common.home },
+          { label: r.crumb },
         ]}
       />
       <main className="policy-page container">
         <ReviewRequestCard orderId={orderId} />
 
         <section className="review-page__details">
-          <h2>How your review helps</h2>
-          <p>
-            Honest ratings help other travelers choose reliable connectivity for
-            Umrah, Hajj, and trips worldwide. Comments also go directly to our team
-            so we can improve routes, pricing, and support.
-          </p>
+          <h2>{r.howHelpsTitle}</h2>
+          <p>{r.howHelpsBody}</p>
           <ul>
             <li>
-              <strong>Public rating:</strong>{" "}
+              <strong>{r.publicRating}</strong>{" "}
               {publicUrl ? (
                 <a href={publicUrl} target="_blank" rel="noopener noreferrer">
-                  {primaryPublicReviewLabel()}
+                  {publicLabel}
                 </a>
               ) : (
-                "Trustpilot link coming soon — use private feedback below for now."
+                r.trustpilotSoon
               )}
               {TRUSTPILOT_REVIEW_URL && GOOGLE_REVIEW_URL ? (
                 <>
@@ -57,27 +71,21 @@ function ReviewContent() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Also on Google
+                    {r.alsoGoogle}
                   </a>
                 </>
               ) : null}
             </li>
             <li>
-              <strong>Private feedback:</strong>{" "}
-              <Link href={reviewFeedbackPath(orderId)}>
-                Tell us what to improve
-              </Link>{" "}
-              — order details optional.
+              <strong>{r.privateFeedback}</strong>{" "}
+              <Link href={feedbackHref}>{r.privateFeedbackLink}</Link>{" "}
+              {r.privateFeedbackAfter}
             </li>
             <li>
-              <strong>Next trip:</strong> mention destinations you plan next so we
-              can suggest the right plan.
+              <strong>{r.nextTrip}</strong> {r.nextTripBody}
             </li>
           </ul>
-          <p>
-            Thank you for traveling with NoorLink. Safe journeys — and see you on
-            the next adventure.
-          </p>
+          <p>{r.thanks}</p>
         </section>
       </main>
       <SiteFooter />
@@ -86,8 +94,10 @@ function ReviewContent() {
 }
 
 export function ReviewPageClient() {
+  const [locale] = useLocaleState();
+  const loading = getDictionary(locale).common.loading;
   return (
-    <Suspense fallback={<main className="container">Loading…</main>}>
+    <Suspense fallback={<main className="container">{loading}</main>}>
       <ReviewContent />
     </Suspense>
   );

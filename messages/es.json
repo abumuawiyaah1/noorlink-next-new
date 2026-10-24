@@ -1,0 +1,2127 @@
+{
+  "meta": {
+    "locale": "es",
+    "variant": "latam",
+    "status": "self_reviewed",
+    "reviewNotes": "See content/i18n/REVIEW.md — items for owner eye only"
+  },
+  "nav": {
+    "about": "Nosotros",
+    "hajjUmrah": "Hajj y Umrah",
+    "destinations": "Destinos",
+    "learn": "Guías",
+    "support": "Soporte",
+    "partners": "Socios",
+    "faq": "Preguntas",
+    "myEsims": "Mis eSIMs",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "language": "Idioma"
+  },
+  "home": {
+    "kicker": "Instálala antes de viajar.",
+    "headlineLine1": "Mantente conectado,",
+    "headlineLine2": "dondequiera que estés.",
+    "lede": "Datos eSIM para viajar en más de 190 destinos. Revisa tu teléfono, elige un plan y llega listo para conectarte.",
+    "ctaDestinations": "Ver destinos",
+    "ctaPhoneCheck": "Revisa tu teléfono gratis",
+    "tagline": "Hacemos el viaje global más sencillo."
+  },
+  "footer": {
+    "company": "Empresa",
+    "legal": "Legal",
+    "aboutUs": "Sobre nosotros",
+    "newsletter": "Archivo del boletín",
+    "contactSupport": "Contactar soporte",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de servicio",
+    "partnerTerms": "Términos del programa de socios",
+    "refund": "Política de reembolsos",
+    "kyc": "Política KYC / AML",
+    "cookies": "Política de cookies",
+    "rights": "Todos los derechos reservados.",
+    "reviews": "Reseñas",
+    "faq": "Preguntas",
+    "partners": "Socios",
+    "learn": "Guías",
+    "destinations": "Destinos",
+    "support": "Soporte",
+    "followUs": "Síguenos",
+    "socialAria": "Redes sociales"
+  },
+  "common": {
+    "installBeforeFly": "Instálala antes de viajar",
+    "learnMore": "Saber más",
+    "getHelp": "Pedir ayuda",
+    "viewPlans": "Ver planes",
+    "orderIdHint": "ID del pedido (empieza con NL-)",
+    "emailCheckout": "Correo usado al pagar",
+    "home": "Inicio",
+    "loading": "Cargando…",
+    "search": "Buscar",
+    "checkout": "Pagar",
+    "continue": "Continuar",
+    "contactSupport": "Contactar soporte",
+    "openWhatsApp": "Abrir WhatsApp",
+    "readFaqs": "Ver preguntas",
+    "shopPlans": "Ver planes de datos",
+    "backToHome": "VOLVER AL INICIO",
+    "returnHomeAria": "Volver a la página de inicio",
+    "chatWhatsApp": "Chatear por WhatsApp",
+    "whatsapp": "WhatsApp",
+    "breadcrumbAria": "Ruta de navegación",
+    "checkoutProgress": "Progreso del pago",
+    "seePlans": "Ver planes",
+    "readTrustpilot": "Leer todas las reseñas en Trustpilot",
+    "policiesKicker": "Políticas de NoorLink",
+    "policyHelpBefore": "¿Necesitas ayuda con un pedido o una política? Visita",
+    "policyHelpLink": "Soporte",
+    "support": "Soporte"
+  },
+  "support": {
+    "title": "Soporte",
+    "intro": "Te ayudamos con calma y claridad: instalación, datos o dudas de tu pedido.",
+    "formName": "Nombre",
+    "formEmail": "Correo",
+    "formSubject": "Asunto",
+    "formMessage": "¿Cómo podemos ayudarte?",
+    "formSubmit": "Enviar mensaje",
+    "ticketCreated": "Recibimos tu mensaje. Nuestro equipo suele responder en 24 horas."
+  },
+  "dashboard": {
+    "title": "Mis eSIMs",
+    "lookupTitle": "Busca tu pedido",
+    "lookupHint": "Ingresa el ID del pedido y el correo que usaste al pagar.",
+    "resendQr": "Reenviar correo con el QR",
+    "topUp": "Recargar datos"
+  },
+  "emails": {
+    "supportConfirmSubject": "[{ticketId}] {subject}",
+    "supportConfirmEyebrow": "Soporte",
+    "supportConfirmTitle": "Recibimos tu mensaje",
+    "supportConfirmHi": "Hola {name},",
+    "supportConfirmBody": "Tu caso de soporte ya está creado. Nuestro equipo suele responder en 24 horas.",
+    "supportConfirmTicket": "ID del caso:",
+    "supportConfirmSubjectLabel": "Asunto:",
+    "supportConfirmYourMessage": "Tu mensaje",
+    "supportConfirmTip": "Incluye el ID del caso en cualquier seguimiento — así encontramos tu solicitud más rápido.",
+    "installHelpSubject": "Buenas noticias — tu eSIM está lista (y estamos para ayudarte)",
+    "installHelpEyebrow": "Ayuda para instalar",
+    "installHelpTitle": "Tu eSIM está lista — aquí estamos si necesitas ayuda",
+    "installCongratsSubject": "Ya está instalada — conéctate al aterrizar",
+    "installCongratsEyebrow": "Ya está instalada",
+    "installCongratsTitle": "Listo — así te conectas al llegar",
+    "myEsimsSubject": "Tu enlace a Mis eSIMs — NoorLink",
+    "fulfillmentReadySubject": "Tu eSIM NoorLink está lista — {country}",
+    "beforeFlyTip": "Instálala con Wi‑Fi antes de salir. Mantén tu número principal para llamadas y WhatsApp; usa la eSIM de viaje para datos en el extranjero."
+  },
+  "checkout": {
+    "title": "Pago",
+    "loading": "Cargando el pago…",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "delivery": "Entrega",
+    "deliveryValue": "QR por correo",
+    "orderSummary": "Resumen del pedido",
+    "emailLabel": "Correo para tu código QR",
+    "emailLabelFull": "Correo electrónico",
+    "optional": "(opcional)",
+    "emailPlaceholder": "tu@correo.com",
+    "arrivalDate": "Fecha de llegada",
+    "arrivalDateOptional": "Fecha de llegada (opcional)",
+    "arrivalHint": "Así te recordamos instalarla antes de viajar.",
+    "promoCode": "Código promocional",
+    "apply": "Aplicar",
+    "clear": "Quitar",
+    "promoApplied": "Promo aplicada.",
+    "promoPercentOff": "{percent}% de descuento aplicado",
+    "promoSaved": "Ahorraste ${amount} con la promo",
+    "insiderDiscount": "Descuento Insider",
+    "enterPromo": "Ingresa un código promocional.",
+    "selectPlanPromo": "Elige un plan antes de aplicar un código.",
+    "invalidPromo": "Código promocional no válido.",
+    "payContinue": "Continuar para pagar ${amount}",
+    "payNow": "Pagar ${amount}",
+    "openingPay": "Abriendo el pago seguro…",
+    "redirectingStripe": "Redirigiendo a Stripe…",
+    "orMoreOptions": "O continúa para tarjeta y más opciones de pago",
+    "preferFullForm": "¿Prefieres el formulario completo?",
+    "backQuick": "← Volver al pago rápido",
+    "stripeSecure": "Stripe seguro",
+    "qrByEmail": "QR por correo",
+    "refundIfFails": "Reembolso si falla la activación",
+    "agreePrefix": "Al pagar aceptas los",
+    "terms": "Términos",
+    "and": "y la",
+    "privacy": "Política de privacidad",
+    "contactInfo": "1. Datos de contacto",
+    "contactNote": "Opcional aquí — necesitamos un correo para tu QR. Si lo dejas en blanco, Stripe lo pide en el siguiente paso.",
+    "tripDetails": "2. Detalles del viaje",
+    "promoSection": "3. Código promocional",
+    "stepChoose": "Elegir plan",
+    "stepDetails": "Tus datos",
+    "stepPay": "Pagar seguro",
+    "stepActivate": "Activar",
+    "trustPayments": "Apple Pay · Google Pay · Link · tarjeta",
+    "trustNoStore": "No guardamos los datos de la tarjeta",
+    "verifiedSecure": "Pago verificado y seguro",
+    "paymentCanceled": "El pago se canceló. Tu plan sigue seleccionado — toca pagar cuando estés listo. No sigas actualizando la página.",
+    "invalidEmailFast": "Revisa ese correo, o déjalo en blanco e ingrésalo en Stripe.",
+    "invalidEmailFull": "Ingresa un correo válido, o déjalo en blanco para Stripe.",
+    "missingPlan": "Falta el plan. Vuelve atrás y elige un plan otra vez.",
+    "invalidPrice": "Precio no válido. Vuelve atrás y elige un plan otra vez.",
+    "startPayFailed": "No pudimos iniciar el pago. Inténtalo de nuevo.",
+    "startStripeFailed": "No pudimos iniciar el pago con Stripe. Inténtalo de nuevo.",
+    "invalidRedirect": "Redirección de pago no válida. Inténtalo de nuevo o escribe a soporte.",
+    "unexpectedError": "Error inesperado al iniciar el pago.",
+    "skipLink": "Saltar al contenido principal",
+    "payWithPayPal": "Pagar con PayPal",
+    "loadingPayPal": "Cargando PayPal…",
+    "paypalUnavailable": "PayPal no está disponible ahora. Prueba otro método de pago.",
+    "paypalFailed": "Falló el pago con PayPal. Inténtalo de nuevo.",
+    "expressUnavailable": "El pago rápido no está disponible. Usa el formulario abajo.",
+    "orPayWith": "O paga con",
+    "expressCheckout": "Pago rápido",
+    "loadingWallets": "Cargando botones de billetera…",
+    "orPayAnotherWay": "o paga de otra forma",
+    "loadingAppleGoogle": "Cargando Apple Pay / Google Pay…"
+  },
+  "search": {
+    "placeholder": "¿A dónde viajas?",
+    "button": "Buscar",
+    "thisWeek": "Esta semana:",
+    "region": "Región",
+    "country": "País",
+    "viewPlans": "Ver planes",
+    "anotherCountry": "Buscar otro país...",
+    "anotherDestinationAria": "Buscar otro destino"
+  },
+  "lookup": {
+    "email": "Correo electrónico",
+    "orderId": "ID del pedido",
+    "submit": "Abrir mi eSIM",
+    "resendQr": "Reenviar correo de instalación",
+    "sending": "Enviando…"
+  },
+  "supportSubjects": {
+    "orderHelp": "Ayuda con el pedido",
+    "installQr": "Instalación / código QR",
+    "checkoutPayment": "Pago / checkout",
+    "refund": "Reembolso",
+    "other": "Otro"
+  },
+  "howItWorks": {
+    "title": "Cómo funciona",
+    "step1Title": "1. Elige tu plan",
+    "step1Body": "Confirma que tu teléfono admite eSIM, luego elige destino y cantidad de datos para el viaje.",
+    "step2Title": "2. Recibe tu QR",
+    "step2Body": "Los datos de activación llegan por correo justo después del pago — sin esperar un SIM físico.",
+    "step3Title": "3. Escanea y conéctate",
+    "step3Body": "Instálala desde Ajustes antes de viajar. Activa el roaming de datos al aterrizar y ya estás en línea."
+  },
+  "trustStats": {
+    "aria": "Destacados de NoorLink",
+    "countriesValue": "190+",
+    "countriesLabel": "Países cubiertos",
+    "deliveryValue": "Instantáneo",
+    "deliveryLabel": "Entrega del QR",
+    "hotspotValue": "Hotspot",
+    "hotspotLabel": "Incluido en los planes",
+    "supportValue": "24/7",
+    "supportLabel": "Soporte por WhatsApp"
+  },
+  "phoneCheck": {
+    "title": "Chequeo gratis — ¿tu teléfono admite eSIM?",
+    "lead": "Comprueba gratis si tu teléfono admite eSIM de viaje. Confirma que esté desbloqueado de operador antes de comprar.",
+    "placeholder": "p. ej. iPhone 14, Samsung S23",
+    "aria": "Modelo de teléfono para comprobar compatibilidad eSIM",
+    "button": "Comprobar gratis",
+    "checking": "Comprobando…",
+    "checkingDetail": "Buscando dispositivos compatibles.",
+    "okTitle": "Buenas noticias — tu dispositivo admite eSIM.",
+    "okDetail": "{device} puede usar NoorLink. Confirma que esté desbloqueado de operador antes de comprar.",
+    "missTitle": "No pudimos confirmar este dispositivo.",
+    "missDetail": "Prueba un modelo más específico, usa el selector o contacta soporte.",
+    "errorTitle": "La comprobación no está disponible por ahora.",
+    "errorDetail": "Inténtalo en un momento o contacta soporte.",
+    "shopPlans": "Ver planes de datos",
+    "openPicker": "Abrir selector de dispositivos",
+    "contactSupport": "Contactar soporte"
+  },
+  "newsletter": {
+    "kicker": "NoorLink Insider",
+    "title": "Actualizaciones de viaje, no ruido en tu bandeja.",
+    "lede": "Guías de destino, recordatorios de Hajj y Umrah, y avisos ocasionales de planes. Cancela cuando quieras.",
+    "perk1": "Guías de destino",
+    "perk2": "Notas de Hajj y Umrah",
+    "perk3": "Consejos de plan y entrega",
+    "emailLabel": "Tu correo",
+    "emailPlaceholder": "tu@correo.com",
+    "tripLabel": "Próximo viaje (opcional)",
+    "tripSelect": "Elige una región…",
+    "tripUmrah": "Umrah / Hajj",
+    "tripEurope": "Europa",
+    "tripAsia": "Asia",
+    "tripAmericas": "Américas",
+    "join": "Unirme al Insider",
+    "joining": "Uniéndote…",
+    "success": "Ya estás en la lista Insider. Guías mensuales y ofertas a tiempo — sin spam.",
+    "error": "No pudimos unirte ahora. Prueba con soporte.",
+    "privacy": "Respetamos tu privacidad.",
+    "unsubscribe": "Cancelar suscripción",
+    "anytime": "en cualquier momento."
+  },
+  "why": {
+    "kicker": "Por qué NoorLink",
+    "titleSuffix": "Conéctate al aterrizar.",
+    "lede": "Mapas, mensajes y hotspot — sin cambiar de SIM en el aeropuerto.",
+    "faqLink": "¿Aún tienes dudas? Lee las preguntas →",
+    "benefit1Title": "Entrega instantánea",
+    "benefit1Body": "QR por correo minutos después del pago — sin correo postal ni SIM en el aeropuerto.",
+    "benefit2Title": "Más de 190 países",
+    "benefit2Body": "Un solo pago te conecta a redes locales en seis continentes.",
+    "benefit3Title": "Hotspot incluido",
+    "benefit3Body": "Comparte datos con un laptop o compañero de viaje sin costo extra.",
+    "benefit4Title": "Pago seguro con Stripe",
+    "benefit4Body": "Apple Pay, Google Pay, tarjetas y PayPal vía Stripe — nunca guardamos los datos.",
+    "benefit5Title": "Reembolso si falla",
+    "benefit5Body": "¿Fallo técnico de activación? Revisamos rápido y reembolsamos cuando corresponde.",
+    "benefit6Title": "Soporte real 24/7",
+    "benefit6Body": "WhatsApp a cualquier hora — habla con una persona en minutos."
+  },
+  "reviews": {
+    "kicker": "Más de 1000 reseñas",
+    "title": "Lo que dicen viajeros en Trustpilot",
+    "score": "Excelente, 4.3 de 5 en Trustpilot",
+    "readAll": "Leer todas las reseñas en Trustpilot"
+  },
+  "popular": {
+    "title": "Destinos populares",
+    "kicker": "Regiones populares",
+    "seasonPicks": "Selección de {season}",
+    "gridTitle": "Elige tu próximo destino",
+    "gridLede": "Pasa el cursor por una región para ver las banderas. Haz clic para abrir la lista completa y los planes.",
+    "gridCardAria": "Ver planes regionales de {title} y países cubiertos",
+    "gridCardAlt": "Planes de viaje regionales de {title}",
+    "gridRegions": {
+      "caribbean": {
+        "title": "Caribe",
+        "subtitle": "Bahamas, Jamaica, República Dominicana y más"
+      },
+      "americas": {
+        "title": "América",
+        "subtitle": "EE. UU., Canadá y México"
+      },
+      "europe": {
+        "title": "Europa",
+        "subtitle": "Reino Unido, Francia, Alemania y más"
+      },
+      "mea": {
+        "title": "Medio Oriente",
+        "subtitle": "EAU, Turquía, Arabia Saudita, Egipto…"
+      },
+      "asia": {
+        "title": "Asia y Oceanía",
+        "subtitle": "Japón, Tailandia, Singapur…"
+      }
+    },
+    "storyLead": "Dos cosas para disfrutar en {country} esta temporada:"
+  },
+  "umrahPromo": {
+    "title": "Mantente conectado en Meca y Medina",
+    "body": "Planes de peregrinación con hotspot incluido. Instálala antes de viajar para que los mapas, mensajes y coordinación del grupo al llegar te funcionen.",
+    "ctaPlans": "Ver planes de Hajj y Umrah",
+    "specialsNote": "Ediciones especiales para quienes compran o buscan paquetes de Umrah y Hajj — recordatorios de Corán y Hadiz, un mes antes de la temporada.",
+    "ramadanSpecial": "Especial Insider de Ramadán",
+    "hajjSpecial": "Especial Insider de Hajj",
+    "sectionAria": "Planes Hajj y Umrah",
+    "imageAria": "Viaje de peregrinación"
+  },
+  "regional": {
+    "title": "Una eSIM para toda la región",
+    "lede": "Toca una región en el mapa — o elige una tarjeta abajo. Instala una vez y viaja conectado en todos los países cubiertos.",
+    "kicker": "¿Cruzas fronteras?",
+    "seePlans": "Ver planes de {region} →",
+    "covers": "Cubre {n} países · Un QR",
+    "mapAria": "Mapa interactivo de regiones eSIM NoorLink. Elige una región de color para ver la cobertura.",
+    "mapSvgAria": "Mapa mundial de regiones con cobertura eSIM regional",
+    "regionAria": "{name} — {n} países",
+    "globalAria": "eSIM Regional Global — cobertura multirregión",
+    "global": "Global",
+    "multiRegion": "Multirregión",
+    "selectedRegion": "Región seleccionada",
+    "tapRegion": "Toca una región en el mapa",
+    "seeGlobalPlans": "Ver planes Globales →",
+    "regionNames": {
+      "north-america": "Norteamérica",
+      "south-america": "Sudamérica",
+      "europe": "Europa",
+      "africa": "África",
+      "middle-east": "Medio Oriente",
+      "asia-pacific": "Asia-Pacífico"
+    },
+    "islandEscape": "Escapada a islas"
+  },
+  "destinationsPage": {
+    "title": "Encuentra tu destino",
+    "searchPlaceholder": "Buscar país o región…",
+    "allRegions": "Todas",
+    "empty": "Ningún destino coincide. Prueba otra búsqueda o región.",
+    "fromPrice": "Desde {price}",
+    "seePlans": "Ver planes",
+    "popularTitle": "Populares ahora",
+    "priceNote": "El precio que ves es el precio que pagas.",
+    "filterAria": "Filtrar por región",
+    "filters": {
+      "all": "Tendencias",
+      "caribbean": "Caribe",
+      "europe": "Europa",
+      "middle-east": "Medio Oriente",
+      "north-america": "Norteamérica",
+      "asia-pacific": "Asia-Pacífico",
+      "africa": "África",
+      "south-america": "Sudamérica",
+      "global": "Global"
+    }
+  },
+  "plansPage": {
+    "enjoyTravel": "Viaja sin complicaciones",
+    "regionalEsim": "eSIM regional",
+    "searchOther": "Buscar otro país...",
+    "bestChoice": "Mejor opción",
+    "unlimited": "Ilimitado",
+    "payg": "Pago por uso",
+    "checkout": "Pagar",
+    "continue": "Continuar",
+    "checkCompat": "Comprobar compatibilidad",
+    "loadError": "No pudimos cargar los planes. El servicio puede estar temporalmente no disponible.",
+    "coversN": "Cubre {n} países",
+    "showMore": "Ver más",
+    "showFewer": "Ver menos",
+    "notIncluded": "No incluido en este plan",
+    "hotspotIncluded": "Hotspot incluido",
+    "faqTitle": "Preguntas del plan",
+    "installWhenQ": "¿Cuándo debo instalarla?",
+    "installWhenA": "Instálala con Wi‑Fi antes de viajar si quieres. El paquete de datos suele empezar cuando la eSIM se conecta a una red compatible en el destino — no al pagar.",
+    "startWhenQ": "¿Cuándo empieza el plan?",
+    "startWhenA": "Por lo general al activar la eSIM para datos móviles en el país de cobertura. Puedes mantener tu número principal para WhatsApp y llamadas.",
+    "hotspotQ": "¿Puedo usar hotspot?",
+    "hotspotA": "Sí. Hotspot / tethering está incluido para compartir el plan con un laptop o compañero de viaje.",
+    "lockedQ": "¿Y si mi teléfono está bloqueado?",
+    "lockedA": "El dispositivo debe admitir eSIM y estar desbloqueado de operador. Usa Comprobar compatibilidad arriba. Un teléfono bloqueado es la causa más común de fallo al instalar.",
+    "faqContactBefore": "Si tienes preguntas, contáctanos —",
+    "faqContactLink": "escríbenos por WhatsApp",
+    "faqWhatsAppPrefill": "Hola, tengo una pregunta sobre la eSIM de {country}.",
+    "starting": "desde",
+    "flexible": "Flexible",
+    "dayOne": "1 día",
+    "daysN": "{n} días",
+    "loadingPlans": "Cargando planes…",
+    "couldNotLoad": "No se pudieron cargar los planes",
+    "errorHint": "Inténtalo de nuevo en un momento, elige otro destino o contacta a soporte si necesitas ayuda con el pedido.",
+    "noPlans": "Aún no hay planes para este destino. Explora más en",
+    "oneQr": "Un QR",
+    "regionalCoverage": "Cobertura regional · {n} destinos",
+    "fromPrice": "Desde ${price}",
+    "singleCountryBefore": "¿Solo te quedas en un país?",
+    "singleCountryLink": "Ver planes de un solo país",
+    "singleCountryAfter": "— suele ser mejor valor para una sola parada.",
+    "layoverBefore": "¿Escala en otro país antes de {country}?",
+    "layoverLink": "Ver planes de {region}",
+    "layoverAfter": "— una eSIM puede cubrir ambas etapas si tu escala está en la región.",
+    "readyBeforeFly": "Lista antes de viajar",
+    "gotYouCovered": "Te acompañamos",
+    "support247": "Soporte 24/7 cuando lo necesites",
+    "choosePackage": "Elige tu paquete",
+    "pickerHintBefore": "Toca",
+    "pickerHintAfter": "en un plan para abrir el pago seguro con Stripe — el precio que ves es el que pagas.",
+    "topUpPref": "Puede que quiera agregar más datos después (recarga cuando esté disponible).",
+    "yourSelection": "Tu selección",
+    "selectedPlan": "Plan seleccionado",
+    "purchaseAria": "Compra",
+    "borderFaqQ": "¿Necesito un plan nuevo al cruzar fronteras?",
+    "regionalFaqOneEsimQ": "¿Una sola eSIM funciona en todos los países de la lista?",
+    "regionalFaqOneEsimA": "Sí. Instálala una vez. Al llegar a cualquier país cubierto y activar la eSIM para datos móviles, se conecta sola a una red local socia.",
+    "regionalFaqStartQ": "¿Cuándo empieza mi plan?",
+    "regionalFaqStartA": "Suele ser cuando la eSIM se conecta por primera vez a datos móviles en un país cubierto — no al pagar. Puedes instalarla con Wi‑Fi antes de viajar.",
+    "regionalFaqWhatsAppQ": "¿Puedo dejar WhatsApp en mi número principal?",
+    "regionalFaqWhatsAppA": "Sí. Mantén tu número habitual para WhatsApp y llamadas; usa la eSIM para datos.",
+    "regionalFaqHotspotShortQ": "¿El hotspot está incluido?",
+    "regionalFaqHotspotShortA": "Sí — compártelo con un laptop o compañero de viaje sin costo extra.",
+    "standard": "Estándar"
+  },
+  "supportPage": {
+    "needNowTitle": "¿Necesitas ayuda ahora?",
+    "needNowBody": "Escríbenos por WhatsApp a cualquier hora — respondemos día y noche sobre entrega, instalación y pago.",
+    "trackFirstTitle": "Primero rastrea tu pedido",
+    "trackFirstBody": "Los pedidos pagados envían primero un correo de confirmación. El QR llega en un segundo correo cuando se confirma el pago, en pocos minutos.",
+    "trackOrder": "Rastrear un pedido",
+    "trackIntro": "Si el correo con el QR se demora, revisa el pedido aquí antes de escribir a soporte.",
+    "lookupTitle": "Estado del pedido y acceso al QR",
+    "lookupDesc": "Usa el correo del pago y el ID del pedido del primer correo de confirmación.",
+    "checkOrder": "Consultar pedido",
+    "lookupMyEsims": "Buscar Mis eSIMs",
+    "beforeFly": "Guía antes de viajar",
+    "dataChecklist": "Lista de datos listos",
+    "refundPolicy": "Política de reembolsos",
+    "qrNotArrived": "Si aún no llega el correo con el QR:",
+    "tipSpam": "Revisa spam, correo no deseado, promociones y redes sociales.",
+    "tipConfirm": "Busca el primer correo de confirmación de pago con tu ID de pedido.",
+    "tipWhatsApp": "Usa el rastreador de arriba o escribe a WhatsApp con ese ID de pedido.",
+    "sendTitle": "Enviar un mensaje",
+    "sendIntro": "Incluye el ID del pedido si lo tienes para resolver entrega o instalación más rápido.",
+    "sendError": "No pudimos enviar tu mensaje.",
+    "defaultMessage": "Hola NoorLink, necesito ayuda con el pedido {orderId}."
+  },
+  "ordersUi": {
+    "gbLeft": "GB restantes",
+    "daysLeft": "días restantes",
+    "needMoreData": "¿Necesitas más datos?",
+    "topUp": "Recargar datos",
+    "resendInstall": "Reenviar correo de instalación",
+    "installTitle": "Instala tu eSIM",
+    "copyMatchingId": "Copiar ID coincidente",
+    "usageRefresh": "Actualizar uso",
+    "you": "Tú",
+    "noorlink": "NoorLink",
+    "opening": "Abriendo…",
+    "lookupDefaultTitle": "Tu eSIM",
+    "lookupDefaultDescription": "Usa el correo y el ID del pedido de tu confirmación (se ve como NL-…).",
+    "openingEsims": "Abriendo tus eSIMs…",
+    "yourEsims": "Tus eSIMs",
+    "plansFor": "Planes de {email}",
+    "choosePlan": "Elige un plan para abrir.",
+    "lookupWithOrderId": "Buscar con el ID del pedido",
+    "openForDetails": "Abrir para ver detalles",
+    "usdLeft": "{amount} restantes",
+    "usdUsed": "{amount} usados",
+    "gbUsed": "{n} GB usados",
+    "gbPlan": "Plan de {n} GB",
+    "dayLeft": "día restante",
+    "linkInvalid": "Este enlace de Mis eSIMs no es válido o ha caducado.",
+    "noEsimsFound": "Aún no hay eSIMs para este correo.",
+    "orderNotFound": "No encontramos el pedido. Usa el correo del pago y el ID del pedido de tu correo de confirmación.",
+    "refreshFailed": "No se pudo actualizar el uso. Inténtalo de nuevo en un momento.",
+    "installEmailSent": "Correo de instalación enviado: revisa tu bandeja de entrada y el spam.",
+    "resendFailed": "No se pudo reenviar el correo de instalación.",
+    "enterEmailFirst": "Primero escribe tu correo.",
+    "linkSent": "Si tenemos eSIMs para ese correo, el enlace va en camino.",
+    "linkFailed": "No se pudo enviar el enlace.",
+    "hideHelp": "Ocultar ayuda",
+    "cantFindOrderId": "¿No encuentras tu ID de pedido?",
+    "helpCheckEmail": "Revisa el primer correo tras el pago: el ID del pedido se ve como",
+    "helpMagicLink": "O envíate un enlace privado a Mis eSIMs (sin necesidad de ID de pedido):",
+    "emailMagicLink": "Enviarme un enlace a Mis eSIMs",
+    "stillStuck": "¿Sigues atascado?",
+    "messageWhatsApp": "Escríbenos por WhatsApp",
+    "savedHint": "Guardado en este navegador: correo y último pedido.",
+    "clearSaved": "Borrar datos guardados",
+    "rememberNote": "Después de abrir una eSIM, recordaremos tu correo y tu ID de pedido en este navegador para la próxima vez.",
+    "dataAdded": "Datos añadidos. Mismo QR: ya estás listo.",
+    "runningLow": "Te quedan pocos datos: añade más abajo sin volver a instalar.",
+    "hideInstallQr": "Ocultar QR de instalación",
+    "showInstallQr": "Mostrar de nuevo el QR de instalación",
+    "orderDetails": "Detalles del pedido",
+    "order": "Pedido",
+    "paid": "Pagado",
+    "qrMissing": "¿Falta el QR? Contacta con soporte",
+    "whatsappHelp": "Ayuda por WhatsApp",
+    "backToAll": "Volver a todas las eSIMs",
+    "lookupAnother": "Buscar otro pedido",
+    "checkingOptions": "Revisando opciones…",
+    "hideOptions": "Ocultar opciones",
+    "topUpUnavailableTitle": "No disponible en este plan",
+    "topUpUnavailable": "La recarga no está disponible para este plan.",
+    "buyNewPlan": "Comprar un plan nuevo para este destino",
+    "topUpPackageNote": "Misma instalación. Sin QR nuevo: solo más datos y días en esta línea.",
+    "topUpWalletNote": "Misma instalación. El saldo se añade a esta línea de pago por uso.",
+    "dataAmount": "${amount} de datos",
+    "selected": "Seleccionado:",
+    "change": "Cambiar",
+    "starting": "Iniciando…",
+    "payWithCard": "Pagar con tarjeta",
+    "topUpFailed": "No se pudo iniciar el pago de la recarga.",
+    "installLede": "Instala con Wi‑Fi antes de viajar. Escanea el QR o toca un enlace de un toque en este teléfono.",
+    "qrAlt": "Código QR de la eSIM de NoorLink",
+    "scanCaption": "Escanea con la cámara de tu teléfono",
+    "installIphone": "Instalar en iPhone",
+    "installAndroid": "Instalar en Android",
+    "matchingId": "ID coincidente",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "activationManual": "Código de activación (manual)",
+    "installStep1": "Conéctate a Wi‑Fi e instala (escanea el QR o toca Instalar).",
+    "installStep2": "Antes de viajar: activa tu línea de viaje, activa el roaming de datos para esa línea y elige la línea de viaje en Datos móviles (no la principal).",
+    "installStep3": "Al aterrizar: desactiva el modo avión. Si no hay datos, activa y desactiva el modo avión una vez y revisa esos tres ajustes. Nunca toques Eliminar eSIM.",
+    "dataLeft": "Datos restantes",
+    "dataUsed": "Datos usados",
+    "dataLabel": "Datos",
+    "walletLeft": "Saldo restante",
+    "walletUsed": "Usado",
+    "payAsYouGoShort": "pago por uso",
+    "dataCharged": "datos cobrados",
+    "daysRemaining": "Días restantes",
+    "dayUnit": "día",
+    "daysUnit": "días",
+    "ofGb": "de {n} GB",
+    "ofGbPlan": "de {n} GB del plan",
+    "validityPlan": "plan de {n} días",
+    "qrPreparing": "Estamos preparando tu QR — suele tardar unos minutos. Quédate en esta página o espera el correo de entrega.",
+    "usageAfterNetwork": "El consumo aparece cuando la red lo reporta. Toca actualizar después de conectarte.",
+    "usageInstallFirst": "Instala primero — el consumo se muestra cuando estés en la red.",
+    "remainingAfterNetwork": "Los datos restantes aparecen cuando la red reporta el consumo. Toca actualizar después de conectarte.",
+    "remainingInstallFirst": "Instala primero — los datos restantes se muestran cuando estés en la red.",
+    "updatedAt": "actualizado {time}",
+    "updatedCap": "Actualizado {time}",
+    "funded": "recargado {amount}",
+    "refreshing": "Actualizando…",
+    "finePrint": "Los datos sin usar vencen al terminar el periodo de validez. Sin acumulación. Consulta los {terms} y la {refund}.",
+    "terms": "Términos",
+    "refundPolicy": "Política de reembolso",
+    "supportLabel": "Soporte",
+    "ticket": "Caso {n}",
+    "messages": "Mensajes",
+    "replyByEmailBefore": "Responde por correo para continuar este hilo, o usa",
+    "replyByEmailAfter": "."
+  },
+  "faqPage": {
+    "title": "Preguntas frecuentes",
+    "intro": "Configuración, entrega, reembolsos y compatibilidad.",
+    "quick": [
+      {
+        "title": "El problema más común",
+        "body": "Retraso del correo con el QR tras confirmarse el pago."
+      },
+      {
+        "title": "La solución más rápida",
+        "body": "Usa Mis eSIMs o el rastreador de pedidos de la página de Soporte antes de escribirnos."
+      },
+      {
+        "title": "¿Prefieres hablar con una persona?",
+        "body": "El soporte por WhatsApp está disponible las 24 horas."
+      }
+    ],
+    "footerHelpTitle": "¿Necesitas más ayuda?",
+    "footerHelp": "Empieza con la {guide}, visita la {support}, usa WhatsApp o rastrea tu pedido antes de contactarnos.",
+    "guideLink": "guía con imágenes para antes de viajar",
+    "supportLink": "página de Soporte",
+    "groups": [
+      {
+        "title": "Entrega e instalación",
+        "items": [
+          {
+            "q": "¿Dónde está mi código QR?",
+            "a": "Primero recibes una confirmación de compra. El código QR llega en un segundo correo cuando se confirma el pago. Revisa spam o correo no deseado si no aparece."
+          },
+          {
+            "q": "¿Cuándo empieza mi plan?",
+            "a": "Normalmente cuando instalas la eSIM y te conectas a una red compatible en el país de destino."
+          },
+          {
+            "q": "Instalé la eSIM pero no tengo internet al aterrizar, ¿por qué?",
+            "a": "Instalada no es suficiente. Antes de viajar: activa la línea de viaje, activa el roaming de datos para esa línea y elige la línea de viaje en Datos móviles (no la principal). Mira la guía con imágenes en https://noorlink.co/help/before-you-fly."
+          }
+        ]
+      },
+      {
+        "title": "Compatibilidad",
+        "items": [
+          {
+            "q": "¿Funcionará en mi teléfono?",
+            "a": "La mayoría de los teléfonos desde el iPhone XR / XS, Samsung Galaxy S20, Google Pixel 3 y posteriores admiten eSIM. Busca “Añadir eSIM” en Ajustes."
+          },
+          {
+            "q": "¿Conservo mi número de WhatsApp?",
+            "a": "Sí. NoorLink es solo de datos. Mantén activa tu SIM física o línea principal para WhatsApp y llamadas."
+          }
+        ]
+      },
+      {
+        "title": "Reembolsos",
+        "items": [
+          {
+            "q": "¿Puedo obtener un reembolso?",
+            "a": "Si la eSIM no se activa por un error técnico de nuestra parte o del proveedor, podemos reembolsar o reemplazar. Los cambios de opinión y los teléfonos no compatibles con eSIM o bloqueados por el operador no son reembolsables una vez entregado un QR que funciona. Consulta nuestra Política de reembolsos."
+          }
+        ]
+      }
+    ]
+  },
+  "aboutPage": {
+    "kicker": "Sobre NoorLink",
+    "title": "Todo empezó con el viaje de nuestra familia a Egipto: sin internet.",
+    "lede": "Aterrizamos sin datos, lo resolvimos a la fuerza y construimos NoorLink pensando en el viajero: con soporte y educación, no solo otro plan de eSIM.",
+    "stats": [
+      {
+        "value": "190+",
+        "label": "Países cubiertos"
+      },
+      {
+        "value": "Rápida",
+        "label": "Entrega digital"
+      },
+      {
+        "value": "24/7",
+        "label": "Soporte global"
+      },
+      {
+        "value": "0%",
+        "label": "Cargos de roaming"
+      }
+    ],
+    "storyKicker": "Por qué creamos NoorLink",
+    "storyTitle": "Nuestra familia aterrizó en Egipto sin conexión.",
+    "story": [
+      "Cuando nuestra familia viajó a Egipto, aterrizamos sin línea telefónica y sin internet. Hoy casi todo necesita datos: los mapas no cargaban, los mensajes a casa no se enviaban y las cosas simples que hacen que viajar se sienta seguro desaparecieron de golpe.",
+      "Así que tuvimos que averiguar cómo conectarnos. El primer día pagamos el Wi‑Fi del aeropuerto solo para pedir un Uber y comunicarnos con los nuestros. Luego vino el dilema: llamar a nuestro operador por el roaming, demasiado caro. Comprar una SIM de plástico, pero habría que buscarla. Alguien nos habló de la eSIM. Terminamos comprando una, pero lamentablemente no tuvimos soporte real cuando lo necesitamos.",
+      "Ese viaje me marcó. Viajar debería tratar de los lugares que fuiste a ver, no de perder la conexión justo cuando necesitas indicaciones, un transporte o avisar a tu familia. También nos hizo pensar mucho en el usuario final: alguien que aterriza en un país nuevo, quizá cansado, quizá con su familia, que solo necesita que todo funcione, y alguien claro a quien preguntar cuando no es así.",
+      "Por eso NoorLink no es otro proveedor de eSIM. Te damos el plan, el soporte y la educación para que aprendas cómo funciona la eSIM y te sientas preparado antes de viajar: instala con el Wi‑Fi de casa, aterriza conectado, sin cargos de roaming, sin cambios de SIM de última hora y sin sentirte solo si algo sale mal."
+    ],
+    "valuesKicker": "Lo que nos hace diferentes",
+    "valuesTitle": "No solo un plan: soporte y preparación",
+    "valuesLede": "Nuestra historia en Egipto nos mantiene enfocados en el viajero: pasos claros, respuestas reales y ayuda cuando la necesitas.",
+    "values": [
+      {
+        "title": "Primero, educación",
+        "body": "Explicamos cómo funciona la eSIM en lenguaje sencillo, para que aprendas, instales con confianza y te sientas preparado antes del vuelo, sin adivinar en la puerta de embarque."
+      },
+      {
+        "title": "Listo antes de viajar",
+        "body": "Compra tu plan con tiempo, configúralo con el Wi‑Fi de casa y aterriza con datos funcionando. Sin quioscos de aeropuerto. Sin buscar una SIM de plástico."
+      },
+      {
+        "title": "Soporte que te acompaña",
+        "body": "Una vez compramos una eSIM sin tener a quién acudir. En NoorLink, la ayuda por WhatsApp es parte del producto, porque el viajero merece una respuesta real."
+      }
+    ],
+    "ctaKicker": "¿Quieres sentirte preparado?",
+    "ctaTitle": "Aprende los pasos y luego elige tu plan.",
+    "ctaLede": "Explora destinos cuando sepas adónde vas, o empieza con nuestras preguntas frecuentes y guías para que la instalación y los tiempos queden claros antes de comprar.",
+    "ctaDestinations": "Explorar destinos",
+    "ctaFaq": "Leer las preguntas frecuentes"
+  },
+  "helpPage": {
+    "beforeFlyCrumb": "Antes de viajar",
+    "beforeFlyTitle": "Antes de viajar — deja tus datos listos",
+    "beforeFlyLede": "Instalada no es suficiente. Haz estas tres comprobaciones con Wi‑Fi para que mapas y mensajes funcionen al aterrizar.",
+    "stillNoDataTitle": "¿Sigues sin datos al aterrizar?",
+    "stillNoDataBody": "Activa y desactiva el modo avión una vez, espera un minuto y revisa de nuevo los tres ajustes de arriba. No elimines la eSIM. ¿Prefieres hablar con una persona? {whatsapp} o abre {myEsims}.",
+    "whatsappSupport": "Soporte por WhatsApp",
+    "phoneCheckCrumb": "Revisión de teléfono Hajj y Umrah",
+    "phoneCheckTitle": "Revisión gratis del teléfono para eSIM de Hajj y Umrah",
+    "phoneCheckIntro": "La mayoría de los problemas de instalación no son de red: son teléfonos bloqueados o sin eSIM. Revisa una vez y compra con tranquilidad.",
+    "phoneCheckS1Title": "Qué significa «compatible»",
+    "phoneCheckS1Body": "Tu teléfono debe soportar eSIM y estar desbloqueado de tu operador. Ambas cosas importan para una eSIM de viaje en Arabia Saudita.",
+    "phoneCheckS2Title": "Revisión gratis y rápida en NoorLink",
+    "phoneCheckS2Body": "Ingresa tu modelo (por ejemplo iPhone 14 o Samsung S23) en nuestro verificador gratis, o usa el selector de dispositivos. Toma menos de un minuto y no requiere compra.",
+    "phoneCheckS3Title": "Si tu teléfono no está listo",
+    "phoneCheckS3Body": "Un teléfono bloqueado no puede usar una eSIM de viaje de terceros hasta que tu operador lo desbloquee. Pídeselo a tu proveedor, o viaja con un segundo teléfono desbloqueado con eSIM si ya tienes uno.",
+    "phoneCheckS4Title": "¿Listo? Elige tu plan de peregrinación",
+    "phoneCheckS4Body": "Después de la revisión gratis, elige una eSIM para Umrah o Hajj en Meca y Medina. Instálala antes de viajar para que la conexión quede en segundo plano durante tu viaje.",
+    "phoneCheckPrimaryCta": "Ver planes eSIM de Umrah y Hajj",
+    "phoneCheckSecondaryCta": "Hacer revisión gratis del teléfono",
+    "umrahBeforeFlyCrumb": "eSIM Umrah antes de viajar",
+    "umrahBeforeFlyTitle": "eSIM Umrah: instálala antes de viajar",
+    "umrahBeforeFlyIntro": "Haz el trabajo con calma en casa para que mapas, WhatsApp y mensajes a la familia funcionen al llegar a Meca o Medina — no en el quiosco del aeropuerto.",
+    "umrahBeforeFlyS1Title": "1. Confirma tu teléfono primero",
+    "umrahBeforeFlyS1Body": "Tu teléfono necesita soporte eSIM y debe estar desbloqueado del operador. Usa nuestra revisión gratis antes de comprar para no quedarte atascado después del pago.",
+    "umrahBeforeFlyS2Title": "2. Compra tu eSIM de Umrah o Hajj",
+    "umrahBeforeFlyS2Body": "Elige un plan de peregrinación para Arabia Saudita según tu viaje — datos fijos o ilimitado por día. Tu QR llega por correo después del pago.",
+    "umrahBeforeFlyS3Title": "3. Instala con Wi‑Fi en casa",
+    "umrahBeforeFlyS3Body": "Escanea el QR y agrega la línea de viaje antes de viajar. Mantén tu número de casa para llamadas y SMS si lo necesitas; usa la línea de viaje para datos en el extranjero.",
+    "umrahBeforeFlyS4Title": "4. Al aterrizar en Arabia Saudita",
+    "umrahBeforeFlyS4Body": "Activa la línea de viaje, habilita el roaming de datos en esa línea y configura Datos celulares / móviles en la eSIM de viaje. No elimines la eSIM si algo se ve raro — escribe al soporte por WhatsApp.",
+    "umrahBeforeFlyPrimaryCta": "Ver planes eSIM de Umrah y Hajj",
+    "umrahBeforeFlySecondaryCta": "Revisión gratis del teléfono"
+  },
+  "pilgrimagePage": {
+    "heroAlt": "Destino de peregrinación en Arabia Saudita",
+    "tagline": "eSIM para Umrah y Hajj en Arabia Saudita — instálala antes de viajar y mantente conectado en Meca y Medina.",
+    "headline": "eSIM para Umrah y Hajj en Meca y Medina",
+    "regionalSub": "eSIM de viaje para Arabia Saudita · Hotspot incluido · Revisión gratis del teléfono · Soporte por WhatsApp 24/7",
+    "trustNetwork": "Cobertura Umrah y Hajj · Lista para Meca y Medina",
+    "reassurance1": "Lista antes de viajar",
+    "reassurance2": "Te acompañamos",
+    "reassurance3": "Soporte por WhatsApp 24/7",
+    "pickerTitle": "Elige tu plan eSIM de Umrah o Hajj",
+    "pickerHint": "Toca un plan para seleccionarlo y continúa desde la barra inferior. Paquetes fijos para Arabia Saudita o ilimitado por día con honestidad (3 GB/día, luego 1 Mbps). El precio que ves es el que pagas — hotspot incluido en todos los planes.",
+    "loadingPlans": "Cargando planes…",
+    "errorTitle": "No se pudieron cargar los planes",
+    "errorHint": "Inténtalo de nuevo en un momento o {whatsapp}.",
+    "noPlans": "Aún no hay planes de peregrinación disponibles para Arabia Saudita.",
+    "gridAria": "Planes por perfil de viaje",
+    "mostPopular": "Más popular",
+    "selectPlan": "Elegir plan",
+    "selected": "Seleccionado",
+    "selectAria": "Elegir {title}",
+    "dataAllowance": "Datos incluidos",
+    "tripLength": "Duración del viaje",
+    "daysShort": "{n} días",
+    "routesTitle": "¿También pasas por Turquía, Egipto o Marruecos?",
+    "routesHint": "Una sola eSIM para tu escala y tu Hajj o Umrah — cobertura GCC incluida de regalo. Elige la ruta que encaje con tu viaje.",
+    "supportCtaText": "¿No sabes qué plan elegir? Nuestro equipo ayuda a peregrinos todos los días.",
+    "askWhatsApp": "Preguntar por WhatsApp",
+    "installNote": "Instala con Wi‑Fi antes de viajar. Tu paquete de datos empieza cuando la eSIM se conecta en un país con cobertura — no al pagar.",
+    "yourSelection": "Tu selección",
+    "continueCheckout": "Continuar al pago",
+    "selectedPlan": "Plan seleccionado",
+    "purchaseAria": "Compra",
+    "giftTitle": "Descarga antes de viajar",
+    "giftText": "Guías gratuitas de al-Haramayn para tu teléfono — también incluidas con tu eSIM de peregrinación. No son necesarias para usar tu plan.",
+    "bestMultiDay": "Ideal para varios días"
+  },
+  "partnersPage": {
+    "crumb": "Socios",
+    "heroKicker": "Programa de socios NoorLink",
+    "heroTitle": "Asóciate con una marca de eSIM de viaje en la que tu comunidad pueda confiar",
+    "heroLede": "Ayuda a viajeros a mantenerse conectados antes de viajar — con un servicio calmado y práctico, soporte real y recompensas sencillas.",
+    "applyCta": "Solicitar ser socio",
+    "signInCta": "Iniciar sesión en tu cuenta",
+    "statsAria": "Aspectos destacados del programa",
+    "stats": [
+      {
+        "icon": "🌍",
+        "value": "190+",
+        "label": "Países"
+      },
+      {
+        "icon": "💬",
+        "value": "24/7",
+        "label": "Soporte para referidos"
+      },
+      {
+        "value": "Curado",
+        "label": "Aprobación de socios"
+      },
+      {
+        "icon": "🔗",
+        "value": "Un enlace",
+        "label": "Sin inventario"
+      }
+    ],
+    "trustKicker": "Hecho para comunidades reales",
+    "trustTitle": "Un producto premium detrás de cada enlace de referido",
+    "trustP1": "Tu nombre va en la recomendación. NoorLink entrega eSIMs por correo, da soporte de instalación por WhatsApp y mantiene una experiencia coherente del pago a la activación — para que tú te centres en tu audiencia, no en resolver fallos.",
+    "trustP2": "Aprobamos a los socios con pago en efectivo de forma manual. Así hay menos sitios de cupones spam y un programa que protege la confianza que has construido.",
+    "trustItems": [
+      "Pago seguro con Stripe en el que tus referidos pueden confiar",
+      "Planes del corredor de Hajj y Umrah para viajes de fe",
+      "Un panel de socio de solo lectura para tu enlace y saldo"
+    ],
+    "trustMediaAlt": "Equipo NoorLink apoyando a viajeros",
+    "benefitsKicker": "Por qué asociarte con nosotros",
+    "benefitsTitle": "Ayuda a viajeros a mantenerse conectados — y crece con NoorLink",
+    "benefitsLede": "Dirijas una mezquita, asesores a peregrinos o compartas consejos de viaje en línea, NoorLink te da un servicio que vale la pena recomendar y recompensas sencillas.",
+    "benefits": [
+      {
+        "icon": "💰",
+        "title": "Gana en cada viaje",
+        "body": "Recompensas en efectivo por ventas cualificadas desde tu enlace. Solicita el pago desde tu panel cuando tu saldo esté listo."
+      },
+      {
+        "icon": "🤝",
+        "title": "Da a tu comunidad un descuento real",
+        "body": "Tu audiencia obtiene un descuento práctico al pagar con tu enlace — un beneficio de viaje, no una cacería de cupones."
+      },
+      {
+        "icon": "💬",
+        "title": "Nosotros damos el soporte",
+        "body": "NoorLink ofrece ayuda por WhatsApp 24/7 para entrega, instalación y pago. Tú te centras en tu comunidad."
+      },
+      {
+        "icon": "✈️",
+        "title": "Hecho para viajar",
+        "body": "Más de 190 destinos y planes dedicados de Hajj y Umrah. Instálala antes de viajar — el mensaje que tu audiencia ya confía."
+      },
+      {
+        "icon": "🔗",
+        "title": "Un enlace, sin inventario",
+        "body": "Sin stock que gestionar ni códigos QR que enviar. Comparte tu enlace de referido y entregamos las eSIMs por correo después del pago."
+      },
+      {
+        "icon": "✨",
+        "title": "Una marca que encaja con tu voz",
+        "body": "Calmada, práctica y de confianza — el mismo tono en el sitio, los correos y las respuestas de soporte que verán tus referidos."
+      }
+    ],
+    "programsKicker": "Tipos de programa",
+    "programsTitle": "Elige el camino que encaje con tu comunidad",
+    "programsLede": "Los socios con pago en efectivo se postulan abajo. Revisamos cada solicitud a mano.",
+    "programs": [
+      {
+        "title": "Influencers y creadores",
+        "kicker": "Recompensas de audiencia",
+        "body": "Comparte una eSIM de viaje de confianza con tus seguidores. Tu enlace les da descuento al pagar y tú ganas en ventas cualificadas.",
+        "image": "/images/traveler.jpg",
+        "imageAlt": "Creador de viajes compartiendo recomendaciones"
+      },
+      {
+        "title": "Mezquitas y centros islámicos",
+        "kicker": "La comunidad primero",
+        "body": "Ofrece a tu comunidad un beneficio práctico de viaje para Umrah, Hajj y viajes en familia — como apoyo al centro, no como cacería de cupones.",
+        "image": "/images/insider/insider-2027-02-umrah.jpg",
+        "imageAlt": "Peregrinos viajando para Umrah"
+      },
+      {
+        "title": "Asesores de viaje y conectores",
+        "kicker": "Pensado para asesores",
+        "body": "Recomienda NoorLink a clientes y grupos que ya asesoras. Un enlace, sin inventario, y el soporte lo lleva nuestro equipo.",
+        "image": "/images/middle-east-regional.jpg",
+        "imageAlt": "Asesor de viaje planificando un viaje regional"
+      }
+    ],
+    "stepsKicker": "Cómo funciona",
+    "stepsTitle": "Tres pasos para empezar a ganar",
+    "stepsLede": "Claro, manual y pensado para alianzas comunitarias a largo plazo.",
+    "steps": [
+      {
+        "step": "1",
+        "title": "Solicita",
+        "body": "Cuéntanos sobre tu audiencia u organización. Aún no necesitas código de referido."
+      },
+      {
+        "step": "2",
+        "title": "Recibe tu enlace",
+        "body": "Cuando te aprueben, te enviamos tu enlace personal y acceso al panel."
+      },
+      {
+        "step": "3",
+        "title": "Gana en cada viaje",
+        "body": "Tu comunidad ahorra al pagar. Tú ganas recompensas en ventas cualificadas a través de tu enlace."
+      }
+    ],
+    "ctaKicker": "Cuando estés listo",
+    "ctaTitle": "Únete a creadores, mezquitas y asesores de viaje",
+    "ctaLede": "Solicita abajo o inicia sesión si ya estás aprobado.",
+    "ctaTermsBefore": "Al solicitar, aceptas nuestros",
+    "ctaTermsLink": "Términos del programa de socios",
+    "portalTitle": "Solicitar o iniciar sesión",
+    "portalTabsAria": "Opciones de socio",
+    "portalTabApply": "Solicitar",
+    "portalTabLogin": "Iniciar sesión en tu cuenta",
+    "footerTerms": "Términos del programa de socios",
+    "footerDestinations": "Ver destinos",
+    "footerHajj": "Planes de Hajj y Umrah",
+    "form": {
+      "name": "Tu nombre",
+      "email": "Correo",
+      "partnerType": "Tipo de socio",
+      "typeMasjid": "Mezquita o centro islámico",
+      "typeCreator": "Creador, asesor u organización",
+      "organization": "Organización (nombre de mezquita, agencia, marca)",
+      "organizationHint": "— organización o web/redes obligatoria",
+      "organizationPlaceholder": "Centro Islámico Al-Noor",
+      "website": "Sitio web o redes (URL o @usuario)",
+      "websitePlaceholder": "https:// o @usuario",
+      "about": "Cuéntanos sobre ti / tu audiencia",
+      "aboutPlaceholder": "Tamaño de audiencia, grupos de Hajj/Umrah, boletín y cómo planeas compartir NoorLink.",
+      "agreeBefore": "Acepto los",
+      "agreeLink": "Términos del programa de socios",
+      "submit": "Enviar solicitud",
+      "sending": "Enviando…",
+      "errorTerms": "Acepta los Términos del programa de socios para enviar tu solicitud.",
+      "errorOrg": "Añade el nombre de tu organización o un sitio web / red social.",
+      "errorSend": "No se pudo enviar tu solicitud.",
+      "success": "Solicitud enviada. Revisamos socios a mano y respondemos por correo en unos días hábiles."
+    },
+    "login": {
+      "code": "Código de socio",
+      "email": "Correo registrado",
+      "emailPlaceholder": "tu@organizacion.com",
+      "signIn": "Iniciar sesión",
+      "loading": "Cargando…",
+      "standaloneTitle": "Panel de socio",
+      "standaloneLede": "Ingresa tu código de socio y el correo registrado en NoorLink para ver tu enlace de referido, saldo y estado de pagos.",
+      "notPartnerYet": "¿Aún no eres socio?",
+      "applyLink": "Solicita unirte al programa",
+      "notFound": "No encontramos una cuenta de socio con ese correo.",
+      "codeLabel": "Código:",
+      "typeLabel": "Tipo:",
+      "referralLink": "Tu enlace de referido",
+      "copyLink": "Copiar enlace",
+      "linkCopied": "Enlace copiado.",
+      "copyFailed": "No se pudo copiar — selecciona el enlace y cópialo manualmente.",
+      "audienceDiscount": "Descuento para tu audiencia",
+      "approvedBalance": "Saldo aprobado",
+      "minPayout": "Pago mínimo {amount}",
+      "paidToDate": "Pagado hasta la fecha",
+      "readyPayout": "Listo para el pago — solicita el retiro y nuestro equipo lo procesará en 5 días hábiles.",
+      "requestPayout": "Solicitar pago",
+      "sending": "Enviando…",
+      "belowMin": "El saldo está por debajo del umbral mínimo de pago.",
+      "recentCommissions": "Comisiones recientes",
+      "signInDifferent": "Iniciar sesión con otra cuenta",
+      "requestSent": "Solicitud enviada.",
+      "requestFailed": "La solicitud falló."
+    },
+    "dashboardCrumb": "Panel"
+  },
+  "successPage": {
+    "crumbConfirmed": "Pedido confirmado",
+    "giftTitle": "Pago del regalo confirmado",
+    "title": "Pago confirmado",
+    "giftPreparingBefore": "Estamos preparando el eSIM para {recipient}. Recibirá el código QR y tu mensaje por correo",
+    "preparing": "Tu eSIM para {country}{planSuffix} se está preparando{emailSuffix}.",
+    "planSuffix": " ({plan})",
+    "emailSuffix": " — se entrega a {email}",
+    "orderTotal": "Total del pedido:",
+    "yourFriend": "tu amigo/a",
+    "lookupUnavailable": "La consulta no está disponible por el momento.",
+    "stillPreparing": "Todavía estamos preparando tu eSIM. No sigas actualizando el pago: abre Mis eSIMs o contacta a soporte con tu correo.",
+    "pilgrimGuidesAria": "Guías de peregrinación de cortesía",
+    "pilgrimKicker": "Regalo de cortesía con tu compra",
+    "pilgrimTitle": "Guías gratuitas de al-Haramayn",
+    "pilgrimText": "También en tu correo de entrega. Guárdalas con Wi‑Fi antes de viajar — no son necesarias para usar tu eSIM.",
+    "guides": {
+      "duas": {
+        "title": "Duas para el viaje",
+        "blurb": "Árabe, transliteración y significado — guárdalas sin conexión."
+      },
+      "orientation": {
+        "title": "Orientación en Makkah y Madinah",
+        "blurb": "Una visión calmada y sencilla de al-Haramayn."
+      },
+      "places": {
+        "title": "Lugares con significado",
+        "blurb": "Lista breve de ziyārah con etiqueta respetuosa."
+      }
+    },
+    "whatNext": "Qué sigue",
+    "loadingOrder": "Cargando pedido…",
+    "usuallyMinutes": "Suele tardar 1–2 min",
+    "qrReady": "Tu QR de instalación ya está arriba",
+    "preferEmail": "¿Prefieres el correo? El mismo QR de NoorLink y los enlaces de un toque están en tu mensaje de entrega.",
+    "qrPending": "Tu QR y los enlaces de instalación aparecen aquí en cuanto se confirma el pago — normalmente en uno o dos minutos.",
+    "installTitle": "Instala en 3 pasos",
+    "step1Title": "Confirmación de pago",
+    "step1Body": "Tu primer correo confirma el pedido y muestra el ID del pedido.",
+    "step2Title": "Instala en esta página o por correo",
+    "step2Body": "Escanea el QR de NoorLink, o toca Instalar en iPhone / Android si no puedes escanear.",
+    "step3Title": "Sigue el uso aquí",
+    "step3Body": "Consulta GB y días restantes en Mis eSIMs en cualquier momento del viaje.",
+    "ol1": "Usa Wi‑Fi antes de instalar.",
+    "ol2": "Escanea el QR o abre un enlace de instalación de un toque en tu teléfono.",
+    "ol3": "Antes de viajar: línea de viaje ON, Data Roaming ON, Datos celulares = línea de viaje (ver guía visual arriba).",
+    "emailNoteBefore": "Revisa bandeja de entrada y spam/correo no deseado. Si no llega nada en 10 minutos, busca el pedido en",
+    "emailNoteOr": "o escribe a",
+    "whatsappSupport": "soporte por WhatsApp",
+    "trackOrder": "Seguir este pedido",
+    "supportSubject": "Instalación / código QR",
+    "giftOl1": "Provisionamos el eSIM y enviamos el QR a tu amigo/a por correo.",
+    "giftOl2": "Tú recibes un correo de confirmación cuando se envía la entrega.",
+    "giftOl3": "Ellos instalan con Wi‑Fi antes de viajar — los mismos pasos calmados de NoorLink.",
+    "giftEmailNoteBefore": "Si no ven el correo en 10 minutos, pídeles que revisen spam o contacten a",
+    "sendAnother": "Enviar otro regalo",
+    "browseDestinations": "Ver destinos",
+    "giftEsim": {
+      "kicker": "Envía un regalo de viaje",
+      "title": "¿Conoces a alguien que también viaja?",
+      "copy": "Elige un plan, agrega un mensaje corto — reciben el eSIM por correo, listo para instalar antes de viajar.",
+      "cta": "Regalar un eSIM",
+      "waiting": "Tu enlace de regalo aparecerá cuando carguen los datos del pedido."
+    },
+    "refer": {
+      "title": "Da a amigos 10% de descuento — recibe 10% en tu próximo viaje",
+      "copy": "Comparte tu enlace personal. Cuando un amigo complete un pedido, te enviamos por correo un cupón de un solo uso del 10% para tu próximo eSIM.",
+      "preparing": "Preparando tu enlace…",
+      "copied": "¡Copiado!",
+      "copyLink": "Copiar enlace",
+      "waiting": "Tu enlace aparecerá cuando se confirme el correo del pedido."
+    }
+  },
+  "giftPage": {
+    "crumb": "Regalar un eSIM",
+    "kicker": "Regalar un eSIM",
+    "title": "Envía datos para su viaje",
+    "lede": "Tú pagas una vez. Ellos reciben el código QR y los pasos de instalación por correo — con tu nota personal.",
+    "defaultDestination": "Tu destino",
+    "defaultPlan": "Plan seleccionado",
+    "buyerEmail": "Tu correo",
+    "buyerPlaceholder": "tu@ejemplo.com",
+    "buyerHint": "Confirmación cuando se entregue el regalo.",
+    "senderName": "Tu nombre (opcional)",
+    "senderPlaceholder": "Cómo te verá tu amigo/a",
+    "recipientName": "Nombre de tu amigo/a",
+    "recipientNamePlaceholder": "Su nombre",
+    "recipientEmail": "Correo de tu amigo/a",
+    "recipientEmailPlaceholder": "Adonde enviamos el código QR",
+    "message": "Mensaje personal (opcional)",
+    "messagePlaceholder": "Instala antes de viajar — ¡buen viaje!",
+    "charsLeft": "{n} caracteres restantes",
+    "payCta": "Pagar ${price} y enviar regalo",
+    "openingPay": "Abriendo pago seguro…",
+    "fineprintBefore": "Los códigos promo y descuentos por referidos no aplican a regalos.",
+    "chooseDifferent": "Elegir otro plan",
+    "errBuyerEmail": "Ingresa tu correo — te enviamos una confirmación cuando se entregue el regalo.",
+    "errRecipientName": "Ingresa el nombre de tu amigo/a.",
+    "errRecipientEmail": "Ingresa un correo válido para tu amigo/a.",
+    "errSameEmail": "El correo del destinatario debe ser distinto al tuyo.",
+    "errMissingPlan": "Falta el plan. Vuelve a tu pedido e inténtalo de nuevo.",
+    "errInvalidPrice": "Precio del plan no válido. Vuelve y selecciona un plan otra vez.",
+    "errStartPay": "No pudimos iniciar el pago. Inténtalo de nuevo.",
+    "errInvalidRedirect": "Redirección de pago no válida. Inténtalo de nuevo o contacta a soporte.",
+    "errUnexpected": "Error inesperado al iniciar el pago."
+  },
+  "reviewPage": {
+    "crumb": "Dejar una reseña",
+    "howHelpsTitle": "Cómo ayuda tu reseña",
+    "howHelpsBody": "Las valoraciones honestas ayudan a otros viajeros a elegir conectividad confiable para Umrah, Hajj y viajes por el mundo. Los comentarios también llegan a nuestro equipo para mejorar rutas, precios y soporte.",
+    "publicRating": "Valoración pública:",
+    "trustpilotSoon": "El enlace de Trustpilot estará pronto — por ahora usa la opinión privada abajo.",
+    "alsoGoogle": "También en Google",
+    "privateFeedback": "Opinión privada:",
+    "privateFeedbackLink": "Cuéntanos qué mejorar",
+    "privateFeedbackAfter": "— datos del pedido opcionales.",
+    "nextTrip": "Próximo viaje:",
+    "nextTripBody": "menciona los destinos que planeas para sugerirte el plan adecuado.",
+    "thanks": "Gracias por viajar con NoorLink. Buen viaje — y nos vemos en la próxima aventura.",
+    "rateTrustpilot": "Valóranos en Trustpilot",
+    "rateGoogle": "Valóranos en Google",
+    "ratePublic": "Dejar una reseña pública",
+    "feedbackSubject": "Reseña del servicio",
+    "feedbackMessage": "Hola NoorLink, aquí va mi opinión sobre el pedido {orderId}:",
+    "card": {
+      "kicker": "Tu opinión importa",
+      "title": "Déjanos una reseña",
+      "text": "Si eliges valorar nuestro servicio, también podrás dejar un comentario. Cuéntanos cómo podemos ayudarte en tu próximo viaje — y qué podemos mejorar en NoorLink.",
+      "privateCta": "Enviar opinión privada"
+    }
+  },
+  "landingReady": {
+    "tagLabel": "Antes de viajar — deja los datos listos",
+    "eyebrowInstalled": "Antes de viajar",
+    "eyebrowPreview": "Después de instalar — antes de viajar",
+    "title": "Instalado no basta — deja los datos listos",
+    "lede": "Haz estas tres comprobaciones con Wi‑Fi antes de viajar. La mayoría de tickets de “sin internet” son una de estas: línea apagada, roaming apagado o Datos celulares aún en Primary. Los nombres del menú varían; los interruptores son los mismos.",
+    "tabsAria": "Tipo de teléfono",
+    "tabIphone": "iPhone",
+    "tabSamsung": "Samsung",
+    "tabOther": "Otro",
+    "otherNote": "Pixel, Google, Xiaomi, Oppo y la mayoría de Android usan los mismos tres ajustes — busca SIMs, Data roaming y Mobile data.",
+    "afterLanding": "Al aterrizar: desactiva Modo avión y espera ~1 minuto. ¿Sigue sin datos? Activa y desactiva Modo avión una vez, luego vuelve a revisar los tres puntos de arriba.",
+    "warn": "No toques Delete eSIM. Si la línea está activa y aún falla, escribe a soporte por WhatsApp con una captura de Ajustes celulares / red móvil.",
+    "iphone": [
+      {
+        "title": "Línea de viaje ON",
+        "detail": "Ajustes → Celular → tu línea de viaje → Activar esta línea (puede llamarse Travel, Secondary o NoorLink)",
+        "alt": "iPhone: activa la línea eSIM de viaje antes de viajar"
+      },
+      {
+        "title": "Data Roaming ON",
+        "detail": "Abre esa misma línea de viaje → Data Roaming ON — el error #1 en el extranjero",
+        "alt": "iPhone: activa Data Roaming en la línea eSIM de viaje"
+      },
+      {
+        "title": "Datos celulares = línea de viaje",
+        "detail": "Datos celulares → toca tu línea de viaje (no Primary). La SIM de casa puede quedar para llamadas",
+        "alt": "iPhone: configura Datos celulares en la línea eSIM de viaje"
+      }
+    ],
+    "samsung": [
+      {
+        "title": "eSIM de viaje ON",
+        "detail": "Ajustes → Conexiones → Administrador de SIM → activa tu eSIM de viaje",
+        "alt": "Samsung: activa el eSIM de viaje antes de viajar"
+      },
+      {
+        "title": "Data roaming ON",
+        "detail": "Redes móviles → Data roaming ON — el error #1 en el extranjero",
+        "alt": "Samsung: activa Data roaming"
+      },
+      {
+        "title": "Datos móviles = eSIM de viaje",
+        "detail": "Datos móviles → elige tu eSIM de viaje (no la SIM de casa)",
+        "alt": "Samsung: configura Datos móviles en el eSIM de viaje"
+      }
+    ],
+    "other": [
+      {
+        "title": "eSIM de viaje ON",
+        "detail": "Ajustes → Red e internet (o Red móvil) → SIMs → activa tu eSIM de viaje",
+        "alt": "Android: activa el eSIM de viaje antes de viajar"
+      },
+      {
+        "title": "Data roaming ON",
+        "detail": "Misma pantalla de SIM / red móvil → Data roaming ON — el error #1 en el extranjero",
+        "alt": "Android: activa Data roaming"
+      },
+      {
+        "title": "Datos móviles = eSIM de viaje",
+        "detail": "Datos móviles / SIM preferida → elige tu eSIM de viaje (no la SIM de casa)",
+        "alt": "Android: configura Datos móviles en el eSIM de viaje"
+      }
+    ]
+  },
+  "compatModal": {
+    "title": "Verificador de compatibilidad eSIM",
+    "subtitle": "Elige la marca y el modelo de tu dispositivo para confirmar el soporte.",
+    "close": "Cerrar",
+    "loading": "Cargando dispositivos…",
+    "selectBrand": "Seleccionar marca",
+    "selectModel": "Seleccionar modelo",
+    "chooseBrand": "Elige una marca…",
+    "chooseModel": "Elige un modelo…",
+    "selectBrandFirst": "Primero elige una marca",
+    "success": "Listo",
+    "successBody": "Tu {brand} {model} es compatible con eSIM. Ya puedes usar NoorLink.",
+    "note": "Nota: asegúrate de que tu dispositivo esté desbloqueado de red para usar una eSIM.",
+    "loadError": "No se pudo cargar la lista de dispositivos."
+  },
+  "secureTrust": {
+    "paymentMethods": "Métodos de pago",
+    "secureStripeAria": "Pago seguro con Stripe",
+    "secureStripeTitleBefore": "Pago seguro con",
+    "secureStripeTitleAfter": "",
+    "sslCertificate": "Certificado SSL"
+  },
+  "comparePage": {
+    "crumb": "Comparación de eSIM",
+    "kicker": "Comparación de eSIM para viajar",
+    "title": "Comparación de eSIM: NoorLink vs Airalo, Holafly y más",
+    "lede": "Compara proveedores populares de eSIM de viaje en cobertura, hotspot, soporte y planes dedicados de Hajj y Umrah — para elegir según el viaje que sí vas a hacer, no solo el catálogo más grande.",
+    "updatedPrefix": "Tabla actualizada",
+    "updatedLabel": "25 de septiembre de 2026",
+    "tocAria": "En esta página",
+    "tocLabel": "En esta página",
+    "tocFeatureChart": "Tabla de funciones",
+    "tocWho": "Para quién es",
+    "tocLive": "Precios iniciales en vivo",
+    "tocPhone": "Revisión del teléfono",
+    "tocTrustpilot": "Reseñas en Trustpilot",
+    "tocFaq": "Preguntas de la comparación",
+    "chartKicker": "Tabla de funciones",
+    "chartTitle": "Cómo nos comparamos",
+    "chartLede": "Seis proveedores conocidos junto a NoorLink. Las filas son las diferencias que cambian un viaje: planes de peregrinación, hotspot, cómo recibes ayuda y si puedes prepararte antes de viajar.",
+    "tableCaption": "Comparación de NoorLink con Airalo, Holafly, Nomad, Saily, GigSky y Maya Mobile",
+    "featureCol": "Función",
+    "oursTag": "Nosotros",
+    "disclaimer": "Los resúmenes son orientativos y pueden cambiar según destino y plan. Confirma siempre las reglas de hotspot, uso justo y reembolsos en el sitio de cada proveedor antes de comprar.",
+    "whoKicker": "Para quién es",
+    "whoTitle": "Elige NoorLink si esto suena a tu viaje",
+    "whoItems": [
+      {
+        "title": "Umrah o Hajj",
+        "body": "Quieres planes de peregrinación con hotspot — no solo un paquete genérico de Arabia Saudita."
+      },
+      {
+        "title": "Viaje en familia o en grupo",
+        "body": "Puedes compartir datos con el teléfono de un acompañante o una laptop en el camino."
+      },
+      {
+        "title": "Prefieres ayuda humana",
+        "body": "Quieres soporte por WhatsApp y pasos claros para instalar antes de viajar, no solo una ficha en la tienda de apps."
+      }
+    ],
+    "browseDestinations": "Ver destinos",
+    "hajjUmrahPlans": "Planes Hajj y Umrah",
+    "liveKicker": "Precios iniciales en vivo",
+    "liveTitle": "Mira desde cuánto empiezan los planes NoorLink",
+    "liveLede": "Precios reales “Desde” para viajes populares — Arabia Saudita (Hajj y Umrah), Turquía y Egipto. Entra para elegir un paquete.",
+    "saudiBlurb": "Planes de peregrinación para Meca y Medina",
+    "plansAria": "Planes de {title}, {price}",
+    "browseAllDestinations": "Ver todos los destinos →",
+    "phoneKicker": "Antes de comprar",
+    "phoneTitle": "¿No estás seguro de que tu teléfono funcione con eSIM?",
+    "phoneLede": "Haz una revisión gratuita de compatibilidad e instala en el Wi‑Fi de casa para llegar listo — no atrapado en la fila de SIM del aeropuerto.",
+    "freePhoneCheck": "Revisión gratis del teléfono",
+    "installBeforeFly": "Instálala antes de viajar",
+    "trustKicker": "Reseñas en Trustpilot",
+    "trustTitle": "Viajeros reales, no solo una tabla de funciones",
+    "trustLede": "Reseñas independientes en Trustpilot — la misma prueba que buscan quienes comparan marcas de eSIM.",
+    "trustScoreAria": "{label}, {score} de 5 en Trustpilot",
+    "trustOnTrustpilot": "{label} en Trustpilot",
+    "starsAria": "{stars} de 5 estrellas",
+    "readAllReviews": "Leer todas las reseñas en Trustpilot",
+    "whyKicker": "Por qué los viajeros eligen NoorLink",
+    "whyTitle": "Hecho para el viaje, no solo para el catálogo",
+    "whyItems": [
+      {
+        "title": "Perfiles Hajj y Umrah",
+        "bodyBefore": "",
+        "linkLabel": "Planes de peregrinación",
+        "bodyAfter": " dedicados con hotspot — no solo un listado genérico de Arabia Saudita."
+      },
+      {
+        "title": "Ayuda por WhatsApp que te acompaña",
+        "bodyBefore": "Respuestas reales cuando instalas en casa o ya estás en destino — empieza en ",
+        "linkLabel": "Soporte",
+        "bodyAfter": "."
+      },
+      {
+        "title": "Instálala antes de viajar",
+        "bodyBefore": "Usa la ",
+        "linkLabel": "guía antes de viajar",
+        "bodyMid": " y la ",
+        "linkLabel2": "revisión gratis del dispositivo",
+        "bodyAfter": " para configurar en Wi‑Fi, no en la fila del aeropuerto."
+      }
+    ],
+    "guidesKicker": "Guías",
+    "guidesTitle": "Cómo elegir una eSIM de viaje",
+    "guidesLede": "Respuestas cortas a las búsquedas que sí hacen los viajeros — con claridad, sin bombo.",
+    "faqKicker": "Preguntas",
+    "faqTitle": "Preguntas de la comparación",
+    "faqLedeBefore": "Respuestas rápidas antes de comprar. Más detalle de configuración está en las ",
+    "faqLedeLink": "preguntas completas",
+    "faqLedeAfter": ".",
+    "ctaKicker": "¿Listo para elegir?",
+    "ctaTitle": "Mira destinos o empieza con planes de peregrinación.",
+    "ctaLede": "Elige un paquete de país para tu próximo viaje, o abre Hajj y Umrah si Meca y Medina son el destino.",
+    "stickyAria": "Acciones rápidas",
+    "stickyCopy": "Cuando quieras — instálala antes de viajar.",
+    "stickyHajj": "Hajj y Umrah",
+    "providers": {
+      "noorlink": {
+        "blurb": "eSIM de viaje con planes de peregrinación, hotspot y ayuda por WhatsApp."
+      },
+      "airalo": {
+        "blurb": "Gran marketplace global con paquetes locales, regionales y globales."
+      },
+      "holafly": {
+        "blurb": "Conocida por planes estilo ilimitado con políticas de uso justo."
+      },
+      "nomad": {
+        "blurb": "Paquetes desde la app, con hotspot en los planes y buena cobertura por país."
+      },
+      "saily": {
+        "blurb": "eSIM de viaje respaldada por Nord Security, con paquetes simples por país."
+      },
+      "gigsky": {
+        "blurb": "Marca de datos de viaje con historial largo, instalación por app y recargas."
+      },
+      "maya": {
+        "blurb": "Opciones por destino y estilo ilimitado, con políticas de velocidad claras."
+      }
+    },
+    "yes": "Sí",
+    "rows": [
+      {
+        "id": "hajj_umrah",
+        "label": "Planes Hajj y Umrah",
+        "hint": "Un perfil de peregrinación, o solo un paquete genérico de Arabia Saudita.",
+        "cells": {
+          "noorlink": {
+            "kind": "yes",
+            "label": "Planes de peregrino"
+          },
+          "airalo": {
+            "kind": "text",
+            "label": "Paquete de Arabia Saudita"
+          },
+          "holafly": {
+            "kind": "text",
+            "label": "Paquete de Arabia Saudita"
+          },
+          "nomad": {
+            "kind": "text",
+            "label": "Paquete de Arabia Saudita"
+          },
+          "saily": {
+            "kind": "text",
+            "label": "Paquete de Arabia Saudita"
+          },
+          "gigsky": {
+            "kind": "text",
+            "label": "Paquete de Arabia Saudita"
+          },
+          "maya": {
+            "kind": "text",
+            "label": "Paquete de Arabia Saudita"
+          }
+        }
+      },
+      {
+        "id": "hotspot",
+        "label": "Hotspot",
+        "hint": "Confirma la página exacta del plan. Las ofertas estilo ilimitado suelen limitar el uso compartido.",
+        "cells": {
+          "noorlink": {
+            "kind": "yes",
+            "label": "Incluido"
+          },
+          "airalo": {
+            "kind": "text",
+            "label": "Suele permitirse"
+          },
+          "holafly": {
+            "kind": "limited",
+            "label": "A menudo limitado",
+            "note": "Los planes estilo ilimitado suelen limitar el hotspot. Confirma antes de comprar."
+          },
+          "nomad": {
+            "kind": "text",
+            "label": "En los planes"
+          },
+          "saily": {
+            "kind": "text",
+            "label": "En planes compatibles"
+          },
+          "gigsky": {
+            "kind": "text",
+            "label": "En los planes"
+          },
+          "maya": {
+            "kind": "text",
+            "label": "En los planes"
+          }
+        }
+      },
+      {
+        "id": "support",
+        "label": "Cómo recibes ayuda",
+        "hint": "El canal al que escribes cuando la instalación o el timing no quedan claros.",
+        "cells": {
+          "noorlink": {
+            "kind": "yes",
+            "label": "WhatsApp"
+          },
+          "airalo": {
+            "kind": "text",
+            "label": "Chat en la app"
+          },
+          "holafly": {
+            "kind": "text",
+            "label": "Chat"
+          },
+          "nomad": {
+            "kind": "text",
+            "label": "App / correo"
+          },
+          "saily": {
+            "kind": "text",
+            "label": "Chat en la app"
+          },
+          "gigsky": {
+            "kind": "text",
+            "label": "Soporte en la app"
+          },
+          "maya": {
+            "kind": "text",
+            "label": "Chat / correo"
+          }
+        }
+      },
+      {
+        "id": "before_fly",
+        "label": "Instalar antes de viajar",
+        "hint": "Dónde un viajero puede aprender los pasos antes de salir de casa.",
+        "cells": {
+          "noorlink": {
+            "kind": "yes",
+            "label": "Guías + revisión del teléfono"
+          },
+          "airalo": {
+            "kind": "text",
+            "label": "Pasos de instalación en la app"
+          },
+          "holafly": {
+            "kind": "text",
+            "label": "Pasos de instalación en la app"
+          },
+          "nomad": {
+            "kind": "text",
+            "label": "Pasos de instalación en la app"
+          },
+          "saily": {
+            "kind": "text",
+            "label": "Pasos de instalación en la app"
+          },
+          "gigsky": {
+            "kind": "text",
+            "label": "Pasos de instalación en la app"
+          },
+          "maya": {
+            "kind": "text",
+            "label": "Pasos de instalación en la app"
+          }
+        }
+      },
+      {
+        "id": "coverage",
+        "label": "Alcance de destinos",
+        "hint": "Tamaño aproximado del catálogo. Los números cambian al sumar planes.",
+        "cells": {
+          "noorlink": {
+            "kind": "text",
+            "label": "190+ destinos"
+          },
+          "airalo": {
+            "kind": "text",
+            "label": "200+ destinos"
+          },
+          "holafly": {
+            "kind": "text",
+            "label": "160+ destinos"
+          },
+          "nomad": {
+            "kind": "text",
+            "label": "100+ destinos"
+          },
+          "saily": {
+            "kind": "text",
+            "label": "150+ destinos"
+          },
+          "gigsky": {
+            "kind": "text",
+            "label": "190+ destinos"
+          },
+          "maya": {
+            "kind": "text",
+            "label": "100+ destinos"
+          }
+        }
+      },
+      {
+        "id": "focus",
+        "label": "Mejor encaje",
+        "hint": "",
+        "cells": {
+          "noorlink": {
+            "kind": "text",
+            "label": "Peregrinos y viajeros prácticos"
+          },
+          "airalo": {
+            "kind": "text",
+            "label": "Catálogo amplio"
+          },
+          "holafly": {
+            "kind": "text",
+            "label": "Planes estilo ilimitado"
+          },
+          "nomad": {
+            "kind": "text",
+            "label": "Valor + hotspot"
+          },
+          "saily": {
+            "kind": "text",
+            "label": "Paquetes simples por país"
+          },
+          "gigsky": {
+            "kind": "text",
+            "label": "Recargas en la app"
+          },
+          "maya": {
+            "kind": "text",
+            "label": "Políticas de velocidad claras"
+          }
+        }
+      }
+    ],
+    "guides": [
+      {
+        "id": "vs-airalo",
+        "title": "NoorLink vs Airalo",
+        "body": "Airalo es un gran marketplace de eSIM con un catálogo amplio. NoorLink está pensado alrededor del soporte al viajero y la preparación antes del viaje — con planes dedicados de Hajj y Umrah, hotspot incluido, ayuda por WhatsApp y guías claras para instalar antes de viajar. Si quieres un catálogo enorme de autoservicio, Airalo es fuerte. Si quieres empaque de peregrinación y ayuda humana cuando algo falla, empieza con NoorLink.",
+        "links": [
+          {
+            "href": "/hajj-umrah",
+            "label": "Planes Hajj y Umrah"
+          },
+          {
+            "href": "/destinations",
+            "label": "Ver destinos"
+          },
+          {
+            "href": "/faq",
+            "label": "Preguntas"
+          }
+        ]
+      },
+      {
+        "id": "unlimited-vs-hotspot",
+        "title": "eSIM estilo ilimitado vs planes con hotspot claro",
+        "body": "El marketing de “ilimitado” suele venir con reducción por uso justo y hotspot limitado. Los planes estilo Holafly pueden convenir si te quedas en un solo teléfono y aceptas límites diarios de hotspot. Si necesitas compartir datos con una laptop o un acompañante, prefiere proveedores que incluyan hotspot de forma honesta — NoorLink lo incluye, y Nomad es otra opción amigable con hotspot en la tabla de arriba.",
+        "links": [
+          {
+            "href": "/destinations",
+            "label": "Buscar un plan de destino"
+          },
+          {
+            "href": "/help/before-you-fly",
+            "label": "Guía antes de viajar"
+          }
+        ]
+      },
+      {
+        "id": "hajj-umrah",
+        "title": "La mejor eSIM para Umrah y Hajj",
+        "body": "La mayoría de marcas listan Arabia Saudita como un paquete de país. Los peregrinos suelen necesitar más: datos entre Meca y Medina, hotspot para la familia y a alguien a quien escribir si la instalación falla antes del vuelo. Los perfiles de peregrinación de NoorLink están pensados para ese viaje — combina un plan con la revisión gratis del teléfono y la guía de instalación para aterrizar conectado.",
+        "links": [
+          {
+            "href": "/hajj-umrah",
+            "label": "Planes de peregrinación"
+          },
+          {
+            "href": "/help/hajj-umrah-phone-check",
+            "label": "Revisión gratis Umrah / Hajj"
+          },
+          {
+            "href": "/help/umrah-esim-before-you-fly",
+            "label": "eSIM de Umrah antes de viajar"
+          }
+        ]
+      },
+      {
+        "id": "before-you-buy",
+        "title": "Qué revisar antes de comprar cualquier eSIM de viaje",
+        "body": "Confirma que tu teléfono esté desbloqueado y sea compatible con eSIM, lee las reglas de hotspot en la página exacta del plan e instala en el Wi‑Fi de casa antes de viajar — no en la fila del aeropuerto. Conserva tu número principal para WhatsApp y llamadas; las eSIM de viaje suelen ser solo datos. Si la activación falla por un motivo técnico, conoce la política de reembolso antes de necesitarla.",
+        "links": [
+          {
+            "href": "/help/before-you-fly",
+            "label": "Instálala antes de viajar"
+          },
+          {
+            "href": "/help/hajj-umrah-phone-check",
+            "label": "Revisión de compatibilidad"
+          },
+          {
+            "href": "/refund",
+            "label": "Política de reembolsos"
+          },
+          {
+            "href": "/support",
+            "label": "Soporte"
+          }
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "¿En qué se diferencia NoorLink de Airalo o Holafly?",
+        "a": "Airalo se centra en un catálogo grande de autoservicio. Holafly es conocida por planes estilo ilimitado que pueden limitar el hotspot. NoorLink pone el énfasis en planes dedicados de Hajj y Umrah, hotspot incluido, soporte por WhatsApp y educación para instalar antes de viajar — con reseñas independientes en Trustpilot de viajeros reales."
+      },
+      {
+        "q": "¿NoorLink incluye hotspot?",
+        "a": "Sí. El hotspot está incluido para que puedas compartir datos con una laptop o un acompañante. Confirma siempre los detalles en la página del plan de tu destino."
+      },
+      {
+        "q": "¿Hay una eSIM dedicada de Umrah o Hajj en NoorLink?",
+        "a": "Sí. NoorLink ofrece planes enfocados en peregrinación para Meca y Medina (y opciones seleccionadas de Arabia Saudita + región), no solo un listado genérico del país. Ver /hajj-umrah."
+      },
+      {
+        "q": "¿Puedo instalar mi eSIM antes de viajar?",
+        "a": "Sí — y conviene. Compra con tiempo, instala en el Wi‑Fi de casa y activa la línea de viaje y el roaming de datos al aterrizar. Usa la guía antes de viajar y la revisión gratis del teléfono si no estás seguro."
+      },
+      {
+        "q": "¿Conservo mi número de WhatsApp con una eSIM de viaje?",
+        "a": "Sí. Los planes NoorLink son solo datos. Mantén tu línea principal activa para WhatsApp y llamadas mientras usas la eSIM de viaje para datos móviles."
+      },
+      {
+        "q": "¿Qué pasa si la eSIM no se activa?",
+        "a": "Si la activación falla por un error técnico de nuestro lado o del proveedor, revisamos rápido y reembolsamos o reemplazamos cuando corresponde. Cambio de opinión y teléfonos incompatibles o bloqueados no son reembolsables después de entregar un QR que funciona. Ver la Política de reembolsos."
+      },
+      {
+        "q": "¿Qué eSIM conviene para compartir datos en familia en Umrah?",
+        "a": "Elige un plan con hotspot incluido de forma clara. Los planes de peregrinación de NoorLink incluyen hotspot, lo que ayuda cuando un acompañante necesita mapas o mensajes sin comprar otra eSIM de inmediato."
+      }
+    ],
+    "itemListName": "Comparación de proveedores de eSIM de viaje"
+  },
+  "givePage": {
+    "crumb": "Dar",
+    "kicker": "Dar en Ramadán",
+    "title": "Nuestro compromiso en el mes bendecido",
+    "lede": "Inspirados en la Sunnah: tu descuento Insider y nuestra promesa de dar desde la ganancia.",
+    "sunnahKicker": "De la Sunnah",
+    "hadith": "El Mensajero de Allah ﷺ era el más generoso de las personas, y era aún más generoso en Ramadán que en otros meses.",
+    "hadithReference": "Bujari y Muslim",
+    "pledgeTitle": "Lo que NoorLink se compromete",
+    "pledgeIntro": "Cuando usas el código Insider de Ramadán en Hajj & Umrah Connect o planes de Arabia Saudita:",
+    "discountItem": "Recibes {percent}% de descuento al pagar.",
+    "donateItem": "NoorLink dona el {percent}% de nuestra ganancia de esa compra elegible a la caridad que apoyamos en la temporada.",
+    "pledgeClose": "El descuento es tuyo. La donación es nuestra: no te enviamos a donar en nuestro nombre. Damos de lo que ganamos, en el espíritu de un mes en que el Profeta ﷺ aumentaba en generosidad.",
+    "viewPilgrimage": "Ver planes de peregrinación",
+    "readRamadanSpecial": "Leer el especial Insider de Ramadán"
+  },
+  "learnPage": {
+    "crumb": "Guías",
+    "kicker": "Guías",
+    "title": "Notas para el viaje en sí.",
+    "lede": "Viajes en familia, la primera hora al aterrizar y la preparación tranquila antes de Umrah o Hajj. Cada nota termina con una forma práctica de mantenerte conectado — sin que el teléfono sea el centro del viaje.",
+    "readNote": "Leer la nota",
+    "stayingConnected": "Mantenerte conectado",
+    "moreNotes": "Más notas",
+    "months": [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre"
+    ]
+  },
+  "newsletterPage": {
+    "crumb": "Insider",
+    "heroAlt": "Boletín NoorLink Insider",
+    "kicker": "NoorLink Insider",
+    "title": "Tips de viaje y guías de destino — útiles, no ruidosos.",
+    "lede": "Un correo mensual para todos: notas de destino, timing de Hajj y Umrah, tips reales de conectividad y descuentos Insider con fecha.",
+    "archiveKicker": "Archivo año 1",
+    "archiveTitle": "Guías de destino con fotografía premium",
+    "archiveLede": "Consejo práctico para viajeros, timing de Hajj y Umrah, y un código de oferta cada mes que se apaga solo cuando termina la promoción. Los correos salen el primer martes de cada mes.",
+    "archiveEmpty": "El primer número llega en septiembre de 2026. Únete a Insider arriba para recibirlo por correo cuando se publique.",
+    "upcomingKicker": "Próximamente",
+    "upcomingTitle": "Números programados",
+    "promiseKicker": "Lo que recibes",
+    "promiseTitle": "Hecho para viajeros prácticos",
+    "promiseItems": [
+      "Guías de destino con hábitos reales de conectividad",
+      "Notas de timing de Hajj y Umrah — calma, sin bombo",
+      "Un código de oferta al mes, desactivado al terminar",
+      "La misma lista para todos — sin spam por segmentos"
+    ],
+    "browseDestinations": "Ver destinos",
+    "hajjUmrahConnect": "Hajj & Umrah Connect",
+    "comingSoon": "Próximamente",
+    "specialEdition": "Edición especial",
+    "issueNumber": "Número #{n}",
+    "pilgrimageList": "Lista de peregrinación",
+    "releases": "Se publica {month}",
+    "readIssue": "Leer número",
+    "dealSoon": "{percent}% oferta Insider",
+    "dealLive": "{percent}% · {code}",
+    "specialKicker": "Edición especial · {month}",
+    "issueKicker": "Número #{n} · {month}",
+    "fromQuran": "Del Corán",
+    "fromSunnah": "De la Sunnah",
+    "specialDuas": "Du‘ā’s especiales para el viaje",
+    "insiderNote": "Nota Insider",
+    "promoEnds": "{percent}% de descuento al pagar · termina {ends}.",
+    "signoff": "— NoorLink Insider",
+    "allIssues": "Todos los números",
+    "issueNavAria": "Navegación de números",
+    "joinNext": "Recibe el próximo número por correo",
+    "remindersAria": "Recordatorios islámicos",
+    "signupEmailLabel": "Correo",
+    "signupEmailPlaceholder": "tu@ejemplo.com",
+    "signupTripLabel": "Próximo viaje",
+    "signupTripOptional": "Próximo viaje (opcional)",
+    "signupUmrah": "Umrah",
+    "signupHajj": "Hajj",
+    "signupEurope": "Europa",
+    "signupAsia": "Asia",
+    "signupAmericas": "Américas",
+    "signupJoin": "Unirme a Insider",
+    "signupJoining": "Uniéndote…",
+    "signupSuccess": "Ya estás en la lista Insider. Guías mensuales y ofertas con fecha — sin spam.",
+    "signupError": "No se pudo unir ahora. Intenta de nuevo en un momento.",
+    "signupPrivacy": "Un correo al mes. Elige Umrah o Hajj para recibir especiales de peregrinación.",
+    "signupUnsubscribe": "Cancelar suscripción",
+    "signupAnytime": "cuando quieras.",
+    "bodyRemainderNote": "Los párrafos del cuerpo del número siguen en inglés por ahora; títulos, kickers, CTAs y el opener están localizados.",
+    "issues": {
+      "2026-09-fall-turkey": {
+        "monthLabel": "septiembre 2026",
+        "subject": "Viajes de otoño, Turquía y una forma más calmada de estar online",
+        "preview": "Consejos de destino, un hábito simple de eSIM y planificación temprana de Umrah.",
+        "destinationFocus": "Turquía",
+        "promoEndsLabel": "30 Sep 2026",
+        "ctaPrimary": "Ver planes de Turquía",
+        "ctaSecondary": "Hajj & Umrah Connect",
+        "opener": "El otoño es cuando los itinerarios se ponen interesantes: escapadas a la ciudad, visitas familiares y planificación temprana de peregrinación. El Insider de este mes es corto y útil: a dónde va la gente, cómo mantenerte conectado sin sorpresas de roaming y qué pensar si Umrah está en el horizonte.",
+        "destinationTitle": "Guía de destino — Turquía",
+        "connectivityTitle": "Consejo de conectividad — Un hábito que evita casi todo el estrés",
+        "hajjTitle": "Nota Hajj y Umrah — Empieza temprano, mantén la calma",
+        "heroAlt": "Horizonte de Estambul al amanecer"
+      },
+      "2026-10-france-uk": {
+        "monthLabel": "octubre 2026",
+        "subject": "Fines de semana en Francia y el Reino Unido — viaja ligero, quédate online",
+        "preview": "Conectividad en viajes cortos, Europa regional y una nota breve de Umrah.",
+        "destinationFocus": "Francia y Reino Unido",
+        "promoEndsLabel": "31 Oct 2026",
+        "ctaPrimary": "Planes regionales de Europa",
+        "ctaSecondary": "Ver destinos",
+        "opener": "Octubre es para fines de semana largos: París, Londres y saltos rápidos entre ambos. Este Insider mantiene la conectividad simple en viajes urbanos cortos.",
+        "destinationTitle": "Guía de destino — Francia y Reino Unido",
+        "connectivityTitle": "Consejo de conectividad — Regional una vez, menos roaming",
+        "hajjTitle": "Nota Hajj y Umrah — Preparación ligera",
+        "heroAlt": "Luces nocturnas en una calle de París"
+      },
+      "2026-11-winter-sun": {
+        "monthLabel": "noviembre 2026",
+        "subject": "Preparación para el sol de invierno — EAU, islas y datos confiables",
+        "preview": "Corredores de clima cálido, hábitos de hotspot y tips de Umrah antes del invierno.",
+        "destinationFocus": "EAU y sol de invierno",
+        "promoEndsLabel": "30 Nov 2026",
+        "ctaPrimary": "Ver destinos",
+        "ctaSecondary": "Hajj & Umrah Connect",
+        "opener": "Noviembre es cuando se cierran las reservas de sol de invierno: escapes al Golfo e islas. Así te mantienes online sin complicarte.",
+        "destinationTitle": "Guía de destino — EAU y sol de invierno",
+        "connectivityTitle": "Consejo de conectividad — Calor, batería y hotspot",
+        "hajjTitle": "Nota Hajj y Umrah — Tráfico previo al invierno",
+        "heroAlt": "Horizonte de Dubái al atardecer"
+      },
+      "2026-12-japan-holiday": {
+        "monthLabel": "diciembre 2026",
+        "subject": "Viajes de fin de año — Japón, fiestas y datos que se comportan bien",
+        "preview": "Hábitos de conectividad en Japón, tips de viaje navideño y una lista tranquila para Meca.",
+        "destinationFocus": "Japón",
+        "promoEndsLabel": "31 Dec 2026",
+        "ctaPrimary": "Planes de Japón",
+        "ctaSecondary": "Revisión del dispositivo",
+        "opener": "Diciembre mezcla viajes de fiestas y destinos de una vez al año. Japón premia a quien llega con los datos ya listos: trenes, traducciones y mapas dependen de ello.",
+        "destinationTitle": "Guía de destino — Japón",
+        "connectivityTitle": "Consejo de conectividad — Trampas de roaming en fiestas",
+        "hajjTitle": "Nota Hajj y Umrah — Lista del mes tranquilo",
+        "heroAlt": "Jardín de templo en invierno en Japón"
+      },
+      "2027-01-north-america": {
+        "monthLabel": "enero 2027",
+        "subject": "Viajes de año nuevo — EE. UU., Canadá y señal clara",
+        "preview": "Planes de Norteamérica, hábitos de enero y notas de Umrah post-fiestas.",
+        "destinationFocus": "EE. UU. y Canadá",
+        "promoEndsLabel": "31 Jan 2027",
+        "ctaPrimary": "Ver destinos",
+        "ctaSecondary": "",
+        "opener": "Enero reinicia los calendarios de viaje: conferencias, visitas familiares y fines de semana largos en Norteamérica. Útil y breve.",
+        "destinationTitle": "Guía de destino — EE. UU. y Canadá",
+        "connectivityTitle": "Consejo de conectividad — Datos claros en viajes largos",
+        "hajjTitle": "Nota Hajj y Umrah — Después de las fiestas",
+        "heroAlt": "Skyline urbano en Norteamérica"
+      },
+      "2027-02-umrah-prep": {
+        "monthLabel": "febrero 2027",
+        "subject": "Mes de preparación para Umrah — conectividad que se queda en segundo plano",
+        "preview": "Lista de peregrinación, hotspot para la familia y Hajj & Umrah Connect.",
+        "destinationFocus": "Arabia Saudita · Umrah",
+        "promoEndsLabel": "28 Feb 2027",
+        "ctaPrimary": "Hajj & Umrah Connect",
+        "ctaSecondary": "Revisión del teléfono",
+        "opener": "Febrero es cuando muchas familias cierran la logística de Umrah. La conectividad debe apoyar el viaje, no competir con la adoración.",
+        "destinationTitle": "Guía de destino — Umrah en Arabia Saudita",
+        "connectivityTitle": "Consejo de conectividad — Hotspot para la familia",
+        "hajjTitle": "Nota Hajj y Umrah — Lista antes de viajar",
+        "heroAlt": "Vista serena cerca de los lugares sagrados"
+      },
+      "2027-03-europe-spring": {
+        "monthLabel": "marzo 2027",
+        "subject": "Escapadas de primavera — Italia, España y una eSIM para Europa",
+        "preview": "Tip multi-país en Europa, hábitos de primavera y últimos recordatorios de Umrah.",
+        "destinationFocus": "Europa en primavera",
+        "promoEndsLabel": "31 Mar 2027",
+        "ctaPrimary": "Europa regional",
+        "ctaSecondary": "",
+        "opener": "Marzo abre la temporada de ciudades europeas. Una eSIM regional evita comprar datos en cada frontera.",
+        "destinationTitle": "Guía de destino — Europa en primavera",
+        "connectivityTitle": "Consejo de conectividad — Un plan, varios países",
+        "hajjTitle": "Nota Hajj y Umrah — Últimos recordatorios de instalación",
+        "heroAlt": "Plaza europea en primavera"
+      },
+      "2027-04-asia-shoulder": {
+        "monthLabel": "abril 2027",
+        "subject": "Asia en temporada media — viajes con valor y datos inteligentes",
+        "preview": "Tips Tailandia / Asia-Pacífico, descanso post-Umrah y precios iniciales en Asia.",
+        "destinationFocus": "Asia-Pacífico",
+        "promoEndsLabel": "30 Apr 2027",
+        "ctaPrimary": "Ver destinos de Asia",
+        "ctaSecondary": "",
+        "opener": "Abril es buena ventana para Asia: menos multitudes, buenos precios y la misma necesidad de datos listos al aterrizar.",
+        "destinationTitle": "Guía de destino — Asia-Pacífico",
+        "connectivityTitle": "Consejo de conectividad — Datos listos al llegar",
+        "hajjTitle": "Nota Hajj y Umrah — Descanso después de Umrah",
+        "heroAlt": "Costa y templos en Asia"
+      },
+      "2027-05-summer-planning": {
+        "monthLabel": "mayo 2027",
+        "subject": "Planificación de verano — Europa Central y hotspot familiar",
+        "preview": "Alemania / Europa Central, tips de viaje en familia y preparación de corredores de verano.",
+        "destinationFocus": "Europa Central",
+        "promoEndsLabel": "31 May 2027",
+        "ctaPrimary": "Europa regional",
+        "ctaSecondary": "",
+        "opener": "Mayo es cuando se cierran los planes de verano. Comparte datos con la familia sin improvisar en el aeropuerto.",
+        "destinationTitle": "Guía de destino — Europa Central",
+        "connectivityTitle": "Consejo de conectividad — Hotspot familiar",
+        "hajjTitle": "Nota Hajj y Umrah — Mirada al verano",
+        "heroAlt": "Ciudad de Europa Central en mayo"
+      },
+      "2027-06-peak-summer": {
+        "monthLabel": "junio 2027",
+        "subject": "Pico de verano en Europa — grupos, hotspot y señal clara",
+        "preview": "Tips del Mediterráneo, compartir datos con tu grupo y un vistazo al timing de Hajj.",
+        "destinationFocus": "Europa mediterránea",
+        "promoEndsLabel": "30 Jun 2027",
+        "ctaPrimary": "Europa regional",
+        "ctaSecondary": "Hajj & Umrah Connect",
+        "opener": "Junio llena las rutas europeas. Los grupos necesitan hotspot honestamente incluido, no límites sorpresa.",
+        "destinationTitle": "Guía de destino — Mediterráneo",
+        "connectivityTitle": "Consejo de conectividad — Datos para el grupo",
+        "hajjTitle": "Nota Hajj y Umrah — Timing de temporada",
+        "heroAlt": "Costa mediterránea en verano"
+      },
+      "2027-07-americas": {
+        "monthLabel": "julio 2027",
+        "subject": "Verano en las Américas — México, road trips y hotspot confiable",
+        "preview": "Guía México / Américas, hábitos de datos de verano y una nota breve de Umrah.",
+        "destinationFocus": "México y Américas",
+        "promoEndsLabel": "31 Jul 2027",
+        "ctaPrimary": "Planes de México",
+        "ctaSecondary": "Ver destinos",
+        "opener": "Julio es temporada de road trips y visitas familiares. Un hotspot estable hace la diferencia en el auto o el hotel.",
+        "destinationTitle": "Guía de destino — México y Américas",
+        "connectivityTitle": "Consejo de conectividad — Hotspot en la carretera",
+        "hajjTitle": "Nota Hajj y Umrah — Nota ligera de verano",
+        "heroAlt": "Carretera y costa en México"
+      },
+      "2027-08-hajj-season": {
+        "monthLabel": "agosto 2027",
+        "subject": "Final de verano + conectividad de temporada de Hajj, con honestidad",
+        "preview": "Timing de peregrinación, instalar antes de viajar y cierre de verano.",
+        "destinationFocus": "Arabia Saudita · temporada de Hajj",
+        "promoEndsLabel": "31 Aug 2027",
+        "ctaPrimary": "Hajj & Umrah Connect",
+        "ctaSecondary": "Instálala antes de viajar",
+        "opener": "Agosto cierra el año de viajes y acerca la temporada de Hajj. La preparación calmada gana a las compras de última hora en el aeropuerto.",
+        "destinationTitle": "Guía de destino — temporada de Hajj",
+        "connectivityTitle": "Consejo de conectividad — Instalar antes de viajar",
+        "hajjTitle": "Nota Hajj y Umrah — Timing honesto",
+        "heroAlt": "Cielo sobre el horizonte de peregrinación"
+      },
+      "2027-09-morocco-maghreb": {
+        "monthLabel": "septiembre 2027",
+        "subject": "Otoño en el Magreb — Marruecos, ciudades tranquilas y hábitos claros de datos",
+        "preview": "Corredores de Marruecos, instalar antes de viajar y planificación temprana de peregrinación.",
+        "destinationFocus": "Marruecos · Magreb",
+        "promoEndsLabel": "30 Sep 2027",
+        "ctaPrimary": "Ver destinos",
+        "ctaSecondary": "Hajj & Umrah Connect",
+        "opener": "Septiembre abre el otoño en el Magreb. Ciudades y costas piden datos listos, no improvisación al llegar.",
+        "destinationTitle": "Guía de destino — Marruecos",
+        "connectivityTitle": "Consejo de conectividad — Instalar antes de viajar",
+        "hajjTitle": "Nota Hajj y Umrah — Planificación temprana",
+        "heroAlt": "Medina marroquí al atardecer"
+      },
+      "2027-10-balkans": {
+        "monthLabel": "octubre 2027",
+        "subject": "Escapadas a los Balcanes — maletas ligeras y señal confiable",
+        "preview": "Saltos europeos cortos, datos regionales y una nota breve de Umrah.",
+        "destinationFocus": "Balcanes · Europa",
+        "promoEndsLabel": "31 Oct 2027",
+        "ctaPrimary": "Planes regionales de Europa",
+        "ctaSecondary": "Ver destinos",
+        "opener": "Octubre invita a hops cortos por los Balcanes. Un plan regional mantiene el teléfono simple entre fronteras.",
+        "destinationTitle": "Guía de destino — Balcanes",
+        "connectivityTitle": "Consejo de conectividad — Datos regionales",
+        "hajjTitle": "Nota Hajj y Umrah — Nota ligera",
+        "heroAlt": "Ciudad balcánica con tejados antiguos"
+      },
+      "2027-11-egypt-nile": {
+        "monthLabel": "noviembre 2027",
+        "subject": "Egipto y sol de invierno — viajes por el Nilo con datos estables",
+        "preview": "Corredores de Egipto, hábitos de sol de invierno y tips de Umrah pre-invierno.",
+        "destinationFocus": "Egipto",
+        "promoEndsLabel": "30 Nov 2027",
+        "ctaPrimary": "Ver planes de Egipto",
+        "ctaSecondary": "Hajj & Umrah Connect",
+        "opener": "Noviembre acerca Egipto y el sol de invierno. Mapas, rides y mensajes a casa necesitan datos desde el primer día — la lección con la que empezó NoorLink.",
+        "destinationTitle": "Guía de destino — Egipto",
+        "connectivityTitle": "Consejo de conectividad — Listo desde el aterrizaje",
+        "hajjTitle": "Nota Hajj y Umrah — Tips previos al invierno",
+        "heroAlt": "Nilo al atardecer"
+      },
+      "2027-12-southeast-asia": {
+        "monthLabel": "diciembre 2027",
+        "subject": "Asia de fin de año — fiestas, islas y datos que se comportan",
+        "preview": "Hábitos de vacaciones en el sudeste asiático y una lista tranquila para Meca.",
+        "destinationFocus": "Sudeste asiático",
+        "promoEndsLabel": "31 Dec 2027",
+        "ctaPrimary": "Planes Asia-Pacífico",
+        "ctaSecondary": "Revisión del dispositivo",
+        "opener": "Diciembre mezcla islas y fiestas. Llega con la eSIM instalada para que el teléfono no robe el primer día.",
+        "destinationTitle": "Guía de destino — Sudeste asiático",
+        "connectivityTitle": "Consejo de conectividad — Fiestas sin sorpresas de roaming",
+        "hajjTitle": "Nota Hajj y Umrah — Lista tranquila",
+        "heroAlt": "Isla tropical al atardecer"
+      },
+      "2028-01-gulf-leisure": {
+        "monthLabel": "enero 2028",
+        "subject": "Mes de ocio en el Golfo — ciudades, visitas familiares y señal clara",
+        "preview": "Hábitos de viaje en el Golfo y notas de Umrah post-fiestas.",
+        "destinationFocus": "Golfo · corredor EAU",
+        "promoEndsLabel": "31 Jan 2028",
+        "ctaPrimary": "Ver planes de EAU",
+        "ctaSecondary": "Hajj & Umrah Connect",
+        "opener": "Enero trae visitas al Golfo y escapes urbanos. Mantén los datos simples y el soporte a un mensaje de distancia.",
+        "destinationTitle": "Guía de destino — Golfo",
+        "connectivityTitle": "Consejo de conectividad — Ciudades y hotspot",
+        "hajjTitle": "Nota Hajj y Umrah — Después de las fiestas",
+        "heroAlt": "Horizonte del Golfo de noche"
+      },
+      "2028-02-umrah-window": {
+        "monthLabel": "febrero 2028",
+        "subject": "Ventana de Umrah — conectividad que se queda en segundo plano",
+        "preview": "Lista de peregrinación, hotspot para la familia, Hajj & Umrah Connect.",
+        "destinationFocus": "Arabia Saudita · Umrah",
+        "promoEndsLabel": "29 Feb 2028",
+        "ctaPrimary": "Hajj & Umrah Connect",
+        "ctaSecondary": "Guía de Umrah",
+        "opener": "Febrero abre otra ventana de Umrah. Prepara el teléfono en casa para que la adoración no compita con la configuración.",
+        "destinationTitle": "Guía de destino — ventana de Umrah",
+        "connectivityTitle": "Consejo de conectividad — Preparar en casa",
+        "hajjTitle": "Nota Hajj y Umrah — Lista de peregrinación",
+        "heroAlt": "Camino tranquilo hacia los lugares sagrados"
+      },
+      "2028-03-uk-spring": {
+        "monthLabel": "marzo 2028",
+        "subject": "Días de primavera en el Reino Unido — viaja ligero, quédate online",
+        "preview": "Fines de semana en Reino Unido, hábitos de Europa y una nota breve de peregrinación.",
+        "destinationFocus": "Reino Unido",
+        "promoEndsLabel": "31 Mar 2028",
+        "ctaPrimary": "Planes Reino Unido / Europa",
+        "ctaSecondary": "Ver destinos",
+        "opener": "Marzo trae días urbanos en el Reino Unido. Trenes, mapas y mensajes funcionan mejor con datos ya instalados.",
+        "destinationTitle": "Guía de destino — Reino Unido",
+        "connectivityTitle": "Consejo de conectividad — Datos listos en la ciudad",
+        "hajjTitle": "Nota Hajj y Umrah — Nota ligera",
+        "heroAlt": "Calle londinense en primavera"
+      },
+      "2028-04-turkey-spring": {
+        "monthLabel": "abril 2028",
+        "subject": "Turquía en primavera — ciudades, costa y datos listos",
+        "preview": "Temporada media en Turquía, tips multi-ciudad y viajes de descanso post-Umrah.",
+        "destinationFocus": "Turquía",
+        "promoEndsLabel": "30 Apr 2028",
+        "ctaPrimary": "Ver planes de Turquía",
+        "ctaSecondary": "Hajj & Umrah Connect",
+        "opener": "Abril es temporada media en Turquía: ciudades y costa con menos prisa. Llega con datos listos.",
+        "destinationTitle": "Guía de destino — Turquía en primavera",
+        "connectivityTitle": "Consejo de conectividad — Multi-ciudad sin sorpresas",
+        "hajjTitle": "Nota Hajj y Umrah — Descanso post-Umrah",
+        "heroAlt": "Costa turca en primavera"
+      },
+      "2028-05-iberia": {
+        "monthLabel": "mayo 2028",
+        "subject": "Iberia a finales de primavera — España, Portugal y una eSIM para Europa",
+        "preview": "Escapadas ibéricas, hotspot familiar y preparación de corredores de verano.",
+        "destinationFocus": "España · Portugal",
+        "promoEndsLabel": "31 May 2028",
+        "ctaPrimary": "Planes regionales de Europa",
+        "ctaSecondary": "Ver destinos",
+        "opener": "Mayo invita a España y Portugal. Una eSIM europea mantiene el teléfono simple entre ciudades.",
+        "destinationTitle": "Guía de destino — Iberia",
+        "connectivityTitle": "Consejo de conectividad — Hotspot familiar",
+        "hajjTitle": "Nota Hajj y Umrah — Preparación de verano",
+        "heroAlt": "Plaza española al atardecer"
+      },
+      "2028-06-alps-north": {
+        "monthLabel": "junio 2028",
+        "subject": "Verano alpino y del norte — grupos, hotspot y señal clara",
+        "preview": "Tips de verano en Europa Central y una mirada breve a la temporada de Hajj.",
+        "destinationFocus": "Alpes · Europa Central",
+        "promoEndsLabel": "30 Jun 2028",
+        "ctaPrimary": "Planes regionales de Europa",
+        "ctaSecondary": "Hajj & Umrah Connect",
+        "opener": "Junio llena los Alpes y el norte de Europa. Los grupos necesitan hotspot claro y soporte cercano.",
+        "destinationTitle": "Guía de destino — Alpes y norte",
+        "connectivityTitle": "Consejo de conectividad — Datos para grupos",
+        "hajjTitle": "Nota Hajj y Umrah — Mirada a la temporada",
+        "heroAlt": "Montañas alpinas en verano"
+      },
+      "2028-07-caribbean": {
+        "monthLabel": "julio 2028",
+        "subject": "Verano en el Caribe y las Américas — road trips y hotspot confiable",
+        "preview": "Hábitos en islas y Américas, tips de datos de verano y una nota breve de Umrah.",
+        "destinationFocus": "Caribe · Américas",
+        "promoEndsLabel": "31 Jul 2028",
+        "ctaPrimary": "Ver destinos",
+        "ctaSecondary": "Instálala antes de viajar",
+        "opener": "Julio es temporada de islas y road trips. Un hotspot estable mantiene al grupo en el mismo mapa.",
+        "destinationTitle": "Guía de destino — Caribe y Américas",
+        "connectivityTitle": "Consejo de conectividad — Hotspot de verano",
+        "hajjTitle": "Nota Hajj y Umrah — Nota ligera",
+        "heroAlt": "Playa caribeña al atardecer"
+      },
+      "2028-08-pilgrimage-prep": {
+        "monthLabel": "agosto 2028",
+        "subject": "Final de verano + preparación de peregrinación — conectividad con honestidad",
+        "preview": "Timing de peregrinación, instalar antes de viajar y cierre del año 2.",
+        "destinationFocus": "Arabia Saudita · preparación de peregrinación",
+        "promoEndsLabel": "31 Aug 2028",
+        "ctaPrimary": "Hajj & Umrah Connect",
+        "ctaSecondary": "Revisión del teléfono",
+        "opener": "Agosto cierra el año 2 de Insider con lo esencial: timing de peregrinación e instalación antes de viajar.",
+        "destinationTitle": "Guía de destino — preparación de peregrinación",
+        "connectivityTitle": "Consejo de conectividad — Listo antes del vuelo",
+        "hajjTitle": "Nota Hajj y Umrah — Cierre honesto",
+        "heroAlt": "Horizonte sereno hacia la peregrinación"
+      },
+      "2027-01-ramadan-special": {
+        "monthLabel": "Especial de Ramadán · enero 2027",
+        "subject": "Umrah en Ramadán — una recompensa como el Hajj, con conexión calmada",
+        "preview": "Especial de Ramadán: Umrah, generosidad y un código Insider con promesa de dar.",
+        "destinationFocus": "Arabia Saudita · Ramadán y Umrah",
+        "promoEndsLabel": "28 Feb 2027",
+        "ctaPrimary": "Hajj & Umrah Connect",
+        "ctaSecondary": "Leer el compromiso de dar",
+        "opener": "Ramadán eleva la Umrah y la generosidad. Este especial Insider es calmado: intención, conexión práctica y nuestro compromiso de dar desde la ganancia.",
+        "destinationTitle": "Guía — Umrah en Ramadán",
+        "connectivityTitle": "Consejo de conectividad — Datos que no interrumpen la adoración",
+        "hajjTitle": "Nota Hajj y Umrah — Especial de Ramadán",
+        "heroAlt": "Luz de Ramadán sobre un horizonte sereno"
+      },
+      "2027-04-hajj-special": {
+        "monthLabel": "Especial de Hajj · abril 2027",
+        "subject": "Recordatorio de temporada de Hajj — viaje sagrado, intención clara, señal estable",
+        "preview": "Especial de Hajj: intención, preparación práctica y conectividad que se queda en segundo plano.",
+        "destinationFocus": "Arabia Saudita · temporada de Hajj",
+        "promoEndsLabel": "31 May 2027",
+        "ctaPrimary": "Hajj & Umrah Connect",
+        "ctaSecondary": "Revisión del teléfono",
+        "opener": "La temporada de Hajj pide intención clara y logística calmada. Este especial mantiene la conectividad en su lugar: útil, no ruidosa.",
+        "destinationTitle": "Guía — temporada de Hajj",
+        "connectivityTitle": "Consejo de conectividad — Señal estable, adoración primero",
+        "hajjTitle": "Nota Hajj y Umrah — Especial de temporada",
+        "heroAlt": "Horizonte de peregrinación al amanecer"
+      }
+    }
+  },
+  "unsubscribePage": {
+    "crumb": "Cancelar suscripción",
+    "kicker": "NoorLink Insider",
+    "title": "Cancelar suscripción",
+    "lede": "Sal de la lista mensual de Insider cuando quieras. Aún puedes ver destinos y planes en el sitio.",
+    "emailLabel": "Correo",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "submit": "Cancelar suscripción",
+    "submitting": "Quitando…",
+    "successDefault": "Te diste de baja de NoorLink Insider.",
+    "errorDefault": "No se pudo cancelar ahora.",
+    "backToInsider": "Volver a Insider",
+    "browseDestinations": "Ver destinos",
+    "insiderCrumb": "Insider"
+  },
+  "planCopy": {
+    "flexibleValidity": "vigencia flexible",
+    "thisDestination": "este destino",
+    "speedLabel": "3G / 4G / 5G",
+    "fixedData": "Datos fijos",
+    "dayOne": "1 día",
+    "daysN": "{n} días",
+    "dailyFupDesc": "Pase diario en Arabia Saudita: 3 GB/día a máxima velocidad durante {days} días en {speed}; luego sigues conectado a hasta 1 Mbps hasta el reinicio diario. Ilimitado con honestidad — no es un paquete fijo de GB.",
+    "dailyFupH1": "3 GB/día a máxima velocidad · {days} días",
+    "dailyFupH2": "Luego hasta 1 Mbps · hotspot incluido",
+    "dailyFupH3": "Empieza cuando te conectas en Arabia Saudita",
+    "unlimitedRegionalDesc": "Datos ilimitados de alta velocidad en la región durante {days} en {speed}. Pensado para mapas, llamadas y streaming al cruzar fronteras.",
+    "unlimitedCountryDesc": "Datos ilimitados de alta velocidad en {place} durante {days} en {speed}. Ideal si no quieres vigilar un contador de datos.",
+    "unlimitedH1": "Datos ilimitados · {days}",
+    "coverageSpeed": "Cobertura {speed}",
+    "oneEsimRegional": "Una eSIM en todos los países cubiertos",
+    "coverageIn": "Cobertura en {place}",
+    "paygRegionalDesc": "eSIM regional de pago por uso — empieza desde este precio y recarga según uses datos en los países cubiertos en {speed}.",
+    "paygCountryDesc": "eSIM de pago por uso para {place} — empieza desde este precio y agrega datos solo cuando los necesites en {speed}.",
+    "flexibleTopUps": "Recargas flexibles",
+    "idealUnpredictable": "Ideal cuando tu uso es difícil de predecir",
+    "fixedRegionalDesc": "Paquete fijo: {data} por {days} en {speed} en toda la región. Cantidad predecible para mapas, mensajes y apps de viaje, sin recargas sorpresa.",
+    "fixedCountryDesc": "Paquete fijo: {data} por {days} en {speed} en {place}. Cantidad predecible para mapas, mensajes y apps de viaje.",
+    "dataDays": "{data} · {days}",
+    "oneQrRegional": "Un QR para viajar por la región",
+    "hotspotMostDevices": "Hotspot compatible en la mayoría de dispositivos"
+  }
+}

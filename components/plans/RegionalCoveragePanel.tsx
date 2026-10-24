@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { flagForCountryLabel } from "@/lib/country-flags";
 import type { RegionalProduct } from "@/lib/regional-products";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type RegionalCoveragePanelProps = {
   product: RegionalProduct;
@@ -15,6 +17,8 @@ export function RegionalCoveragePanel({
   coverageCountries,
   coverageExclusions,
 }: RegionalCoveragePanelProps) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const [expanded, setExpanded] = useState(false);
   const countries = coverageCountries ?? [...product.countries];
   const exclusions = coverageExclusions ?? [...product.exclusions];
@@ -25,7 +29,7 @@ export function RegionalCoveragePanel({
     <section className="plans-regional-coverage" aria-labelledby="regional-coverage-heading">
       <div className="plans-regional-coverage__head">
         <h2 id="regional-coverage-heading">
-          Covers {countries.length} countries
+          {t(dict, "plansPage.coversN", { n: countries.length })}
         </h2>
         <p>{product.heroTagline}</p>
       </div>
@@ -51,13 +55,13 @@ export function RegionalCoveragePanel({
           onClick={() => setExpanded((value) => !value)}
           aria-expanded={expanded}
         >
-          {expanded ? "Show fewer countries" : `Show all ${countries.length} countries`}
+          {expanded ? t(dict, "plansPage.showFewer") : t(dict, "plansPage.showMore")}
         </button>
       )}
 
       {exclusions.length > 0 && (
         <p className="plans-regional-coverage__exclusions">
-          Not included on this plan: {exclusions.join(", ")}.
+          {t(dict, "plansPage.notIncluded")}: {exclusions.join(", ")}.
         </p>
       )}
     </section>

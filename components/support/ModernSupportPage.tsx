@@ -9,16 +9,21 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { OrderLookupCard } from "@/components/orders/OrderLookupCard";
 import { submitContactForm } from "@/lib/contact-api";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { SUPPORT_EMAIL } from "@/lib/support-contact";
 import "@/styles/help-pages.css";
 
 function SupportContent() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const searchParams = useSearchParams();
   const initialEmail = searchParams.get("email") ?? "";
   const initialOrderId = searchParams.get("orderId") ?? "";
-  const initialSubject = searchParams.get("subject") ?? "Order help";
+  const initialSubject =
+    searchParams.get("subject") ?? dict.supportSubjects.orderHelp;
   const defaultMessage = initialOrderId
-    ? `Hi NoorLink, I need help with order ${initialOrderId}.`
+    ? t(dict, "supportPage.defaultMessage", { orderId: initialOrderId })
     : "";
   const [name, setName] = useState("");
   const [email, setEmail] = useState(initialEmail);
@@ -39,105 +44,103 @@ function SupportContent() {
       subject,
       message,
       orderId: initialOrderId || undefined,
+      language: locale,
     });
     setSending(false);
     if (!result.success) {
-      setError(result.error ?? "Could not send your message.");
+      setError(result.error ?? t(dict, "supportPage.sendError"));
       return;
     }
-    setStatus(result.message ?? "Message sent. We’ll reply by email.");
+    setStatus(dict.support.ticketCreated);
     setMessage("");
   }
 
   return (
     <>
       <SiteHeader />
-      <Breadcrumbs items={[{ href: "/", label: "Home" }, { label: "Support" }]} />
+      <Breadcrumbs
+        items={[
+          { href: "/", label: t(dict, "common.home") },
+          { label: dict.support.title },
+        ]}
+      />
       <main className="help-page">
         <section className="help-hero">
-          <h1>We’re here to help</h1>
-          <p>24/7 support for eSIM delivery, install, and checkout.</p>
+          <h1>{dict.support.title}</h1>
+          <p>{dict.support.intro}</p>
         </section>
         <div className="help-inner">
           <div className="help-grid">
             <article className="help-card">
-              <h2>Need help right now?</h2>
-              <p>
-                Message us on WhatsApp anytime — we reply around the clock for
-                delivery, install, and checkout questions.
-              </p>
+              <h2>{t(dict, "supportPage.needNowTitle")}</h2>
+              <p>{t(dict, "supportPage.needNowBody")}</p>
               <p style={{ marginTop: 12 }}>
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>Open WhatsApp</a>
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>{t(dict, "common.openWhatsApp")}</a>
                 {" · "}
                 <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
                 {" · "}
-                <Link href="/faq">Read FAQs</Link>
+                <Link href="/faq">{t(dict, "common.readFaqs")}</Link>
                 {" · "}
-                <Link href="/help/before-you-fly">Before you fly guide</Link>
+                <Link href="/help/before-you-fly">
+                  {t(dict, "supportPage.beforeFly")}
+                </Link>
                 {" · "}
                 <Link href="/help/umrah-esim-before-you-fly">
-                  Umrah eSIM before you fly
+                  {t(dict, "helpPage.umrahBeforeFlyCrumb")}
                 </Link>
                 {" · "}
                 <Link href="/help/hajj-umrah-phone-check">
-                  Hajj &amp; Umrah phone check
+                  {t(dict, "helpPage.phoneCheckCrumb")}
                 </Link>
               </p>
             </article>
             <article className="help-card">
-              <h2>Track an order first</h2>
-              <p>
-                Paid orders send a confirmation email first. The QR code arrives in a
-                second email after payment confirms, usually within a few minutes.
-              </p>
+              <h2>{t(dict, "supportPage.trackFirstTitle")}</h2>
+              <p>{t(dict, "supportPage.trackFirstBody")}</p>
               <p style={{ marginTop: 12 }}>
-                <Link href="/dashboard">Look up My eSIMs</Link>
+                <Link href="/dashboard">{t(dict, "supportPage.lookupMyEsims")}</Link>
                 {" · "}
-                <Link href="/help/before-you-fly">Data ready checklist</Link>
+                <Link href="/help/before-you-fly">
+                  {t(dict, "supportPage.dataChecklist")}
+                </Link>
                 {" · "}
-                <Link href="/refund">Refund policy</Link>
+                <Link href="/refund">{t(dict, "supportPage.refundPolicy")}</Link>
               </p>
             </article>
           </div>
 
           <section className="help-form help-form--lookup">
-            <h2>Track an order</h2>
-            <p className="help-intro">
-              If your QR email is delayed, check the order here before sending a
-              support message.
-            </p>
+            <h2>{t(dict, "supportPage.trackOrder")}</h2>
+            <p className="help-intro">{t(dict, "supportPage.trackIntro")}</p>
             <OrderLookupCard
               compact
-              title="Order status and QR access"
-              description="Use the email from checkout and the order ID from your first confirmation email."
-              submitLabel="Check order"
+              title={t(dict, "supportPage.lookupTitle")}
+              description={t(dict, "supportPage.lookupDesc")}
+              submitLabel={t(dict, "supportPage.checkOrder")}
               initialEmail={initialEmail}
               initialOrderId={initialOrderId}
             />
             <div className="help-checklist">
-              <strong>If your QR email has not arrived yet:</strong>
+              <strong>{t(dict, "supportPage.qrNotArrived")}</strong>
               <ul>
-                <li>Check spam, junk, promotions, and social tabs.</li>
-                <li>Look for the first payment confirmation email with your order ID.</li>
-                <li>Use the tracker above or message WhatsApp support with that order ID.</li>
+                <li>{t(dict, "supportPage.tipSpam")}</li>
+                <li>{t(dict, "supportPage.tipConfirm")}</li>
+                <li>{t(dict, "supportPage.tipWhatsApp")}</li>
               </ul>
             </div>
           </section>
 
           <form className="help-form" onSubmit={onSubmit}>
-            <h2>Send a message</h2>
-            <p className="help-intro">
-              Include your order ID if you have it so we can resolve delivery or
-              install issues faster.
-            </p>
-            <label htmlFor="support-name">Name</label>
+            <h2>{t(dict, "supportPage.sendTitle")}</h2>
+            <p className="help-intro">{t(dict, "supportPage.sendIntro")}</p>
+            <label htmlFor="support-name">{dict.support.formName}</label>
             <input
               id="support-name"
               required
               value={name}
               onChange={(event) => setName(event.target.value)}
             />
-            <label htmlFor="support-email">Email</label>
+            <label htmlFor="support-email">{dict.support.formEmail}</label>
             <input
               id="support-email"
               type="email"
@@ -145,19 +148,29 @@ function SupportContent() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
-            <label htmlFor="support-subject">Subject</label>
+            <label htmlFor="support-subject">{dict.support.formSubject}</label>
             <select
               id="support-subject"
               value={subject}
               onChange={(event) => setSubject(event.target.value)}
             >
-              <option>Order help</option>
-              <option>Install / QR code</option>
-              <option>Checkout / payment</option>
-              <option>Refund</option>
-              <option>Other</option>
+              <option value={dict.supportSubjects.orderHelp}>
+                {dict.supportSubjects.orderHelp}
+              </option>
+              <option value={dict.supportSubjects.installQr}>
+                {dict.supportSubjects.installQr}
+              </option>
+              <option value={dict.supportSubjects.checkoutPayment}>
+                {dict.supportSubjects.checkoutPayment}
+              </option>
+              <option value={dict.supportSubjects.refund}>
+                {dict.supportSubjects.refund}
+              </option>
+              <option value={dict.supportSubjects.other}>
+                {dict.supportSubjects.other}
+              </option>
             </select>
-            <label htmlFor="support-message">Message</label>
+            <label htmlFor="support-message">{dict.support.formMessage}</label>
             <textarea
               id="support-message"
               required
@@ -166,7 +179,7 @@ function SupportContent() {
               onChange={(event) => setMessage(event.target.value)}
             />
             <button type="submit" disabled={sending}>
-              {sending ? "Sending…" : "Send support message"}
+              {sending ? "…" : dict.support.formSubmit}
             </button>
             {status && <p className="help-form__status">{status}</p>}
             {error && (

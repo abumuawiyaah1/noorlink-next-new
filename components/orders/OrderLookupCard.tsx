@@ -28,6 +28,8 @@ import {
   rememberOrderId,
   resolveCustomerStatus,
 } from "@/lib/my-esims";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type OrderLookupCardProps = {
   title?: string;
@@ -64,15 +66,21 @@ function cardToLookupStub(card: MyEsimCard, email: string): LookedUpOrder {
 }
 
 export function OrderLookupCard({
-  title = "Your eSIM",
-  description = "Use the email and order ID from your confirmation (looks like NL-…).",
-  submitLabel = "Open my eSIM",
+  title,
+  description,
+  submitLabel,
   initialEmail = "",
   initialOrderId = "",
   initialToken = "",
   topupSuccess = false,
   compact = false,
 }: OrderLookupCardProps) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const ui = dict.ordersUi;
+  const cardTitle = title ?? ui.lookupDefaultTitle;
+  const cardDescription = description ?? ui.lookupDefaultDescription;
+  const cardSubmitLabel = submitLabel ?? dict.lookup.submit;
   const [email, setEmail] = useState(initialEmail);
   const [orderId, setOrderId] = useState(initialOrderId);
   const [order, setOrder] = useState<LookedUpOrder | null>(null);
@@ -118,7 +126,7 @@ export function OrderLookupCard({
       if (cancelled) return;
       setBootstrapping(false);
       if (!result.success) {
-        setError(result.message ?? "This My eSIMs link is invalid or expired.");
+        setError(result.message ?? ui.linkInvalid);
         return;
       }
       if (result.email) {
@@ -129,12 +137,14 @@ export function OrderLookupCard({
       setListMode(true);
       setOrder(null);
       if (!result.orders.length) {
-        setError(result.message ?? "No eSIMs found for this email yet.");
+        setError(result.message ?? ui.noEsimsFound);
       }
     })();
     return () => {
       cancelled = true;
     };
+    // Locale strings only used for fallback messages; don’t refetch on locale change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialToken]);
 
   useEffect(() => {
@@ -168,8 +178,7 @@ export function OrderLookupCard({
     if (!result.found || !result.order) {
       setOrder(null);
       setError(
-        result.error ??
-          "Order not found. Use the checkout email and the order ID from your confirmation email.",
+        result.error ?? ui.orderNotFound,
       );
       return;
     }
@@ -213,7 +222,7 @@ export function OrderLookupCard({
     const result = await lookupOrder(email, orderId, { refresh: true });
     setRefreshingUsage(false);
     if (!result.found || !result.order) {
-      setError(result.error ?? "Could not refresh usage. Try again in a moment.");
+      setError(result.error ?? ui.refreshFailed);
       return;
     }
     setOrder(result.order);
@@ -230,14 +239,14 @@ export function OrderLookupCard({
     setResendLoading(false);
     setResendMessage(
       result.success
-        ? result.message ?? "Install email sent — check inbox and spam."
-        : result.message ?? "Could not resend install email.",
+        ? result.message ?? ui.installEmailSent
+        : result.message ?? ui.resendFailed,
     );
   }
 
   async function handleSendMagicLink() {
     if (!email.trim()) {
-      setLinkMessage("Enter your email first.");
+      setLinkMessage(ui.enterEmailFirst);
       return;
     }
     setLinkBusy(true);
@@ -247,8 +256,8 @@ export function OrderLookupCard({
     setLinkMessage(
       result.message ??
         (result.success
-          ? "If we have eSIMs for that email, a link is on the way."
-          : "Could not send the link."),
+          ? ui.linkSent
+          : ui.linkFailed),
     );
     if (result.success) rememberEmail(email);
   }
@@ -266,7 +275,7 @@ export function OrderLookupCard({
     return (
       <div className={`login-card login-card--wide${compact ? " login-card--compact" : ""}`}>
         <p className="order-lookup-note" style={{ marginTop: 0 }}>
-          Opening your eSIMs…
+          {ui.openingEsims}
         </p>
       </div>
     );
@@ -277,8 +286,8 @@ export function OrderLookupCard({
       <div className={`login-card login-card--wide${compact ? " login-card--compact" : ""}`}>
         <div className="myesims-list-head">
           <div>
-            <h1>Your eSIMs</h1>
-            <p>{email ? `Plans for ${email}` : "Choose a plan to open."}</p>
+            <h1>{ui.yourEsims}</h1>
+            <p>{email ? t(dict, "ordersUi.plansFor", { email }) : ui.choosePlan}</p>
           </div>
           <button
             type="button"
@@ -289,7 +298,7 @@ export function OrderLookupCard({
               setOrder(null);
             }}
           >
-            Look up with order ID
+            {ui.lookupWithOrderId}
           </button>
         </div>
 
@@ -327,23 +336,29 @@ export function OrderLookupCard({
                   {card.usageMode === "wallet" || card.walletBalanceUsd != null
                     ? [
                         card.walletBalanceUsd != null
-                          ? `$${Number(card.walletBalanceUsd).toFixed(2)} left`
+                          ? t(dict, "ordersUi.usdLeft", {
+                              amount: `$${Number(card.walletBalanceUsd).toFixed(2)}`,
+                            })
                           : null,
                         card.walletChargedUsd != null
-                          ? `$${Number(card.walletChargedUsd).toFixed(2)} used`
+                          ? t(dict, "ordersUi.usdUsed", {
+                              amount: `$${Number(card.walletChargedUsd).toFixed(2)}`,
+                            })
                           : null,
                       ]
                         .filter(Boolean)
-                        .join(" · ") || "Open for details"
+                        .join(" · ") || ui.openForDetails
                     : card.dataRemainingGb != null
-                      ? `${card.dataRemainingGb} GB left${
-                          card.dataUsedGb != null ? ` · ${card.dataUsedGb} GB used` : ""
+                      ? `${card.dataRemainingGb} ${ui.gbLeft}${
+                          card.dataUsedGb != null
+                            ? ` · ${t(dict, "ordersUi.gbUsed", { n: card.dataUsedGb })}`
+                            : ""
                         }`
                       : card.dataTotalGb != null
-                        ? `${card.dataTotalGb} GB plan`
-                        : "Open for details"}
+                        ? t(dict, "ordersUi.gbPlan", { n: card.dataTotalGb })
+                        : ui.openForDetails}
                   {card.daysRemaining != null
-                    ? ` · ${card.daysRemaining} day${card.daysRemaining === 1 ? "" : "s"} left`
+                    ? ` · ${card.daysRemaining} ${card.daysRemaining === 1 ? ui.dayLeft : ui.daysLeft}`
                     : ""}
                 </p>
               </button>
@@ -357,13 +372,13 @@ export function OrderLookupCard({
   if (!order) {
     return (
       <div className={`login-card${compact ? " login-card--compact" : ""}`}>
-        <h1>{title}</h1>
-        <p>{description}</p>
+        <h1>{cardTitle}</h1>
+        <p>{cardDescription}</p>
 
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor={compact ? "lookup-email-compact" : "lookup-email"}>
-              Email address
+              {dict.lookup.email}
             </label>
             <input
               id={compact ? "lookup-email-compact" : "lookup-email"}
@@ -371,7 +386,7 @@ export function OrderLookupCard({
               className="input-field"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder={dict.common.emailCheckout}
               required
               autoComplete="email"
             />
@@ -379,7 +394,7 @@ export function OrderLookupCard({
 
           <div className="input-group">
             <label htmlFor={compact ? "lookup-order-compact" : "lookup-order"}>
-              Order ID
+              {dict.lookup.orderId}
             </label>
             <input
               id={compact ? "lookup-order-compact" : "lookup-order"}
@@ -400,7 +415,7 @@ export function OrderLookupCard({
           ) : null}
 
           <button type="submit" className="login-btn" disabled={loading}>
-            {loading ? "Opening…" : submitLabel}
+            {loading ? ui.opening : cardSubmitLabel}
           </button>
         </form>
 
@@ -411,22 +426,22 @@ export function OrderLookupCard({
             onClick={() => setHelpOpen((open) => !open)}
             aria-expanded={helpOpen}
           >
-            {helpOpen ? "Hide help" : "Can’t find your order ID?"}
+            {helpOpen ? ui.hideHelp : ui.cantFindOrderId}
           </button>
           {helpOpen ? (
             <div className="myesims-help__body">
               <p>
-                Check the first email after payment — the order ID looks like{" "}
+                {ui.helpCheckEmail}{" "}
                 <strong>NL-…</strong>
               </p>
-              <p>Or email yourself a private My eSIMs link (no order ID needed):</p>
+              <p>{ui.helpMagicLink}</p>
               <button
                 type="button"
                 className="login-btn login-btn--ghost"
                 disabled={linkBusy}
                 onClick={() => void handleSendMagicLink()}
               >
-                {linkBusy ? "Sending…" : "Email me a My eSIMs link"}
+                {linkBusy ? dict.lookup.sending : ui.emailMagicLink}
               </button>
               {linkMessage ? (
                 <p className="order-lookup-note" role="status">
@@ -434,8 +449,8 @@ export function OrderLookupCard({
                 </p>
               ) : null}
               <p>
-                Still stuck?{" "}
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>Message us on WhatsApp</a>.
+                {ui.stillStuck}{" "}
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>{ui.messageWhatsApp}</a>.
               </p>
             </div>
           ) : null}
@@ -443,7 +458,7 @@ export function OrderLookupCard({
 
         {rememberedHint ? (
           <p className="order-lookup-note">
-            Saved on this browser — email and last order.{" "}
+            {ui.savedHint}{" "}
             <button
               type="button"
               className="lookup-action-btn"
@@ -454,13 +469,12 @@ export function OrderLookupCard({
                 setRememberedHint(false);
               }}
             >
-              Clear saved details
+              {ui.clearSaved}
             </button>
           </p>
         ) : (
           <p className="order-lookup-note">
-            After you open an eSIM, we’ll remember your email and order ID on this
-            browser for next time.
+            {ui.rememberNote}
           </p>
         )}
       </div>
@@ -472,7 +486,7 @@ export function OrderLookupCard({
       <div className="lookup-result">
         {showSuccess ? (
           <div className="myesims-banner myesims-banner--success" role="status">
-            Data added. Same QR — you’re set.
+            {ui.dataAdded}
           </div>
         ) : null}
 
@@ -482,7 +496,7 @@ export function OrderLookupCard({
               {order.flag ? `${order.flag} ` : ""}
               {formatCountryLabel(order.country ?? "")}
             </p>
-            <h1>{order.packageName ?? "Your eSIM"}</h1>
+            <h1>{order.packageName ?? ui.lookupDefaultTitle}</h1>
           </div>
           {status ? (
             <span className={`lookup-status lookup-status--${status.tone}`}>
@@ -493,7 +507,7 @@ export function OrderLookupCard({
 
         {siblings.length > 1 ? (
           <div className="myesims-switcher">
-            <span>Your eSIMs</span>
+            <span>{ui.yourEsims}</span>
             <div className="myesims-switcher__row">
               {siblings.map((card) => (
                 <button
@@ -532,7 +546,7 @@ export function OrderLookupCard({
 
         {status?.runningLow ? (
           <div className="myesims-banner myesims-banner--low" role="status">
-            Running low — add data below without installing again.
+            {ui.runningLow}
           </div>
         ) : null}
 
@@ -546,7 +560,7 @@ export function OrderLookupCard({
                 className="order-usage__refresh"
                 onClick={() => setInstallOpen((open) => !open)}
               >
-                {installOpen ? "Hide install QR" : "Show install QR again"}
+                {installOpen ? ui.hideInstallQr : ui.showInstallQr}
               </button>
               {installOpen ? <EsimInstallPanel order={order} compact /> : null}
             </div>
@@ -570,13 +584,13 @@ export function OrderLookupCard({
         ) : null}
 
         <details className="myesims-details">
-          <summary>Order details</summary>
+          <summary>{ui.orderDetails}</summary>
           <p>
-            <strong>Order</strong> {order.orderNumber}
+            <strong>{ui.order}</strong> {order.orderNumber}
           </p>
           {order.price != null ? (
             <p>
-              <strong>Paid</strong> {order.currency ?? "USD"}{" "}
+              <strong>{ui.paid}</strong> {order.currency ?? "USD"}{" "}
               {Number(order.price).toFixed(2)}
             </p>
           ) : null}
@@ -585,10 +599,10 @@ export function OrderLookupCard({
         <div className="lookup-actions">
           {!qrHref ? (
             <Link
-              href={`/support?subject=${encodeURIComponent("Install / QR code")}&email=${encodeURIComponent(email)}&orderId=${encodeURIComponent(order.orderNumber ?? orderId)}`}
+              href={`/support?subject=${encodeURIComponent(dict.supportSubjects.installQr)}&email=${encodeURIComponent(email)}&orderId=${encodeURIComponent(order.orderNumber ?? orderId)}`}
               className="order-usage__refresh"
             >
-              QR missing? Contact support
+              {ui.qrMissing}
             </Link>
           ) : null}
 
@@ -599,7 +613,7 @@ export function OrderLookupCard({
               onClick={handleResendQr}
               disabled={resendLoading}
             >
-              {resendLoading ? "Sending…" : "Resend install email"}
+              {resendLoading ? dict.lookup.sending : dict.lookup.resendQr}
             </button>
           ) : null}
 
@@ -607,7 +621,7 @@ export function OrderLookupCard({
             href={`https://wa.me/${WHATSAPP_NUMBER}`}
             className="order-usage__refresh"
           >
-            WhatsApp help
+            {ui.whatsappHelp}
           </a>
         </div>
 
@@ -632,7 +646,7 @@ export function OrderLookupCard({
             setError(null);
           }}
         >
-          {siblings.length > 1 ? "Back to all eSIMs" : "Look up another order"}
+          {siblings.length > 1 ? ui.backToAll : ui.lookupAnother}
         </button>
       </div>
     </div>

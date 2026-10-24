@@ -2,10 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  PENDING_PRICE_LABEL,
-  useLiveStartingPrices,
-} from "@/components/destinations/useLiveStartingPrices";
+import { useLiveStartingPrices } from "@/components/destinations/useLiveStartingPrices";
 import { getCountryFlag } from "@/lib/country-flags";
 import { destinationCardSrcSet } from "@/lib/country-images";
 import type { DestinationCard } from "@/lib/destinations-catalog";
@@ -18,25 +15,36 @@ import {
   type PopularSeasonId,
 } from "@/lib/popular-countries";
 import { getPopularStory } from "@/lib/popular-moments";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedSeasonLabel } from "@/lib/i18n/popular-stories";
+import { useLocaleState } from "@/lib/i18n/use-locale";
+import { localizedPath } from "@/lib/i18n/path";
+import type { Locale } from "@/lib/i18n/config";
 
 type PopularCard = DestinationCard & { reason: string };
 
 function withReasons(
   cards: DestinationCard[],
   seasonId: PopularSeasonId,
+  locale: Locale,
 ): PopularCard[] {
   return cards.map((card) => ({
     ...card,
-    reason: getPopularStory(card.id, seasonId).reason,
+    reason: getPopularStory(card.id, seasonId, new Date(), locale).reason,
+    href: localizedPath(card.href, locale),
   }));
 }
 
 export function PopularCountries() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const season = resolvePopularSeason();
   const [cards, setCards] = useState<PopularCard[]>(() =>
-    withReasons(defaultPopularCountryCards(), season.id),
+    withReasons(defaultPopularCountryCards(), season.id, locale),
   );
-  const [seasonLabel, setSeasonLabel] = useState(season.label);
+  const [seasonLabel, setSeasonLabel] = useState(
+    localizedSeasonLabel(season.id, locale),
+  );
   const livePrices = useLiveStartingPrices(cards.map((card) => card.priceCountryId));
 
   useEffect(() => {
@@ -51,27 +59,27 @@ export function PopularCountries() {
         season: nextSeason,
         trending,
       });
-      setSeasonLabel(nextSeason.label);
-      setCards(withReasons(cardsForPopularIds(ids), nextSeason.id));
+      setSeasonLabel(localizedSeasonLabel(nextSeason.id, locale));
+      setCards(withReasons(cardsForPopularIds(ids), nextSeason.id, locale));
     }
 
     void hydrate();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [locale]);
 
   return (
     <section className="popular-countries" aria-labelledby="popular-countries-heading">
       <div className="container">
         <div className="popular-countries__header">
-          <span className="why-kicker">{seasonLabel} picks</span>
-          <h2 id="popular-countries-heading">Popular destinations</h2>
+          <span className="why-kicker">{t(dict, "popular.seasonPicks", { season: seasonLabel })}</span>
+          <h2 id="popular-countries-heading">{dict.popular.title}</h2>
         </div>
 
         <div className="popular-countries__grid" role="list">
           {cards.map((card, index) => {
-            const price = livePrices[card.priceCountryId]?.label ?? PENDING_PRICE_LABEL;
+            const price = livePrices[card.priceCountryId]?.label ?? dict.common.seePlans;
             const flag = getCountryFlag(card.priceCountryId);
             const image = destinationCardSrcSet(card.image);
             return (

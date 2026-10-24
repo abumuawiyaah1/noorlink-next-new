@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { TopUpExpressWallets } from "@/components/orders/TopUpExpressWallets";
 import { TopUpPayPalButton, type TopUpPayPalSelection } from "@/components/orders/TopUpPayPalButton";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import {
   createTopUpSession,
   fetchTopUpOptions,
@@ -37,6 +39,9 @@ export function OrderTopUpCard({
   countryPlansHref = "/plans",
   defaultOpen = false,
 }: OrderTopUpCardProps) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const ui = dict.ordersUi;
   const [mode, setMode] = useState<"wallet" | "package" | null>(null);
   const [amounts, setAmounts] = useState<number[]>([]);
   const [amountOffers, setAmountOffers] = useState<TopUpAmountOffer[]>([]);
@@ -69,7 +74,7 @@ export function OrderTopUpCard({
       setLoading(false);
       setPaypalAvailable(Boolean(result.paypalAvailable));
       if (!result.supported) {
-        setReason(result.reason ?? "Top-up is not available for this plan.");
+        setReason(result.reason ?? ui.topUpUnavailable);
         return;
       }
       if (
@@ -86,11 +91,12 @@ export function OrderTopUpCard({
         setAmountOffers(result.amountOffers ?? []);
         return;
       }
-      setReason(result.reason ?? "Top-up is not available for this plan.");
+      setReason(result.reason ?? ui.topUpUnavailable);
     })();
     return () => {
       cancelled = true;
     };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [email, orderNumber]);
 
   useEffect(() => {
@@ -106,8 +112,8 @@ export function OrderTopUpCard({
     return (
       <div className="order-topup order-topup--collapsed">
         <button type="button" className="order-topup__toggle" disabled>
-          <span className="order-topup__toggle-kicker">Need more data?</span>
-          <span className="order-topup__toggle-action">Checking options…</span>
+          <span className="order-topup__toggle-kicker">{ui.needMoreData}</span>
+          <span className="order-topup__toggle-action">{ui.checkingOptions}</span>
         </button>
       </div>
     );
@@ -121,15 +127,15 @@ export function OrderTopUpCard({
       return (
         <div className="order-topup order-topup--unavailable">
           <div className="order-usage__label-row">
-            <span>Top-up</span>
-            <strong>Not available on this plan</strong>
+            <span>{ui.topUp}</span>
+            <strong>{ui.topUpUnavailableTitle}</strong>
           </div>
           <p className="order-usage__fine-print" style={{ marginTop: 8 }}>
             {reason}
           </p>
           <div className="order-topup__next">
-            <a href={countryPlansHref}>Buy a new plan for this destination</a>
-            <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>Message us on WhatsApp</a>
+            <a href={countryPlansHref}>{ui.buyNewPlan}</a>
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>{ui.messageWhatsApp}</a>
           </div>
         </div>
       );
@@ -149,7 +155,7 @@ export function OrderTopUpCard({
       : null;
   const selectedLabel =
     selection?.kind === "wallet"
-      ? `$${selection.fundUsd} data`
+      ? t(dict, "ordersUi.dataAmount", { amount: selection.fundUsd })
       : selectedOffer?.name ?? null;
   const selectedRetail =
     selection?.kind === "wallet"
@@ -181,7 +187,7 @@ export function OrderTopUpCard({
     });
     setSubmitting(false);
     if (!result.success || !result.checkoutUrl) {
-      setError(result.message ?? "Could not start top-up checkout.");
+      setError(result.message ?? ui.topUpFailed);
       return;
     }
     window.location.href = result.checkoutUrl;
@@ -222,9 +228,9 @@ export function OrderTopUpCard({
           setSuppressHover(false);
         }}
       >
-        <span className="order-topup__toggle-kicker">Need more data?</span>
+        <span className="order-topup__toggle-kicker">{ui.needMoreData}</span>
         <span className="order-topup__toggle-action">
-          {expanded ? "Hide options" : "See options"}
+          {expanded ? ui.hideOptions : ui.topUp}
         </span>
       </button>
 
@@ -232,8 +238,8 @@ export function OrderTopUpCard({
         <div className="order-topup__body">
           <p className="order-usage__fine-print" style={{ marginBottom: 12 }}>
             {hasPackages
-              ? "Same install. No new QR — just more data and days on this line."
-              : "Same install. Funds go onto this pay-as-you-go line."}
+              ? ui.topUpPackageNote
+              : ui.topUpWalletNote}
           </p>
 
           {!selection ? (
@@ -270,7 +276,7 @@ export function OrderTopUpCard({
                     className="order-topup__btn"
                     onClick={() => setSelection({ kind: "wallet", fundUsd: amount })}
                   >
-                    ${amount} data
+                    {t(dict, "ordersUi.dataAmount", { amount })}
                   </button>
                 ))}
               </div>
@@ -279,7 +285,7 @@ export function OrderTopUpCard({
             <div className="order-topup__pay">
               <div className="order-topup__selected">
                 <span>
-                  Selected: <strong>{selectedLabel}</strong>
+                  {ui.selected} <strong>{selectedLabel}</strong>
                   {selectedRetail ? ` · ${selectedRetail}` : null}
                 </span>
                 <button
@@ -291,7 +297,7 @@ export function OrderTopUpCard({
                     setError(null);
                   }}
                 >
-                  Change
+                  {ui.change}
                 </button>
               </div>
               <TopUpExpressWallets
@@ -309,7 +315,7 @@ export function OrderTopUpCard({
                 disabled={submitting}
                 onClick={() => void payWithCard()}
               >
-                {submitting ? "Starting…" : "Pay with card"}
+                {submitting ? ui.starting : ui.payWithCard}
               </button>
               {paypalAvailable ? (
                 <TopUpPayPalButton

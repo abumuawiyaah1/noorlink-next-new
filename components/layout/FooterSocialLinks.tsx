@@ -44,10 +44,15 @@ const ICONS = {
   facebook: FacebookIcon,
 } as const;
 
-export function FooterSocialLinks() {
+type FooterSocialLinksProps = {
+  followLabel: string;
+  socialAria: string;
+};
+
+export function FooterSocialLinks({ followLabel, socialAria }: FooterSocialLinksProps) {
   return (
-    <nav className="footer-social" aria-label="Social">
-      <span className="footer-social__label">Follow us</span>
+    <nav className="footer-social" aria-label={socialAria}>
+      <span className="footer-social__label">{followLabel}</span>
       <div className="footer-social__links">
         {SOCIAL_FOOTER_PROFILES.map(({ href, label, network }) => {
           const Icon = ICONS[network];

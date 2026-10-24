@@ -2,6 +2,10 @@
 
 import type { LookedUpOrder } from "@/lib/orders-api";
 import type { CustomerStatus } from "@/lib/my-esims";
+import { LOCALE_META } from "@/lib/i18n/config";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { renderTemplate } from "@/lib/i18n/template";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type OrderUsageSummaryProps = {
   order: LookedUpOrder;
@@ -43,6 +47,11 @@ export function OrderUsageSummary({
   onRefreshUsage,
   refreshing = false,
 }: OrderUsageSummaryProps) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const ui = dict.ordersUi;
+  const dateLocale = LOCALE_META[locale].htmlLang;
+  const formatWhen = (iso: string) => new Date(iso).toLocaleString(dateLocale);
   const isWallet =
     order.usageMode === "wallet" ||
     ((order.walletBalanceUsd != null || order.walletChargedUsd != null) &&
@@ -85,34 +94,33 @@ export function OrderUsageSummary({
     <div className={`order-usage${compact ? " order-usage--compact" : ""}`}>
       {order.fulfillmentPending ? (
         <p className="order-usage__pending" role="status">
-          Your QR is being prepared — usually within a few minutes. Stay on this
-          page or wait for the delivery email.
+          {ui.qrPreparing}
         </p>
       ) : null}
 
       <div className="order-usage__hero">
         {showData && order.dataRemainingGb != null ? (
           <div className="order-usage__hero-stat">
-            <span>Data left</span>
+            <span>{ui.dataLeft}</span>
             <strong>
               {formatGb(order.dataRemainingGb)}
               <small>GB</small>
             </strong>
             {order.dataTotalGb != null ? (
-              <em>of {formatGb(order.dataTotalGb)} GB</em>
+              <em>{t(dict, "ordersUi.ofGb", { n: formatGb(order.dataTotalGb) })}</em>
             ) : null}
           </div>
         ) : null}
 
         {showData && usedGb != null ? (
           <div className="order-usage__hero-stat">
-            <span>Data used</span>
+            <span>{ui.dataUsed}</span>
             <strong>
               {formatGb(usedGb)}
               <small>GB</small>
             </strong>
             {order.dataTotalGb != null ? (
-              <em>of {formatGb(order.dataTotalGb)} GB plan</em>
+              <em>{t(dict, "ordersUi.ofGbPlan", { n: formatGb(order.dataTotalGb) })}</em>
             ) : null}
           </div>
         ) : null}
@@ -122,57 +130,57 @@ export function OrderUsageSummary({
         usedGb == null &&
         order.dataTotalGb != null ? (
           <div className="order-usage__hero-stat">
-            <span>Data</span>
+            <span>{ui.dataLabel}</span>
             <strong className="order-usage__hero-stat--muted">
               {formatGb(order.dataTotalGb)} GB
             </strong>
             <em>
               {customerStatus?.installed
-                ? "Usage appears after the network reports it. Tap refresh after you connect."
-                : "Install first — usage shows after you’re on the network."}
+                ? ui.usageAfterNetwork
+                : ui.usageInstallFirst}
             </em>
           </div>
         ) : null}
 
         {showWallet && order.walletBalanceUsd != null ? (
           <div className="order-usage__hero-stat">
-            <span>Wallet left</span>
+            <span>{ui.walletLeft}</span>
             <strong>{formatUsd(Number(order.walletBalanceUsd))}</strong>
-            <em>pay-as-you-go</em>
+            <em>{ui.payAsYouGoShort}</em>
           </div>
         ) : null}
 
         {showWallet && order.walletChargedUsd != null ? (
           <div className="order-usage__hero-stat">
-            <span>Used</span>
+            <span>{ui.walletUsed}</span>
             <strong>{formatUsd(Number(order.walletChargedUsd))}</strong>
-            <em>data charged</em>
+            <em>{ui.dataCharged}</em>
           </div>
         ) : null}
 
         {!showData && !showWallet && !order.fulfillmentPending ? (
           <div className="order-usage__hero-stat">
-            <span>Data</span>
+            <span>{ui.dataLabel}</span>
             <strong className="order-usage__hero-stat--muted">
               {order.dataTotalGb != null ? `${formatGb(order.dataTotalGb)} GB` : "—"}
             </strong>
             <em>
               {customerStatus?.installed
-                ? "Remaining data appears after the network reports usage. Tap refresh after you connect."
-                : "Install first — remaining data shows after you’re on the network."}
+                ? ui.remainingAfterNetwork
+                : ui.remainingInstallFirst}
             </em>
           </div>
         ) : null}
 
         {showDays ? (
           <div className="order-usage__hero-stat">
-            <span>Days left</span>
+            <span>{ui.daysRemaining}</span>
             <strong>
               {order.daysRemaining}
-              <small>{order.daysRemaining === 1 ? "day" : "days"}</small>
+              <small>{order.daysRemaining === 1 ? ui.dayUnit : ui.daysUnit}</small>
             </strong>
             {order.validityDays != null ? (
-              <em>{order.validityDays}-day plan</em>
+              <em>{t(dict, "ordersUi.validityPlan", { n: order.validityDays })}</em>
             ) : null}
           </div>
         ) : null}
@@ -185,7 +193,7 @@ export function OrderUsageSummary({
           aria-valuenow={pct}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label="Data used"
+          aria-label={ui.dataUsed}
         >
           <span style={{ width: `${pct}%` }} />
         </div>
@@ -193,19 +201,19 @@ export function OrderUsageSummary({
 
       {showData && usedGb != null && order.dataRemainingGb != null ? (
         <p className="order-usage__fine-print" style={{ marginTop: 8 }}>
-          {formatGb(usedGb)} GB used
+          {t(dict, "ordersUi.gbUsed", { n: formatGb(usedGb) })}
           {pct != null ? ` (${pct}%)` : ""}
           {order.usageSyncedAt
-            ? ` · updated ${new Date(order.usageSyncedAt).toLocaleString()}`
+            ? ` · ${t(dict, "ordersUi.updatedAt", { time: formatWhen(order.usageSyncedAt) })}`
             : ""}
         </p>
       ) : null}
 
       {(showData || showWallet) && order.usageSyncedAt && !(showData && usedGb != null && order.dataRemainingGb != null) ? (
         <p className="order-usage__fine-print" style={{ marginTop: 8 }}>
-          Updated {new Date(order.usageSyncedAt).toLocaleString()}
+          {t(dict, "ordersUi.updatedCap", { time: formatWhen(order.usageSyncedAt) })}
           {showWallet && order.walletFundedUsd != null
-            ? ` · funded ${formatUsd(Number(order.walletFundedUsd))}`
+            ? ` · ${t(dict, "ordersUi.funded", { amount: formatUsd(Number(order.walletFundedUsd)) })}`
             : ""}
         </p>
       ) : null}
@@ -217,14 +225,16 @@ export function OrderUsageSummary({
           onClick={onRefreshUsage}
           disabled={refreshing}
         >
-          {refreshing ? "Refreshing…" : "Refresh usage"}
+          {refreshing ? ui.refreshing : ui.usageRefresh}
         </button>
       ) : null}
 
       {!compact ? (
         <p className="order-usage__fine-print">
-          Unused data expires when your validity period ends. No rollover. See{" "}
-          <a href="/terms">Terms</a> and <a href="/refund">Refund Policy</a>.
+          {renderTemplate(ui.finePrint, {
+            terms: <a href="/terms">{ui.terms}</a>,
+            refund: <a href="/refund">{ui.refundPolicy}</a>,
+          })}
         </p>
       ) : null}
     </div>

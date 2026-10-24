@@ -1,39 +1,45 @@
-const PAYMENT_MARKS: ReadonlyArray<{
+"use client";
+
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
+
+type PaymentMark = {
   id: string;
-  label: string;
   src: string;
+  label?: string;
   className?: string;
-}> = [
+};
+
+const PAYMENT_MARK_IDS: ReadonlyArray<PaymentMark> = [
   {
     id: "ssl",
-    label: "SSL Certificate",
     src: "/images/payments/ssl-certificate.png",
     className: "secure-trust__mark--ssl",
   },
   {
     id: "paypal",
-    label: "PayPal",
     src: "/images/payments/paypal-mark.png",
+    label: "PayPal",
   },
   {
     id: "google-pay",
-    label: "Google Pay",
     src: "/images/payments/google-pay.png",
+    label: "Google Pay",
   },
   {
     id: "apple-pay",
-    label: "Apple Pay",
     src: "/images/payments/apple-pay-mark.png",
+    label: "Apple Pay",
   },
   {
     id: "visa",
-    label: "Visa",
     src: "/images/payments/visa-mark.png",
+    label: "Visa",
   },
   {
     id: "mastercard",
-    label: "Mastercard",
     src: "/images/payments/mastercard-mark.png",
+    label: "Mastercard",
   },
 ];
 
@@ -49,33 +55,45 @@ type Props = {
 function PaymentMarksRow({
   showSsl = true,
   className = "",
+  paymentMethodsAria,
+  sslLabel,
 }: {
   showSsl?: boolean;
   className?: string;
+  paymentMethodsAria: string;
+  sslLabel: string;
 }) {
   const marks = showSsl
-    ? PAYMENT_MARKS
-    : PAYMENT_MARKS.filter((mark) => mark.id !== "ssl");
+    ? PAYMENT_MARK_IDS
+    : PAYMENT_MARK_IDS.filter((mark) => mark.id !== "ssl");
 
   return (
-    <div className={`secure-trust__marks ${className}`.trim()} aria-label="Payment methods">
-      {marks.map((mark) => (
-        <span
-          key={mark.id}
-          className={["secure-trust__mark", mark.className].filter(Boolean).join(" ")}
-          title={mark.label}
-        >
-          <img
-            src={mark.src}
-            alt={mark.label}
-            className="secure-trust__mark-image"
-            width={96}
-            height={42}
-            loading="lazy"
-            decoding="async"
-          />
-        </span>
-      ))}
+    <div
+      className={`secure-trust__marks ${className}`.trim()}
+      aria-label={paymentMethodsAria}
+    >
+      {marks.map((mark) => {
+        const label = mark.id === "ssl" ? sslLabel : (mark.label ?? mark.id);
+        return (
+          <span
+            key={mark.id}
+            className={["secure-trust__mark", mark.className]
+              .filter(Boolean)
+              .join(" ")}
+            title={label}
+          >
+            <img
+              src={mark.src}
+              alt={label}
+              className="secure-trust__mark-image"
+              width={96}
+              height={42}
+              loading="lazy"
+              decoding="async"
+            />
+          </span>
+        );
+      })}
     </div>
   );
 }
@@ -85,11 +103,16 @@ export function SecureCheckoutTrust({
   className = "",
   showSsl = true,
 }: Props) {
+  const [locale] = useLocaleState();
+  const trust = getDictionary(locale).secureTrust;
+
   if (variant === "marks") {
     return (
       <PaymentMarksRow
         showSsl={showSsl}
         className={`secure-trust--marks ${className}`.trim()}
+        paymentMethodsAria={trust.paymentMethods}
+        sslLabel={trust.sslCertificate}
       />
     );
   }
@@ -97,12 +120,16 @@ export function SecureCheckoutTrust({
   return (
     <div
       className={`secure-trust secure-trust--card ${className}`.trim()}
-      aria-label="Secure Stripe checkout"
+      aria-label={trust.secureStripeAria}
     >
       <div className="secure-trust__accent" aria-hidden="true" />
       <div className="secure-trust__inner">
         <p className="secure-trust__title">
-          Secure <span>Stripe</span> Checkout
+          {trust.secureStripeTitleBefore}{" "}
+          <span>Stripe</span>
+          {trust.secureStripeTitleAfter
+            ? ` ${trust.secureStripeTitleAfter}`
+            : null}
         </p>
         <div className="secure-trust__mid">
           <span className="secure-trust__stripe">stripe</span>
@@ -142,7 +169,11 @@ export function SecureCheckoutTrust({
             <span className="secure-trust__paypal-b">Pal</span>
           </span>
         </div>
-        <PaymentMarksRow showSsl={showSsl} />
+        <PaymentMarksRow
+          showSsl={showSsl}
+          paymentMethodsAria={trust.paymentMethods}
+          sslLabel={trust.sslCertificate}
+        />
         <p className="secure-trust__brand">
           <span className="secure-trust__brand-noor">Noor</span>
           <span className="secure-trust__brand-link">Link</span>

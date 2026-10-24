@@ -1,5 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import type { InsiderIssue } from "@/lib/insider-issues";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type Props = {
   issue: InsiderIssue;
@@ -12,7 +17,15 @@ export function InsiderIssueCard({
   compact = false,
   comingSoon = false,
 }: Props) {
-  const href = `/newsletter/${issue.slug}`;
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const n = dict.newsletterPage;
+  const href = localizedPath(`/newsletter/${issue.slug}`, locale);
+
+  const badge =
+    issue.kind === "special"
+      ? n.specialEdition
+      : t(dict, "newsletterPage.issueNumber", { n: issue.issueNumber ?? "" });
 
   return (
     <article
@@ -24,23 +37,19 @@ export function InsiderIssueCard({
         <div className="insider-card__media">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={issue.heroImage} alt={issue.heroAlt} loading="lazy" />
-          <span className="insider-card__badge">Coming soon</span>
+          <span className="insider-card__badge">{n.comingSoon}</span>
         </div>
       ) : (
         <Link href={href} className="insider-card__media">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={issue.heroImage} alt={issue.heroAlt} loading="lazy" />
-          <span className="insider-card__badge">
-            {issue.kind === "special"
-              ? "Special edition"
-              : `Issue #${issue.issueNumber}`}
-          </span>
+          <span className="insider-card__badge">{badge}</span>
         </Link>
       )}
       <div className="insider-card__body">
         <p className="insider-card__meta">
           {issue.monthLabel} · {issue.destinationFocus}
-          {issue.audience === "pilgrimage" ? " · Pilgrimage list" : ""}
+          {issue.audience === "pilgrimage" ? ` · ${n.pilgrimageList}` : ""}
         </p>
         <h3>
           {comingSoon ? issue.subject : <Link href={href}>{issue.subject}</Link>}
@@ -49,17 +58,22 @@ export function InsiderIssueCard({
         <div className="insider-card__footer">
           {comingSoon ? (
             <span className="insider-card__read insider-card__read--muted">
-              Releases {issue.monthLabel}
+              {t(dict, "newsletterPage.releases", { month: issue.monthLabel })}
             </span>
           ) : (
             <Link href={href} className="insider-card__read">
-              Read issue
+              {n.readIssue}
             </Link>
           )}
           <span className="insider-card__deal">
             {comingSoon
-              ? `${issue.promoPercent}% Insider deal`
-              : `${issue.promoPercent}% · ${issue.promoCode}`}
+              ? t(dict, "newsletterPage.dealSoon", {
+                  percent: issue.promoPercent,
+                })
+              : t(dict, "newsletterPage.dealLive", {
+                  percent: issue.promoPercent,
+                  code: issue.promoCode,
+                })}
           </span>
         </div>
       </div>

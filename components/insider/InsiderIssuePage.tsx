@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -8,33 +10,57 @@ import {
   getInsiderIssue,
   getPublishedInsiderIssues,
 } from "@/lib/insider-issues";
+import { localizeInsiderIssue } from "@/lib/insider-i18n";
 import { withPromo } from "@/lib/promo-link";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type Props = {
   slug: string;
 };
 
 export function InsiderIssuePage({ slug }: Props) {
-  const issue = getInsiderIssue(slug);
-  if (!issue) notFound();
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const n = dict.newsletterPage;
+  const raw = getInsiderIssue(slug);
+  if (!raw) notFound();
 
-  const published = getPublishedInsiderIssues();
+  const issue = localizeInsiderIssue(raw, dict);
+  const published = getPublishedInsiderIssues().map((item) =>
+    localizeInsiderIssue(item, dict),
+  );
   const index = published.findIndex((item) => item.slug === slug);
   const prev = index > 0 ? published[index - 1] : null;
   const next =
     index >= 0 && index < published.length - 1 ? published[index + 1] : null;
-  const primaryHref = withPromo(issue.ctaPrimary.href, issue.promoCode);
+  const primaryHref = withPromo(
+    localizedPath(issue.ctaPrimary.href, locale),
+    issue.promoCode,
+  );
   const secondaryHref = issue.ctaSecondary
-    ? withPromo(issue.ctaSecondary.href, issue.promoCode)
+    ? withPromo(
+        localizedPath(issue.ctaSecondary.href, locale),
+        issue.promoCode,
+      )
     : null;
+
+  const heroKicker =
+    issue.kind === "special"
+      ? t(dict, "newsletterPage.specialKicker", { month: issue.monthLabel })
+      : t(dict, "newsletterPage.issueKicker", {
+          n: issue.issueNumber ?? "",
+          month: issue.monthLabel,
+        });
 
   return (
     <>
       <SiteHeader />
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { href: "/newsletter", label: "Insider" },
+          { href: localizedPath("/", locale), label: dict.common.home },
+          { href: localizedPath("/newsletter", locale), label: n.crumb },
           { label: issue.monthLabel },
         ]}
       />
@@ -44,11 +70,7 @@ export function InsiderIssuePage({ slug }: Props) {
           <img src={issue.heroImage} alt={issue.heroAlt} />
           <div className="insider-issue-hero__veil" />
           <div className="insider-issue-hero__copy">
-            <p className="insider-kicker">
-              {issue.kind === "special"
-                ? `Special edition · ${issue.monthLabel}`
-                : `Issue #${issue.issueNumber} · ${issue.monthLabel}`}
-            </p>
+            <p className="insider-kicker">{heroKicker}</p>
             <h1>{issue.subject}</h1>
             <p>{issue.preview}</p>
           </div>
@@ -58,25 +80,28 @@ export function InsiderIssuePage({ slug }: Props) {
           <p className="insider-issue-opener">{issue.sections.opener}</p>
 
           {issue.islamicReminders && (
-            <section className="insider-issue-reminders" aria-label="Islamic reminders">
+            <section
+              className="insider-issue-reminders"
+              aria-label={n.remindersAria}
+            >
               <div className="insider-issue-reminders__tools" aria-hidden="true">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/insider/insider-qalam-ink.jpg"
-                  alt="Decorative qalam and ink"
+                  alt=""
                   width={480}
                   height={480}
                 />
               </div>
               <div className="insider-issue-reminders__copy">
-                <h2>From the Qur’an</h2>
+                <h2>{n.fromQuran}</h2>
                 {issue.islamicReminders.quran.map((item) => (
                   <blockquote key={item.reference} className="insider-reminder">
                     <p>{item.text}</p>
                     <cite>{item.reference}</cite>
                   </blockquote>
                 ))}
-                <h2>From the Sunnah</h2>
+                <h2>{n.fromSunnah}</h2>
                 {issue.islamicReminders.hadith.map((item) => (
                   <blockquote key={item.reference} className="insider-reminder">
                     <p>{item.text}</p>
@@ -86,7 +111,7 @@ export function InsiderIssuePage({ slug }: Props) {
                 {issue.islamicReminders.duas &&
                   issue.islamicReminders.duas.length > 0 && (
                     <>
-                      <h2>Special du‘ā’s for the journey</h2>
+                      <h2>{n.specialDuas}</h2>
                       {issue.islamicReminders.duas.map((dua) => (
                         <blockquote
                           key={`${dua.occasion}-${dua.reference}`}
@@ -96,7 +121,11 @@ export function InsiderIssuePage({ slug }: Props) {
                             {dua.occasion}
                           </p>
                           {dua.arabic ? (
-                            <p className="insider-reminder__arabic" lang="ar" dir="rtl">
+                            <p
+                              className="insider-reminder__arabic"
+                              lang="ar"
+                              dir="rtl"
+                            >
                               {dua.arabic}
                             </p>
                           ) : null}
@@ -112,6 +141,7 @@ export function InsiderIssuePage({ slug }: Props) {
 
           <section>
             <h2>{issue.sections.destinationTitle}</h2>
+            {/* Body paragraphs intentionally remain English when not localized. */}
             {issue.sections.destinationBody.map((paragraph) => (
               <p key={paragraph.slice(0, 24)}>{paragraph}</p>
             ))}
@@ -137,16 +167,19 @@ export function InsiderIssuePage({ slug }: Props) {
           ) : null}
 
           <aside className="insider-deal">
-            <p className="insider-kicker">Insider note</p>
+            <p className="insider-kicker">{n.insiderNote}</p>
             <p className="insider-deal__code">{issue.promoCode}</p>
             <p>
-              {issue.promoPercent}% off at checkout · ends {issue.promoEndsLabel}.
+              {t(dict, "newsletterPage.promoEnds", {
+                percent: issue.promoPercent,
+                ends: issue.promoEndsLabel,
+              })}
             </p>
             {issue.dealGiving ? (
               <div className="insider-deal__giving">
                 <p>{issue.dealGiving.body}</p>
                 <p className="insider-deal__giving-link">
-                  <Link href={issue.dealGiving.href}>
+                  <Link href={localizedPath(issue.dealGiving.href, locale)}>
                     {issue.dealGiving.ctaLabel}
                   </Link>
                 </p>
@@ -170,24 +203,28 @@ export function InsiderIssuePage({ slug }: Props) {
           </aside>
 
           <p className="insider-issue-close">{issue.sections.closing}</p>
-          <p className="insider-issue-signoff">— NoorLink Insider</p>
+          <p className="insider-issue-signoff">{n.signoff}</p>
 
-          <nav className="insider-issue-nav" aria-label="Issue navigation">
+          <nav className="insider-issue-nav" aria-label={n.issueNavAria}>
             {prev ? (
-              <Link href={`/newsletter/${prev.slug}`}>← {prev.monthLabel}</Link>
+              <Link href={localizedPath(`/newsletter/${prev.slug}`, locale)}>
+                ← {prev.monthLabel}
+              </Link>
             ) : (
               <span />
             )}
-            <Link href="/newsletter">All issues</Link>
+            <Link href={localizedPath("/newsletter", locale)}>{n.allIssues}</Link>
             {next ? (
-              <Link href={`/newsletter/${next.slug}`}>{next.monthLabel} →</Link>
+              <Link href={localizedPath(`/newsletter/${next.slug}`, locale)}>
+                {next.monthLabel} →
+              </Link>
             ) : (
               <span />
             )}
           </nav>
 
           <div className="insider-issue-join">
-            <h2>Get the next issue by email</h2>
+            <h2>{n.joinNext}</h2>
             <InsiderSignupForm variant="inline" />
           </div>
         </article>

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
 import { RegionFlagPreview } from "@/components/ui/RegionFlagPreview";
@@ -7,51 +9,43 @@ import {
   plansPathForRegion,
   type RegionalRouteSlug,
 } from "@/lib/regional-products";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
+
+type GridRegionId = keyof ReturnType<typeof getDictionary>["popular"]["gridRegions"];
 
 const destinations: {
-  id: string;
-  title: string;
-  subtitle: string;
+  id: GridRegionId;
   image: string;
   routeSlug: RegionalRouteSlug;
   flagId: string;
 }[] = [
   {
     id: "caribbean",
-    title: "Caribbean",
-    subtitle: "Bahamas, Jamaica, Dominican Republic & more",
     image: getCountryImageUrl("caribbean"),
     routeSlug: "caribbean",
     flagId: "caribbean",
   },
   {
     id: "americas",
-    title: "Americas",
-    subtitle: "USA, Canada & Mexico",
     image: getCountryImageUrl("americas"),
     routeSlug: "north-america",
     flagId: "americas",
   },
   {
     id: "europe",
-    title: "Europe",
-    subtitle: "UK, France, Germany & more",
     image: getCountryImageUrl("europe"),
     routeSlug: "europe",
     flagId: "europe",
   },
   {
     id: "mea",
-    title: "Middle East",
-    subtitle: "UAE, Turkey, Saudi, Egypt…",
     image: getCountryImageUrl("middle-east"),
     routeSlug: "middle-east",
     flagId: "middle-east",
   },
   {
     id: "asia",
-    title: "Asia & Oceania",
-    subtitle: "Japan, Thailand, Singapore…",
     image: getCountryImageUrl("asia"),
     routeSlug: "asia-pacific",
     flagId: "asia",
@@ -59,43 +53,46 @@ const destinations: {
 ];
 
 export function DestinationGrid() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+
   return (
     <section className="destinations" id="destinations">
       <div className="container">
         <div className="destinations-heading">
-          <span className="why-kicker">Popular regions</span>
-          <h2>Choose where you are going next</h2>
-          <p>
-            Hover a region to peek at country flags. Click to open the full list
-            and plans.
-          </p>
+          <span className="why-kicker">{dict.popular.kicker}</span>
+          <h2>{dict.popular.gridTitle}</h2>
+          <p>{dict.popular.gridLede}</p>
         </div>
         <div className="grid">
-          {destinations.map((dest, index) => (
+          {destinations.map((dest, index) => {
+            const copy = dict.popular.gridRegions[dest.id];
+            return (
             <Link
               key={dest.id}
               href={plansPathForRegion(dest.routeSlug)}
               className="card region-card"
-              aria-label={`View ${dest.title} regional plans and covered countries`}
+              aria-label={t(dict, "popular.gridCardAria", { title: copy.title })}
             >
               <DestinationCardMedia
                 src={dest.image}
-                alt={`${dest.title} regional travel plans`}
+                alt={t(dict, "popular.gridCardAlt", { title: copy.title })}
                 priority={index < 2}
               />
               <div className="card-overlay">
                 <div className="region-title">
                   <span aria-hidden="true">{getCountryFlag(dest.flagId)} </span>
-                  {dest.title}
+                  {copy.title}
                 </div>
-                <div className="region-sub">{dest.subtitle}</div>
+                <div className="region-sub">{copy.subtitle}</div>
                 <RegionFlagPreview routeSlug={dest.routeSlug} />
                 <div className="arrow-btn" aria-hidden="true">
                   <i className="fas fa-arrow-right" />
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

@@ -2,12 +2,17 @@
 
 import { FormEvent, useState } from "react";
 import { subscribeInsider } from "@/lib/newsletter-api";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type Props = {
   variant?: "page" | "inline";
 };
 
 export function InsiderSignupForm({ variant = "page" }: Props) {
+  const [locale] = useLocaleState();
+  const n = getDictionary(locale).newsletterPage;
   const [email, setEmail] = useState("");
   const [destination, setDestination] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -27,17 +32,14 @@ export function InsiderSignupForm({ variant = "page" }: Props) {
 
     if (result.success) {
       setStatus("sent");
-      setMessage(
-        result.message ??
-          "You’re on the Insider list. Monthly guides and timed deals — no spam.",
-      );
+      setMessage(result.message ?? n.signupSuccess);
       setEmail("");
       setDestination("");
       return;
     }
 
     setStatus("error");
-    setMessage(result.error ?? "Could not join right now. Try again shortly.");
+    setMessage(result.error ?? n.signupError);
   }
 
   return (
@@ -47,34 +49,34 @@ export function InsiderSignupForm({ variant = "page" }: Props) {
     >
       <div className="insider-signup__fields">
         <label className="sr-only" htmlFor={`insider-email-${variant}`}>
-          Email
+          {n.signupEmailLabel}
         </label>
         <input
           id={`insider-email-${variant}`}
           type="email"
           required
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder={n.signupEmailPlaceholder}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
         <label className="sr-only" htmlFor={`insider-dest-${variant}`}>
-          Next trip
+          {n.signupTripLabel}
         </label>
         <select
           id={`insider-dest-${variant}`}
           value={destination}
           onChange={(event) => setDestination(event.target.value)}
         >
-          <option value="">Next trip (optional)</option>
-          <option value="Umrah">Umrah</option>
-          <option value="Hajj">Hajj</option>
-          <option value="Europe">Europe</option>
-          <option value="Asia">Asia</option>
-          <option value="Americas">Americas</option>
+          <option value="">{n.signupTripOptional}</option>
+          <option value="Umrah">{n.signupUmrah}</option>
+          <option value="Hajj">{n.signupHajj}</option>
+          <option value="Europe">{n.signupEurope}</option>
+          <option value="Asia">{n.signupAsia}</option>
+          <option value="Americas">{n.signupAmericas}</option>
         </select>
         <button type="submit" disabled={status === "sending"}>
-          {status === "sending" ? "Joining…" : "Join Insider"}
+          {status === "sending" ? n.signupJoining : n.signupJoin}
         </button>
       </div>
       {message && (
@@ -86,8 +88,9 @@ export function InsiderSignupForm({ variant = "page" }: Props) {
         </p>
       )}
       <p className="insider-signup__privacy">
-        One email a month. Choose Umrah or Hajj to receive pilgrimage specials.{" "}
-        <a href="/unsubscribe">Unsubscribe</a> anytime.
+        {n.signupPrivacy}{" "}
+        <a href={localizedPath("/unsubscribe", locale)}>{n.signupUnsubscribe}</a>{" "}
+        {n.signupAnytime}
       </p>
     </form>
   );

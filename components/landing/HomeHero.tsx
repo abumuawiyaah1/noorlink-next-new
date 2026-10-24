@@ -1,7 +1,14 @@
+"use client";
+
 import { HeroSearch } from "@/components/landing/HeroSearch";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { SITE_IMAGES } from "@/lib/site-images";
 
 export function HomeHero() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+
   return (
     <section className="hero">
       <picture className="hero__media" aria-hidden="true">
@@ -27,18 +34,13 @@ export function HomeHero() {
           <span className="hero-brand__noor">Noor</span>
           <span className="hero-brand__link">Link</span>
         </p>
-        <p className="hero-kicker">Install before you fly.</p>
+        <p className="hero-kicker">{dict.home.kicker}</p>
         <h1>
-          Stay Connected,
+          {dict.home.headlineLine1}
           <br />
-          No Matter Where You Are.
+          {dict.home.headlineLine2}
         </h1>
-        <p className="hero-lede">
-          High-speed eSIM data in 190+ countries — ready when you land.
-          <br />
-          Hassle-free travel, skip the kiosk, roaming, and hidden fees, and keep
-          your number.
-        </p>
+        <p className="hero-lede">{dict.home.lede}</p>
         <HeroSearch />
       </div>
     </section>

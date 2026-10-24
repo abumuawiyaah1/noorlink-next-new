@@ -114,50 +114,44 @@ export function resolvePilgrimPlanCopy(
   plan: EsimPlan | null,
   connectedDataGb: ConnectedPilgrimDataGb = 10,
   umrahUnlimitedDays: UmrahUnlimitedDays = 10,
+  locale: string = "en",
 ): PilgrimPlanCopy {
   const days = plan?.durationDays ?? 30;
   const gb = plan?.dataGb;
-  const speed = "3G / 4G / 5G";
+  const saudiLabel =
+    locale === "es"
+      ? "Arabia Saudita"
+      : locale === "ar"
+        ? "السعودية"
+        : "Saudi Arabia";
 
-  if (tier.key === "basic") {
-    return {
-      description: `Saudi fixed pack: ${gb ?? 5}GB for ${days} days on ${speed}. Built for maps, WhatsApp, and arrival coordination without overbuying data.`,
-      highlights: [
-        `${gb ?? 5}GB high-speed data · ${days} days`,
-        `${speed} on Saudi networks`,
-        "Best for short Umrah or light daily use",
-      ],
+  if (tier.key === "basic" || tier.key === "connected") {
+    // Reuse shared fixed-pack copy so ES/AR stay in sync with country plans.
+    const synthetic: EsimPlan = {
+      ...(plan ?? PILGRIM_FALLBACK_PLANS[tier.key]),
+      dataGb:
+        tier.key === "connected"
+          ? connectedDataGb
+          : (gb ?? plan?.dataGb ?? 5),
+      durationDays: days,
+      planCategory: "fixed",
     };
-  }
-
-  if (tier.key === "connected") {
-    if (connectedDataGb === 20) {
-      return {
-        description: `Saudi fixed pack: 20GB for ${days} days on ${speed}. Extra headroom for photos, navigation, and regular video calls during a fuller pilgrimage.`,
-        highlights: [
-          `20GB high-speed data · ${days} days`,
-          `${speed} · hotspot supported on most devices`,
-          "Best when you share updates and stream more often",
-        ],
-      };
-    }
-    return {
-      description: `Saudi fixed pack: 10GB for ${days} days on ${speed}. The balanced pick for daily worship apps, family messaging, and maps across Makkah & Madinah.`,
-      highlights: [
-        `10GB high-speed data · ${days} days`,
-        `${speed} · Saudi Arabia coverage`,
-        "Recommended for most first-time pilgrims",
-      ],
-    };
+    return describeEsimPlan(synthetic, {
+      countryLabel: saudiLabel,
+      locale,
+    });
   }
 
   if (tier.key === "unlimited" && plan) {
     const activePlan = resolveUmrahUnlimitedPlan(tier, umrahUnlimitedDays);
-    return describeEsimPlan(activePlan, { countryLabel: "Saudi Arabia" });
+    return describeEsimPlan(activePlan, {
+      countryLabel: saudiLabel,
+      locale,
+    });
   }
 
   if (plan) {
-    return describeEsimPlan(plan, { countryLabel: "Saudi Arabia" });
+    return describeEsimPlan(plan, { countryLabel: saudiLabel, locale });
   }
 
   return {

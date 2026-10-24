@@ -10,12 +10,13 @@ import { RegionalWorldMap } from "@/components/landing/RegionalWorldMap";
 import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
 import { RegionFlagPreview } from "@/components/ui/RegionFlagPreview";
 import { getRegionalImageUrl } from "@/lib/country-images";
-import {
-  PENDING_PRICE_LABEL,
-  useLiveStartingPrices,
-} from "@/components/destinations/useLiveStartingPrices";
+import { useLiveStartingPrices } from "@/components/destinations/useLiveStartingPrices";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 export function RegionalPlansPromo() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const priceIds = REGIONAL_ROUTE_SLUGS.map(
     (slug) => REGIONAL_PRODUCTS[slug].apiCountryId,
   );
@@ -25,12 +26,9 @@ export function RegionalPlansPromo() {
     <section className="regional-promo" aria-labelledby="regional-promo-heading">
       <div className="container">
         <div className="regional-promo__header">
-          <span className="why-kicker">Crossing borders?</span>
-          <h2 id="regional-promo-heading">One eSIM for the whole region</h2>
-          <p>
-            Tap a colored region on the map — or pick a card below. Install once
-            and stay connected across every covered country.
-          </p>
+          <span className="why-kicker">{dict.regional.kicker}</span>
+          <h2 id="regional-promo-heading">{dict.regional.title}</h2>
+          <p>{dict.regional.lede}</p>
         </div>
 
         <RegionalWorldMap />
@@ -38,23 +36,28 @@ export function RegionalPlansPromo() {
         <div className="regional-promo__grid" aria-label="All regional plans">
           {REGIONAL_ROUTE_SLUGS.map((routeSlug) => {
             const product = REGIONAL_PRODUCTS[routeSlug];
+            const pendingLabel = dict.common.seePlans;
             const price =
-              livePrices[product.apiCountryId]?.label ?? PENDING_PRICE_LABEL;
+              livePrices[product.apiCountryId]?.label ?? pendingLabel;
             const hasPrice = Boolean(livePrices[product.apiCountryId]);
             const image = getRegionalImageUrl(routeSlug);
             const featured = Boolean(product.featured);
+            const regionName =
+              dict.regional.regionNames[
+                routeSlug as keyof typeof dict.regional.regionNames
+              ] ?? product.shortName;
 
             return (
               <Link
                 key={routeSlug}
                 href={plansPathForRegion(routeSlug)}
                 className={`regional-promo__card region-card${featured ? " is-featured" : ""}`}
-                aria-label={`View ${product.displayName} plans and covered countries, ${price}`}
+                aria-label={`${regionName}, ${price}`}
               >
                 <div className="regional-promo__media">
                   <DestinationCardMedia
                     src={image}
-                    alt={`${product.displayName} regional eSIM coverage`}
+                    alt={regionName}
                     priority={false}
                   />
                   <span className="regional-promo__flag" aria-hidden="true">
@@ -64,11 +67,13 @@ export function RegionalPlansPromo() {
                 <RegionFlagPreview routeSlug={routeSlug} previewCount={10} />
                 <div className="regional-promo__body">
                   {featured && (
-                    <span className="regional-promo__label">Island escape</span>
+                    <span className="regional-promo__label">
+                      {dict.regional.islandEscape}
+                    </span>
                   )}
-                  <strong>{product.shortName}</strong>
+                  <strong>{regionName}</strong>
                   <span className="regional-promo__meta">
-                    {product.countries.length} destinations
+                    {t(dict, "regional.covers", { n: product.countries.length })}
                   </span>
                   <span
                     className={`regional-promo__price${hasPrice ? "" : " is-pending"}`}

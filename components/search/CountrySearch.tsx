@@ -7,6 +7,9 @@ import {
   resolveDestination,
 } from "@/lib/hero-destinations";
 import { logSearch } from "@/lib/analytics-api";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type CountrySearchProps = {
   initialQuery?: string;
@@ -15,9 +18,12 @@ type CountrySearchProps = {
 
 export function CountrySearch({
   initialQuery = "",
-  placeholder = "Search another country...",
+  placeholder,
 }: CountrySearchProps) {
   const router = useRouter();
+  const [locale] = useLocaleState();
+  const search = getDictionary(locale).search;
+  const resolvedPlaceholder = placeholder ?? search.anotherCountry;
   const [query, setQuery] = useState(initialQuery);
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -30,12 +36,14 @@ export function CountrySearch({
     const trimmed = nextQuery.trim();
     if (dest) {
       logSearch(dest.label);
-      router.push(dest.href);
+      router.push(localizedPath(dest.href, locale));
       return;
     }
     if (trimmed) {
       logSearch(trimmed);
-      router.push(`/destinations?q=${encodeURIComponent(trimmed)}`);
+      router.push(
+        `${localizedPath("/destinations", locale)}?q=${encodeURIComponent(trimmed)}`,
+      );
     }
   }
 
@@ -51,8 +59,8 @@ export function CountrySearch({
       <input
         type="search"
         value={query}
-        placeholder={placeholder}
-        aria-label="Search another destination"
+        placeholder={resolvedPlaceholder}
+        aria-label={search.anotherDestinationAria}
         onChange={(event) => {
           setQuery(event.target.value);
           setActiveIndex(0);
@@ -73,7 +81,7 @@ export function CountrySearch({
           }
         }}
       />
-      <button type="submit">Search</button>
+      <button type="submit">{search.button}</button>
       {showDropdown && (
         <ul className="country-search__dropdown" role="listbox">
           {suggestions.map((dest, index) => (

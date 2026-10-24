@@ -1,6 +1,7 @@
 /**
  * NoorLink Ramadan giving pledge — our commitment, not an external donate funnel.
  * We give from profit; customers are not sent to other charity sites from Insider.
+ * Display strings for hadith/copy live in messages/{locale}.givePage.
  */
 
 export const RAMADAN_GIVING = {
@@ -9,7 +10,4 @@ export const RAMADAN_GIVING = {
   /** Customer Insider discount on the same purchases (promo code). */
   customerDiscountPercent: 10,
   learnMorePath: "/give",
-  hadith:
-    "The Messenger of Allah ﷺ was the most generous of people, and he was even more generous in Ramadan than in other months.",
-  hadithReference: "Bukhari & Muslim",
 } as const;

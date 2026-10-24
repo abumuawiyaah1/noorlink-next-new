@@ -7,6 +7,9 @@ import {
   requestAffiliatePayout,
   type AffiliateDashboard,
 } from "@/lib/affiliate-api";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type PartnerLoginPanelProps = {
   variant?: "portal" | "standalone";
@@ -17,6 +20,10 @@ function formatUsd(cents: number) {
 }
 
 export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const L = dict.partnersPage.login;
+
   const [code, setCode] = useState("");
   const [email, setEmail] = useState("");
   const [dashboard, setDashboard] = useState<AffiliateDashboard | null>(null);
@@ -40,7 +47,7 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
     setLoading(false);
     if (!result.success) {
       setDashboard(null);
-      setError(result.message ?? "Partner account not found for that email.");
+      setError(result.message ?? L.notFound);
       return;
     }
     setDashboard(result);
@@ -56,15 +63,17 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
     setPayoutMessage(null);
     const result = await requestAffiliatePayout(savedCode, savedEmail);
     setPayoutLoading(false);
-    setPayoutMessage(result.message ?? (result.success ? "Request sent." : "Request failed."));
+    setPayoutMessage(
+      result.message ?? (result.success ? L.requestSent : L.requestFailed),
+    );
   }
 
   async function handleCopyLink(url: string) {
     try {
       await navigator.clipboard.writeText(url);
-      setCopyMessage("Link copied.");
+      setCopyMessage(L.linkCopied);
     } catch {
-      setCopyMessage("Could not copy — select the link and copy manually.");
+      setCopyMessage(L.copyFailed);
     }
   }
 
@@ -73,7 +82,7 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
       variant === "standalone" ? (
         <form className="partner-dashboard-form" onSubmit={handleSubmit}>
           <div className="input-group">
-            <label htmlFor={codeFieldId}>Partner code</label>
+            <label htmlFor={codeFieldId}>{L.code}</label>
             <input
               id={codeFieldId}
               className="input-field"
@@ -85,7 +94,7 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
           </div>
 
           <div className="input-group">
-            <label htmlFor={emailFieldId}>Email on file</label>
+            <label htmlFor={emailFieldId}>{L.email}</label>
             <input
               id={emailFieldId}
               type="email"
@@ -93,7 +102,7 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
               className="input-field"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@organization.com"
+              placeholder={L.emailPlaceholder}
               required
             />
           </div>
@@ -104,13 +113,17 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
             </p>
           ) : null}
 
-          <button type="submit" className="login-btn partner-dashboard-form__submit" disabled={loading}>
-            {loading ? "Loading…" : "Sign in"}
+          <button
+            type="submit"
+            className="login-btn partner-dashboard-form__submit"
+            disabled={loading}
+          >
+            {loading ? L.loading : L.signIn}
           </button>
         </form>
       ) : (
         <form className="help-form partner-portal__panel" onSubmit={handleSubmit}>
-          <label htmlFor={codeFieldId}>Partner code</label>
+          <label htmlFor={codeFieldId}>{L.code}</label>
           <input
             id={codeFieldId}
             value={code}
@@ -119,14 +132,14 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
             required
           />
 
-          <label htmlFor={emailFieldId}>Email on file</label>
+          <label htmlFor={emailFieldId}>{L.email}</label>
           <input
             id={emailFieldId}
             type="email"
             autoComplete="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            placeholder="you@organization.com"
+            placeholder={L.emailPlaceholder}
             required
           />
 
@@ -137,7 +150,7 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
           ) : null}
 
           <button type="submit" className="partner-dashboard-form__submit" disabled={loading}>
-            {loading ? "Loading…" : "Sign in"}
+            {loading ? L.loading : L.signIn}
           </button>
         </form>
       );
@@ -148,14 +161,12 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
           <span className="partner-dashboard-card__icon" aria-hidden="true">
             🤝
           </span>
-          <h1>Partner dashboard</h1>
-          <p>
-            Enter your partner code and the email on file with NoorLink to view your referral
-            link, balance, and payout status.
-          </p>
+          <h1>{L.standaloneTitle}</h1>
+          <p>{L.standaloneLede}</p>
           {loginForm}
           <p className="partner-dashboard-card__note">
-            Not a partner yet? <Link href="/partners#apply">Apply to the program</Link>
+            {L.notPartnerYet}{" "}
+            <Link href={localizedPath("/partners#apply", locale)}>{L.applyLink}</Link>
           </p>
         </div>
       );
@@ -169,13 +180,14 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
       <header className="partner-dashboard__head">
         <h2>{dashboard.displayName ?? dashboard.code}</h2>
         <p className="partner-dashboard__meta">
-          <strong>Code:</strong> {dashboard.code} · <strong>Type:</strong> {dashboard.type}
+          <strong>{L.codeLabel}</strong> {dashboard.code} · <strong>{L.typeLabel}</strong>{" "}
+          {dashboard.type}
         </p>
       </header>
 
       {dashboard.referralUrl ? (
         <section className="partner-dashboard__card" aria-labelledby="partner-referral-heading">
-          <h3 id="partner-referral-heading">Your referral link</h3>
+          <h3 id="partner-referral-heading">{L.referralLink}</h3>
           <div className="partner-dashboard__link-row">
             <a href={dashboard.referralUrl} className="partner-dashboard__link">
               {dashboard.referralUrl}
@@ -185,7 +197,7 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
               className="partner-dashboard__copy-btn"
               onClick={() => void handleCopyLink(dashboard.referralUrl!)}
             >
-              Copy link
+              {L.copyLink}
             </button>
           </div>
           {copyMessage ? (
@@ -199,7 +211,7 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
       <div className="partner-dashboard__details">
         {dashboard.customerDiscountPercent != null ? (
           <article className="partner-dashboard__stat">
-            <span className="partner-dashboard__stat-label">Audience discount</span>
+            <span className="partner-dashboard__stat-label">{L.audienceDiscount}</span>
             <strong className="partner-dashboard__stat-value">
               {dashboard.customerDiscountPercent}%
             </strong>
@@ -209,18 +221,20 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
         {dashboard.paysCash && dashboard.commissionPercent != null ? (
           <>
             <article className="partner-dashboard__stat">
-              <span className="partner-dashboard__stat-label">Approved balance</span>
+              <span className="partner-dashboard__stat-label">{L.approvedBalance}</span>
               <strong className="partner-dashboard__stat-value">
                 {formatUsd(dashboard.approvedBalanceCents ?? 0)}
               </strong>
               {dashboard.payoutMinimumCents != null ? (
                 <span className="partner-dashboard__stat-note">
-                  Minimum payout {formatUsd(dashboard.payoutMinimumCents)}
+                  {t(dict, "partnersPage.login.minPayout", {
+                    amount: formatUsd(dashboard.payoutMinimumCents),
+                  })}
                 </span>
               ) : null}
             </article>
             <article className="partner-dashboard__stat">
-              <span className="partner-dashboard__stat-label">Paid to date</span>
+              <span className="partner-dashboard__stat-label">{L.paidToDate}</span>
               <strong className="partner-dashboard__stat-value">
                 {formatUsd(dashboard.paidTotalCents ?? 0)}
               </strong>
@@ -232,17 +246,14 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
       {dashboard.paysCash && dashboard.commissionPercent != null ? (
         dashboard.readyForPayout ? (
           <div className="partner-dashboard__callout partner-dashboard__callout--ready">
-            <p>
-              Ready for payout — request withdrawal and our team will process within 5 business
-              days.
-            </p>
+            <p>{L.readyPayout}</p>
             <button
               type="button"
               className="partner-dashboard__payout-btn"
               disabled={payoutLoading}
               onClick={handlePayoutRequest}
             >
-              {payoutLoading ? "Sending…" : "Request payout"}
+              {payoutLoading ? L.sending : L.requestPayout}
             </button>
             {payoutMessage ? (
               <p className="partner-dashboard__status" role="status">
@@ -251,13 +262,16 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
             ) : null}
           </div>
         ) : (
-          <p className="partner-dashboard__hint">Balance below minimum payout threshold.</p>
+          <p className="partner-dashboard__hint">{L.belowMin}</p>
         )
       ) : null}
 
       {dashboard.recentCommissions && dashboard.recentCommissions.length > 0 ? (
-        <section className="partner-dashboard__commissions" aria-labelledby="partner-commissions-heading">
-          <h3 id="partner-commissions-heading">Recent commissions</h3>
+        <section
+          className="partner-dashboard__commissions"
+          aria-labelledby="partner-commissions-heading"
+        >
+          <h3 id="partner-commissions-heading">{L.recentCommissions}</h3>
           <ul className="partner-dashboard__commission-list">
             {dashboard.recentCommissions.map((row) => (
               <li key={`${row.orderNumber}-${row.fulfilledAt}`}>
@@ -279,7 +293,7 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
           setPayoutMessage(null);
         }}
       >
-        Sign in with a different account
+        {L.signInDifferent}
       </button>
     </div>
   );
@@ -293,6 +307,8 @@ export function PartnerLoginPanel({ variant = "portal" }: PartnerLoginPanelProps
   }
 
   return (
-    <div className="help-form partner-portal__panel partner-portal__dashboard">{dashboardView}</div>
+    <div className="help-form partner-portal__panel partner-portal__dashboard">
+      {dashboardView}
+    </div>
   );
 }

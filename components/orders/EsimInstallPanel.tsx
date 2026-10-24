@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import type { LookedUpOrder } from "@/lib/orders-api";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { isSafeQrCodeUrl, safeExternalHref } from "@/lib/safe-url";
 
 type EsimInstallPanelProps = {
@@ -10,6 +12,8 @@ type EsimInstallPanelProps = {
 };
 
 export function EsimInstallPanel({ order, compact = false }: EsimInstallPanelProps) {
+  const [locale] = useLocaleState();
+  const ui = getDictionary(locale).ordersUi;
   const [copied, setCopied] = useState<"lpa" | "code" | null>(null);
   const qrHref = safeExternalHref(order.qrCodeUrl, isSafeQrCodeUrl);
   const iosHref = safeExternalHref(order.iosTapLink, isAppleInstallUrl);
@@ -35,9 +39,9 @@ export function EsimInstallPanel({ order, compact = false }: EsimInstallPanelPro
     <section className={`esim-install${compact ? " esim-install--compact" : ""}`}>
       <header className="esim-install__head">
         <p className="esim-install__eyebrow">NoorLink eSIM</p>
-        <h2 className="esim-install__title">Install your eSIM</h2>
+        <h2 className="esim-install__title">{ui.installTitle}</h2>
         <p className="esim-install__lede">
-          Install on Wi‑Fi before you fly. Scan the QR, or tap a one-tap link on this phone.
+          {ui.installLede}
         </p>
       </header>
 
@@ -47,18 +51,18 @@ export function EsimInstallPanel({ order, compact = false }: EsimInstallPanelPro
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={qrHref}
-              alt="NoorLink eSIM QR code"
+              alt={ui.qrAlt}
               width={220}
               height={220}
             />
-            <p className="esim-install__caption">Scan with your phone camera</p>
+            <p className="esim-install__caption">{ui.scanCaption}</p>
           </div>
         ) : null}
 
         <div className="esim-install__actions">
           {iosHref ? (
             <a className="esim-install__btn esim-install__btn--primary" href={iosHref}>
-              Install on iPhone
+              {ui.installIphone}
             </a>
           ) : null}
           {androidHref ? (
@@ -66,20 +70,20 @@ export function EsimInstallPanel({ order, compact = false }: EsimInstallPanelPro
               className="esim-install__btn esim-install__btn--secondary"
               href={androidHref}
             >
-              Install on Android
+              {ui.installAndroid}
             </a>
           ) : null}
 
           {matchingId ? (
             <div className="esim-install__code">
-              <span>Matching ID</span>
+              <span>{ui.matchingId}</span>
               <strong>{matchingId}</strong>
               <button
                 type="button"
                 className="esim-install__copy"
                 onClick={() => void copyText(matchingId, "code")}
               >
-                {copied === "code" ? "Copied" : "Copy"}
+                {copied === "code" ? ui.copied : ui.copy}
               </button>
             </div>
           ) : null}
@@ -87,13 +91,13 @@ export function EsimInstallPanel({ order, compact = false }: EsimInstallPanelPro
           {lpa ? (
             <div className="esim-install__lpa">
               <div className="esim-install__lpa-head">
-                <span>Activation code (manual)</span>
+                <span>{ui.activationManual}</span>
                 <button
                   type="button"
                   className="esim-install__copy"
                   onClick={() => void copyText(lpa, "lpa")}
                 >
-                  {copied === "lpa" ? "Copied" : "Copy"}
+                  {copied === "lpa" ? ui.copied : ui.copy}
                 </button>
               </div>
               <code>{lpa}</code>
@@ -101,15 +105,9 @@ export function EsimInstallPanel({ order, compact = false }: EsimInstallPanelPro
           ) : null}
 
           <ol className="esim-install__steps">
-            <li>Connect to Wi‑Fi and install (scan QR or tap Install).</li>
-            <li>
-              Before you fly: turn your travel line ON, turn Data Roaming ON for
-              that line, and set Cellular Data to the travel line (not Primary).
-            </li>
-            <li>
-              After landing: Airplane Mode off. If no data, toggle Airplane Mode
-              once and re-check those three settings. Never tap Delete eSIM.
-            </li>
+            <li>{ui.installStep1}</li>
+            <li>{ui.installStep2}</li>
+            <li>{ui.installStep3}</li>
           </ol>
         </div>
       </div>

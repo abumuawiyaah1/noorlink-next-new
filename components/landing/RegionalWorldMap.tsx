@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useId, useState } from "react";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import {
   plansPathForRegion,
   REGIONAL_PRODUCTS,
@@ -40,17 +42,20 @@ export const REGION_BRAND_COLORS: Record<MapRegionSlug | "global", string> = {
 
 const REGION_LABELS: Record<
   MapRegionSlug,
-  { x: number; y: number; short: string }
+  { x: number; y: number }
 > = {
-  "north-america": { x: 190, y: 200, short: "North America" },
-  "south-america": { x: 270, y: 420, short: "South America" },
-  europe: { x: 490, y: 165, short: "Europe" },
-  africa: { x: 505, y: 330, short: "Africa" },
-  "middle-east": { x: 575, y: 245, short: "Middle East" },
-  "asia-pacific": { x: 740, y: 230, short: "Asia Pacific" },
+  "north-america": { x: 190, y: 200 },
+  "south-america": { x: 270, y: 420 },
+  europe: { x: 490, y: 165 },
+  africa: { x: 505, y: 330 },
+  "middle-east": { x: 575, y: 245 },
+  "asia-pacific": { x: 740, y: 230 },
 };
 
 export function RegionalWorldMap() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const regionalUi = dict.regional;
   const reactId = useId();
   const titleId = `${reactId}-map-title`;
   const [active, setActive] = useState<MapRegionSlug | "global" | null>(null);
@@ -64,14 +69,13 @@ export function RegionalWorldMap() {
     <div className="regional-map">
       <div className="regional-map__canvas" role="group" aria-labelledby={titleId}>
         <p id={titleId} className="sr-only">
-          Interactive world regions map for NoorLink eSIM plans. Select a
-          colored region to view regional coverage.
+          {regionalUi.mapAria}
         </p>
         <svg
           className="regional-map__svg regional-map__svg--geo"
           viewBox={WORLD_MAP_VIEWBOX}
           role="img"
-          aria-label="World regions map of regional eSIM coverage"
+          aria-label={regionalUi.mapSvgAria}
         >
           <defs>
             <filter id={`${reactId}-glow`} x="-10%" y="-10%" width="120%" height="120%">
@@ -105,7 +109,10 @@ export function RegionalWorldMap() {
                 key={slug}
                 href={plansPathForRegion(slug)}
                 className={`regional-map__hit regional-map__hit--geo${isActive ? " is-active" : ""}`}
-                aria-label={`${product.displayName} — ${product.countries.length} countries`}
+                aria-label={t(dict, "regional.regionAria", {
+                  name: regionalUi.regionNames[slug],
+                  n: product.countries.length,
+                })}
                 onMouseEnter={() => setActive(slug)}
                 onFocus={() => setActive(slug)}
                 onMouseLeave={() =>
@@ -131,7 +138,7 @@ export function RegionalWorldMap() {
                   className="regional-map__geo-label"
                   textAnchor="middle"
                 >
-                  {label.short}
+                  {regionalUi.regionNames[slug]}
                 </text>
               </a>
             );
@@ -140,7 +147,7 @@ export function RegionalWorldMap() {
           <a
             href={plansPathForRegion("global")}
             className={`regional-map__global${isGlobal ? " is-active" : ""}`}
-            aria-label="Global Regional eSIM — multi-region coverage"
+            aria-label={regionalUi.globalAria}
             onMouseEnter={() => setActive("global")}
             onFocus={() => setActive("global")}
             onMouseLeave={() =>
@@ -158,7 +165,7 @@ export function RegionalWorldMap() {
               textAnchor="middle"
               className="regional-map__global-title"
             >
-              Global
+              {regionalUi.global}
             </text>
             <text
               x="860"
@@ -175,36 +182,40 @@ export function RegionalWorldMap() {
       <aside className="regional-map__panel" aria-live="polite">
         {isGlobal ? (
           <>
-            <span className="regional-map__panel-kicker">Multi-region</span>
+            <span className="regional-map__panel-kicker">{regionalUi.multiRegion}</span>
             <h3>{REGIONAL_PRODUCTS.global.displayName}</h3>
             <p>{REGIONAL_PRODUCTS.global.heroTagline}</p>
             <p className="regional-map__panel-meta">
-              Covers {REGIONAL_PRODUCTS.global.countries.length} countries · One QR
+              {t(dict, "regional.covers", {
+                n: REGIONAL_PRODUCTS.global.countries.length,
+              })}
             </p>
             <Link
               href={plansPathForRegion("global")}
               className="regional-map__panel-cta"
             >
-              See Global plans →
+              {regionalUi.seeGlobalPlans}
             </Link>
           </>
         ) : (
           <>
             <span className="regional-map__panel-kicker">
-              {active ? "Selected region" : "Tap a region on the map"}
+              {active ? regionalUi.selectedRegion : regionalUi.tapRegion}
             </span>
             <h3>
               {preview.flag} {preview.displayName}
             </h3>
             <p>{preview.heroTagline}</p>
             <p className="regional-map__panel-meta">
-              Covers {preview.countries.length} countries · One QR
+              {t(dict, "regional.covers", { n: preview.countries.length })}
             </p>
             <Link
               href={plansPathForRegion(preview.routeSlug)}
               className="regional-map__panel-cta"
             >
-              See {preview.shortName} plans →
+              {t(dict, "regional.seePlans", {
+                region: regionalUi.regionNames[previewSlug],
+              })}
             </Link>
           </>
         )}

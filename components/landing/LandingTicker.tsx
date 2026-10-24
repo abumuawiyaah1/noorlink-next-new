@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type TickerCity = {
   name: string;
@@ -35,6 +37,8 @@ function formatCityTime(timeZone: string): string {
 }
 
 export function LandingTicker() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const [nowLabel, setNowLabel] = useState<string>("");
 
   useEffect(() => {
@@ -54,7 +58,7 @@ export function LandingTicker() {
         ))}
         {nowLabel && (
           <span className="ticker-item" aria-hidden="true">
-            Updated {nowLabel}
+            {t(dict, "ordersUi.updatedCap", { time: nowLabel })}
           </span>
         )}
       </div>

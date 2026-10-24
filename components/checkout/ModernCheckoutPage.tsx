@@ -32,6 +32,9 @@ import {
 import { resolveAffiliate, type ResolvedAffiliate } from "@/lib/affiliate-api";
 import { ExpressCheckoutWallets } from "@/components/checkout/ExpressCheckoutWallets";
 import { PayPalCheckoutButton } from "@/components/checkout/PayPalCheckoutButton";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 const EMAIL_STORAGE_KEY = "nl_checkout_email";
 const PHONE_MQ = "(max-width: 768px)";
@@ -58,6 +61,9 @@ function useIsPhoneCheckout(): boolean | null {
 }
 
 export function ModernCheckoutPage() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const c = dict.checkout;
   const searchParams = useSearchParams();
   const isPhone = useIsPhoneCheckout();
   const [preferFullCheckout, setPreferFullCheckout] = useState(false);
@@ -92,11 +98,9 @@ export function ModernCheckoutPage() {
 
   useEffect(() => {
     if (searchParams.get("canceled") === "1") {
-      setError(
-        "Payment was canceled. Your plan is still selected — tap pay when you’re ready. Do not keep refreshing.",
-      );
+      setError(c.paymentCanceled);
     }
-  }, [searchParams]);
+  }, [searchParams, c.paymentCanceled]);
 
   useEffect(() => {
     if (!affiliateRef) return;
@@ -120,11 +124,11 @@ export function ModernCheckoutPage() {
   const formattedTotal = useMemo(() => finalPrice.toFixed(2), [finalPrice]);
   const payLabel = submitting
     ? useFastCheckout
-      ? "Opening secure pay…"
-      : "Redirecting to Stripe…"
+      ? c.openingPay
+      : c.redirectingStripe
     : useFastCheckout
-      ? `Continue to pay $${formattedTotal}`
-      : `Pay $${formattedTotal}`;
+      ? t(dict, "checkout.payContinue", { amount: formattedTotal })
+      : t(dict, "checkout.payNow", { amount: formattedTotal });
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -140,7 +144,7 @@ export function ModernCheckoutPage() {
     async (codeOverride?: string) => {
       const code = (codeOverride ?? promoInput).trim();
       if (!code) {
-        setPromoError("Enter a promo code.");
+        setPromoError(c.enterPromo);
         return;
       }
 
@@ -149,7 +153,7 @@ export function ModernCheckoutPage() {
       setPromoMessage(null);
 
       if (!packageId?.trim()) {
-        setPromoError("Select a plan before applying a promo code.");
+        setPromoError(c.selectPlanPromo);
         return;
       }
 
@@ -165,7 +169,7 @@ export function ModernCheckoutPage() {
       if (!result.valid) {
         setAppliedPromo(null);
         setDiscountAmount(0);
-        setPromoError(result.error ?? result.message ?? "Invalid promo code.");
+        setPromoError(result.error ?? result.message ?? c.invalidPromo);
         return;
       }
 
@@ -174,10 +178,9 @@ export function ModernCheckoutPage() {
       rememberPromo(result.code ?? code);
       setPromoMessage(
         result.percentOff
-          ? `${result.percentOff}% off applied${
-              result.endsAt && !useFastCheckout ? ` · ends ${result.endsAt.slice(0, 10)}` : ""
-            }`
-          : "Promo applied.",
+          ? t(dict, "checkout.promoPercentOff", { percent: result.percentOff }) +
+            (result.endsAt && !useFastCheckout ? ` · ${result.endsAt.slice(0, 10)}` : "")
+          : c.promoApplied,
       );
     },
     [promoInput, price, packageId, country, useFastCheckout],
@@ -205,21 +208,17 @@ export function ModernCheckoutPage() {
 
     const trimmedEmail = email.trim();
     if (trimmedEmail && !trimmedEmail.includes("@")) {
-      setError(
-        useFastCheckout
-          ? "Check that email, or leave it blank and enter it on Stripe."
-          : "Please enter a valid email, or leave it blank for Stripe.",
-      );
+      setError(useFastCheckout ? c.invalidEmailFast : c.invalidEmailFull);
       return;
     }
 
     if (!packageId?.trim()) {
-      setError("Missing plan. Please go back and select a plan again.");
+      setError(c.missingPlan);
       return;
     }
 
     if (price <= 0) {
-      setError("Invalid plan price. Please go back and select a plan again.");
+      setError(c.invalidPrice);
       return;
     }
 
@@ -244,32 +243,27 @@ export function ModernCheckoutPage() {
         promoCode: appliedPromo || undefined,
         affiliateRef: affiliateRef || undefined,
         wantsTopUp: wantsTopUp || undefined,
+        language: locale,
       });
 
       if (!result.success || !result.checkoutUrl) {
         setError(
           result.error ??
-            (useFastCheckout
-              ? "We could not start payment. Please try again."
-              : "We could not start Stripe checkout. Please try again."),
+            (useFastCheckout ? c.startPayFailed : c.startStripeFailed),
         );
         setSubmitting(false);
         return;
       }
 
       if (!isSafeStripeCheckoutUrl(result.checkoutUrl)) {
-        setError("Invalid payment redirect. Please try again or contact support.");
+        setError(c.invalidRedirect);
         setSubmitting(false);
         return;
       }
 
       window.location.assign(result.checkoutUrl);
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Unexpected error starting payment.",
-      );
+      setError(err instanceof Error ? err.message : c.unexpectedError);
       setSubmitting(false);
     }
   }
@@ -279,12 +273,12 @@ export function ModernCheckoutPage() {
     return (
       <div className="nl-checkout">
         <a href="#main-content" className="skip-link">
-          Skip to main content
+          {c.skipLink}
         </a>
         <SiteHeader />
         <main id="main-content">
           <div className="container" style={{ padding: "2rem 1rem" }}>
-            <p className="checkout-express__hint">Loading checkout…</p>
+            <p className="checkout-express__hint">{c.loading}</p>
           </div>
         </main>
       </div>
@@ -295,7 +289,7 @@ export function ModernCheckoutPage() {
     return (
       <div className="nl-checkout nl-checkout--fast">
         <a href="#main-content" className="skip-link">
-          Skip to main content
+          {c.skipLink}
         </a>
         <SiteHeader />
         <main id="main-content">
@@ -311,20 +305,22 @@ export function ModernCheckoutPage() {
                 </div>
 
                 <div className="summary-row summary-total checkout-fast__total">
-                  <span>Total</span>
+                  <span>{c.total}</span>
                   <strong>${formattedTotal}</strong>
                 </div>
                 {discountAmount > 0 && (
                   <p className="checkout-fast__discount" role="status">
-                    Promo saved ${discountAmount.toFixed(2)}
+                    {t(dict, "checkout.promoSaved", {
+                      amount: discountAmount.toFixed(2),
+                    })}
                     {appliedPromo ? ` (${appliedPromo})` : ""}
                   </p>
                 )}
 
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-email">
-                    Email for your QR code{" "}
-                    <span className="form-label-optional">(optional)</span>
+                    {c.emailLabel}{" "}
+                    <span className="form-label-optional">{c.optional}</span>
                   </label>
                   <input
                     id="checkout-email"
@@ -335,13 +331,13 @@ export function ModernCheckoutPage() {
                     className="form-input"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    placeholder="you@example.com"
+                    placeholder={c.emailPlaceholder}
                   />
                 </div>
 
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-travel-date">
-                    Arrival date
+                    {c.arrivalDate}
                   </label>
                   <input
                     id="checkout-travel-date"
@@ -351,13 +347,13 @@ export function ModernCheckoutPage() {
                     onChange={(event) => setTravelDate(event.target.value)}
                   />
                   <p className="checkout-fast__hint">
-                    So we can remind you to install before you fly.
+                    {c.arrivalHint}
                   </p>
                 </div>
 
                 <div className="form-group checkout-promo-inline">
                   <label className="form-label" htmlFor="checkout-promo">
-                    Promo code
+                    {c.promoCode}
                   </label>
                   <PromoFields
                     promoInput={promoInput}
@@ -368,16 +364,18 @@ export function ModernCheckoutPage() {
                     promoError={promoError}
                     onApply={() => void applyPromo()}
                     onClear={clearPromo}
+                    applyLabel={c.apply}
+                    clearLabel={c.clear}
                   />
                 </div>
 
                 <div className="checkout-trust-badges" aria-label="Trust">
-                  <span>🔒 Stripe secure</span>
-                  <span>📱 QR by email</span>
+                  <span>🔒 {c.stripeSecure}</span>
+                  <span>📱 {c.qrByEmail}</span>
                   <span>
                     ↩{" "}
-                    <Link href="/refund" target="_blank" rel="noopener noreferrer">
-                      Refund if activation fails
+                    <Link href={localizedPath("/refund", locale)} target="_blank" rel="noopener noreferrer">
+                      {c.refundIfFails}
                     </Link>
                   </span>
                 </div>
@@ -394,6 +392,7 @@ export function ModernCheckoutPage() {
                     promoCode: appliedPromo || undefined,
                     affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
+                    language: locale,
                   }}
                   onError={(message) => setError(message || null)}
                 />
@@ -409,6 +408,7 @@ export function ModernCheckoutPage() {
                     promoCode: appliedPromo || undefined,
                     affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
+                    language: locale,
                   }}
                   disabled={submitting}
                   onError={(message) => setError(message || null)}
@@ -423,27 +423,27 @@ export function ModernCheckoutPage() {
                 </button>
 
                 <p className="checkout-fast__wallets">
-                  Or continue for card and more payment options
+                  {c.orMoreOptions}
                 </p>
                 <button
                   type="button"
                   className="checkout-fast__alt"
                   onClick={() => setPreferFullCheckout(true)}
                 >
-                  Prefer the full checkout form?
+                  {c.preferFullForm}
                 </button>
                 <p className="checkout-fast__legal">
-                  By paying you agree to the{" "}
-                  <Link href="/terms" target="_blank" rel="noopener noreferrer">
-                    Terms
+                  {c.agreePrefix}{" "}
+                  <Link href={localizedPath("/terms", locale)} target="_blank" rel="noopener noreferrer">
+                    {c.terms}
                   </Link>{" "}
-                  and{" "}
-                  <Link href="/privacy" target="_blank" rel="noopener noreferrer">
-                    Privacy Policy
+                  {c.and}{" "}
+                  <Link href={localizedPath("/privacy", locale)} target="_blank" rel="noopener noreferrer">
+                    {c.privacy}
                   </Link>
                   .{" "}
-                  <Link href="/refund" target="_blank" rel="noopener noreferrer">
-                    Refund if activation fails
+                  <Link href={localizedPath("/refund", locale)} target="_blank" rel="noopener noreferrer">
+                    {c.refundIfFails}
                   </Link>
                   .
                 </p>
@@ -464,7 +464,7 @@ export function ModernCheckoutPage() {
   return (
     <div className="nl-checkout">
       <a href="#main-content" className="skip-link">
-        Skip to main content
+        {c.skipLink}
       </a>
 
       <SiteHeader />
@@ -475,33 +475,37 @@ export function ModernCheckoutPage() {
             className="checkout-switch-back__btn"
             onClick={() => setPreferFullCheckout(false)}
           >
-            ← Back to quick checkout
+            {c.backQuick}
           </button>
         </p>
       )}
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { href: "/destinations", label: "Destinations" },
-          { label: "Checkout" },
+          { href: localizedPath("/", locale), label: dict.common.home },
+          {
+            href: localizedPath("/destinations", locale),
+            label: dict.nav.destinations,
+          },
+          { label: c.title },
         ]}
       />
       <FunnelSteps
         current={2}
+        ariaLabel={dict.common.checkoutProgress}
         steps={[
-          { n: 1, label: "Choose plan" },
-          { n: 2, label: "Your details" },
-          { n: 3, label: "Pay securely" },
-          { n: 4, label: "Activate" },
+          { n: 1, label: c.stepChoose },
+          { n: 2, label: c.stepDetails },
+          { n: 3, label: c.stepPay },
+          { n: 4, label: c.stepActivate },
         ]}
       />
       <div className="checkout-trust-wrap">
         <div className="checkout-trust">
-          <span>Apple Pay · Google Pay · Link · card</span>
-          <span>Card details never stored</span>
+          <span>{c.trustPayments}</span>
+          <span>{c.trustNoStore}</span>
           <span>
-            <Link href="/refund" target="_blank" rel="noopener noreferrer">
-              Refund if activation fails
+            <Link href={localizedPath("/refund", locale)} target="_blank" rel="noopener noreferrer">
+              {c.refundIfFails}
             </Link>
           </span>
         </div>
@@ -510,8 +514,7 @@ export function ModernCheckoutPage() {
           className="secure-badge"
           style={{ margin: 0, width: "fit-content" }}
         >
-          <i className="fas fa-shield-alt" aria-hidden="true" /> Verified Secure
-          Checkout
+          <i className="fas fa-shield-alt" aria-hidden="true" /> {c.verifiedSecure}
         </p>
       </div>
 
@@ -526,16 +529,15 @@ export function ModernCheckoutPage() {
                     style={{ color: "var(--accent)" }}
                     aria-hidden="true"
                   />{" "}
-                  1. Contact Information
+                  {c.contactInfo}
                 </h2>
                 <div className="form-note">
-                  Optional here — we need an email for your QR code. If you skip
-                  it, Stripe asks on the next step so the sale still goes through.
+                  {c.contactNote}
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label className="form-label" htmlFor="checkout-email">
-                    Email address{" "}
-                    <span className="form-label-optional">(optional)</span>
+                    {c.emailLabelFull}{" "}
+                    <span className="form-label-optional">{c.optional}</span>
                   </label>
                   <input
                     id="checkout-email"
@@ -545,7 +547,7 @@ export function ModernCheckoutPage() {
                     className="form-input"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    placeholder="you@example.com"
+                    placeholder={c.emailPlaceholder}
                   />
                 </div>
               </div>
@@ -557,11 +559,11 @@ export function ModernCheckoutPage() {
                     style={{ color: "var(--accent)" }}
                     aria-hidden="true"
                   />{" "}
-                  2. Trip Details
+                  {c.tripDetails}
                 </h2>
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-travel-date">
-                    Arrival date (optional)
+                    {c.arrivalDateOptional}
                   </label>
                   <input
                     id="checkout-travel-date"
@@ -580,7 +582,7 @@ export function ModernCheckoutPage() {
                     style={{ color: "var(--accent)" }}
                     aria-hidden="true"
                   />{" "}
-                  3. Promo code
+                  {c.promoSection}
                 </h2>
                 <PromoFields
                   promoInput={promoInput}
@@ -591,6 +593,8 @@ export function ModernCheckoutPage() {
                   promoError={promoError}
                   onApply={() => void applyPromo()}
                   onClear={clearPromo}
+                  applyLabel={c.apply}
+                  clearLabel={c.clear}
                 />
               </div>
 
@@ -603,7 +607,7 @@ export function ModernCheckoutPage() {
 
             <aside className="summary-section">
               <div className="card summary-card">
-                <h2>Order Summary</h2>
+                <h2>{c.orderSummary}</h2>
                 <div className="summary-plan">
                   <span className="summary-plan__flag">{flag}</span>
                   <div>
@@ -612,34 +616,34 @@ export function ModernCheckoutPage() {
                   </div>
                 </div>
                 <div className="summary-row">
-                  <span>Subtotal</span>
+                  <span>{c.subtotal}</span>
                   <strong>${price.toFixed(2)}</strong>
                 </div>
                 {discountAmount > 0 && (
                   <div className="summary-row summary-row--discount">
                     <span>
-                      Insider discount
+                      {c.insiderDiscount}
                       {appliedPromo ? ` (${appliedPromo})` : ""}
                     </span>
                     <strong>- ${discountAmount.toFixed(2)}</strong>
                   </div>
                 )}
                 <div className="summary-row">
-                  <span>Delivery</span>
-                  <strong>QR by email</strong>
+                  <span>{c.delivery}</span>
+                  <strong>{c.deliveryValue}</strong>
                 </div>
                 <div className="summary-row summary-total">
-                  <span>Total</span>
+                  <span>{c.total}</span>
                   <strong>${formattedTotal}</strong>
                 </div>
 
                 <div className="checkout-trust-badges" aria-label="Trust">
-                  <span>🔒 Stripe secure</span>
-                  <span>📱 QR by email</span>
+                  <span>🔒 {c.stripeSecure}</span>
+                  <span>📱 {c.qrByEmail}</span>
                   <span>
                     ↩{" "}
-                    <Link href="/refund" target="_blank" rel="noopener noreferrer">
-                      Refund if activation fails
+                    <Link href={localizedPath("/refund", locale)} target="_blank" rel="noopener noreferrer">
+                      {c.refundIfFails}
                     </Link>
                   </span>
                 </div>
@@ -656,6 +660,7 @@ export function ModernCheckoutPage() {
                     promoCode: appliedPromo || undefined,
                     affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
+                    language: locale,
                   }}
                   onError={(message) => setError(message || null)}
                 />
@@ -671,6 +676,7 @@ export function ModernCheckoutPage() {
                     promoCode: appliedPromo || undefined,
                     affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
+                    language: locale,
                   }}
                   disabled={submitting}
                   onError={(message) => setError(message || null)}
@@ -687,17 +693,17 @@ export function ModernCheckoutPage() {
                   Card, bank, or more options on the next secure Stripe step.
                 </p>
                 <p className="checkout-pay-legal">
-                  By paying you agree to the{" "}
-                  <Link href="/terms" target="_blank" rel="noopener noreferrer">
-                    Terms
+                  {c.agreePrefix}{" "}
+                  <Link href={localizedPath("/terms", locale)} target="_blank" rel="noopener noreferrer">
+                    {c.terms}
                   </Link>{" "}
-                  and{" "}
-                  <Link href="/privacy" target="_blank" rel="noopener noreferrer">
-                    Privacy Policy
+                  {c.and}{" "}
+                  <Link href={localizedPath("/privacy", locale)} target="_blank" rel="noopener noreferrer">
+                    {c.privacy}
                   </Link>
                   .{" "}
-                  <Link href="/refund" target="_blank" rel="noopener noreferrer">
-                    Refund if activation fails
+                  <Link href={localizedPath("/refund", locale)} target="_blank" rel="noopener noreferrer">
+                    {c.refundIfFails}
                   </Link>
                   .
                 </p>
@@ -720,6 +726,8 @@ function PromoFields({
   promoError,
   onApply,
   onClear,
+  applyLabel,
+  clearLabel,
 }: {
   promoInput: string;
   setPromoInput: (value: string) => void;
@@ -729,6 +737,8 @@ function PromoFields({
   promoError: string | null;
   onApply: () => void;
   onClear: () => void;
+  applyLabel: string;
+  clearLabel: string;
 }) {
   return (
     <>
@@ -748,7 +758,7 @@ function PromoFields({
             className="checkout-promo-btn checkout-promo-btn--ghost"
             onClick={onClear}
           >
-            Remove
+            {clearLabel}
           </button>
         ) : (
           <button
@@ -757,7 +767,7 @@ function PromoFields({
             disabled={validatingPromo}
             onClick={onApply}
           >
-            {validatingPromo ? "Checking…" : "Apply"}
+            {validatingPromo ? "…" : applyLabel}
           </button>
         )}
       </div>

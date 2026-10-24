@@ -9,6 +9,8 @@ import {
 } from "@/lib/devices-api";
 import { CompatibilityModal } from "@/components/modals/CompatibilityModal";
 import { PhoneDeviceIcon } from "@/components/ui/PhoneDeviceIcon";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 function normalize(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, " ");
@@ -34,6 +36,8 @@ function findMatch(
 }
 
 export function DeviceChecker() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const [query, setQuery] = useState("");
   const [busy, setBusy] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -53,8 +57,8 @@ export function DeviceChecker() {
     setBusy(true);
     setResult({
       ok: false,
-      title: "Checking…",
-      detail: "Looking up compatible devices.",
+      title: dict.phoneCheck.checking,
+      detail: dict.phoneCheck.checkingDetail,
     });
 
     try {
@@ -63,24 +67,25 @@ export function DeviceChecker() {
       if (match) {
         setResult({
           ok: true,
-          title: "Great news — your device supports eSIM.",
-          detail: `${match.brand} ${match.model} can use NoorLink. Confirm it is carrier-unlocked before you buy.`,
+          title: dict.phoneCheck.okTitle,
+          detail: t(dict, "phoneCheck.okDetail", {
+            device: `${match.brand} ${match.model}`,
+          }),
         });
       } else {
         reportDeviceCheckMiss(trimmed);
         setResult({
           ok: false,
-          title: "We could not confirm this device.",
-          detail:
-            "Try a more specific model name, use the picker, or contact support.",
+          title: dict.phoneCheck.missTitle,
+          detail: dict.phoneCheck.missDetail,
         });
       }
     } catch (err) {
       console.error("[DeviceChecker]", err);
       setResult({
         ok: false,
-        title: "Device check is temporarily unavailable.",
-        detail: "Please try again in a moment, or contact support.",
+        title: dict.phoneCheck.errorTitle,
+        detail: dict.phoneCheck.errorDetail,
       });
     } finally {
       setBusy(false);
@@ -94,11 +99,10 @@ export function DeviceChecker() {
           <PhoneDeviceIcon className="check-icon-large__svg" />
         </div>
         <h2 id="device-checker-heading" style={{ fontSize: "2rem", color: "var(--primary)" }}>
-          Free phone check — is your device eSIM compatible?
+          {dict.phoneCheck.title}
         </h2>
         <p className="checker-seo-lead">
-          Free travel eSIM compatibility check for your phone. Confirm it supports
-          eSIM and is carrier-unlocked before you buy.
+          {dict.phoneCheck.lead}
         </p>
         <div className="checker-box">
           <div className="check-input-group">
@@ -106,8 +110,8 @@ export function DeviceChecker() {
               type="text"
               className="check-input"
               value={query}
-              placeholder="e.g. iPhone 14, Samsung S23"
-              aria-label="Phone model for free eSIM compatibility check"
+              placeholder={dict.phoneCheck.placeholder}
+              aria-label={dict.phoneCheck.aria}
               onChange={(event) => setQuery(event.target.value)}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
@@ -122,7 +126,7 @@ export function DeviceChecker() {
               disabled={busy}
               onClick={() => void runCheck()}
             >
-              {busy ? "Checking…" : "Check for free"}
+              {busy ? dict.phoneCheck.checking : dict.phoneCheck.button}
             </button>
           </div>
           {result && (
@@ -137,7 +141,7 @@ export function DeviceChecker() {
               {result.ok ? (
                 <p style={{ margin: "12px 0 0" }}>
                   <Link href="/destinations" className="check-btn" style={{ display: "inline-block", padding: "10px 24px" }}>
-                    Shop data plans
+                    {dict.phoneCheck.shopPlans}
                   </Link>
                 </p>
               ) : (
@@ -148,10 +152,10 @@ export function DeviceChecker() {
                     style={{ marginRight: 12 }}
                     onClick={() => setModalOpen(true)}
                   >
-                    Open device picker
+                    {dict.phoneCheck.openPicker}
                   </button>
                   <Link href="/support" style={{ textDecoration: "underline" }}>
-                    Contact support
+                    {dict.phoneCheck.contactSupport}
                   </Link>
                 </p>
               )}

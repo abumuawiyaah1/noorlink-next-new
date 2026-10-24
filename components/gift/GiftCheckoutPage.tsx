@@ -9,6 +9,9 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { createCheckoutSession } from "@/lib/checkout-api";
 import { resolveCheckoutFlag } from "@/lib/country-flags";
 import { formatCountryLabel } from "@/lib/country-slugs";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { isSafeStripeCheckoutUrl } from "@/lib/safe-url";
 
 const EMAIL_STORAGE_KEY = "nl_checkout_email";
@@ -21,11 +24,17 @@ function parsePrice(value: string | null): number {
 }
 
 function GiftCheckoutContent() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const g = dict.giftPage;
   const searchParams = useSearchParams();
-  const country = formatCountryLabel(searchParams.get("country") ?? "Your destination");
+  const countryParam = searchParams.get("country");
+  const country = formatCountryLabel(
+    countryParam ?? g.defaultDestination,
+  );
   const flag = resolveCheckoutFlag(searchParams.get("flag"), country);
   const packageId = searchParams.get("packageId") ?? searchParams.get("package_id");
-  const plan = searchParams.get("plan") ?? "Selected plan";
+  const plan = searchParams.get("plan") ?? g.defaultPlan;
   const price = parsePrice(searchParams.get("price"));
   const buyerEmailParam = searchParams.get("buyerEmail") ?? searchParams.get("email") ?? "";
 
@@ -49,27 +58,27 @@ function GiftCheckoutContent() {
     const normalizedRecipientName = recipientName.trim();
 
     if (!normalizedBuyer.includes("@")) {
-      setError("Enter your email — we send you a confirmation when the gift delivers.");
+      setError(g.errBuyerEmail);
       return;
     }
     if (!normalizedRecipientName) {
-      setError("Enter your friend's name.");
+      setError(g.errRecipientName);
       return;
     }
     if (!normalizedRecipient.includes("@")) {
-      setError("Enter a valid email for your friend.");
+      setError(g.errRecipientEmail);
       return;
     }
     if (normalizedBuyer.toLowerCase() === normalizedRecipient.toLowerCase()) {
-      setError("Recipient email must be different from yours.");
+      setError(g.errSameEmail);
       return;
     }
     if (!packageId?.trim()) {
-      setError("Missing plan. Go back to your order and try again.");
+      setError(g.errMissingPlan);
       return;
     }
     if (price <= 0) {
-      setError("Invalid plan price. Go back and select a plan again.");
+      setError(g.errInvalidPrice);
       return;
     }
 
@@ -97,18 +106,18 @@ function GiftCheckoutContent() {
       });
 
       if (!result.success || !result.checkoutUrl) {
-        setError(result.error ?? "We could not start payment. Please try again.");
+        setError(result.error ?? g.errStartPay);
         setSubmitting(false);
         return;
       }
       if (!isSafeStripeCheckoutUrl(result.checkoutUrl)) {
-        setError("Invalid payment redirect. Please try again or contact support.");
+        setError(g.errInvalidRedirect);
         setSubmitting(false);
         return;
       }
       window.location.assign(result.checkoutUrl);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unexpected error starting payment.");
+      setError(err instanceof Error ? err.message : g.errUnexpected);
       setSubmitting(false);
     }
   }
@@ -118,20 +127,20 @@ function GiftCheckoutContent() {
       <SiteHeader />
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { href: "/destinations", label: "Destinations" },
-          { label: "Gift an eSIM" },
+          { href: localizedPath("/", locale), label: dict.common.home },
+          {
+            href: localizedPath("/destinations", locale),
+            label: dict.nav.destinations,
+          },
+          { label: g.crumb },
         ]}
       />
 
       <main className="container gift-checkout">
         <div className="gift-checkout__intro">
-          <p className="gift-checkout__kicker">Gift an eSIM</p>
-          <h1>Send data for their trip</h1>
-          <p>
-            You pay once. They receive the QR code and install steps by email —
-            with your personal note.
-          </p>
+          <p className="gift-checkout__kicker">{g.kicker}</p>
+          <h1>{g.title}</h1>
+          <p>{g.lede}</p>
         </div>
 
         <form className="gift-checkout__card card" onSubmit={(e) => void handleSubmit(e)}>
@@ -148,7 +157,7 @@ function GiftCheckoutContent() {
 
           <div className="form-group">
             <label className="form-label" htmlFor="gift-buyer-email">
-              Your email
+              {g.buyerEmail}
             </label>
             <input
               id="gift-buyer-email"
@@ -157,14 +166,14 @@ function GiftCheckoutContent() {
               required
               value={buyerEmail}
               onChange={(e) => setBuyerEmail(e.target.value)}
-              placeholder="you@example.com"
+              placeholder={g.buyerPlaceholder}
             />
-            <p className="form-hint">Confirmation when the gift is delivered.</p>
+            <p className="form-hint">{g.buyerHint}</p>
           </div>
 
           <div className="form-group">
             <label className="form-label" htmlFor="gift-sender-name">
-              Your name (optional)
+              {g.senderName}
             </label>
             <input
               id="gift-sender-name"
@@ -172,7 +181,7 @@ function GiftCheckoutContent() {
               maxLength={80}
               value={senderName}
               onChange={(e) => setSenderName(e.target.value)}
-              placeholder="How your friend will see you"
+              placeholder={g.senderPlaceholder}
             />
           </div>
 
@@ -180,7 +189,7 @@ function GiftCheckoutContent() {
 
           <div className="form-group">
             <label className="form-label" htmlFor="gift-recipient-name">
-              Friend&apos;s name
+              {g.recipientName}
             </label>
             <input
               id="gift-recipient-name"
@@ -189,13 +198,13 @@ function GiftCheckoutContent() {
               maxLength={80}
               value={recipientName}
               onChange={(e) => setRecipientName(e.target.value)}
-              placeholder="Their first name"
+              placeholder={g.recipientNamePlaceholder}
             />
           </div>
 
           <div className="form-group">
             <label className="form-label" htmlFor="gift-recipient-email">
-              Friend&apos;s email
+              {g.recipientEmail}
             </label>
             <input
               id="gift-recipient-email"
@@ -204,13 +213,13 @@ function GiftCheckoutContent() {
               required
               value={recipientEmail}
               onChange={(e) => setRecipientEmail(e.target.value)}
-              placeholder="Where we send the QR code"
+              placeholder={g.recipientEmailPlaceholder}
             />
           </div>
 
           <div className="form-group">
             <label className="form-label" htmlFor="gift-message">
-              Personal message (optional)
+              {g.message}
             </label>
             <textarea
               id="gift-message"
@@ -218,9 +227,11 @@ function GiftCheckoutContent() {
               maxLength={MESSAGE_MAX}
               value={giftMessage}
               onChange={(e) => setGiftMessage(e.target.value)}
-              placeholder="Install before you fly — safe travels!"
+              placeholder={g.messagePlaceholder}
             />
-            <p className="form-hint">{messageRemaining} characters left</p>
+            <p className="form-hint">
+              {t(dict, "giftPage.charsLeft", { n: messageRemaining })}
+            </p>
           </div>
 
           {error ? (
@@ -229,13 +240,21 @@ function GiftCheckoutContent() {
             </p>
           ) : null}
 
-          <button type="submit" className="btn-nav btn-nav--accent gift-checkout__submit" disabled={submitting}>
-            {submitting ? "Opening secure pay…" : `Pay $${formattedTotal} & send gift`}
+          <button
+            type="submit"
+            className="btn-nav btn-nav--accent gift-checkout__submit"
+            disabled={submitting}
+          >
+            {submitting
+              ? g.openingPay
+              : t(dict, "giftPage.payCta", { price: formattedTotal })}
           </button>
 
           <p className="gift-checkout__fineprint">
-            Promo codes and referral discounts do not apply to gifts.{" "}
-            <Link href="/destinations">Choose a different plan</Link>
+            {g.fineprintBefore}{" "}
+            <Link href={localizedPath("/destinations", locale)}>
+              {g.chooseDifferent}
+            </Link>
           </p>
         </form>
       </main>
@@ -245,8 +264,10 @@ function GiftCheckoutContent() {
 }
 
 export function GiftCheckoutPage() {
+  const [locale] = useLocaleState();
+  const loading = getDictionary(locale).common.loading;
   return (
-    <Suspense fallback={<main className="container">Loading…</main>}>
+    <Suspense fallback={<main className="container">{loading}</main>}>
       <GiftCheckoutContent />
     </Suspense>
   );

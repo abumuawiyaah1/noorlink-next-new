@@ -3,19 +3,31 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { submitContactForm } from "@/lib/contact-api";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/help-pages.css";
 
-const PARTNER_TYPES = [
-  { value: "Masjid or Islamic center", label: "Masjid or Islamic center" },
-  { value: "Creator, advisor, or organization", label: "Creator, advisor, or organization" },
+/** Stable CRM values — labels come from the dictionary. */
+const PARTNER_TYPE_VALUES = [
+  "Masjid or Islamic center",
+  "Creator, advisor, or organization",
 ] as const;
 
-type PartnerType = (typeof PARTNER_TYPES)[number]["value"];
+type PartnerType = (typeof PARTNER_TYPE_VALUES)[number];
 
 export function PartnerApplicationForm() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const f = dict.partnersPage.form;
+  const typeLabels: Record<PartnerType, string> = {
+    "Masjid or Islamic center": f.typeMasjid,
+    "Creator, advisor, or organization": f.typeCreator,
+  };
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [partnerType, setPartnerType] = useState<PartnerType>(PARTNER_TYPES[0].value);
+  const [partnerType, setPartnerType] = useState<PartnerType>(PARTNER_TYPE_VALUES[0]);
   const [organization, setOrganization] = useState("");
   const [websiteOrSocial, setWebsiteOrSocial] = useState("");
   const [about, setAbout] = useState("");
@@ -27,11 +39,11 @@ export function PartnerApplicationForm() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!agreedToTerms) {
-      setError("Please agree to the Partner Program Terms to submit your application.");
+      setError(f.errorTerms);
       return;
     }
     if (!organization.trim() && !websiteOrSocial.trim()) {
-      setError("Add your organization name or a website / social handle.");
+      setError(f.errorOrg);
       return;
     }
 
@@ -50,6 +62,7 @@ export function PartnerApplicationForm() {
       about.trim(),
       "",
       "Agreed to Partner Program Terms: yes",
+      `Locale: ${locale}`,
     ].filter(Boolean);
 
     const result = await submitContactForm({
@@ -61,107 +74,108 @@ export function PartnerApplicationForm() {
 
     setSending(false);
     if (!result.success) {
-      setError(result.error ?? "Could not send your application.");
+      setError(result.error ?? f.errorSend);
       return;
     }
 
-    setStatus(
-      result.message ??
-        "Application sent. We review partners manually and reply by email within a few business days.",
-    );
+    setStatus(result.message ?? f.success);
     setName("");
     setEmail("");
     setOrganization("");
     setWebsiteOrSocial("");
     setAbout("");
-    setPartnerType(PARTNER_TYPES[0].value);
+    setPartnerType(PARTNER_TYPE_VALUES[0]);
     setAgreedToTerms(false);
   }
 
   return (
     <form className="help-form partner-portal__panel" onSubmit={onSubmit}>
-      <label htmlFor="partner-name">Your name</label>
+      <label htmlFor="partner-name">{f.name}</label>
+      <input
+        id="partner-name"
+        required
+        autoComplete="name"
+        value={name}
+        onChange={(event) => setName(event.target.value)}
+      />
+
+      <label htmlFor="partner-email">{f.email}</label>
+      <input
+        id="partner-email"
+        type="email"
+        required
+        autoComplete="email"
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+      />
+
+      <label htmlFor="partner-type">{f.partnerType}</label>
+      <select
+        id="partner-type"
+        value={partnerType}
+        onChange={(event) => setPartnerType(event.target.value as PartnerType)}
+      >
+        {PARTNER_TYPE_VALUES.map((value) => (
+          <option key={value} value={value}>
+            {typeLabels[value]}
+          </option>
+        ))}
+      </select>
+
+      <label htmlFor="partner-organization">
+        {f.organization}{" "}
+        <span className="partner-apply__hint">{f.organizationHint}</span>
+      </label>
+      <input
+        id="partner-organization"
+        value={organization}
+        onChange={(event) => setOrganization(event.target.value)}
+        placeholder={f.organizationPlaceholder}
+      />
+
+      <label htmlFor="partner-web">{f.website}</label>
+      <input
+        id="partner-web"
+        value={websiteOrSocial}
+        onChange={(event) => setWebsiteOrSocial(event.target.value)}
+        placeholder={f.websitePlaceholder}
+      />
+
+      <label htmlFor="partner-about">{f.about}</label>
+      <textarea
+        id="partner-about"
+        required
+        rows={4}
+        placeholder={f.aboutPlaceholder}
+        value={about}
+        onChange={(event) => setAbout(event.target.value)}
+      />
+
+      <label className="partner-apply__checkbox">
         <input
-          id="partner-name"
+          type="checkbox"
+          checked={agreedToTerms}
+          onChange={(event) => setAgreedToTerms(event.target.checked)}
           required
-          autoComplete="name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
         />
+        <span>
+          {f.agreeBefore}{" "}
+          <Link
+            href={localizedPath("/partners/terms", locale)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {f.agreeLink}
+          </Link>
+          .
+        </span>
+      </label>
 
-        <label htmlFor="partner-email">Email</label>
-        <input
-          id="partner-email"
-          type="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
+      <button type="submit" disabled={sending || !agreedToTerms}>
+        {sending ? f.sending : f.submit}
+      </button>
 
-        <label htmlFor="partner-type">Partner type</label>
-        <select
-          id="partner-type"
-          value={partnerType}
-          onChange={(event) => setPartnerType(event.target.value as PartnerType)}
-        >
-          {PARTNER_TYPES.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-
-        <label htmlFor="partner-organization">
-          Organization (masjid name, agency, brand){" "}
-          <span className="partner-apply__hint">— organization or website/social required</span>
-        </label>
-        <input
-          id="partner-organization"
-          value={organization}
-          onChange={(event) => setOrganization(event.target.value)}
-          placeholder="Al-Noor Islamic Center"
-        />
-
-        <label htmlFor="partner-web">Website or social (URL or @handle)</label>
-        <input
-          id="partner-web"
-          value={websiteOrSocial}
-          onChange={(event) => setWebsiteOrSocial(event.target.value)}
-          placeholder="https:// or @handle"
-        />
-
-        <label htmlFor="partner-about">Tell us about you / your audience</label>
-        <textarea
-          id="partner-about"
-          required
-          rows={4}
-          placeholder="Audience size, Hajj/Umrah groups, newsletter, and how you plan to share NoorLink."
-          value={about}
-          onChange={(event) => setAbout(event.target.value)}
-        />
-
-        <label className="partner-apply__checkbox">
-          <input
-            type="checkbox"
-            checked={agreedToTerms}
-            onChange={(event) => setAgreedToTerms(event.target.checked)}
-            required
-          />
-          <span>
-            I agree to the{" "}
-            <Link href="/partners/terms" target="_blank" rel="noopener noreferrer">
-              Partner Program Terms
-            </Link>
-            .
-          </span>
-        </label>
-
-        <button type="submit" disabled={sending || !agreedToTerms}>
-          {sending ? "Sending…" : "Submit application"}
-        </button>
-
-        {status ? <p className="help-form__status">{status}</p> : null}
+      {status ? <p className="help-form__status">{status}</p> : null}
       {error ? (
         <p className="help-form__status" style={{ color: "var(--error)" }}>
           {error}

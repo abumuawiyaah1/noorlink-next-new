@@ -6,6 +6,9 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { LandingReadyChecklist } from "@/components/orders/LandingReadyChecklist";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { renderTemplate } from "@/lib/i18n/template";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/help-pages.css";
 
 const WHATSAPP_GUIDE_HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -13,14 +16,18 @@ const WHATSAPP_GUIDE_HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURICo
 )}`;
 
 export function BeforeYouFlyGuidePage() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const help = dict.helpPage;
+
   return (
     <>
       <SiteHeader />
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { href: "/support", label: "Support" },
-          { label: "Before you fly" },
+          { href: "/", label: dict.common.home },
+          { href: "/support", label: dict.nav.support },
+          { label: help.beforeFlyCrumb },
         ]}
       />
       <main className="help-page">
@@ -28,25 +35,27 @@ export function BeforeYouFlyGuidePage() {
           <p className="help-hero__brand" aria-hidden="true">
             Noor<span>Link</span>
           </p>
-          <h1>Before you fly — make data ready</h1>
-          <p>
-            Installed is not enough. Use these three checks on Wi‑Fi so maps and
-            messages work when you land.
-          </p>
+          <h1>{help.beforeFlyTitle}</h1>
+          <p>{help.beforeFlyLede}</p>
         </section>
         <div className="help-inner">
           <LandingReadyChecklist preview />
 
           <div className="help-card" style={{ marginTop: 24 }}>
-            <h2>Still no data after landing?</h2>
+            <h2>{help.stillNoDataTitle}</h2>
             <p>
-              Toggle Airplane Mode once, wait about a minute, then re-check the
-              three switches above. Do not delete the eSIM. Need a human?{" "}
-              <a href={WHATSAPP_GUIDE_HREF} target="_blank" rel="noopener noreferrer">
-                WhatsApp support
-              </a>{" "}
-              or open{" "}
-              <Link href="/dashboard">My eSIMs</Link>.
+              {renderTemplate(help.stillNoDataBody, {
+                whatsapp: (
+                  <a
+                    href={WHATSAPP_GUIDE_HREF}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {help.whatsappSupport}
+                  </a>
+                ),
+                myEsims: <Link href="/dashboard">{dict.nav.myEsims}</Link>,
+              })}
             </p>
           </div>
         </div>

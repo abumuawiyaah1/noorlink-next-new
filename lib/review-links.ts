@@ -24,13 +24,20 @@ export function reviewPagePath(orderId?: string): string {
   return `/review?orderId=${encodeURIComponent(orderId.trim())}`;
 }
 
-export function reviewFeedbackPath(orderId?: string): string {
-  const params = new URLSearchParams({ subject: "Service review" });
+export function reviewFeedbackPath(
+  orderId?: string,
+  copy?: { subject?: string; message?: string },
+): string {
+  const params = new URLSearchParams({
+    subject: copy?.subject ?? "Service review",
+  });
   if (orderId?.trim()) {
-    params.set("orderId", orderId.trim());
+    const id = orderId.trim();
+    params.set("orderId", id);
     params.set(
       "message",
-      `Hi NoorLink, here is my feedback on order ${orderId.trim()}:`,
+      copy?.message?.replaceAll("{orderId}", id) ??
+        `Hi NoorLink, here is my feedback on order ${id}:`,
     );
   }
   return `/support?${params.toString()}`;

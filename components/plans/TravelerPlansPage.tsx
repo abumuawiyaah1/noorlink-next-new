@@ -25,7 +25,6 @@ import { describeEsimPlan } from "@/lib/plan-descriptions";
 import {
   plansPathForRegion,
   recommendRegionalForCountry,
-  REGIONAL_FAQS,
   singleCountryPlansPath,
   type RegionalProduct,
 } from "@/lib/regional-products";
@@ -40,7 +39,15 @@ import {
   rememberRef,
   withAttribution,
 } from "@/lib/affiliate-link";
+import { getDictionary, t, type Dictionary } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/plans-dynamic.css";
+
+function usePlansDict(): Dictionary {
+  const [locale] = useLocaleState();
+  return getDictionary(locale);
+}
 
 type PlanTab = PlanCategory;
 
@@ -54,43 +61,60 @@ type TravelerPlansPageProps = {
   initialRef?: string;
 };
 
-const PLAN_FAQS = [
-  {
-    q: "When should I install?",
-    a: "Install on Wi‑Fi before you fly if you like. The data package typically starts when the eSIM connects to a supported network at the destination — not at checkout.",
-  },
-  {
-    q: "When does the plan start?",
-    a: "Usually when you turn the eSIM on for mobile data in the coverage country. You can keep your main number for WhatsApp and calls.",
-  },
-  {
-    q: "Can I use hotspot?",
-    a: "Yes. Hotspot / tethering is included so a laptop or travel companion can share the same plan.",
-  },
-  {
-    q: "What if my phone is locked?",
-    a: "The device must support eSIM and be carrier-unlocked. Use Check compatibility above. A locked phone is the most common reason an install fails.",
-  },
-] as const;
+function planFaqs(dict: Dictionary) {
+  return [
+    { q: t(dict, "plansPage.installWhenQ"), a: t(dict, "plansPage.installWhenA") },
+    { q: t(dict, "plansPage.startWhenQ"), a: t(dict, "plansPage.startWhenA") },
+    { q: t(dict, "plansPage.hotspotQ"), a: t(dict, "plansPage.hotspotA") },
+    { q: t(dict, "plansPage.lockedQ"), a: t(dict, "plansPage.lockedA") },
+  ];
+}
 
-function formatDataAmount(plan: EsimPlan): string {
-  if (plan.planCategory === "unlimited") return "Unlimited";
+function regionalFaqs(dict: Dictionary, borderAnswer: string) {
+  return [
+    {
+      q: t(dict, "plansPage.regionalFaqOneEsimQ"),
+      a: t(dict, "plansPage.regionalFaqOneEsimA"),
+    },
+    {
+      q: t(dict, "plansPage.borderFaqQ"),
+      a: borderAnswer,
+    },
+    {
+      q: t(dict, "plansPage.regionalFaqStartQ"),
+      a: t(dict, "plansPage.regionalFaqStartA"),
+    },
+    {
+      q: t(dict, "plansPage.regionalFaqWhatsAppQ"),
+      a: t(dict, "plansPage.regionalFaqWhatsAppA"),
+    },
+    {
+      q: t(dict, "plansPage.regionalFaqHotspotShortQ"),
+      a: t(dict, "plansPage.regionalFaqHotspotShortA"),
+    },
+  ];
+}
+
+function formatDataAmount(plan: EsimPlan, dict: Dictionary): string {
+  if (plan.planCategory === "unlimited") return t(dict, "plansPage.unlimited");
   if (plan.planCategory === "flexible" || plan.isPayAsYouGo || plan.isRechargeable) {
-    return "Pay-As-You-Go";
+    return t(dict, "plansPage.payg");
   }
   if (plan.dataGb == null) return "—";
   const value = Number(plan.dataGb);
   return Number.isInteger(value) ? `${value} GB` : `${value} GB`;
 }
 
-function formatDuration(days?: number): string {
-  if (days == null) return "Flexible";
-  return days === 1 ? "1 day" : `${days} days`;
+function formatDuration(days: number | undefined, dict: Dictionary): string {
+  if (days == null) return t(dict, "plansPage.flexible");
+  return days === 1
+    ? t(dict, "plansPage.dayOne")
+    : t(dict, "plansPage.daysN", { n: days });
 }
 
-function badgeLabel(plan: EsimPlan): string | null {
-  if (plan.displayBadge === "best_choice") return "Best Choice";
-  if (plan.displayBadge === "flexible") return "Flexible";
+function badgeLabel(plan: EsimPlan, dict: Dictionary): string | null {
+  if (plan.displayBadge === "best_choice") return t(dict, "plansPage.bestChoice");
+  if (plan.displayBadge === "flexible") return t(dict, "plansPage.flexible");
   return null;
 }
 
@@ -141,11 +165,14 @@ function PlanRow({
   checkoutHref: string;
   onSelect: (planId: string) => void;
 }) {
-  const badge = badgeLabel(plan);
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const badge = badgeLabel(plan, dict);
   const best = plan.displayBadge === "best_choice";
   const copy = describeEsimPlan(plan, {
     countryLabel: countryName,
     isRegional,
+    locale,
   });
 
   return (
@@ -154,7 +181,7 @@ function PlanRow({
       tabIndex={0}
       className={`plans-row${best ? " is-best" : ""}${selected ? " is-selected" : ""}`}
       aria-pressed={selected}
-      aria-label={`${formatDataAmount(plan)} for ${formatDuration(plan.durationDays)}, $${plan.price.toFixed(2)}. ${copy.description}`}
+      aria-label={`${formatDataAmount(plan, dict)} · ${formatDuration(plan.durationDays, dict)}, $${plan.price.toFixed(2)}. ${copy.description}`}
       onClick={() => onSelect(plan.id)}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
@@ -163,15 +190,20 @@ function PlanRow({
         }
       }}
     >
-      <span className="plans-row__data">{formatDataAmount(plan)}</span>
-      <span className="plans-row__duration">{formatDuration(plan.durationDays)}</span>
+      <span className="plans-row__data">{formatDataAmount(plan, dict)}</span>
+      <span className="plans-row__duration">
+        {formatDuration(plan.durationDays, dict)}
+      </span>
       <span className="plans-row__price">
         <PsychologicalPrice
           parts={plan.formattedPriceParts}
           currency={plan.currency}
         />
         {plan.planCategory === "flexible" && (
-          <small className="plans-row__from"> starting</small>
+          <small className="plans-row__from">
+            {" "}
+            {t(dict, "plansPage.starting")}
+          </small>
         )}
       </span>
       {badge ? <span className="plans-row__badge">{badge}</span> : <span />}
@@ -183,7 +215,7 @@ function PlanRow({
           onSelect(plan.id);
         }}
       >
-        Checkout
+        {t(dict, "plansPage.checkout")}
       </a>
       <div className="plans-row__details">
         <p className="plans-row__desc">{copy.description}</p>
@@ -204,29 +236,29 @@ function PlansFaq({
   countryName: string;
   regional?: RegionalProduct;
 }) {
+  const dict = usePlansDict();
   const [open, setOpen] = useState<string | null>(null);
   const faqs = regional
-    ? REGIONAL_FAQS.map((item) =>
-        item.q === "Do I need a new plan when I cross borders?"
-          ? { ...item, a: regional.faqBorder }
-          : item,
-      )
-    : PLAN_FAQS;
+    ? regionalFaqs(dict, regional.faqBorder)
+    : planFaqs(dict);
+  const waText = t(dict, "plansPage.faqWhatsAppPrefill", {
+    country: countryName,
+  });
 
   return (
     <section className="plans-faq" aria-labelledby="plans-faq-heading">
       <div className="plans-faq__head">
         <div className="plans-faq__intro-block">
-          <h2 id="plans-faq-heading">Quick questions &amp; answers</h2>
+          <h2 id="plans-faq-heading">{t(dict, "plansPage.faqTitle")}</h2>
           <p className="plans-faq__intro">
-            Contact us if you have questions —{" "}
+            {t(dict, "plansPage.faqContactBefore")}{" "}
             <a
               className="plans-faq__contact-link"
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi, I have a question about the ${countryName} eSIM.`)}`}
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              message us on WhatsApp
+              {t(dict, "plansPage.faqContactLink")}
             </a>
             .
           </p>
@@ -265,10 +297,10 @@ function SkeletonGrid() {
   );
 }
 
-const PLAN_SECTIONS: { id: PlanTab; label: string }[] = [
-  { id: "fixed", label: "Standard" },
-  { id: "unlimited", label: "Unlimited" },
-  { id: "flexible", label: "Flexible" },
+const PLAN_SECTIONS: { id: PlanTab; labelKey: string }[] = [
+  { id: "fixed", labelKey: "plansPage.standard" },
+  { id: "unlimited", labelKey: "plansPage.unlimited" },
+  { id: "flexible", labelKey: "plansPage.flexible" },
 ];
 
 function PlanSection({
@@ -334,6 +366,8 @@ export function TravelerPlansPage({
   initialPromo = "",
   initialRef = "",
 }: TravelerPlansPageProps) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const [promo, setPromo] = useState(() => normalizePromoCode(initialPromo));
   const [refCode, setRefCode] = useState(() => normalizeRefCode(initialRef));
   const [data, setData] = useState<PlansByCountryResponse | null>(initialData);
@@ -389,7 +423,7 @@ export function TravelerPlansPage({
         setError(
           err instanceof Error
             ? err.message
-            : "Unable to load plans. The service may be temporarily unavailable.",
+            : t(dict, "plansPage.loadError"),
         );
         setData(null);
       } finally {
@@ -454,10 +488,18 @@ export function TravelerPlansPage({
         <Breadcrumbs
           onDark
           items={[
-            { href: "/", label: "Home" },
-            { href: "/destinations", label: "Destinations" },
+            { href: localizedPath("/", locale), label: dict.common.home },
+            {
+              href: localizedPath("/destinations", locale),
+              label: dict.nav.destinations,
+            },
             ...(regional
-              ? [{ href: "/destinations", label: "Regional" }]
+              ? [
+                  {
+                    href: localizedPath("/destinations", locale),
+                    label: t(dict, "plansPage.regionalEsim"),
+                  },
+                ]
               : []),
             { label: title },
           ]}
@@ -465,14 +507,14 @@ export function TravelerPlansPage({
         <header className="plans-page__header">
           <div className="plans-page__brand">
             <span className="plans-page__eyebrow">
-              {regional ? "Regional eSIM" : "NoorLink"}
+              {regional ? t(dict, "plansPage.regionalEsim") : "NoorLink"}
             </span>
             <p className="plans-page__tagline">
-              {regional ? regional.heroTagline : "Enjoy hassle-free travel"}
+              {regional ? regional.heroTagline : t(dict, "plansPage.enjoyTravel")}
             </p>
           </div>
           <div className="plans-page__search-wrap">
-            <CountrySearch placeholder="Search for another country..." />
+            <CountrySearch placeholder={t(dict, "plansPage.searchOther")} />
           </div>
           <h1 className="plans-page__destination">
             <span className="plans-page__destination-flag" aria-hidden="true">
@@ -482,7 +524,9 @@ export function TravelerPlansPage({
           </h1>
           {regional && (
             <p className="plans-page__regional-sub">
-              One QR · {regional.countries.length} countries · Hotspot included
+              {t(dict, "plansPage.oneQr")} ·{" "}
+              {t(dict, "plansPage.coversN", { n: regional.countries.length })} ·{" "}
+              {t(dict, "plansPage.hotspotIncluded")}
             </p>
           )}
         </header>
@@ -491,27 +535,33 @@ export function TravelerPlansPage({
       <div className="plans-page__inner">
         {loading && (
           <div className="plans-page__loading" aria-busy="true" aria-live="polite">
-            <p className="plans-page__loading-text">Loading plans…</p>
+            <p className="plans-page__loading-text">
+              {t(dict, "plansPage.loadingPlans")}
+            </p>
             <SkeletonGrid />
           </div>
         )}
 
         {!loading && error && (
           <div className="plans-page__error" role="alert">
-            <p className="plans-page__error-title">Could not load plans</p>
+            <p className="plans-page__error-title">
+              {t(dict, "plansPage.couldNotLoad")}
+            </p>
             <p className="plans-page__error-detail">{error}</p>
             <p className="plans-page__error-hint">
-              Please try again in a moment, choose another destination, or contact
-              support if you need help placing the order.
+              {t(dict, "plansPage.errorHint")}
             </p>
           </div>
         )}
 
         {!loading && !error && data?.plans.length === 0 && (
           <p className="plans-page__empty">
-            No plans found for this destination yet. Browse more from{" "}
-            <Link href="/destinations" className="plans-page__inline-link">
-              Destinations
+            {t(dict, "plansPage.noPlans")}{" "}
+            <Link
+              href={localizedPath("/destinations", locale)}
+              className="plans-page__inline-link"
+            >
+              {dict.nav.destinations}
             </Link>
             .
           </p>
@@ -523,13 +573,17 @@ export function TravelerPlansPage({
               <div className="plans-trust__copy">
                 <p className="plans-trust__network">
                   {regional
-                    ? `Regional coverage · ${regional.countries.length} destinations`
+                    ? t(dict, "plansPage.regionalCoverage", {
+                        n: regional.countries.length,
+                      })
                     : formatCountryNetworkLabel(countryId)}
                 </p>
                 <p className="plans-trust__meta">
-                  Enjoy hassle-free travel
+                  {t(dict, "plansPage.enjoyTravel")}
                   {cheapest
-                    ? ` · From $${cheapest.price.toFixed(2)}`
+                    ? ` · ${t(dict, "plansPage.fromPrice", {
+                        price: cheapest.price.toFixed(2),
+                      })}`
                     : ""}
                 </p>
               </div>
@@ -538,7 +592,7 @@ export function TravelerPlansPage({
                 className="plans-trust__compat"
                 onClick={() => setCompatOpen(true)}
               >
-                Check compatibility
+                {t(dict, "plansPage.checkCompat")}
               </button>
             </div>
 
@@ -552,34 +606,41 @@ export function TravelerPlansPage({
 
             {regional && (
               <p className="plans-regional-single-hint">
-                Only staying in one country?{" "}
+                {t(dict, "plansPage.singleCountryBefore")}{" "}
                 <Link href={singleCountryPlansPath(regional)}>
-                  See single-country plans
+                  {t(dict, "plansPage.singleCountryLink")}
                 </Link>{" "}
-                — often better value for a single stop.
+                {t(dict, "plansPage.singleCountryAfter")}
               </p>
             )}
 
             {!regional && layoverRecommendation && (
               <p className="plans-regional-single-hint">
-                Layover in another country before {checkoutCountryName}?{" "}
+                {t(dict, "plansPage.layoverBefore", {
+                  country: checkoutCountryName,
+                })}{" "}
                 <Link href={plansPathForRegion(layoverRecommendation.routeSlug)}>
-                  See {layoverRecommendation.shortName} plans
+                  {t(dict, "plansPage.layoverLink", {
+                    region: layoverRecommendation.shortName,
+                  })}
                 </Link>{" "}
-                — one eSIM can cover both legs when your layover is in the region.
+                {t(dict, "plansPage.layoverAfter")}
               </p>
             )}
 
             <div className="plans-reassurance">
-              <span>Ready before you fly</span>
-              <span>We&apos;ve got you covered</span>
-              <span>24/7 support when you need it</span>
+              <span>{t(dict, "plansPage.readyBeforeFly")}</span>
+              <span>{t(dict, "plansPage.gotYouCovered")}</span>
+              <span>{t(dict, "plansPage.support247")}</span>
             </div>
 
-            <h2 className="plans-picker__title">Choose your package</h2>
+            <h2 className="plans-picker__title">
+              {t(dict, "plansPage.choosePackage")}
+            </h2>
             <p className="plans-picker__hint">
-              Tap <strong>Checkout</strong> on a plan to open secure Stripe checkout —
-              the price you see is the price you pay.
+              {t(dict, "plansPage.pickerHintBefore")}{" "}
+              <strong>{t(dict, "plansPage.checkout")}</strong>{" "}
+              {t(dict, "plansPage.pickerHintAfter")}
             </p>
             <label className="plans-topup-pref">
               <input
@@ -587,15 +648,13 @@ export function TravelerPlansPage({
                 checked={wantsTopUp}
                 onChange={(event) => setWantsTopUp(event.target.checked)}
               />
-              <span>
-                I may want to add more data later (top-up when available).
-              </span>
+              <span>{t(dict, "plansPage.topUpPref")}</span>
             </label>
             <div className="plans-sections">
               {PLAN_SECTIONS.map((section) => (
                 <PlanSection
                   key={section.id}
-                  label={section.label}
+                  label={t(dict, section.labelKey)}
                   plans={data.planGroups[section.id] ?? []}
                   countryName={checkoutCountryName}
                   flag={flag}
@@ -612,10 +671,12 @@ export function TravelerPlansPage({
             {selectedPlan && (
               <div className="plans-desktop-cta">
                 <div>
-                  <p className="plans-desktop-cta__label">Your Selection</p>
+                  <p className="plans-desktop-cta__label">
+                    {t(dict, "plansPage.yourSelection")}
+                  </p>
                   <p className="plans-desktop-cta__plan">
-                    {formatDataAmount(selectedPlan)} ·{" "}
-                    {formatDuration(selectedPlan.durationDays)}
+                    {formatDataAmount(selectedPlan, dict)} ·{" "}
+                    {formatDuration(selectedPlan.durationDays, dict)}
                   </p>
                 </div>
                 <div className="plans-desktop-cta__price">
@@ -625,7 +686,7 @@ export function TravelerPlansPage({
                   />
                 </div>
                 <a href={selectedCheckoutHref} className="plans-desktop-cta__button">
-                  Continue to Checkout
+                  {t(dict, "plansPage.checkout")}
                 </a>
               </div>
             )}
@@ -643,12 +704,18 @@ export function TravelerPlansPage({
       </div>
     </main>
       {selectedPlan && (
-        <div className="plans-sticky-cta" role="region" aria-label="Purchase">
+        <div
+          className="plans-sticky-cta"
+          role="region"
+          aria-label={t(dict, "plansPage.purchaseAria")}
+        >
           <div className="plans-sticky-cta__meta">
-            <span className="plans-sticky-cta__label">Selected Plan</span>
+            <span className="plans-sticky-cta__label">
+              {t(dict, "plansPage.selectedPlan")}
+            </span>
             <span className="plans-sticky-cta__plan">
-              {formatDataAmount(selectedPlan)} ·{" "}
-              {formatDuration(selectedPlan.durationDays)}
+              {formatDataAmount(selectedPlan, dict)} ·{" "}
+              {formatDuration(selectedPlan.durationDays, dict)}
             </span>
             <PsychologicalPrice
               parts={selectedPlan.formattedPriceParts}
@@ -656,7 +723,7 @@ export function TravelerPlansPage({
             />
           </div>
           <a href={selectedCheckoutHref} className="plans-sticky-cta__button">
-            Continue
+            {t(dict, "plansPage.continue")}
           </a>
         </div>
       )}

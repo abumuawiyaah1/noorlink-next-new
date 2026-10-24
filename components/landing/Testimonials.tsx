@@ -1,3 +1,5 @@
+"use client";
+
 import {
   TRUSTPILOT_PROFILE_URL,
   TRUSTPILOT_STAR_DISPLAY,
@@ -5,6 +7,8 @@ import {
   TRUSTPILOT_TRUST_SCORE,
 } from "@/lib/review-links";
 import { TRUSTPILOT_QUOTES } from "@/lib/trustpilot-quotes";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 /** Trustpilot-style green star tiles (filled / empty). */
 function Stars({
@@ -35,15 +39,18 @@ function Stars({
 }
 
 export function Testimonials() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+
   return (
     <section className="reviews-section" aria-labelledby="reviews-heading">
       <div className="container">
         <div className="reviews-header">
-          <span className="why-kicker reviews-header__kicker">1000+ reviews</span>
-          <h2 id="reviews-heading">What travelers say on Trustpilot</h2>
+          <span className="why-kicker reviews-header__kicker">{dict.reviews.kicker}</span>
+          <h2 id="reviews-heading">{dict.reviews.title}</h2>
           <p
             className="reviews-header__score"
-            aria-label={`${TRUSTPILOT_TRUST_LABEL}, ${TRUSTPILOT_TRUST_SCORE} out of 5 on Trustpilot`}
+            aria-label={dict.reviews.score}
           >
             <Stars count={TRUSTPILOT_STAR_DISPLAY} size="md" />
             <span className="reviews-header__score-value">
@@ -94,7 +101,7 @@ export function Testimonials() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Read all reviews on Trustpilot
+            {dict.reviews.readAll}
           </a>
         </p>
       </div>

@@ -8,6 +8,8 @@ import {
   resolveDestination,
   type HeroDestination,
 } from "@/lib/hero-destinations";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import { thisWeekHeroPills } from "@/lib/this-week";
 import "@/styles/hero-search.css";
 
@@ -33,6 +35,8 @@ const MIN_QUERY_LENGTH = 3;
 
 export function HeroSearch() {
   const router = useRouter();
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -136,7 +140,7 @@ export function HeroSearch() {
           type="text"
           id="homeSearch"
           value={query}
-          placeholder="Where are you traveling?"
+          placeholder={dict.search.placeholder}
           autoComplete="off"
           onChange={(e) => {
             const value = e.target.value;
@@ -167,7 +171,7 @@ export function HeroSearch() {
           }}
         />
         <button type="button" onClick={handleSearch}>
-          Search
+          {dict.search.button}
         </button>
       </div>
 
@@ -188,7 +192,8 @@ export function HeroSearch() {
                   <span className="hero-search-dropdown__text">
                     <span className="hero-search-dropdown__label">{dest.label}</span>
                     <span className="hero-search-dropdown__meta">
-                      {dest.type === "region" ? "Region" : "Country"} · View plans
+                      {dest.type === "region" ? dict.search.region : dict.search.country} ·{" "}
+                      {dict.search.viewPlans}
                     </span>
                   </span>
                 </span>
@@ -199,7 +204,7 @@ export function HeroSearch() {
       )}
 
       <div className="hero-search-pills">
-        <span className="hero-search-pills__label">This week:</span>
+        <span className="hero-search-pills__label">{dict.search.thisWeek}</span>
         {pills.map((pill) => {
           const tipId = `hero-pill-tip-${pill.label.toLowerCase().replace(/\s+/g, "-")}`;
           return (

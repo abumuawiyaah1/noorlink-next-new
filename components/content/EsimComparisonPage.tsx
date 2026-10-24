@@ -1,20 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import {
-  ESIM_COMPARE_DISCLAIMER,
-  ESIM_COMPARE_FAQS,
-  ESIM_COMPARE_GUIDES,
-  ESIM_COMPARE_PROVIDERS,
-  ESIM_COMPARE_ROWS,
+  ESIM_COMPARE_PROVIDER_META,
   ESIM_COMPARE_UPDATED_ISO,
-  ESIM_COMPARE_UPDATED_LABEL,
+  getEsimCompareRows,
   type CompareCell,
 } from "@/lib/esim-comparison";
 import { CompareTrustpilotProof } from "@/components/content/CompareTrustpilotProof";
 import { CompareStickyCta } from "@/components/content/CompareStickyCta";
 import { CompareLiveDestinations } from "@/components/content/CompareLiveDestinations";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/esim-compare.css";
 
 function CellBadge({ cell }: { cell: CompareCell }) {
@@ -29,60 +30,61 @@ function CellBadge({ cell }: { cell: CompareCell }) {
 }
 
 export function EsimComparisonPage() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const c = dict.comparePage;
+  const rows = getEsimCompareRows(c);
+  const guides = c.guides;
+  const faqs = c.faqs;
+
   return (
     <>
       <SiteHeader />
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { label: "eSIM comparison" },
+          { href: localizedPath("/", locale), label: dict.common.home },
+          { label: c.crumb },
         ]}
       />
       <main className="content-page esim-compare-page">
         <section className="content-hero content-hero--compact">
           <div className="content-hero__inner">
-            <span className="content-kicker">Travel eSIM comparison</span>
-            <h1>eSIM comparison: NoorLink vs Airalo, Holafly &amp; more</h1>
-            <p>
-              Compare popular travel eSIM providers on coverage, hotspot, support,
-              and dedicated Hajj &amp; Umrah plans — so you pick for the trip you
-              are actually taking, not just the biggest catalog.
-            </p>
+            <span className="content-kicker">{c.kicker}</span>
+            <h1>{c.title}</h1>
+            <p>{c.lede}</p>
             <p className="esim-compare__updated">
-              Chart updated{" "}
-              <time dateTime={ESIM_COMPARE_UPDATED_ISO}>
-                {ESIM_COMPARE_UPDATED_LABEL}
-              </time>
+              {c.updatedPrefix}{" "}
+              <time dateTime={ESIM_COMPARE_UPDATED_ISO}>{c.updatedLabel}</time>
             </p>
           </div>
         </section>
 
         <div className="content-shell esim-compare-shell">
-          <nav className="esim-compare-toc" aria-label="On this page">
-            <p className="esim-compare-toc__label">On this page</p>
+          <nav className="esim-compare-toc" aria-label={c.tocAria}>
+            <p className="esim-compare-toc__label">{c.tocLabel}</p>
             <ul>
               <li>
-                <a href="#feature-chart">Feature chart</a>
+                <a href="#feature-chart">{c.tocFeatureChart}</a>
               </li>
               <li>
-                <a href="#who-its-for">Who it’s for</a>
+                <a href="#who-its-for">{c.tocWho}</a>
               </li>
               <li>
-                <a href="#live-plans">Live starting prices</a>
+                <a href="#live-plans">{c.tocLive}</a>
               </li>
               <li>
-                <a href="#phone-check">Phone check</a>
+                <a href="#phone-check">{c.tocPhone}</a>
               </li>
               <li>
-                <a href="#trustpilot">Trustpilot reviews</a>
+                <a href="#trustpilot">{c.tocTrustpilot}</a>
               </li>
-              {ESIM_COMPARE_GUIDES.map((guide) => (
+              {guides.map((guide) => (
                 <li key={guide.id}>
                   <a href={`#${guide.id}`}>{guide.title}</a>
                 </li>
               ))}
               <li>
-                <a href="#compare-faq">Comparison FAQ</a>
+                <a href="#compare-faq">{c.tocFaq}</a>
               </li>
             </ul>
           </nav>
@@ -93,27 +95,20 @@ export function EsimComparisonPage() {
             aria-labelledby="esim-compare-heading"
           >
             <div className="content-section-head">
-              <span className="content-kicker">Feature chart</span>
-              <h2 id="esim-compare-heading">How we stack up</h2>
-              <p>
-                Six well-known providers beside NoorLink. The rows are the
-                differences that change a trip: pilgrimage plans, hotspot, how
-                you get help, and whether you can prepare before you fly.
-              </p>
+              <span className="content-kicker">{c.chartKicker}</span>
+              <h2 id="esim-compare-heading">{c.chartTitle}</h2>
+              <p>{c.chartLede}</p>
             </div>
 
             <div className="esim-compare__scroll" tabIndex={0}>
               <table className="esim-compare__table">
-                <caption className="visually-hidden">
-                  Comparison of NoorLink with Airalo, Holafly, Nomad, Saily,
-                  GigSky, and Maya Mobile
-                </caption>
+                <caption className="visually-hidden">{c.tableCaption}</caption>
                 <thead>
                   <tr>
                     <th scope="col" className="esim-compare__feature-col">
-                      Feature
+                      {c.featureCol}
                     </th>
-                    {ESIM_COMPARE_PROVIDERS.map((provider) => (
+                    {ESIM_COMPARE_PROVIDER_META.map((provider) => (
                       <th
                         key={provider.id}
                         scope="col"
@@ -127,24 +122,22 @@ export function EsimComparisonPage() {
                           {provider.name}
                         </span>
                         {provider.highlight ? (
-                          <span className="esim-compare__ours-tag">Us</span>
+                          <span className="esim-compare__ours-tag">{c.oursTag}</span>
                         ) : null}
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {ESIM_COMPARE_ROWS.map((row) => (
+                  {rows.map((row) => (
                     <tr key={row.id}>
                       <th scope="row" className="esim-compare__row-label">
                         <span>{row.label}</span>
                         {row.hint ? (
-                          <span className="esim-compare__row-hint">
-                            {row.hint}
-                          </span>
+                          <span className="esim-compare__row-hint">{row.hint}</span>
                         ) : null}
                       </th>
-                      {ESIM_COMPARE_PROVIDERS.map((provider) => {
+                      {ESIM_COMPARE_PROVIDER_META.map((provider) => {
                         const cell = row.cells[provider.id];
                         return (
                           <td
@@ -166,12 +159,12 @@ export function EsimComparisonPage() {
             </div>
 
             <div className="esim-compare__cards">
-              {ESIM_COMPARE_ROWS.map((row) => (
+              {rows.map((row) => (
                 <article key={row.id} className="esim-compare-card">
                   <h3>{row.label}</h3>
                   {row.hint ? <p>{row.hint}</p> : null}
                   <ul>
-                    {ESIM_COMPARE_PROVIDERS.map((provider) => {
+                    {ESIM_COMPARE_PROVIDER_META.map((provider) => {
                       const cell = row.cells[provider.id];
                       return (
                         <li
@@ -194,7 +187,7 @@ export function EsimComparisonPage() {
               ))}
             </div>
 
-            <p className="esim-compare__disclaimer">{ESIM_COMPARE_DISCLAIMER}</p>
+            <p className="esim-compare__disclaimer">{c.disclaimer}</p>
           </section>
 
           <section
@@ -203,43 +196,29 @@ export function EsimComparisonPage() {
             aria-labelledby="esim-compare-audience-heading"
           >
             <div className="content-section-head">
-              <span className="content-kicker">Who it’s for</span>
-              <h2 id="esim-compare-audience-heading">
-                Pick NoorLink if this sounds like your trip
-              </h2>
+              <span className="content-kicker">{c.whoKicker}</span>
+              <h2 id="esim-compare-audience-heading">{c.whoTitle}</h2>
             </div>
             <ul className="esim-compare-audience__list">
-              <li>
-                <strong>Umrah or Hajj</strong>
-                <span>
-                  You want pilgrimage plans with hotspot — not only a generic
-                  Saudi country pack.
-                </span>
-              </li>
-              <li>
-                <strong>Family or group travel</strong>
-                <span>
-                  You may share data with a companion’s phone or a laptop on the
-                  road.
-                </span>
-              </li>
-              <li>
-                <strong>Prefer human help</strong>
-                <span>
-                  You want WhatsApp support and clear install-before-you-fly
-                  steps, not only an app store listing.
-                </span>
-              </li>
+              {c.whoItems.map((item) => (
+                <li key={item.title}>
+                  <strong>{item.title}</strong>
+                  <span>{item.body}</span>
+                </li>
+              ))}
             </ul>
             <div className="esim-compare-inline-cta">
-              <Link href="/destinations" className="content-button">
-                Browse destinations
+              <Link
+                href={localizedPath("/destinations", locale)}
+                className="content-button"
+              >
+                {c.browseDestinations}
               </Link>
               <Link
-                href="/hajj-umrah"
+                href={localizedPath("/hajj-umrah", locale)}
                 className="content-button content-button--ghost"
               >
-                Hajj &amp; Umrah plans
+                {c.hajjUmrahPlans}
               </Link>
             </div>
           </section>
@@ -252,27 +231,22 @@ export function EsimComparisonPage() {
             aria-labelledby="esim-compare-check-heading"
           >
             <div>
-              <span className="content-kicker">Before you buy</span>
-              <h2 id="esim-compare-check-heading">
-                Not sure your phone works with eSIM?
-              </h2>
-              <p>
-                Run a free compatibility check, then install on home Wi‑Fi so
-                you’re ready when you land — not stuck in an airport SIM line.
-              </p>
+              <span className="content-kicker">{c.phoneKicker}</span>
+              <h2 id="esim-compare-check-heading">{c.phoneTitle}</h2>
+              <p>{c.phoneLede}</p>
             </div>
             <div className="esim-compare-check__actions">
               <Link
-                href="/help/hajj-umrah-phone-check"
+                href={localizedPath("/help/hajj-umrah-phone-check", locale)}
                 className="content-button"
               >
-                Free phone check
+                {c.freePhoneCheck}
               </Link>
               <Link
-                href="/help/before-you-fly"
+                href={localizedPath("/help/before-you-fly", locale)}
                 className="content-button content-button--ghost"
               >
-                Install before you fly
+                {c.installBeforeFly}
               </Link>
             </div>
           </section>
@@ -284,36 +258,50 @@ export function EsimComparisonPage() {
             aria-labelledby="esim-compare-why"
           >
             <div className="content-section-head">
-              <span className="content-kicker">Why travelers pick NoorLink</span>
-              <h2 id="esim-compare-why">Built for the trip, not just the catalog</h2>
+              <span className="content-kicker">{c.whyKicker}</span>
+              <h2 id="esim-compare-why">{c.whyTitle}</h2>
             </div>
             <ul className="esim-compare-spotlight__list">
+              {(
+                [
+                  {
+                    item: c.whyItems[0],
+                    href: "/hajj-umrah",
+                  },
+                  {
+                    item: c.whyItems[1],
+                    href: "/support",
+                  },
+                ] as const
+              ).map(({ item, href }) => (
+                <li key={item.title}>
+                  <strong>{item.title}</strong>
+                  <span>
+                    {item.bodyBefore}
+                    <Link href={localizedPath(href, locale)}>{item.linkLabel}</Link>
+                    {item.bodyAfter}
+                  </span>
+                </li>
+              ))}
               <li>
-                <strong>Hajj &amp; Umrah profiles</strong>
+                <strong>{c.whyItems[2].title}</strong>
                 <span>
-                  Dedicated{" "}
-                  <Link href="/hajj-umrah">pilgrimage plans</Link> with hotspot —
-                  not only a generic Saudi listing.
-                </span>
-              </li>
-              <li>
-                <strong>WhatsApp help that stays with you</strong>
-                <span>
-                  Real answers when you are installing at home or already on the
-                  ground — start at{" "}
-                  <Link href="/support">Support</Link>.
-                </span>
-              </li>
-              <li>
-                <strong>Install before you fly</strong>
-                <span>
-                  Use the{" "}
-                  <Link href="/help/before-you-fly">before-you-fly guide</Link>{" "}
-                  and{" "}
-                  <Link href="/help/hajj-umrah-phone-check">
-                    free device check
-                  </Link>{" "}
-                  so setup happens on Wi‑Fi, not in an airport queue.
+                  {c.whyItems[2].bodyBefore}
+                  <Link href={localizedPath("/help/before-you-fly", locale)}>
+                    {c.whyItems[2].linkLabel}
+                  </Link>
+                  {"bodyMid" in c.whyItems[2] ? c.whyItems[2].bodyMid : null}
+                  {"linkLabel2" in c.whyItems[2] ? (
+                    <Link
+                      href={localizedPath(
+                        "/help/hajj-umrah-phone-check",
+                        locale,
+                      )}
+                    >
+                      {c.whyItems[2].linkLabel2}
+                    </Link>
+                  ) : null}
+                  {c.whyItems[2].bodyAfter}
                 </span>
               </li>
             </ul>
@@ -324,18 +312,13 @@ export function EsimComparisonPage() {
             aria-labelledby="esim-compare-guides-heading"
           >
             <div className="content-section-head">
-              <span className="content-kicker">Guides</span>
-              <h2 id="esim-compare-guides-heading">
-                How to choose a travel eSIM
-              </h2>
-              <p>
-                Short answers to the searches travelers actually make — written
-                for clarity, not hype.
-              </p>
+              <span className="content-kicker">{c.guidesKicker}</span>
+              <h2 id="esim-compare-guides-heading">{c.guidesTitle}</h2>
+              <p>{c.guidesLede}</p>
             </div>
 
             <div className="esim-compare-guides__list">
-              {ESIM_COMPARE_GUIDES.map((guide) => (
+              {guides.map((guide) => (
                 <article
                   key={guide.id}
                   id={guide.id}
@@ -346,7 +329,9 @@ export function EsimComparisonPage() {
                   <ul className="esim-compare-guide__links">
                     {guide.links.map((link) => (
                       <li key={link.href}>
-                        <Link href={link.href}>{link.label}</Link>
+                        <Link href={localizedPath(link.href, locale)}>
+                          {link.label}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -361,15 +346,16 @@ export function EsimComparisonPage() {
             aria-labelledby="esim-compare-faq-heading"
           >
             <div className="content-section-head">
-              <span className="content-kicker">FAQ</span>
-              <h2 id="esim-compare-faq-heading">Comparison FAQ</h2>
+              <span className="content-kicker">{c.faqKicker}</span>
+              <h2 id="esim-compare-faq-heading">{c.faqTitle}</h2>
               <p>
-                Quick answers before you buy. More setup detail lives in the{" "}
-                <Link href="/faq">full FAQ</Link>.
+                {c.faqLedeBefore}
+                <Link href={localizedPath("/faq", locale)}>{c.faqLedeLink}</Link>
+                {c.faqLedeAfter}
               </p>
             </div>
             <div className="esim-compare-faq__list">
-              {ESIM_COMPARE_FAQS.map((item) => (
+              {faqs.map((item) => (
                 <article key={item.q} className="esim-compare-faq__item">
                   <h3>{item.q}</h3>
                   <p>{item.a}</p>
@@ -380,22 +366,22 @@ export function EsimComparisonPage() {
 
           <section className="content-cta">
             <div>
-              <span className="content-kicker">Ready to choose?</span>
-              <h2>Browse destinations or start with pilgrimage plans.</h2>
-              <p>
-                Pick a country pack for your next trip, or open Hajj &amp; Umrah
-                if Makkah and Madinah are the destination.
-              </p>
+              <span className="content-kicker">{c.ctaKicker}</span>
+              <h2>{c.ctaTitle}</h2>
+              <p>{c.ctaLede}</p>
             </div>
             <div className="content-cta__actions">
-              <Link href="/destinations" className="content-button">
-                Browse destinations
+              <Link
+                href={localizedPath("/destinations", locale)}
+                className="content-button"
+              >
+                {c.browseDestinations}
               </Link>
               <Link
-                href="/hajj-umrah"
+                href={localizedPath("/hajj-umrah", locale)}
                 className="content-button content-button--ghost"
               >
-                Hajj &amp; Umrah plans
+                {c.hajjUmrahPlans}
               </Link>
             </div>
           </section>

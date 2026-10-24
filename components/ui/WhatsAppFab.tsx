@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { stripLocaleFromPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/whatsapp-fab.css";
 
 export const WHATSAPP_NUMBER = "17184729390";
@@ -30,7 +33,11 @@ function WhatsAppGlyph() {
 
 export function WhatsAppFab() {
   const pathname = usePathname() ?? "";
-  const hide = HIDE_FAB_PATHS.has(pathname);
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const bare = stripLocaleFromPath(pathname);
+  const hide = HIDE_FAB_PATHS.has(bare);
+  const label = dict.common.chatWhatsApp;
 
   return (
     <Link
@@ -39,13 +46,13 @@ export function WhatsAppFab() {
       className={`whatsapp-float${hide ? " whatsapp-float--hidden" : ""}`}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat on WhatsApp"
-      title="Chat on WhatsApp"
+      aria-label={label}
+      title={label}
       aria-hidden={hide || undefined}
       tabIndex={hide ? -1 : undefined}
     >
       <WhatsAppGlyph />
-      <span className="whatsapp-float__sr">WhatsApp</span>
+      <span className="whatsapp-float__sr">{dict.common.whatsapp}</span>
     </Link>
   );
 }

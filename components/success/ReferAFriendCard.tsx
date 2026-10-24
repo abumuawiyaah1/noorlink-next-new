@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { fetchCustomerReferralLink } from "@/lib/affiliate-api";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type Props = {
   email?: string | null;
@@ -9,6 +11,8 @@ type Props = {
 };
 
 export function ReferAFriendCard({ email, orderNumber }: Props) {
+  const [locale] = useLocaleState();
+  const r = getDictionary(locale).successPage.refer;
   const [linkUrl, setLinkUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -40,13 +44,10 @@ export function ReferAFriendCard({ email, orderNumber }: Props) {
 
   return (
     <div className="loyalty-card card-refer">
-      <p className="refer-title">Give friends 10% off — get 10% off your next trip</p>
-      <p style={{ fontSize: "0.9rem" }}>
-        Share your personal link. When a friend completes an order, we email you a
-        single-use 10% reward for your next eSIM.
-      </p>
+      <p className="refer-title">{r.title}</p>
+      <p style={{ fontSize: "0.9rem" }}>{r.copy}</p>
       {loading ? (
-        <p className="gift-note">Preparing your link…</p>
+        <p className="gift-note">{r.preparing}</p>
       ) : linkUrl ? (
         <>
           <div className="refer-link">{linkUrl.replace(/^https?:\/\//, "")}</div>
@@ -56,11 +57,11 @@ export function ReferAFriendCard({ email, orderNumber }: Props) {
             onClick={() => void copyLink()}
             style={{ marginTop: 12 }}
           >
-            {copied ? "Copied!" : "Copy link"}
+            {copied ? r.copied : r.copyLink}
           </button>
         </>
       ) : (
-        <p className="gift-note">Your link will appear once your order email is confirmed.</p>
+        <p className="gift-note">{r.waiting}</p>
       )}
     </div>
   );

@@ -1,37 +1,52 @@
+"use client";
+
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
-import { FAQ_GROUPS } from "@/lib/faq-content";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/help-pages.css";
 
+/** Replace {guide} / {support} tokens with links so word order can differ per locale. */
+function renderFooterHelp(template: string, links: Record<string, ReactNode>) {
+  return template.split(/(\{guide\}|\{support\})/).map((part, index) => {
+    const key = part.slice(1, -1);
+    if (part.startsWith("{") && key in links) {
+      return <span key={index}>{links[key]}</span>;
+    }
+    return part;
+  });
+}
+
 export function ModernFaqPage() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const faq = dict.faqPage;
+
   return (
     <>
       <SiteHeader />
-      <Breadcrumbs items={[{ href: "/", label: "Home" }, { label: "FAQ" }]} />
+      <Breadcrumbs
+        items={[{ href: "/", label: dict.common.home }, { label: dict.nav.faq }]}
+      />
       <main className="help-page">
         <section className="help-hero">
-          <h1>Frequently asked questions</h1>
-          <p>Setup, delivery, refunds, and compatibility.</p>
+          <h1>{faq.title}</h1>
+          <p>{faq.intro}</p>
         </section>
         <div className="help-inner">
           <div className="faq-quick-grid">
-            <article className="help-card">
-              <h2>Most common issue</h2>
-              <p>QR code email delay after payment confirmation.</p>
-            </article>
-            <article className="help-card">
-              <h2>Fastest fix</h2>
-              <p>Use My eSIMs or the Support page order tracker before messaging us.</p>
-            </article>
-            <article className="help-card">
-              <h2>Need a human?</h2>
-              <p>WhatsApp support is available around the clock.</p>
-            </article>
+            {faq.quick.map((card) => (
+              <article key={card.title} className="help-card">
+                <h2>{card.title}</h2>
+                <p>{card.body}</p>
+              </article>
+            ))}
           </div>
           <div className="faq-list">
-            {FAQ_GROUPS.map((group) => (
+            {faq.groups.map((group) => (
               <section key={group.title} className="faq-group">
                 <h2 className="faq-group__title">{group.title}</h2>
                 <div className="faq-group__items">
@@ -45,12 +60,12 @@ export function ModernFaqPage() {
               </section>
             ))}
             <div className="help-card faq-help-card">
-              <h2>Need more help?</h2>
+              <h2>{faq.footerHelpTitle}</h2>
               <p>
-                Start with the{" "}
-                <Link href="/help/before-you-fly">before you fly picture guide</Link>,
-                visit the <Link href="/support">Support page</Link>, use WhatsApp,
-                or track your order before contacting us.
+                {renderFooterHelp(faq.footerHelp, {
+                  guide: <Link href="/help/before-you-fly">{faq.guideLink}</Link>,
+                  support: <Link href="/support">{faq.supportLink}</Link>,
+                })}
               </p>
             </div>
           </div>

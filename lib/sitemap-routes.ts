@@ -1,4 +1,5 @@
 import { plansPathForCountry } from "@/lib/country-slugs";
+import { LEARN_POSTS } from "@/lib/learn-posts";
 import { COUNTRY_TEMPLATE_HINTS } from "@/lib/country-templates";
 import { INSIDER_ISSUES } from "@/lib/insider-issues";
 import {
@@ -66,6 +67,7 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
     { url: absoluteUrl("/destinations"), changeFrequency: "weekly", priority: 0.9 },
     { url: absoluteUrl("/hajj-umrah"), changeFrequency: "weekly", priority: 0.9 },
     { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.5 },
+    { url: absoluteUrl("/learn"), changeFrequency: "weekly", priority: 0.7 },
     { url: absoluteUrl("/faq"), changeFrequency: "monthly", priority: 0.6 },
     { url: absoluteUrl("/support"), changeFrequency: "monthly", priority: 0.5 },
     {
@@ -113,6 +115,14 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
       changeFrequency: "weekly",
       priority: 0.85,
       lastModified: now,
+    });
+  }
+
+  for (const post of LEARN_POSTS) {
+    entries.push({
+      url: absoluteUrl(`/learn/${post.slug}`),
+      changeFrequency: "monthly",
+      priority: 0.6,
     });
   }
 

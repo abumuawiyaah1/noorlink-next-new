@@ -11,6 +11,8 @@ import { useEffect, useMemo, useState } from "react";
 import { API_BASE } from "@/lib/api-client";
 import { attributionPayloadForCheckout } from "@/lib/attribution";
 import { debug, debugError } from "@/lib/debug";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type ExpressPayload = {
   email?: string;
@@ -22,6 +24,7 @@ type ExpressPayload = {
   promoCode?: string;
   affiliateRef?: string;
   wantsTopUp?: boolean;
+  language?: string;
 };
 
 type Props = {
@@ -54,10 +57,12 @@ function ExpressCheckoutInner({
   payload,
   disabled,
   onError,
+  loadingLabel,
 }: {
   payload: ExpressPayload;
   disabled?: boolean;
   onError?: (message: string) => void;
+  loadingLabel: string;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -93,6 +98,7 @@ function ExpressCheckoutInner({
       if (payload.promoCode) body.promoCode = payload.promoCode;
       if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef;
       if (payload.wantsTopUp) body.wantsTopUp = true;
+      if (payload.language) body.language = payload.language;
       const attribution = attributionPayloadForCheckout();
       if (attribution) body.attribution = attribution;
 
@@ -181,15 +187,15 @@ function ExpressCheckoutInner({
         onConfirm={onConfirm}
       />
       {!ready && (
-        <p className="checkout-express__hint">
-          Loading wallet buttons…
-        </p>
+        <p className="checkout-express__hint">{loadingLabel}</p>
       )}
     </div>
   );
 }
 
 export function ExpressCheckoutWallets(props: Props) {
+  const [locale] = useLocaleState();
+  const c = getDictionary(locale).checkout;
   const [stripe, setStripe] = useState<Awaited<ReturnType<typeof loadStripe>>>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -233,22 +239,23 @@ export function ExpressCheckoutWallets(props: Props) {
 
   if (!stripe || props.amountCents < 50) {
     return (
-      <p className="checkout-express__hint">Loading wallet buttons…</p>
+      <p className="checkout-express__hint">{c.loadingWallets}</p>
     );
   }
 
   return (
     <div className="checkout-express">
-      <p className="checkout-express__label">Express checkout</p>
+      <p className="checkout-express__label">{c.expressCheckout}</p>
       <Elements stripe={stripe} options={options} key={props.amountCents}>
         <ExpressCheckoutInner
           payload={props.payload}
           disabled={props.disabled}
           onError={props.onError}
+          loadingLabel={c.loadingWallets}
         />
       </Elements>
       <div className="checkout-express__divider">
-        <span>or pay another way</span>
+        <span>{c.orPayAnotherWay}</span>
       </div>
     </div>
   );

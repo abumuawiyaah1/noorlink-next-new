@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { headers } from "next/headers";
 import Script from "next/script";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 import { CookieYesBannerFix } from "@/components/ui/CookieYesBannerFix";
 import { MarketingAttributionCapture } from "@/components/analytics/MarketingAttributionCapture";
 import { GlobalBackButton } from "@/components/ui/GlobalBackButton";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
+import { LOCALE_HEADER, LOCALE_META, normalizeLocale } from "@/lib/i18n/config";
+import { LocaleProvider } from "@/lib/i18n/use-locale";
 import { ROOT_METADATA } from "@/lib/seo";
 import "./globals.css";
 
@@ -27,14 +30,20 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = ROOT_METADATA;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerStore = await headers();
+  const locale = normalizeLocale(headerStore.get(LOCALE_HEADER));
+  const meta = LOCALE_META[locale];
+
   return (
     <html
-      lang="en"
+      lang={meta.htmlLang}
+      dir={meta.dir}
+      data-locale={locale}
       className={`${geistMono.variable} ${plusJakarta.variable} h-full antialiased`}
     >
       <head>
@@ -63,12 +72,14 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className="min-h-full flex flex-col">
-        <SiteJsonLd />
-        <MarketingAttributionCapture />
-        {children}
-        <GlobalBackButton />
-        <WhatsAppFab />
-        <CookieYesBannerFix />
+        <LocaleProvider initialLocale={locale}>
+          <SiteJsonLd />
+          <MarketingAttributionCapture />
+          {children}
+          <GlobalBackButton />
+          <WhatsAppFab />
+          <CookieYesBannerFix />
+        </LocaleProvider>
         <Script
           id="cookieyes"
           src={`https://cdn-cookieyes.com/client_data/${COOKIEYES_SCRIPT_ID}/script.js`}

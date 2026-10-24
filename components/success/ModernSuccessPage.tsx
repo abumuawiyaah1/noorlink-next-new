@@ -16,6 +16,9 @@ import { ReferAFriendCard } from "@/components/success/ReferAFriendCard";
 import { ReviewRequestCard } from "@/components/review/ReviewRequestCard";
 import { WHATSAPP_NUMBER } from "@/components/ui/WhatsAppFab";
 import { formatCountryLabel } from "@/lib/country-slugs";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import {
   isPilgrimageOrder,
   PILGRIM_GIFT_GUIDES,
@@ -38,6 +41,9 @@ function resolveLookupEmail(emailParam: string | null): string {
 }
 
 function SuccessContent() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const s = dict.successPage;
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const paymentIntentId = searchParams.get("payment_intent");
@@ -74,7 +80,7 @@ function SuccessContent() {
       setLoading(false);
       const status = result.status ?? 0;
       const hardFail = Boolean(result.error && status >= 500);
-      if (hardFail) setLookupError(result.error ?? "Lookup temporarily unavailable.");
+      if (hardFail) setLookupError(result.error ?? s.lookupUnavailable);
       return { order: result.order, hardFail, error: result.error };
     }
     if (paymentIntentId) {
@@ -87,7 +93,7 @@ function SuccessContent() {
       setLoading(false);
       const status = result.status ?? 0;
       const hardFail = Boolean(result.error && status >= 500);
-      if (hardFail) setLookupError(result.error ?? "Lookup temporarily unavailable.");
+      if (hardFail) setLookupError(result.error ?? s.lookupUnavailable);
       return { order: result.order, hardFail, error: result.error };
     }
     if (orderIdParam && lookupEmail) {
@@ -96,12 +102,12 @@ function SuccessContent() {
       setLoading(false);
       const status = result.status ?? 0;
       const hardFail = Boolean(result.error && status >= 500);
-      if (hardFail) setLookupError(result.error ?? "Lookup temporarily unavailable.");
+      if (hardFail) setLookupError(result.error ?? s.lookupUnavailable);
       return { order: result.order, hardFail, error: result.error };
     }
     setLoading(false);
     return { order: null, hardFail: false };
-  }, [sessionId, paymentIntentId, orderIdParam, emailParam]);
+  }, [sessionId, paymentIntentId, orderIdParam, emailParam, s.lookupUnavailable]);
 
   useEffect(() => {
     if (!sessionId && !paymentIntentId && !(orderIdParam && emailParam)) {
@@ -112,11 +118,7 @@ function SuccessContent() {
     if (order && !order.fulfillmentPending && order.qrCodeUrl) return;
     if (pollCount >= MAX_POLLS) {
       setPollingStopped(true);
-      setLookupError(
-        (prev) =>
-          prev ??
-          "We’re still preparing your eSIM. Stop refreshing payment — open My eSIMs or contact support with your email.",
-      );
+      setLookupError((prev) => prev ?? s.stillPreparing);
       return;
     }
 
@@ -151,6 +153,7 @@ function SuccessContent() {
     order,
     pollCount,
     pollingStopped,
+    s.stillPreparing,
   ]);
 
   useEffect(() => {
@@ -167,12 +170,14 @@ function SuccessContent() {
       ? order.price.toFixed(2)
       : priceParam ?? "0.00";
   const orderNumber = order?.orderNumber;
-  const dashboardHref = `/dashboard${
+  const dashboardQuery = `${
     email ? `?email=${encodeURIComponent(email)}` : ""
   }${orderNumber ? `${email ? "&" : "?"}orderId=${encodeURIComponent(orderNumber)}` : ""}`;
-  const supportHref = `/support?subject=${encodeURIComponent("Install / QR code")}${
+  const dashboardHref = `${localizedPath("/dashboard", locale)}${dashboardQuery}`;
+  const supportQuery = `?subject=${encodeURIComponent(s.supportSubject)}${
     email ? `&email=${encodeURIComponent(email)}` : ""
   }${orderNumber ? `&orderId=${encodeURIComponent(orderNumber)}` : ""}`;
+  const supportHref = `${localizedPath("/support", locale)}${supportQuery}`;
   const giftPriceFallback = Number.parseFloat(priceParam ?? "0");
   const giftCardPrice =
     order?.price ?? (Number.isFinite(giftPriceFallback) && giftPriceFallback > 0
@@ -185,25 +190,35 @@ function SuccessContent() {
   const giftRecipientLabel =
     order?.giftRecipientName && order?.giftRecipientEmail
       ? `${order.giftRecipientName} (${order.giftRecipientEmail})`
-      : order?.giftRecipientEmail ?? "your friend";
+      : order?.giftRecipientEmail ?? s.yourFriend;
+
+  const planSuffix = plan
+    ? t(dict, "successPage.planSuffix", { plan })
+    : "";
+  const emailSuffix = email
+    ? t(dict, "successPage.emailSuffix", { email })
+    : "";
 
   return (
     <>
       <SiteHeader />
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { href: "/destinations", label: "Destinations" },
-          { label: "Order confirmed" },
+          { href: localizedPath("/", locale), label: dict.common.home },
+          {
+            href: localizedPath("/destinations", locale),
+            label: dict.nav.destinations,
+          },
+          { label: s.crumbConfirmed },
         ]}
       />
       <FunnelSteps
         current={4}
         steps={[
-          { n: 1, label: "Choose plan" },
-          { n: 2, label: "Your details" },
-          { n: 3, label: "Pay securely" },
-          { n: 4, label: "Activate" },
+          { n: 1, label: dict.checkout.stepChoose },
+          { n: 2, label: dict.checkout.stepDetails },
+          { n: 3, label: dict.checkout.stepPay },
+          { n: 4, label: dict.checkout.stepActivate },
         ]}
       />
 
@@ -212,12 +227,13 @@ function SuccessContent() {
           <div className="check-icon">
             <i className="fas fa-check-circle" aria-hidden="true" />
           </div>
-          <h1>{isGiftPurchase ? "Gift payment confirmed" : "Payment confirmed"}</h1>
+          <h1>{isGiftPurchase ? s.giftTitle : s.title}</h1>
           <p>
             {isGiftPurchase ? (
               <>
-                We&apos;re preparing the eSIM for {giftRecipientLabel}. They&apos;ll
-                receive the QR code and your message by email
+                {t(dict, "successPage.giftPreparingBefore", {
+                  recipient: giftRecipientLabel,
+                })}
                 {orderNumber ? (
                   <>
                     {" "}
@@ -227,15 +243,15 @@ function SuccessContent() {
                 .
               </>
             ) : (
-              <>
-                Your eSIM for {country}
-                {plan ? ` (${plan})` : ""} is being prepared
-                {email ? ` — delivery goes to ${email}` : ""}.
-              </>
+              t(dict, "successPage.preparing", {
+                country,
+                planSuffix,
+                emailSuffix,
+              })
             )}
           </p>
           <p>
-            Order total: <strong>${price}</strong>
+            {s.orderTotal} <strong>${price}</strong>
             {orderNumber ? (
               <>
                 {" "}
@@ -272,31 +288,31 @@ function SuccessContent() {
         ) : null}
 
         {showPilgrimGuides ? (
-          <aside className="pilgrim-gift-guides" aria-label="Complimentary pilgrimage guides">
-            <p className="pilgrim-gift-guides__kicker">
-              Complimentary gift with your purchase
-            </p>
-            <h2 className="pilgrim-gift-guides__title">
-              Free al-Haramayn guides
-            </h2>
-            <p className="pilgrim-gift-guides__text">
-              Also in your delivery email. Save on Wi‑Fi before you fly — not required
-              to use your eSIM.
-            </p>
+          <aside className="pilgrim-gift-guides" aria-label={s.pilgrimGuidesAria}>
+            <p className="pilgrim-gift-guides__kicker">{s.pilgrimKicker}</p>
+            <h2 className="pilgrim-gift-guides__title">{s.pilgrimTitle}</h2>
+            <p className="pilgrim-gift-guides__text">{s.pilgrimText}</p>
             <ul className="pilgrim-gift-guides__list">
-              {PILGRIM_GIFT_GUIDES.map((guide) => (
-                <li key={guide.id}>
-                  <a
-                    className="pilgrim-gift-guides__link"
-                    href={guide.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="pilgrim-gift-guides__link-title">{guide.title}</span>
-                    <span className="pilgrim-gift-guides__link-blurb">{guide.blurb}</span>
-                  </a>
-                </li>
-              ))}
+              {PILGRIM_GIFT_GUIDES.map((guide) => {
+                const copy = s.guides[guide.id as keyof typeof s.guides];
+                return (
+                  <li key={guide.id}>
+                    <a
+                      className="pilgrim-gift-guides__link"
+                      href={guide.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span className="pilgrim-gift-guides__link-title">
+                        {copy?.title ?? guide.title}
+                      </span>
+                      <span className="pilgrim-gift-guides__link-blurb">
+                        {copy?.blurb ?? guide.blurb}
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </aside>
         ) : null}
@@ -304,9 +320,9 @@ function SuccessContent() {
         {!isGiftPurchase ? (
         <div className="ticket-card">
           <div className="ticket-header">
-            <strong>What happens next</strong>
+            <strong>{s.whatNext}</strong>
             <span className="order-id">
-              {loading ? "Loading order…" : orderNumber ?? "Usually 1–2 min"}
+              {loading ? s.loadingOrder : orderNumber ?? s.usuallyMinutes}
             </span>
           </div>
           <div className="ticket-body">
@@ -316,69 +332,57 @@ function SuccessContent() {
               </div>
               {qrHref ? (
                 <>
-                  <p className="scan-instruction">Your install QR is ready above</p>
+                  <p className="scan-instruction">{s.qrReady}</p>
                   <p className="email-note" style={{ marginTop: 8 }}>
-                    Prefer email? The same branded QR and one-tap links are in your
-                    delivery message.
+                    {s.preferEmail}
                   </p>
                 </>
               ) : (
-                <p className="scan-instruction">
-                  Your branded QR and install links appear here as soon as payment
-                  confirms — usually within a minute or two.
-                </p>
+                <p className="scan-instruction">{s.qrPending}</p>
               )}
             </div>
             <div className="details-area">
-              <h3>Install in 3 steps</h3>
+              <h3>{s.installTitle}</h3>
               <div className="next-timeline">
                 <div className="next-step">
                   <span>1</span>
                   <div>
-                    <strong>Payment confirmation</strong>
-                    <p>Your first email confirms the order and shows the order ID.</p>
+                    <strong>{s.step1Title}</strong>
+                    <p>{s.step1Body}</p>
                   </div>
                 </div>
                 <div className="next-step">
                   <span>2</span>
                   <div>
-                    <strong>Install on this page or email</strong>
-                    <p>
-                      Scan the NoorLink QR, or tap Install on iPhone / Android if you
-                      can’t scan.
-                    </p>
+                    <strong>{s.step2Title}</strong>
+                    <p>{s.step2Body}</p>
                   </div>
                 </div>
                 <div className="next-step">
                   <span>3</span>
                   <div>
-                    <strong>Track usage here</strong>
-                    <p>
-                      See GB and days remaining in My eSIMs anytime during your trip.
-                    </p>
+                    <strong>{s.step3Title}</strong>
+                    <p>{s.step3Body}</p>
                   </div>
                 </div>
               </div>
               <ol className="install-steps">
-                <li>Use Wi‑Fi before you install.</li>
-                <li>Scan the QR or open a one-tap install link on your phone.</li>
-                <li>
-                  Before you fly: travel line ON, Data Roaming ON, Cellular Data =
-                  travel line (see visual guide above).
-                </li>
+                <li>{s.ol1}</li>
+                <li>{s.ol2}</li>
+                <li>{s.ol3}</li>
               </ol>
               <p className="email-note">
-                Check inbox and spam/junk. If nothing arrives within 10 minutes,
-                look up the order in{" "}
-                <Link href={dashboardHref}>My eSIMs</Link> or message{" "}
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp support</a>.
+                {s.emailNoteBefore}{" "}
+                <Link href={dashboardHref}>{dict.nav.myEsims}</Link>{" "}
+                {s.emailNoteOr}{" "}
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>{s.whatsappSupport}</a>.
               </p>
               <div className="success-actions">
                 <Link href={dashboardHref} className="btn-nav">
-                  Track this order
+                  {s.trackOrder}
                 </Link>
                 <Link href={supportHref} className="btn-nav btn-nav--secondary">
-                  Contact support
+                  {dict.common.contactSupport}
                 </Link>
               </div>
             </div>
@@ -387,28 +391,30 @@ function SuccessContent() {
         ) : (
         <div className="ticket-card gift-sent-card">
           <div className="ticket-header">
-            <strong>What happens next</strong>
+            <strong>{s.whatNext}</strong>
             <span className="order-id">
-              {loading ? "Loading order…" : orderNumber ?? "Usually 1–2 min"}
+              {loading ? s.loadingOrder : orderNumber ?? s.usuallyMinutes}
             </span>
           </div>
           <div className="ticket-body gift-sent-card__body">
             <ol className="install-steps">
-              <li>We provision the eSIM and email the QR code to your friend.</li>
-              <li>You receive a confirmation email when delivery is sent.</li>
-              <li>They install on Wi‑Fi before they fly — same calm NoorLink steps.</li>
+              <li>{s.giftOl1}</li>
+              <li>{s.giftOl2}</li>
+              <li>{s.giftOl3}</li>
             </ol>
             <p className="email-note">
-              If they don&apos;t see the email within 10 minutes, ask them to check
-              spam or contact{" "}
-              <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp support</a>.
+              {s.giftEmailNoteBefore}{" "}
+              <a href={`https://wa.me/${WHATSAPP_NUMBER}`}>{s.whatsappSupport}</a>.
             </p>
             <div className="success-actions">
-              <Link href="/gift" className="btn-nav">
-                Send another gift
+              <Link href={localizedPath("/gift", locale)} className="btn-nav">
+                {s.sendAnother}
               </Link>
-              <Link href="/destinations" className="btn-nav btn-nav--secondary">
-                Browse destinations
+              <Link
+                href={localizedPath("/destinations", locale)}
+                className="btn-nav btn-nav--secondary"
+              >
+                {s.browseDestinations}
               </Link>
             </div>
           </div>
@@ -440,8 +446,10 @@ function SuccessContent() {
 }
 
 export function ModernSuccessPage() {
+  const [locale] = useLocaleState();
+  const loading = getDictionary(locale).common.loading;
   return (
-    <Suspense fallback={<main className="container">Loading…</main>}>
+    <Suspense fallback={<main className="container">{loading}</main>}>
       <SuccessContent />
     </Suspense>
   );

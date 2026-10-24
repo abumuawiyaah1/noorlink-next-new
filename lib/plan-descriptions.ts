@@ -1,3 +1,5 @@
+import type { Locale } from "@/lib/i18n/config";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
 import type { EsimPlan } from "@/lib/plans-api";
 
 export type PlanCopy = {
@@ -8,6 +10,7 @@ export type PlanCopy = {
 type DescribeOptions = {
   countryLabel?: string;
   isRegional?: boolean;
+  locale?: Locale | string | null;
 };
 
 function formatGb(plan: EsimPlan): string | null {
@@ -16,9 +19,14 @@ function formatGb(plan: EsimPlan): string | null {
   return Number.isInteger(value) ? `${value}GB` : `${value}GB`;
 }
 
-function formatDays(plan: EsimPlan): string {
-  if (plan.durationDays == null) return "flexible validity";
-  return plan.durationDays === 1 ? "1 day" : `${plan.durationDays} days`;
+function formatDays(
+  plan: EsimPlan,
+  dict: ReturnType<typeof getDictionary>,
+): string {
+  if (plan.durationDays == null) return t(dict, "planCopy.flexibleValidity");
+  return plan.durationDays === 1
+    ? t(dict, "planCopy.dayOne")
+    : t(dict, "planCopy.daysN", { n: plan.durationDays });
 }
 
 /**
@@ -29,10 +37,12 @@ export function describeEsimPlan(
   plan: EsimPlan,
   options: DescribeOptions = {},
 ): PlanCopy {
-  const place = options.countryLabel?.trim() || "this destination";
-  const speed = "3G / 4G / 5G";
+  const dict = getDictionary(options.locale);
+  const place =
+    options.countryLabel?.trim() || t(dict, "planCopy.thisDestination");
+  const speed = t(dict, "planCopy.speedLabel");
   const gb = formatGb(plan);
-  const days = formatDays(plan);
+  const days = formatDays(plan, dict);
   const regional = Boolean(options.isRegional);
 
   if (plan.planCategory === "unlimited" || /unlimited/i.test(plan.name)) {
@@ -42,22 +52,27 @@ export function describeEsimPlan(
     if (isDailyFup) {
       const tripDays = plan.durationDays ?? 7;
       return {
-        description: `Saudi day-pass: 3GB/day at full speed for ${tripDays} days on ${speed}, then stay connected at up to 1 Mbps until each daily reset. Honest unlimited — not a fixed GB bucket.`,
+        description: t(dict, "planCopy.dailyFupDesc", {
+          days: tripDays,
+          speed,
+        }),
         highlights: [
-          `3GB/day full speed · ${tripDays} days`,
-          `Then up to 1 Mbps · hotspot included`,
-          `Starts when you connect in Saudi Arabia`,
+          t(dict, "planCopy.dailyFupH1", { days: tripDays }),
+          t(dict, "planCopy.dailyFupH2"),
+          t(dict, "planCopy.dailyFupH3"),
         ],
       };
     }
     return {
       description: regional
-        ? `Unlimited high-speed data across the region for ${days} on ${speed}. Built for continuous maps, calls, and streaming while you cross borders.`
-        : `Unlimited high-speed data in ${place} for ${days} on ${speed}. Best when you do not want to watch a data counter.`,
+        ? t(dict, "planCopy.unlimitedRegionalDesc", { days, speed })
+        : t(dict, "planCopy.unlimitedCountryDesc", { place, days, speed }),
       highlights: [
-        `Unlimited data · ${days}`,
-        `${speed} coverage`,
-        regional ? "One eSIM across covered countries" : `Coverage in ${place}`,
+        t(dict, "planCopy.unlimitedH1", { days }),
+        t(dict, "planCopy.coverageSpeed", { speed }),
+        regional
+          ? t(dict, "planCopy.oneEsimRegional")
+          : t(dict, "planCopy.coverageIn", { place }),
       ],
     };
   }
@@ -70,28 +85,37 @@ export function describeEsimPlan(
   ) {
     return {
       description: regional
-        ? `Pay-as-you-go regional eSIM — start from this price, top up as you use data across covered countries on ${speed}.`
-        : `Pay-as-you-go eSIM for ${place} — start from this price and add data only when you need it on ${speed}.`,
+        ? t(dict, "planCopy.paygRegionalDesc", { speed })
+        : t(dict, "planCopy.paygCountryDesc", { place, speed }),
       highlights: [
-        "Flexible top-ups",
-        `${speed} coverage`,
-        "Ideal when your usage is hard to predict",
+        t(dict, "planCopy.flexibleTopUps"),
+        t(dict, "planCopy.coverageSpeed", { speed }),
+        t(dict, "planCopy.idealUnpredictable"),
       ],
     };
   }
 
   // Fixed packs (Access-style: GB + days + speed)
-  const dataLabel = gb ?? "Fixed data";
+  const dataLabel = gb ?? t(dict, "planCopy.fixedData");
   return {
     description: regional
-      ? `Fixed pack: ${dataLabel} for ${days} on ${speed} across the region. Predictable allowance for maps, messaging, and travel apps without surprise top-ups.`
-      : `Fixed pack: ${dataLabel} for ${days} on ${speed} in ${place}. Predictable allowance for maps, messaging, and travel apps.`,
+      ? t(dict, "planCopy.fixedRegionalDesc", {
+          data: dataLabel,
+          days,
+          speed,
+        })
+      : t(dict, "planCopy.fixedCountryDesc", {
+          data: dataLabel,
+          days,
+          speed,
+          place,
+        }),
     highlights: [
-      `${dataLabel} · ${days}`,
-      `${speed} coverage`,
+      t(dict, "planCopy.dataDays", { data: dataLabel, days }),
+      t(dict, "planCopy.coverageSpeed", { speed }),
       regional
-        ? "One QR for regional travel"
-        : "Hotspot supported on most devices",
+        ? t(dict, "planCopy.oneQrRegional")
+        : t(dict, "planCopy.hotspotMostDevices"),
     ],
   };
 }

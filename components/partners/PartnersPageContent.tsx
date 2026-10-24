@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -6,61 +8,40 @@ import { PartnersHeroActions } from "@/components/partners/PartnersHeroActions";
 import { PartnerBenefits } from "@/components/partners/PartnerBenefits";
 import { PartnerPrograms } from "@/components/partners/PartnerPrograms";
 import { PartnersPortal } from "@/components/partners/PartnersPortal";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/content-pages.css";
 import "@/styles/partners.css";
 
-const PARTNER_STATS = [
-  { icon: "🌍", value: "190+", label: "Countries" },
-  { icon: "💬", value: "24/7", label: "Support for referrals" },
-  { value: "Curated", label: "Partner approval" },
-  { icon: "🔗", value: "One link", label: "No inventory" },
-] as const;
-
-const PARTNER_STEPS = [
-  {
-    step: "1",
-    title: "Apply",
-    body: "Tell us about your audience or organization. No referral code needed yet.",
-  },
-  {
-    step: "2",
-    title: "Get your link",
-    body: "Once approved, we send your personal referral link and dashboard access.",
-  },
-  {
-    step: "3",
-    title: "Earn on every trip",
-    body: "Your community saves at checkout. You earn rewards on qualifying sales through your link.",
-  },
-] as const;
-
 export function PartnersPageContent() {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
+  const p = dict.partnersPage;
+
   return (
     <>
       <SiteHeader />
       <Breadcrumbs
         items={[
-          { href: "/", label: "Home" },
-          { label: "Partners" },
+          { href: localizedPath("/", locale), label: dict.common.home },
+          { label: p.crumb },
         ]}
       />
       <main className="content-page partners-page">
         <section className="partners-hero">
           <div className="partners-hero__overlay" aria-hidden="true" />
           <div className="partners-hero__inner">
-            <span className="content-kicker">NoorLink partner program</span>
-            <h1>Partner with a travel eSIM brand your community can trust</h1>
-            <p>
-              Help travelers stay connected before they fly — with calm, practical
-              service, real support, and rewards that stay simple.
-            </p>
+            <span className="content-kicker">{p.heroKicker}</span>
+            <h1>{p.heroTitle}</h1>
+            <p>{p.heroLede}</p>
             <PartnersHeroActions />
           </div>
         </section>
 
         <div className="content-shell partners-shell">
-          <section className="partners-stats" aria-label="Program highlights">
-            {PARTNER_STATS.map((stat) => (
+          <section className="partners-stats" aria-label={p.statsAria}>
+            {p.stats.map((stat) => (
               <article key={stat.label} className="about-stat partners-stat">
                 {"icon" in stat && stat.icon ? (
                   <span className="partners-stat__icon" aria-hidden="true">
@@ -75,31 +56,21 @@ export function PartnersPageContent() {
 
           <section className="partners-trust" aria-labelledby="partners-trust-heading">
             <div className="partners-trust__copy">
-              <span className="content-kicker">Built for real communities</span>
-              <h2 id="partners-trust-heading">
-                A premium product behind every referral link
-              </h2>
-              <p>
-                Your name is on the recommendation. NoorLink delivers eSIMs by email,
-                handles install support on WhatsApp, and keeps the experience consistent
-                from checkout to activation — so you can focus on your audience, not
-                troubleshooting.
-              </p>
-              <p>
-                We approve cash partners manually. That means fewer spammy coupon sites
-                and a program that protects the trust you have worked to build.
-              </p>
+              <span className="content-kicker">{p.trustKicker}</span>
+              <h2 id="partners-trust-heading">{p.trustTitle}</h2>
+              <p>{p.trustP1}</p>
+              <p>{p.trustP2}</p>
               <ul className="partners-trust__list">
-                <li>Stripe-secured checkout your referrals can rely on</li>
-                <li>Hajj &amp; Umrah corridor plans for faith-based travel</li>
-                <li>A read-only partner dashboard for your link and balance</li>
+                {p.trustItems.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </div>
             <div
               className="partners-trust__media"
               style={{ backgroundImage: "url(/images/team.jpg)" }}
               role="img"
-              aria-label="NoorLink team supporting travelers"
+              aria-label={p.trustMediaAlt}
             />
           </section>
 
@@ -108,12 +79,12 @@ export function PartnersPageContent() {
 
           <section className="partners-steps" aria-labelledby="partners-steps-heading">
             <div className="content-section-head partners-steps__head">
-              <span className="content-kicker">How it works</span>
-              <h2 id="partners-steps-heading">Three steps to start earning</h2>
-              <p>Clear, manual, and designed for long-term community partnerships.</p>
+              <span className="content-kicker">{p.stepsKicker}</span>
+              <h2 id="partners-steps-heading">{p.stepsTitle}</h2>
+              <p>{p.stepsLede}</p>
             </div>
             <div className="partners-steps__grid">
-              {PARTNER_STEPS.map((item) => (
+              {p.steps.map((item) => (
                 <article key={item.step} className="partners-step-card">
                   <span className="partners-step-card__num" aria-hidden="true">
                     {item.step}
@@ -132,14 +103,15 @@ export function PartnersPageContent() {
               aria-hidden="true"
             />
             <div className="partners-cta__copy">
-              <span className="content-kicker">Ready when you are</span>
-              <h2 id="partners-cta-heading">Join creators, masjids, and travel advisors</h2>
-              <p>
-                Apply below or sign in if you are already approved.
-              </p>
+              <span className="content-kicker">{p.ctaKicker}</span>
+              <h2 id="partners-cta-heading">{p.ctaTitle}</h2>
+              <p>{p.ctaLede}</p>
               <p className="partners-cta__note">
-                By applying, you agree to our{" "}
-                <Link href="/partners/terms">Partner Program Terms</Link>.
+                {p.ctaTermsBefore}{" "}
+                <Link href={localizedPath("/partners/terms", locale)}>
+                  {p.ctaTermsLink}
+                </Link>
+                .
               </p>
             </div>
           </section>
@@ -147,11 +119,15 @@ export function PartnersPageContent() {
           <PartnersPortal />
 
           <p className="partner-apply__links">
-            <Link href="/partners/terms">Partner Program Terms</Link>
+            <Link href={localizedPath("/partners/terms", locale)}>
+              {p.footerTerms}
+            </Link>
             {" · "}
-            <Link href="/destinations">Browse destinations</Link>
+            <Link href={localizedPath("/destinations", locale)}>
+              {p.footerDestinations}
+            </Link>
             {" · "}
-            <Link href="/hajj-umrah">Hajj &amp; Umrah plans</Link>
+            <Link href={localizedPath("/hajj-umrah", locale)}>{p.footerHajj}</Link>
           </p>
         </div>
       </main>
