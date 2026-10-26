@@ -1,6 +1,6 @@
 # Localization — Spanish (LatAm) + Arabic (MSA)
 
-**Status:** Full customer site UI + deep content wired for `/es` and `/ar` — ready for walkthrough → then commit / go live.
+**Status:** Official live locales — **en** (default), **es** (LatAm), **ar** (MSA). Customer UI + deep content shipped on `main`.
 
 ## Covered (switcher + `/es` `/ar`)
 
