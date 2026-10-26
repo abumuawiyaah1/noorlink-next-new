@@ -2,6 +2,8 @@
 
 **Status:** Official live locales — **en** (default), **es** (LatAm), **ar** (MSA). Customer UI + deep content shipped on `main`.
 
+**Language detection:** URL prefix → cookie (switcher / prior visit) → browser `Accept-Language` on first visit → English. Not geo/IP (geo reserved for future local currency).
+
 ## Covered (switcher + `/es` `/ar`)
 
 - Header / footer / language switcher / RTL `dir` / global back button / WhatsApp FAB
