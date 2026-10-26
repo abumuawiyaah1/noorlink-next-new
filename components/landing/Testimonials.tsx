@@ -3,11 +3,13 @@
 import {
   TRUSTPILOT_PROFILE_URL,
   TRUSTPILOT_STAR_DISPLAY,
-  TRUSTPILOT_TRUST_LABEL,
   TRUSTPILOT_TRUST_SCORE,
 } from "@/lib/review-links";
-import { TRUSTPILOT_QUOTES } from "@/lib/trustpilot-quotes";
-import { getDictionary } from "@/lib/i18n/dictionaries";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import {
+  localizeTrustpilotQuotes,
+  trustpilotTrustLabel,
+} from "@/lib/i18n/trustpilot";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 
 /** Trustpilot-style green star tiles (filled / empty). */
@@ -41,6 +43,7 @@ function Stars({
 export function Testimonials() {
   const [locale] = useLocaleState();
   const dict = getDictionary(locale);
+  const quotes = localizeTrustpilotQuotes(locale);
 
   return (
     <section className="reviews-section" aria-labelledby="reviews-heading">
@@ -57,13 +60,13 @@ export function Testimonials() {
               {TRUSTPILOT_TRUST_SCORE}
             </span>
             <span className="reviews-header__score-label">
-              {TRUSTPILOT_TRUST_LABEL}
+              {trustpilotTrustLabel(locale)}
             </span>
           </p>
         </div>
 
         <div className="reviews-grid">
-          {TRUSTPILOT_QUOTES.map((quote) => (
+          {quotes.map((quote) => (
             <article
               key={`${quote.name}-${quote.country}`}
               className="review-card"
@@ -85,7 +88,9 @@ export function Testimonials() {
 
               <p
                 className="review-card__stars"
-                aria-label={`${quote.stars} out of 5 stars`}
+                aria-label={t(dict, "comparePage.starsAria", {
+                  stars: quote.stars,
+                })}
               >
                 <Stars count={quote.stars} size="sm" />
               </p>

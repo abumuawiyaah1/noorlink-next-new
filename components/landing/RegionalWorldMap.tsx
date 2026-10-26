@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useId, useState } from "react";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
 import { useLocaleState } from "@/lib/i18n/use-locale";
+import { localizeRegionalProduct } from "@/lib/i18n/regional";
 import {
   plansPathForRegion,
   REGIONAL_PRODUCTS,
@@ -62,7 +63,8 @@ export function RegionalWorldMap() {
 
   const previewSlug: RegionalRouteSlug =
     active && active !== "global" ? active : "europe";
-  const preview = REGIONAL_PRODUCTS[previewSlug];
+  const preview = localizeRegionalProduct(REGIONAL_PRODUCTS[previewSlug], locale);
+  const globalProduct = localizeRegionalProduct(REGIONAL_PRODUCTS.global, locale);
   const isGlobal = active === "global";
 
   return (
@@ -183,11 +185,11 @@ export function RegionalWorldMap() {
         {isGlobal ? (
           <>
             <span className="regional-map__panel-kicker">{regionalUi.multiRegion}</span>
-            <h3>{REGIONAL_PRODUCTS.global.displayName}</h3>
-            <p>{REGIONAL_PRODUCTS.global.heroTagline}</p>
+            <h3>{globalProduct.displayName}</h3>
+            <p>{globalProduct.heroTagline}</p>
             <p className="regional-map__panel-meta">
               {t(dict, "regional.covers", {
-                n: REGIONAL_PRODUCTS.global.countries.length,
+                n: globalProduct.countries.length,
               })}
             </p>
             <Link

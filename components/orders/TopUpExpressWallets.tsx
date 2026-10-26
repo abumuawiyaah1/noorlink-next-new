@@ -10,6 +10,7 @@ import { loadStripe, type StripeExpressCheckoutElementConfirmEvent } from "@stri
 import { useEffect, useMemo, useState } from "react";
 import { API_BASE } from "@/lib/api-client";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { stripeElementsLocale } from "@/lib/i18n/payment-locale";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 import { createTopUpPaymentIntent } from "@/lib/orders-api";
 import type { TopUpPayPalSelection } from "@/components/orders/TopUpPayPalButton";
@@ -185,6 +186,8 @@ export function TopUpExpressWallets({
       mode: "payment" as const,
       amount: Math.max(50, amountCents),
       currency: "usd",
+      // Client-side Elements UI only; hosted Checkout locale is backend-owned.
+      locale: stripeElementsLocale(locale),
       appearance: {
         variables: {
           borderRadius: "10px",
@@ -192,7 +195,7 @@ export function TopUpExpressWallets({
         },
       },
     }),
-    [amountCents],
+    [amountCents, locale],
   );
 
   if (loadError || amountCents < 50) {
@@ -208,7 +211,11 @@ export function TopUpExpressWallets({
   return (
     <div className="order-topup__express">
       <p className="order-topup__express-label">{c.expressCheckout}</p>
-      <Elements stripe={stripe} options={options} key={amountCents}>
+      <Elements
+        stripe={stripe}
+        options={options}
+        key={`${amountCents}-${options.locale}`}
+      >
         <TopUpExpressInner
           orderNumber={orderNumber}
           email={email}

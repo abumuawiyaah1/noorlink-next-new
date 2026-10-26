@@ -19,6 +19,7 @@ import { getDictionary, t } from "@/lib/i18n/dictionaries";
 import { localizedSeasonLabel } from "@/lib/i18n/popular-stories";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 import { localizedPath } from "@/lib/i18n/path";
+import { localizeDestinationCard } from "@/lib/i18n/destinations";
 import type { Locale } from "@/lib/i18n/config";
 
 type PopularCard = DestinationCard & { reason: string };
@@ -78,7 +79,8 @@ export function PopularCountries() {
         </div>
 
         <div className="popular-countries__grid" role="list">
-          {cards.map((card, index) => {
+          {cards.map((rawCard, index) => {
+            const card = localizeDestinationCard(rawCard, locale);
             const price = livePrices[card.priceCountryId]?.label ?? dict.common.seePlans;
             const flag = getCountryFlag(card.priceCountryId);
             const image = destinationCardSrcSet(card.image);

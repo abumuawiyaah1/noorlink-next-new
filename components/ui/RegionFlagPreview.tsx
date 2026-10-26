@@ -3,6 +3,8 @@
 import { flagForCountryLabel } from "@/lib/country-flags";
 import type { RegionalRouteSlug } from "@/lib/regional-products";
 import { getRegionalProduct } from "@/lib/regional-products";
+import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type Props = {
   routeSlug: RegionalRouteSlug;
@@ -20,6 +22,8 @@ export function RegionFlagPreview({
   previewCount = 12,
   className = "",
 }: Props) {
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const product = getRegionalProduct(routeSlug);
   if (!product) return null;
 
@@ -34,7 +38,7 @@ export function RegionFlagPreview({
     >
       <div className="region-flag-preview__panel">
         <p className="region-flag-preview__title">
-          {countries.length} destinations — click for the full list
+          {t(dict, "common.destinationsClickFull", { n: countries.length })}
         </p>
         <ul className="region-flag-preview__flags">
           {panel.map((name) => (
@@ -44,7 +48,9 @@ export function RegionFlagPreview({
             </li>
           ))}
           {panelRest > 0 && (
-            <li className="region-flag-preview__more">+{panelRest} more</li>
+            <li className="region-flag-preview__more">
+              {t(dict, "common.nMore", { n: panelRest })}
+            </li>
           )}
         </ul>
       </div>

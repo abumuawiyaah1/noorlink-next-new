@@ -20,10 +20,10 @@ export function ModernNewsletterPage() {
   const dict = getDictionary(locale);
   const n = dict.newsletterPage;
   const published = getPublishedInsiderIssues().map((issue) =>
-    localizeInsiderIssue(issue, dict),
+    localizeInsiderIssue(issue, dict, locale),
   );
   const upcoming = getUpcomingInsiderIssues().map((issue) =>
-    localizeInsiderIssue(issue, dict),
+    localizeInsiderIssue(issue, dict, locale),
   );
 
   return (

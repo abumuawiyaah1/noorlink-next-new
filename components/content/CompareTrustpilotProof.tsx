@@ -3,11 +3,13 @@
 import {
   TRUSTPILOT_PROFILE_URL,
   TRUSTPILOT_STAR_DISPLAY,
-  TRUSTPILOT_TRUST_LABEL,
   TRUSTPILOT_TRUST_SCORE,
 } from "@/lib/review-links";
-import { TRUSTPILOT_QUOTES } from "@/lib/trustpilot-quotes";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import {
+  localizeTrustpilotQuotes,
+  trustpilotTrustLabel,
+} from "@/lib/i18n/trustpilot";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 
 /** Prefer pilgrimage / hotspot quotes on the compare page. */
@@ -37,11 +39,11 @@ export function CompareTrustpilotProof() {
   const dict = getDictionary(locale);
   const c = dict.comparePage;
 
+  const trustLabel = trustpilotTrustLabel(locale);
+  const allQuotes = localizeTrustpilotQuotes(locale);
   const quotes = COMPARE_QUOTE_NAMES.map((name) =>
-    TRUSTPILOT_QUOTES.find((quote) => quote.name === name),
-  ).filter((quote): quote is (typeof TRUSTPILOT_QUOTES)[number] =>
-    Boolean(quote),
-  );
+    allQuotes.find((quote) => quote.name === name),
+  ).filter((quote): quote is (typeof allQuotes)[number] => Boolean(quote));
 
   return (
     <section
@@ -58,7 +60,7 @@ export function CompareTrustpilotProof() {
       <p
         className="esim-compare-trust__score"
         aria-label={t(dict, "comparePage.trustScoreAria", {
-          label: TRUSTPILOT_TRUST_LABEL,
+          label: trustLabel,
           score: TRUSTPILOT_TRUST_SCORE,
         })}
       >
@@ -68,7 +70,7 @@ export function CompareTrustpilotProof() {
         </span>
         <span className="esim-compare-trust__score-label">
           {t(dict, "comparePage.trustOnTrustpilot", {
-            label: TRUSTPILOT_TRUST_LABEL,
+            label: trustLabel,
           })}
         </span>
       </p>
@@ -98,7 +100,7 @@ export function CompareTrustpilotProof() {
             >
               <Stars count={quote.stars} size="sm" />
             </p>
-            {/* Authentic Trustpilot quote bodies stay in English. */}
+            {/* Quote bodies + country localized in lib/i18n/trustpilot.ts; names unchanged. */}
             <p className="esim-compare-trust__preview">“{quote.preview}”</p>
           </article>
         ))}

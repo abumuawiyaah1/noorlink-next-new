@@ -1,16 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/cookieyes-mobile.css";
 
-const TITLE = "We value your privacy";
-const BAD_TITLE = /we\s+a\s+noorlink|value your privacy/i;
+const BAD_TITLE = /we\s+a\s+noorlink|value your privacy|valoramos tu privacidad|نُقدّر خصوصيتك|نقدر خصوصيتك/i;
 
-function rewriteBanner() {
+function rewriteBanner(title: string) {
   document.querySelectorAll(".cky-title, .cky-notice-title, h2.cky-title").forEach((el) => {
     const text = el.textContent ?? "";
-    if (BAD_TITLE.test(text) && el.textContent !== TITLE) {
-      el.textContent = TITLE;
+    if (BAD_TITLE.test(text) && el.textContent !== title) {
+      el.textContent = title;
     }
   });
 
@@ -21,20 +22,23 @@ function rewriteBanner() {
 }
 
 export function CookieYesBannerFix() {
-  useEffect(() => {
-    rewriteBanner();
+  const [locale] = useLocaleState();
+  const title = getDictionary(locale).cookies.bannerTitle;
 
-    const onLoad = () => rewriteBanner();
+  useEffect(() => {
+    rewriteBanner(title);
+
+    const onLoad = () => rewriteBanner(title);
     document.addEventListener("cookieyes_banner_load", onLoad);
 
-    const observer = new MutationObserver(() => rewriteBanner());
+    const observer = new MutationObserver(() => rewriteBanner(title));
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       document.removeEventListener("cookieyes_banner_load", onLoad);
       observer.disconnect();
     };
-  }, []);
+  }, [title]);
 
   return null;
 }

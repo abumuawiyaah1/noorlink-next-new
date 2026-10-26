@@ -41,13 +41,9 @@ import {
 } from "@/lib/affiliate-link";
 import { getDictionary, t, type Dictionary } from "@/lib/i18n/dictionaries";
 import { localizedPath } from "@/lib/i18n/path";
+import { localizeRegionalProduct } from "@/lib/i18n/regional";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/plans-dynamic.css";
-
-function usePlansDict(): Dictionary {
-  const [locale] = useLocaleState();
-  return getDictionary(locale);
-}
 
 type PlanTab = PlanCategory;
 
@@ -236,10 +232,11 @@ function PlansFaq({
   countryName: string;
   regional?: RegionalProduct;
 }) {
-  const dict = usePlansDict();
+  const [locale] = useLocaleState();
+  const dict = getDictionary(locale);
   const [open, setOpen] = useState<string | null>(null);
   const faqs = regional
-    ? regionalFaqs(dict, regional.faqBorder)
+    ? regionalFaqs(dict, localizeRegionalProduct(regional, locale).faqBorder)
     : planFaqs(dict);
   const waText = t(dict, "plansPage.faqWhatsAppPrefill", {
     country: countryName,
@@ -438,8 +435,15 @@ export function TravelerPlansPage({
     };
   }, [countryId, initialData, initialError]);
 
-  const title = regional?.displayName ?? formatCountryLabel(data?.countryName ?? countryId);
+  const localizedRegional = useMemo(
+    () => (regional ? localizeRegionalProduct(regional, locale) : undefined),
+    [regional, locale],
+  );
+  const title =
+    localizedRegional?.displayName ??
+    formatCountryLabel(data?.countryName ?? countryId);
   const flag = regional?.flag ?? resolveCountryFlag(countryId, data?.flag);
+  // Checkout + API identifiers stay in English so order data is locale-independent.
   const checkoutCountryName = regional?.displayName ?? title;
   const layoverRecommendation = useMemo(() => {
     if (regional) return null;
@@ -510,7 +514,9 @@ export function TravelerPlansPage({
               {regional ? t(dict, "plansPage.regionalEsim") : "NoorLink"}
             </span>
             <p className="plans-page__tagline">
-              {regional ? regional.heroTagline : t(dict, "plansPage.enjoyTravel")}
+              {localizedRegional
+                ? localizedRegional.heroTagline
+                : t(dict, "plansPage.enjoyTravel")}
             </p>
           </div>
           <div className="plans-page__search-wrap">
@@ -621,7 +627,8 @@ export function TravelerPlansPage({
                 })}{" "}
                 <Link href={plansPathForRegion(layoverRecommendation.routeSlug)}>
                   {t(dict, "plansPage.layoverLink", {
-                    region: layoverRecommendation.shortName,
+                    region: localizeRegionalProduct(layoverRecommendation, locale)
+                      .shortName,
                   })}
                 </Link>{" "}
                 {t(dict, "plansPage.layoverAfter")}

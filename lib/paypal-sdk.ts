@@ -2,6 +2,8 @@
 
 /** Shared PayPal SDK boot helpers for checkout + order top-up. */
 
+import { paypalSdkLocale } from "@/lib/i18n/payment-locale";
+
 export type PayPalConfig = {
   enabled: boolean;
   clientId?: string;
@@ -23,6 +25,8 @@ declare global {
 }
 
 let paypalSdkPromise: Promise<PayPalNamespace | null> | null = null;
+/** PayPal `locale` the in-flight / loaded SDK script was requested with. */
+let paypalSdkLoadedLocale: string | null = null;
 
 function sdkHost(mode?: string): string {
   return mode === "live" ? "www.paypal.com" : "www.sandbox.paypal.com";
@@ -47,15 +51,38 @@ export async function resolvePayPalConfig(
   }
 }
 
+/** Drop a previously loaded SDK so it can be re-requested with another locale. */
+function resetPayPalSdk() {
+  document
+    .querySelectorAll('script[data-nl-paypal-sdk="1"]')
+    .forEach((node) => node.remove());
+  delete window.paypal;
+  paypalSdkPromise = null;
+  paypalSdkLoadedLocale = null;
+}
+
+/**
+ * Loads the PayPal JS SDK once per site locale.
+ * `locale` is the NoorLink site locale (en | es | ar); it is mapped to PayPal's
+ * `locale` query param. PayPal controls the actual button copy.
+ */
 export async function loadPayPalSdk(
   clientId: string,
   mode?: string,
+  locale?: string | null,
 ): Promise<PayPalNamespace | null> {
   if (typeof window === "undefined") return null;
+
+  const sdkLocale = paypalSdkLocale(locale);
+  if (paypalSdkLoadedLocale && paypalSdkLoadedLocale !== sdkLocale) {
+    // Language switcher changed the locale after the SDK loaded.
+    resetPayPalSdk();
+  }
   if (window.paypal) return window.paypal;
 
   if (!paypalSdkPromise) {
-    paypalSdkPromise = new Promise<PayPalNamespace | null>((resolve) => {
+    paypalSdkLoadedLocale = sdkLocale;
+    const request: Promise<PayPalNamespace | null> = new Promise<PayPalNamespace | null>((resolve) => {
       const existing = document.querySelector<HTMLScriptElement>(
         'script[data-nl-paypal-sdk="1"]',
       );
@@ -72,7 +99,7 @@ export async function loadPayPalSdk(
       }
 
       const script = document.createElement("script");
-      script.src = `https://${sdkHost(mode)}/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture&disable-funding=paylater,card,credit,venmo`;
+      script.src = `https://${sdkHost(mode)}/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture&disable-funding=paylater,card,credit,venmo&locale=${encodeURIComponent(sdkLocale)}`;
       script.async = true;
       script.dataset.nlPaypalSdk = "1";
       let settled = false;
@@ -86,9 +113,14 @@ export async function loadPayPalSdk(
       window.setTimeout(finish, 12000);
       document.body.appendChild(script);
     }).then((paypal) => {
-      if (!paypal) paypalSdkPromise = null;
+      // Only clear shared state if a newer (other-locale) request hasn't replaced us.
+      if (!paypal && paypalSdkPromise === request) {
+        paypalSdkPromise = null;
+        paypalSdkLoadedLocale = null;
+      }
       return paypal;
     });
+    paypalSdkPromise = request;
   }
 
   return paypalSdkPromise;

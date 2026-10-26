@@ -5,6 +5,7 @@ import { flagForCountryLabel } from "@/lib/country-flags";
 import type { RegionalProduct } from "@/lib/regional-products";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
 import { useLocaleState } from "@/lib/i18n/use-locale";
+import { localizeRegionalProduct } from "@/lib/i18n/regional";
 
 type RegionalCoveragePanelProps = {
   product: RegionalProduct;
@@ -31,10 +32,13 @@ export function RegionalCoveragePanel({
         <h2 id="regional-coverage-heading">
           {t(dict, "plansPage.coversN", { n: countries.length })}
         </h2>
-        <p>{product.heroTagline}</p>
+        <p>{localizeRegionalProduct(product, locale).heroTagline}</p>
       </div>
 
-      <ul className="plans-regional-coverage__chips" aria-label="Countries covered">
+      <ul
+        className="plans-regional-coverage__chips"
+        aria-label={dict.common.countriesCoveredAria}
+      >
         {(expanded ? countries : preview).map((country) => (
           <li key={country}>
             <span className="plans-regional-coverage__flag" aria-hidden="true">
@@ -44,7 +48,9 @@ export function RegionalCoveragePanel({
           </li>
         ))}
         {!expanded && rest > 0 && (
-          <li className="plans-regional-coverage__more">+{rest} more</li>
+          <li className="plans-regional-coverage__more">
+            {t(dict, "common.nMore", { n: rest })}
+          </li>
         )}
       </ul>
 

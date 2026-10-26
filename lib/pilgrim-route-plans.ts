@@ -188,13 +188,30 @@ export function resolvePilgrimRoutePlanForKey(
   return withPilgrimRouteRetail(resolvePilgrimRoutePlan(packs, pack), route, pack);
 }
 
+/**
+ * Prefer `localizedRoutePlanName` from `@/lib/i18n/pilgrimage` at UI call sites
+ * when a locale is available. This helper remains for English-default naming.
+ */
 export function brandedRoutePlanName(
   route: PilgrimRouteMeta,
   plan: EsimPlan,
+  locale?: string | null,
 ): string {
   const gb = plan.dataGb ?? (plan.id.includes("premium") ? 10 : 5);
   const days = plan.durationDays ?? (plan.id.includes("premium") ? 30 : 15);
-  return `${route.title} ${gb}GB · ${days} Days`;
+  const loc = locale === "es" || locale === "ar" ? locale : "en";
+  let dayWord: string;
+  if (loc === "es") {
+    dayWord = days === 1 ? "Día" : "Días";
+  } else if (loc === "ar") {
+    if (days === 1) dayWord = "يوم";
+    else if (days === 2) dayWord = "يومان";
+    else if (days >= 3 && days <= 10) dayWord = "أيام";
+    else dayWord = "يومًا";
+  } else {
+    dayWord = days === 1 ? "Day" : "Days";
+  }
+  return `${route.title} ${gb}GB · ${days} ${dayWord}`;
 }
 
 export function getPilgrimRouteMeta(key: PilgrimRouteKey): PilgrimRouteMeta {

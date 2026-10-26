@@ -10,6 +10,8 @@ import {
   plansPathForRegion,
   type RegionalProduct,
 } from "@/lib/regional-products";
+import { localizeRegionalProduct, regionalMetaCopy } from "@/lib/i18n/regional";
+import { getRequestLocale } from "@/lib/i18n/request-locale";
 import { buildPageMetadata } from "@/lib/seo";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/structured-data";
 import "@/styles/plans-dynamic.css";
@@ -48,9 +50,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Regional eSIM Plans | NoorLink" };
   }
 
+  const locale = await getRequestLocale();
+  const meta = regionalMetaCopy(product, locale);
+
   return buildPageMetadata({
-    title: `${product.displayName} eSIM Plans | NoorLink`,
-    description: `${product.heroTagline} Covers ${product.countries.length} countries. Fixed, unlimited, and flexible plans.`,
+    title: meta.title,
+    description: meta.description,
     path: plansPathForRegion(product.routeSlug),
     image: regionalImageSrc(product),
   });
@@ -69,6 +74,8 @@ export default async function RegionalPlansPage({ params, searchParams }: PagePr
   }
 
   const countryImage = regionalImageSrc(product);
+  const locale = await getRequestLocale();
+  const localizedProduct = localizeRegionalProduct(product, locale);
 
   let initialData = null;
   let initialError: string | null = null;
@@ -92,8 +99,8 @@ export default async function RegionalPlansPage({ params, searchParams }: PagePr
       <JsonLd
         data={[
           productJsonLd({
-            name: `${product.displayName} eSIM`,
-            description: product.heroTagline,
+            name: `${localizedProduct.displayName} eSIM`,
+            description: localizedProduct.heroTagline,
             path: plansPathForRegion(product.routeSlug),
             image: countryImage,
           }),
@@ -101,7 +108,7 @@ export default async function RegionalPlansPage({ params, searchParams }: PagePr
             { name: "Home", path: "/" },
             { name: "Destinations", path: "/destinations" },
             {
-              name: product.displayName,
+              name: localizedProduct.displayName,
               path: plansPathForRegion(product.routeSlug),
             },
           ]),

@@ -1,3 +1,4 @@
+import { localizedPilgrimTier } from "@/lib/i18n/pilgrimage";
 import { describeEsimPlan } from "@/lib/plan-descriptions";
 import type { EsimPlan, FormattedPriceParts } from "@/lib/plans-api";
 
@@ -154,9 +155,10 @@ export function resolvePilgrimPlanCopy(
     return describeEsimPlan(plan, { countryLabel: saudiLabel, locale });
   }
 
+  const localized = localizedPilgrimTier(tier.key, locale);
   return {
-    description: tier.description,
-    highlights: tier.highlights,
+    description: localized.description,
+    highlights: localized.highlights,
   };
 }
 

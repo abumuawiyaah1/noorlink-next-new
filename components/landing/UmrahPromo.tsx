@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { PILGRIMAGE_BRAND_LINE } from "@/lib/brand";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedBrandLine } from "@/lib/i18n/pilgrimage";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 
 export function UmrahPromo() {
@@ -15,7 +15,7 @@ export function UmrahPromo() {
         <div className="ramadan-promo">
           <div className="promo-content">
             <div className="promo-text">
-              <div className="promo-kicker">{PILGRIMAGE_BRAND_LINE}</div>
+              <div className="promo-kicker">{localizedBrandLine(locale)}</div>
               <h2 className="promo-title">{dict.umrahPromo.title}</h2>
               <p className="promo-copy">{dict.umrahPromo.body}</p>
               <div className="promo-cta-row">

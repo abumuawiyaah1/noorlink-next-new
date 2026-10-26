@@ -75,7 +75,10 @@
     "policiesKicker": "NoorLink policies",
     "policyHelpBefore": "Need help with an order or policy question? Visit",
     "policyHelpLink": "Support",
-    "support": "Support"
+    "support": "Support",
+    "nMore": "+{n} more",
+    "destinationsClickFull": "{n} destinations — click for the full list",
+    "countriesCoveredAria": "Countries covered"
   },
   "support": {
     "title": "Support",
@@ -352,6 +355,8 @@
     "tapRegion": "Tap a region on the map",
     "seeGlobalPlans": "See Global plans →",
     "regionNames": {
+      "caribbean": "Caribbean",
+      "global": "Global",
       "north-america": "North America",
       "south-america": "South America",
       "europe": "Europe",
@@ -767,7 +772,11 @@
     "purchaseAria": "Purchase",
     "giftTitle": "Download Before You Fly",
     "giftText": "Free al-Haramayn guides for your phone — also included with your pilgrimage eSIM purchase. Not required to use your plan.",
-    "bestMultiDay": "Best for Multi-Day"
+    "bestMultiDay": "Best for Multi-Day",
+    "carriersAria": "Networks and payment security",
+    "carriersPoweredBy": "Powered in Saudi Arabia By",
+    "carriersPayWith": "Pay Securely With",
+    "carriersTrust": "Your payment is protected for your journey. Use Apple Pay, PayPal, or card — your details are never stored on our servers. We take that trust seriously."
   },
   "partnersPage": {
     "crumb": "Partners",
@@ -1713,7 +1722,7 @@
     "signupPrivacy": "One email a month. Choose Umrah or Hajj to receive pilgrimage specials.",
     "signupUnsubscribe": "Unsubscribe",
     "signupAnytime": "anytime.",
-    "bodyRemainderNote": "Full issue body paragraphs remain in English for now; titles, kickers, CTAs, and the opener are localized.",
+    "bodyRemainderNote": "Full issue bodies (paragraphs, tips, deal copy, reminders) are localized from lib/i18n/insider-bodies*.ts; English source lives in lib/insider-issues*.ts.",
     "issues": {
       "2026-09-fall-turkey": {
         "monthLabel": "September 2026",
@@ -2122,5 +2131,30 @@
     "dataDays": "{data} · {days}",
     "oneQrRegional": "One QR for regional travel",
     "hotspotMostDevices": "Hotspot supported on most devices"
+  },
+  "cookies": {
+    "bannerTitle": "We value your privacy"
+  },
+  "thisWeek": {
+    "faithUmrah": "Umrah",
+    "faithRamadan": "Ramadan",
+    "faithHajj": "Hajj",
+    "reasonUmrah": "Year-round pilgrimage travel",
+    "reasonRamadan": "Ramadan travel & planning",
+    "reasonHajj": "Hajj season travel",
+    "countries": {
+      "USA": "USA",
+      "Jamaica": "Jamaica",
+      "Mexico": "Mexico",
+      "UAE": "UAE",
+      "Bahamas": "Bahamas",
+      "Turkey": "Turkey",
+      "Saudi Arabia": "Saudi Arabia",
+      "Japan": "Japan",
+      "France": "France",
+      "Italy": "Italy",
+      "Spain": "Spain",
+      "UK": "UK"
+    }
   }
 }

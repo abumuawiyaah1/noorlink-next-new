@@ -93,7 +93,7 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
           return;
         }
 
-        const paypal = await loadPayPalSdk(data.clientId, data.mode);
+        const paypal = await loadPayPalSdk(data.clientId, data.mode, locale);
         if (cancelled) return;
         if (!paypal) {
           debugError("checkout", "paypal sdk missing after load");
@@ -232,7 +232,7 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
       cancelled = true;
       void buttons?.close?.();
     };
-  }, [packageId, price]);
+  }, [packageId, price, locale]);
 
   if (status === "hidden") return null;
 

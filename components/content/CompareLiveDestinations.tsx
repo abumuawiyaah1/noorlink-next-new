@@ -5,6 +5,7 @@ import { useLiveStartingPrices } from "@/components/destinations/useLiveStarting
 import { getCountryFlag } from "@/lib/country-flags";
 import { DESTINATION_CARDS } from "@/lib/destinations-catalog";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { localizeDestinationCard } from "@/lib/i18n/destinations";
 import { localizedPath } from "@/lib/i18n/path";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 
@@ -17,7 +18,9 @@ export function CompareLiveDestinations() {
 
   const cards = COMPARE_DESTINATION_IDS.map((id) =>
     DESTINATION_CARDS.find((card) => card.id === id),
-  ).filter((card): card is (typeof DESTINATION_CARDS)[number] => Boolean(card));
+  )
+    .filter((card): card is (typeof DESTINATION_CARDS)[number] => Boolean(card))
+    .map((card) => localizeDestinationCard(card, locale));
 
   const livePrices = useLiveStartingPrices(
     cards.map((card) => card.priceCountryId),

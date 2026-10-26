@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { logSearch, type HeroPopularPill } from "@/lib/analytics-api";
 import {
@@ -9,6 +9,7 @@ import {
   type HeroDestination,
 } from "@/lib/hero-destinations";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizeThisWeekPill } from "@/lib/i18n/this-week";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 import { thisWeekHeroPills } from "@/lib/this-week";
 import "@/styles/hero-search.css";
@@ -46,6 +47,14 @@ export function HeroSearch() {
   const [selected, setSelected] = useState<HeroDestination | null>(null);
   const [activePill, setActivePill] = useState<string | null>(null);
   const [pills] = useState<HeroPopularPill[]>(() => thisWeekHeroPills());
+  const displayPills = useMemo(
+    () =>
+      pills.map((pill) => ({
+        source: pill,
+        view: localizeThisWeekPill(pill, locale),
+      })),
+    [pills, locale],
+  );
 
   const suggestions = filterDestinations(query);
   const trimmedQuery = query.trim();
@@ -90,7 +99,7 @@ export function HeroSearch() {
     (pill: HeroPopularPill) => {
       setQuery(pill.query);
       setSelected(null);
-      setActivePill(pill.label);
+      setActivePill(pill.query);
       setIsOpen(false);
       const dest = resolveDestination(pill.query);
       if (dest) {
@@ -205,22 +214,22 @@ export function HeroSearch() {
 
       <div className="hero-search-pills">
         <span className="hero-search-pills__label">{dict.search.thisWeek}</span>
-        {pills.map((pill) => {
-          const tipId = `hero-pill-tip-${pill.label.toLowerCase().replace(/\s+/g, "-")}`;
+        {displayPills.map(({ source, view }) => {
+          const tipId = `hero-pill-tip-${source.query.toLowerCase().replace(/\s+/g, "-")}`;
           return (
           <button
-            key={pill.label}
+            key={source.query}
             type="button"
-            className={`hero-search-pill${activePill === pill.label ? " is-selected" : ""}`}
-            onClick={() => handlePillClick(pill)}
+            className={`hero-search-pill${activePill === source.query ? " is-selected" : ""}`}
+            onClick={() => handlePillClick(source)}
             aria-describedby={tipId}
           >
             <span className="hero-search-pill__text">
-              {pill.flag ? `${pill.flag} ` : null}
-              {pill.label}
+              {view.flag ? `${view.flag} ` : null}
+              {view.label}
             </span>
             <span id={tipId} className="hero-search-pill__tip" role="tooltip">
-              {pill.reason}
+              {view.reason}
             </span>
           </button>
           );

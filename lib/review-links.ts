@@ -15,6 +15,7 @@ const GOOGLE_REVIEW_URL =
  * Last checked: 2026-09-10 → Excellent · 4.3
  */
 export const TRUSTPILOT_TRUST_SCORE = 4.3;
+/** English label; use `trustpilotTrustLabel(locale)` from `lib/i18n/trustpilot` in UI. */
 export const TRUSTPILOT_TRUST_LABEL = "Excellent";
 /** Rounded star fill for the header (4.3 → 4 full + visual). */
 export const TRUSTPILOT_STAR_DISPLAY = 4;

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PilgrimSelectionPage } from "@/components/pilgrimage/PilgrimSelectionPage";
-import { PILGRIMAGE_BRAND_LINE } from "@/lib/brand";
 import { getCountryImage } from "@/lib/country-image";
+import { localizedBrandLine } from "@/lib/i18n/pilgrimage";
 import { ME_REGIONAL_API_ID } from "@/lib/pilgrim-route-plans";
 import { pingPlansApi } from "@/lib/plans-diagnostics";
 import { buildPageMetadata } from "@/lib/seo";
@@ -14,7 +14,7 @@ const SAUDI_COUNTRY_ID = "saudi-arabia";
 export const metadata: Metadata = buildPageMetadata({
   title: "Umrah eSIM & Hajj eSIM — Makkah and Madinah Data | NoorLink",
   description:
-    `${PILGRIMAGE_BRAND_LINE}. Buy an Umrah eSIM or Hajj eSIM for Saudi Arabia — install before you fly, stay connected in Makkah and Madinah. Free phone compatibility check. Hotspot included.`,
+    `${localizedBrandLine("en")}. Buy an Umrah eSIM or Hajj eSIM for Saudi Arabia — install before you fly, stay connected in Makkah and Madinah. Free phone compatibility check. Hotspot included.`,
   path: "/hajj-umrah",
   image: getCountryImage("saudi-arabia"),
 });

@@ -1,43 +1,51 @@
+"use client";
+
 import Image from "next/image";
 import {
-  PILGRIMAGE_DUA_REMINDER,
-  PILGRIMAGE_FEATURED_QUOTE,
-  PILGRIMAGE_GALLERY,
-  PILGRIMAGE_QUOTES,
-} from "@/lib/pilgrimage-inspiration";
+  localizedDuaReminder,
+  localizedFeaturedQuote,
+  localizedGallery,
+  localizedInspirationChrome,
+  localizedQuotes,
+} from "@/lib/i18n/pilgrimage";
+import { useLocaleState } from "@/lib/i18n/use-locale";
 
 export function PilgrimageInspiration() {
+  const [locale] = useLocaleState();
+  const chrome = localizedInspirationChrome(locale);
+  const featured = localizedFeaturedQuote(locale);
+  const quotes = localizedQuotes(locale);
+  const gallery = localizedGallery(locale);
+  const duaReminder = localizedDuaReminder(locale);
+
   return (
     <section className="pilgrim-inspiration" aria-labelledby="pilgrim-inspiration-title">
       <div className="pilgrim-inspiration__header">
-        <span className="pilgrim-inspiration__kicker">For the Journey of a Lifetime</span>
+        <span className="pilgrim-inspiration__kicker">{chrome.kicker}</span>
         <h2 id="pilgrim-inspiration-title" className="pilgrim-inspiration__title">
-          Worship First. Connectivity in the Background.
+          {chrome.title}
         </h2>
-        <p className="pilgrim-inspiration__lead">
-          NoorLink helps pilgrims stay connected in Makkah and Madinah without letting
-          setup steal focus from what matters most.
-        </p>
+        <p className="pilgrim-inspiration__lead">{chrome.lead}</p>
       </div>
 
       <article className="pilgrim-inspiration__featured">
-        <span className="pilgrim-inspiration__label">Qur&apos;an</span>
-        {PILGRIMAGE_FEATURED_QUOTE.arabic ? (
+        <span className="pilgrim-inspiration__label">{chrome.labelQuran}</span>
+        {featured.arabic ? (
           <p className="pilgrim-inspiration__arabic" lang="ar" dir="rtl">
-            {PILGRIMAGE_FEATURED_QUOTE.arabic}
+            {featured.arabic}
           </p>
         ) : null}
         <blockquote className="pilgrim-inspiration__quote">
-          &ldquo;{PILGRIMAGE_FEATURED_QUOTE.text}&rdquo;
+          &ldquo;{featured.text}&rdquo;
         </blockquote>
-        <cite className="pilgrim-inspiration__cite">{PILGRIMAGE_FEATURED_QUOTE.source}</cite>
+        <cite className="pilgrim-inspiration__cite">{featured.source}</cite>
       </article>
 
       <div className="pilgrim-inspiration__quotes">
-        {PILGRIMAGE_QUOTES.map((item) => (
+        {quotes.map((item) => (
           <article key={item.id} className="pilgrim-inspiration__quote-card">
             <span className="pilgrim-inspiration__label">
-              {item.kind === "quran" ? "Qur'an" : "Hadith"}
+              {item.kind === "quran" ? chrome.labelQuran : chrome.labelHadith}
             </span>
             {item.arabic ? (
               <p className="pilgrim-inspiration__arabic pilgrim-inspiration__arabic--small" lang="ar" dir="rtl">
@@ -51,7 +59,7 @@ export function PilgrimageInspiration() {
       </div>
 
       <div className="pilgrim-inspiration__gallery">
-        {PILGRIMAGE_GALLERY.map((item) => (
+        {gallery.map((item) => (
           <article key={item.id} className="pilgrim-inspiration__gallery-card">
             <div className="pilgrim-inspiration__gallery-media">
               <Image
@@ -70,7 +78,7 @@ export function PilgrimageInspiration() {
         ))}
       </div>
 
-      <p className="pilgrim-inspiration__reminder">{PILGRIMAGE_DUA_REMINDER}</p>
+      <p className="pilgrim-inspiration__reminder">{duaReminder}</p>
     </section>
   );
 }

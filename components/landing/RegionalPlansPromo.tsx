@@ -13,6 +13,7 @@ import { getRegionalImageUrl } from "@/lib/country-images";
 import { useLiveStartingPrices } from "@/components/destinations/useLiveStartingPrices";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
 import { useLocaleState } from "@/lib/i18n/use-locale";
+import { localizeRegionalProduct } from "@/lib/i18n/regional";
 
 export function RegionalPlansPromo() {
   const [locale] = useLocaleState();
@@ -35,7 +36,10 @@ export function RegionalPlansPromo() {
 
         <div className="regional-promo__grid" aria-label="All regional plans">
           {REGIONAL_ROUTE_SLUGS.map((routeSlug) => {
-            const product = REGIONAL_PRODUCTS[routeSlug];
+            const product = localizeRegionalProduct(
+              REGIONAL_PRODUCTS[routeSlug],
+              locale,
+            );
             const pendingLabel = dict.common.seePlans;
             const price =
               livePrices[product.apiCountryId]?.label ?? pendingLabel;

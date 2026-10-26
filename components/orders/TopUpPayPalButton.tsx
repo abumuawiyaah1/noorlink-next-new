@@ -86,7 +86,7 @@ export function TopUpPayPalButton({
           return;
         }
 
-        const paypal = await loadPayPalSdk(data.clientId, data.mode);
+        const paypal = await loadPayPalSdk(data.clientId, data.mode, locale);
         if (cancelled) return;
         if (!paypal) {
           setStatus("hidden");
@@ -188,7 +188,7 @@ export function TopUpPayPalButton({
       cancelled = true;
       void buttons?.close?.();
     };
-  }, [selectionKey, orderNumber, email]);
+  }, [selectionKey, orderNumber, email, locale]);
 
   if (status === "hidden") return null;
 

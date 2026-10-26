@@ -27,9 +27,9 @@ export function InsiderIssuePage({ slug }: Props) {
   const raw = getInsiderIssue(slug);
   if (!raw) notFound();
 
-  const issue = localizeInsiderIssue(raw, dict);
+  const issue = localizeInsiderIssue(raw, dict, locale);
   const published = getPublishedInsiderIssues().map((item) =>
-    localizeInsiderIssue(item, dict),
+    localizeInsiderIssue(item, dict, locale),
   );
   const index = published.findIndex((item) => item.slug === slug);
   const prev = index > 0 ? published[index - 1] : null;
@@ -129,7 +129,7 @@ export function InsiderIssuePage({ slug }: Props) {
                               {dua.arabic}
                             </p>
                           ) : null}
-                          <p>{dua.text}</p>
+                          {dua.text ? <p>{dua.text}</p> : null}
                           <cite>{dua.reference}</cite>
                         </blockquote>
                       ))}
@@ -141,7 +141,7 @@ export function InsiderIssuePage({ slug }: Props) {
 
           <section>
             <h2>{issue.sections.destinationTitle}</h2>
-            {/* Body paragraphs intentionally remain English when not localized. */}
+            {/* Body paragraphs come from lib/i18n/insider-bodies*.ts (es/ar). */}
             {issue.sections.destinationBody.map((paragraph) => (
               <p key={paragraph.slice(0, 24)}>{paragraph}</p>
             ))}

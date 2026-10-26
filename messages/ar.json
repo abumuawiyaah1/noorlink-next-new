@@ -76,7 +76,10 @@
     "policiesKicker": "سياسات NoorLink",
     "policyHelpBefore": "هل تحتاج مساعدة بخصوص طلب أو سياسة؟ زر",
     "policyHelpLink": "الدعم",
-    "support": "الدعم"
+    "support": "الدعم",
+    "nMore": "+{n} المزيد",
+    "destinationsClickFull": "{n} وجهات — اضغط لعرض القائمة كاملة",
+    "countriesCoveredAria": "الدول المشمولة"
   },
   "support": {
     "title": "الدعم",
@@ -353,6 +356,8 @@
     "tapRegion": "اضغط على منطقة في الخريطة",
     "seeGlobalPlans": "عرض الباقات العالمية ←",
     "regionNames": {
+      "caribbean": "الكاريبي",
+      "global": "عالمي",
       "north-america": "أمريكا الشمالية",
       "south-america": "أمريكا الجنوبية",
       "europe": "أوروبا",
@@ -768,7 +773,11 @@
     "purchaseAria": "الشراء",
     "giftTitle": "حمّل قبل أن تسافر",
     "giftText": "أدلة مجانية للحرمين الشريفين لهاتفك — مرفقة أيضًا مع شراء eSIM الحج والعمرة. ليست شرطًا لاستخدام خطتك.",
-    "bestMultiDay": "الأنسب للرحلات الطويلة"
+    "bestMultiDay": "الأنسب للرحلات الطويلة",
+    "carriersAria": "الشبكات وأمان الدفع",
+    "carriersPoweredBy": "الاتصال في السعودية عبر",
+    "carriersPayWith": "ادفع بأمان عبر",
+    "carriersTrust": "دفعتك محمية لرحلتك. استخدم Apple Pay أو PayPal أو البطاقة — لا نحتفظ ببياناتك على خوادمنا. نأخذ هذه الثقة على محمل الجد."
   },
   "partnersPage": {
     "crumb": "الشركاء",
@@ -1714,7 +1723,7 @@
     "signupPrivacy": "بريد واحد شهريًا. اختر العمرة أو الحج لاستلام خاصّ الحج والعمرة.",
     "signupUnsubscribe": "إلغاء الاشتراك",
     "signupAnytime": "في أي وقت.",
-    "bodyRemainderNote": "فقرات جسم العدد تبقى بالإنجليزية حاليًا؛ العناوين والـ kickers وأزرار الدعوة والنص الافتتاحي مترجمة.",
+    "bodyRemainderNote": "النص الكامل لكل عدد (الفقرات والنصائح والعرض والتذكيرات) مترجم من lib/i18n/insider-bodies*.ts.",
     "issues": {
       "2026-09-fall-turkey": {
         "monthLabel": "سبتمبر 2026",
@@ -2123,5 +2132,30 @@
     "dataDays": "{data} · {days}",
     "oneQrRegional": "رمز QR واحد للسفر الإقليمي",
     "hotspotMostDevices": "نقطة اتصال مدعومة على معظم الأجهزة"
+  },
+  "cookies": {
+    "bannerTitle": "نُقدّر خصوصيتك"
+  },
+  "thisWeek": {
+    "faithUmrah": "عمرة",
+    "faithRamadan": "رمضان",
+    "faithHajj": "حج",
+    "reasonUmrah": "سفر الحج والعمرة على مدار السنة",
+    "reasonRamadan": "سفر وتخطيط رمضان",
+    "reasonHajj": "موسم الحج",
+    "countries": {
+      "USA": "الولايات المتحدة",
+      "Jamaica": "جامايكا",
+      "Mexico": "المكسيك",
+      "UAE": "الإمارات",
+      "Bahamas": "الباهاما",
+      "Turkey": "تركيا",
+      "Saudi Arabia": "السعودية",
+      "Japan": "اليابان",
+      "France": "فرنسا",
+      "Italy": "إيطاليا",
+      "Spain": "إسبانيا",
+      "UK": "المملكة المتحدة"
+    }
   }
 }

@@ -34,9 +34,7 @@ import {
   type PilgrimRoutePackKey,
   type PilgrimRoutePackVariants,
   ME_REGIONAL_API_ID,
-  PILGRIM_ROUTE_GCC_BONUS,
   PILGRIM_ROUTE_META,
-  brandedRoutePlanName,
   getPilgrimRouteMeta,
   resolvePilgrimRoutePacks,
   resolvePilgrimRoutePlanForKey,
@@ -53,8 +51,18 @@ import {
   withAttribution,
 } from "@/lib/affiliate-link";
 import { PILGRIM_GIFT_GUIDES } from "@/lib/pilgrim-gift-guides";
-import { PILGRIMAGE_BRAND_LINE } from "@/lib/brand";
 import { type Dictionary, getDictionary, t } from "@/lib/i18n/dictionaries";
+import {
+  localizedBrandLine,
+  localizedCompareTable,
+  localizedGbPerDay,
+  localizedGccCountries,
+  localizedGccUi,
+  localizedRoutePlanName,
+  splitGccPlaceholder,
+  withLocalizedRouteMeta,
+  withLocalizedTierMeta,
+} from "@/lib/i18n/pilgrimage";
 import { renderTemplate } from "@/lib/i18n/template";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 import "@/styles/hajj-umrah.css";
@@ -110,22 +118,24 @@ function tierBadge(tier: PilgrimTierOffer): "popular" | "best" | null {
   return null;
 }
 
-/** Hover / focus / tap on “plus GCC” shows included GCC country names + flags. */
-function GccBonusHover() {
+/** Hover / focus / tap on the `{gcc}` slot shows included GCC country names + flags. */
+function GccBonusHover({ locale }: { locale: string }) {
+  const ui = localizedGccUi(locale);
+  const countries = localizedGccCountries(locale);
   return (
     <span className="pilgrim-gcc-hint">
       <button
         type="button"
         className="pilgrim-gcc-hint__trigger"
-        aria-label="GCC countries included"
+        aria-label={ui.aria}
         onClick={(event) => event.stopPropagation()}
       >
-        plus GCC
+        {ui.plusLabel}
       </button>
       <span className="pilgrim-gcc-hint__panel" role="tooltip">
-        <span className="pilgrim-gcc-hint__panel-title">Included GCC Coverage</span>
+        <span className="pilgrim-gcc-hint__panel-title">{ui.panelTitle}</span>
         <ul className="pilgrim-gcc-hint__list">
-          {PILGRIM_ROUTE_GCC_BONUS.map((country) => (
+          {countries.map((country) => (
             <li key={country.name}>
               <span aria-hidden="true">{country.flag}</span>
               <span>{country.name}</span>
@@ -137,15 +147,20 @@ function GccBonusHover() {
   );
 }
 
-function RouteDescriptionWithGccHover({ text }: { text: string }) {
-  const marker = "plus GCC";
-  const idx = text.indexOf(marker);
-  if (idx === -1) return <>{text}</>;
+function RouteDescriptionWithGccHover({
+  text,
+  locale,
+}: {
+  text: string;
+  locale: string;
+}) {
+  const parts = splitGccPlaceholder(text);
+  if (!parts) return <>{text}</>;
   return (
     <>
-      {text.slice(0, idx)}
-      <GccBonusHover />
-      {text.slice(idx + marker.length)}
+      {parts[0]}
+      <GccBonusHover locale={locale} />
+      {parts[1]}
     </>
   );
 }
@@ -279,7 +294,9 @@ function TierCard({
                   <span className="pilgrim-data-picker__gb">
                     {t(dict, "pilgrimagePage.daysShort", { n: days })}
                   </span>
-                  <span className="pilgrim-data-picker__meta">3GB/day</span>
+                  <span className="pilgrim-data-picker__meta">
+                    {localizedGbPerDay(locale)}
+                  </span>
                 </button>
               );
             })}
@@ -449,15 +466,33 @@ export function PilgrimSelectionPage({
     };
   }, [initialData, initialMeData]);
 
+  const localizedTiers = useMemo(
+    () => tiers.map((tier) => withLocalizedTierMeta(tier, locale)),
+    [tiers, locale],
+  );
+
+  const localizedRoutes = useMemo(
+    () => PILGRIM_ROUTE_META.map((route) => withLocalizedRouteMeta(route, locale)),
+    [locale],
+  );
+
+  const compareTable = useMemo(() => localizedCompareTable(locale), [locale]);
+
   const activeTier = useMemo(() => {
     if (!selectedTier) return null;
-    return tiers.find((tier) => tier.key === selectedTier) ?? null;
-  }, [tiers, selectedTier]);
+    return localizedTiers.find((tier) => tier.key === selectedTier) ?? null;
+  }, [localizedTiers, selectedTier]);
 
   const activeRouteMeta = useMemo(
-    () => getPilgrimRouteMeta(selectedRoute),
-    [selectedRoute],
+    () => withLocalizedRouteMeta(getPilgrimRouteMeta(selectedRoute), locale),
+    [selectedRoute, locale],
   );
+
+  const routePlanNameParts = (plan: EsimPlan) => {
+    const gb = plan.dataGb ?? (plan.id.includes("premium") ? 10 : 5);
+    const days = plan.durationDays ?? (plan.id.includes("premium") ? 30 : 15);
+    return { gb, days };
+  };
 
   const activeRoutePlan = useMemo(
     () => resolvePilgrimRoutePlanForKey(routePacks, routePack, selectedRoute),
@@ -486,7 +521,13 @@ export function PilgrimSelectionPage({
   let activePlanLabel = "";
   if (purchaseFocus && activePlan) {
     if (purchaseFocus === "route") {
-      activePlanLabel = brandedRoutePlanName(activeRouteMeta, activeRoutePlan);
+      const { gb, days } = routePlanNameParts(activeRoutePlan);
+      activePlanLabel = localizedRoutePlanName(
+        activeRouteMeta.title,
+        gb,
+        days,
+        locale,
+      );
     } else if (activeTier) {
       if (activeTier.key === "connected") {
         activePlanLabel = `${activeTier.title} · ${connectedDataGb}GB`;
@@ -501,15 +542,21 @@ export function PilgrimSelectionPage({
   const checkoutHref = useMemo(() => {
     if (!activePlan) return "#";
     if (purchaseFocus === "route") {
+      const { gb, days } = routePlanNameParts(activePlan);
       return buildCheckoutHref(activePlan, activePlan.price, promo, refCode, {
         country: activeRouteMeta.checkoutCountry,
         flag: activeRouteMeta.flag,
-        planName: brandedRoutePlanName(activeRouteMeta, activePlan),
+        planName: localizedRoutePlanName(
+          activeRouteMeta.title,
+          gb,
+          days,
+          locale,
+        ),
         isRegional: true,
       });
     }
     return buildCheckoutHref(activePlan, activePlan.price, promo, refCode);
-  }, [activePlan, purchaseFocus, activeRouteMeta, promo, refCode]);
+  }, [activePlan, purchaseFocus, activeRouteMeta, promo, refCode, locale]);
 
   const stickyParts = activePlan?.formattedPriceParts ?? { dollars: "0", cents: "0" };
 
@@ -559,7 +606,7 @@ export function PilgrimSelectionPage({
           />
           <header className="plans-page__header">
             <div className="plans-page__brand">
-              <span className="plans-page__eyebrow">{PILGRIMAGE_BRAND_LINE}</span>
+              <span className="plans-page__eyebrow">{localizedBrandLine(locale)}</span>
               <p className="plans-page__tagline">{pil.tagline}</p>
             </div>
             <div className="plans-page__search-wrap">
@@ -654,9 +701,9 @@ export function PilgrimSelectionPage({
             </div>
           )}
 
-          {!loading && !error && tiers.length > 0 && (
+          {!loading && !error && localizedTiers.length > 0 && (
             <section className="pilgrim-grid" aria-label={pil.gridAria}>
-              {tiers.map((tier) => (
+              {localizedTiers.map((tier) => (
                 <TierCard
                   key={tier.key}
                   dict={dict}
@@ -684,7 +731,7 @@ export function PilgrimSelectionPage({
             </section>
           )}
 
-          {!loading && !error && tiers.length > 0 && (
+          {!loading && !error && localizedTiers.length > 0 && (
             <section
               className="pilgrim-routes"
               aria-labelledby="pilgrim-routes-title"
@@ -694,7 +741,7 @@ export function PilgrimSelectionPage({
               </h2>
               <p className="pilgrim-routes__hint">{pil.routesHint}</p>
               <div className="pilgrim-routes__grid">
-                {PILGRIM_ROUTE_META.map((route) => {
+                {localizedRoutes.map((route) => {
                   const selected =
                     purchaseFocus === "route" && selectedRoute === route.key;
                   return (
@@ -727,7 +774,10 @@ export function PilgrimSelectionPage({
                       </h3>
                       <div className="pilgrim-card__details">
                         <p className="pilgrim-card__desc">
-                          <RouteDescriptionWithGccHover text={route.description} />
+                          <RouteDescriptionWithGccHover
+                            text={route.description}
+                            locale={locale}
+                          />
                         </p>
                         <ul className="pilgrim-card__highlights">
                           {route.highlights.map((item) => (
@@ -856,94 +906,57 @@ export function PilgrimSelectionPage({
             </h2>
             <p className="pilgrim-gift-downloads__text">{pil.giftText}</p>
             <ul className="pilgrim-gift-downloads__list">
-              {PILGRIM_GIFT_GUIDES.map((guide) => (
-                <li key={guide.id}>
-                  <a
-                    className="pilgrim-gift-downloads__link"
-                    href={guide.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="pilgrim-gift-downloads__link-title">
-                      {guide.title}
-                    </span>
-                    <span className="pilgrim-gift-downloads__link-blurb">
-                      {guide.blurb}
-                    </span>
-                  </a>
-                </li>
-              ))}
+              {PILGRIM_GIFT_GUIDES.map((guide) => {
+                const copy =
+                  dict.successPage.guides[
+                    guide.id as keyof typeof dict.successPage.guides
+                  ];
+                return (
+                  <li key={guide.id}>
+                    <a
+                      className="pilgrim-gift-downloads__link"
+                      href={guide.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span className="pilgrim-gift-downloads__link-title">
+                        {copy?.title ?? guide.title}
+                      </span>
+                      <span className="pilgrim-gift-downloads__link-blurb">
+                        {copy?.blurb ?? guide.blurb}
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </section>
 
           <section className="pilgrim-compare" aria-labelledby="pilgrim-compare-title">
             <h2 id="pilgrim-compare-title" className="pilgrim-compare__title">
-              Benefits Comparison
+              {compareTable.title}
             </h2>
-            <p className="pilgrim-compare__subtitle">
-              Compare data, hotspot, and support across our pilgrimage profiles.
-            </p>
+            <p className="pilgrim-compare__subtitle">{compareTable.subtitle}</p>
             <div className="pilgrim-compare__table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th scope="col">Benefit</th>
-                    <th scope="col">Basic</th>
-                    <th scope="col">Connected</th>
-                    <th scope="col">Umrah Unlimited</th>
-                    <th scope="col">Saudi + Turkey / Egypt / Morocco</th>
+                    <th scope="col">{compareTable.headers.benefit}</th>
+                    <th scope="col">{compareTable.headers.basic}</th>
+                    <th scope="col">{compareTable.headers.connected}</th>
+                    <th scope="col">{compareTable.headers.unlimited}</th>
+                    <th scope="col">{compareTable.headers.routes}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Coverage</td>
-                    <td>Makkah &amp; Madinah</td>
-                    <td>Makkah &amp; Madinah</td>
-                    <td>Makkah &amp; Madinah</td>
-                    <td>Saudi + Turkey, Egypt, or Morocco</td>
-                  </tr>
-                  <tr>
-                    <td>Data Allowance</td>
-                    <td>5GB · 30 days</td>
-                    <td>10GB or 20GB</td>
-                    <td>3GB/day · then 1 Mbps</td>
-                    <td>5GB / 15d or 10GB / 30d</td>
-                  </tr>
-                  <tr>
-                    <td>Trip Length</td>
-                    <td>30 days</td>
-                    <td>30 days</td>
-                    <td>7 or 10 days</td>
-                    <td>15 or 30 days</td>
-                  </tr>
-                  <tr>
-                    <td>Hotspot Sharing</td>
-                    <td>Included</td>
-                    <td>Included</td>
-                    <td>Included</td>
-                    <td>Included</td>
-                  </tr>
-                  <tr>
-                    <td>WhatsApp Support</td>
-                    <td>24/7</td>
-                    <td>24/7</td>
-                    <td>24/7</td>
-                    <td>24/7</td>
-                  </tr>
-                  <tr>
-                    <td>Video Calls &amp; Live Updates</td>
-                    <td>Light use</td>
-                    <td>Regular use</td>
-                    <td>Heavy daily use</td>
-                    <td>Regional trip use</td>
-                  </tr>
-                  <tr>
-                    <td>Best For</td>
-                    <td>Short stays</td>
-                    <td>Most first-time pilgrims</td>
-                    <td>Travelers who prefer day-pass unlimited</td>
-                    <td>Days in Turkey/Egypt/Morocco + Saudi</td>
-                  </tr>
+                  {compareTable.rows.map((row) => (
+                    <tr key={row.label}>
+                      <td>{row.label}</td>
+                      {row.cells.map((cell, index) => (
+                        <td key={index}>{cell}</td>
+                      ))}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

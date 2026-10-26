@@ -20,6 +20,7 @@ import {
 } from "@/components/destinations/useLiveStartingPrices";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
 import { useLocaleState } from "@/lib/i18n/use-locale";
+import { localizeDestinationCard } from "@/lib/i18n/destinations";
 import { getRegionalProductByApiId } from "@/lib/regional-products";
 import { fetchTrendingCountrySignals } from "@/lib/analytics-api";
 import {
@@ -172,7 +173,8 @@ export function ModernDestinationsPage({
         )}
 
         <div className="dest-grid">
-          {cards.map((card, index) => {
+          {cards.map((rawCard, index) => {
+            const card = localizeDestinationCard(rawCard, locale);
             const livePrice = livePrices[card.priceCountryId];
             const priceLabel = livePrice
               ? t(dict, "destinationsPage.fromPrice", {

@@ -12,6 +12,7 @@ import { API_BASE } from "@/lib/api-client";
 import { attributionPayloadForCheckout } from "@/lib/attribution";
 import { debug, debugError } from "@/lib/debug";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { stripeElementsLocale } from "@/lib/i18n/payment-locale";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 
 type ExpressPayload = {
@@ -222,6 +223,8 @@ export function ExpressCheckoutWallets(props: Props) {
       mode: "payment" as const,
       amount: Math.max(50, props.amountCents),
       currency: (props.currency || "usd").toLowerCase(),
+      // Client-side Elements UI only; hosted Checkout locale is backend-owned.
+      locale: stripeElementsLocale(locale),
       appearance: {
         variables: {
           borderRadius: "10px",
@@ -229,7 +232,7 @@ export function ExpressCheckoutWallets(props: Props) {
         },
       },
     }),
-    [props.amountCents, props.currency],
+    [props.amountCents, props.currency, locale],
   );
 
   if (loadError) {
@@ -246,7 +249,11 @@ export function ExpressCheckoutWallets(props: Props) {
   return (
     <div className="checkout-express">
       <p className="checkout-express__label">{c.expressCheckout}</p>
-      <Elements stripe={stripe} options={options} key={props.amountCents}>
+      <Elements
+        stripe={stripe}
+        options={options}
+        key={`${props.amountCents}-${options.locale}`}
+      >
         <ExpressCheckoutInner
           payload={props.payload}
           disabled={props.disabled}

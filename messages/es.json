@@ -76,7 +76,10 @@
     "policiesKicker": "Políticas de NoorLink",
     "policyHelpBefore": "¿Necesitas ayuda con un pedido o una política? Visita",
     "policyHelpLink": "Soporte",
-    "support": "Soporte"
+    "support": "Soporte",
+    "nMore": "+{n} más",
+    "destinationsClickFull": "{n} destinos — toca para ver la lista completa",
+    "countriesCoveredAria": "Países cubiertos"
   },
   "support": {
     "title": "Soporte",
@@ -353,6 +356,8 @@
     "tapRegion": "Toca una región en el mapa",
     "seeGlobalPlans": "Ver planes Globales →",
     "regionNames": {
+      "caribbean": "Caribe",
+      "global": "Global",
       "north-america": "Norteamérica",
       "south-america": "Sudamérica",
       "europe": "Europa",
@@ -768,7 +773,11 @@
     "purchaseAria": "Compra",
     "giftTitle": "Descarga antes de viajar",
     "giftText": "Guías gratuitas de al-Haramayn para tu teléfono — también incluidas con tu eSIM de peregrinación. No son necesarias para usar tu plan.",
-    "bestMultiDay": "Ideal para varios días"
+    "bestMultiDay": "Ideal para varios días",
+    "carriersAria": "Redes y seguridad de pago",
+    "carriersPoweredBy": "Conexión en Arabia Saudita con",
+    "carriersPayWith": "Paga de forma segura con",
+    "carriersTrust": "Tu pago está protegido para el viaje. Usa Apple Pay, PayPal o tarjeta — tus datos nunca se guardan en nuestros servidores. Esa confianza nos importa."
   },
   "partnersPage": {
     "crumb": "Socios",
@@ -1714,7 +1723,7 @@
     "signupPrivacy": "Un correo al mes. Elige Umrah o Hajj para recibir especiales de peregrinación.",
     "signupUnsubscribe": "Cancelar suscripción",
     "signupAnytime": "cuando quieras.",
-    "bodyRemainderNote": "Los párrafos del cuerpo del número siguen en inglés por ahora; títulos, kickers, CTAs y el opener están localizados.",
+    "bodyRemainderNote": "El cuerpo completo de cada número (párrafos, consejos, oferta y recordatorios) está localizado desde lib/i18n/insider-bodies*.ts.",
     "issues": {
       "2026-09-fall-turkey": {
         "monthLabel": "septiembre 2026",
@@ -2123,5 +2132,30 @@
     "dataDays": "{data} · {days}",
     "oneQrRegional": "Un QR para viajar por la región",
     "hotspotMostDevices": "Hotspot compatible en la mayoría de dispositivos"
+  },
+  "cookies": {
+    "bannerTitle": "Valoramos tu privacidad"
+  },
+  "thisWeek": {
+    "faithUmrah": "Umrah",
+    "faithRamadan": "Ramadán",
+    "faithHajj": "Hajj",
+    "reasonUmrah": "Peregrinación todo el año",
+    "reasonRamadan": "Viajes y planes de Ramadán",
+    "reasonHajj": "Temporada de Hajj",
+    "countries": {
+      "USA": "EE. UU.",
+      "Jamaica": "Jamaica",
+      "Mexico": "México",
+      "UAE": "EAU",
+      "Bahamas": "Bahamas",
+      "Turkey": "Turquía",
+      "Saudi Arabia": "Arabia Saudita",
+      "Japan": "Japón",
+      "France": "Francia",
+      "Italy": "Italia",
+      "Spain": "España",
+      "UK": "Reino Unido"
+    }
   }
 }

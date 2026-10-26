@@ -1,43 +1,39 @@
 # Localization — Spanish (LatAm) + Arabic (MSA)
 
-**Status:** Full customer site UI wired for `/es` and `/ar` — ready for your walkthrough → then commit / go live.
+**Status:** Full customer site UI + deep content wired for `/es` and `/ar` — ready for walkthrough → then commit / go live.
 
 ## Covered (switcher + `/es` `/ar`)
 
 - Header / footer / language switcher / RTL `dir` / global back button / WhatsApp FAB
 - Home (hero through newsletter), including footer “Follow us”, pending prices, Umrah promo Insider links, ticker “Updated”
-- Destinations, plans chrome, Hajj & Umrah selection chrome
-- Checkout (incl. funnel steps, PayPal labels) + success + gift + review request
+- Destinations chrome **and** card titles / descriptions / tips (`lib/i18n/destinations.ts`)
+- Regional chrome **and** displayName / shortName / heroTagline / faqBorder (`lib/i18n/regional.ts`)
+- Hajj & Umrah: tier names, route blurbs, GCC hover, benefits comparison, inspiration gallery, brand line (`lib/i18n/pilgrimage.ts`)
+- Checkout (funnel steps, PayPal labels) + success + gift + review request
 - Support, FAQ, before-you-fly + short help guides + landing-ready checklist
 - My eSIMs lookup / install / top-up chrome
-- About, Partners (apply/login), Partner dashboard crumbs
-- Compare, Give, Learn (index + posts), Newsletter archive shell + unsubscribe
-- Legal policies (terms, privacy, refund, cookies, KYC, partner terms) — full bodies in `lib/i18n/policies.ts`
+- About, Partners, Compare, Give, Learn, Newsletter archive + unsubscribe
+- Legal policies — full bodies in `lib/i18n/policies.ts`
 - Order language → `metadata.locale` → fulfillment email subject
-- Email strings in automation `i18n_messages.py`
-- Spanish install phrasing standardized to **antes de viajar**; Arabic to **قبل السفر** (airplane mode `وضع الطيران` kept)
+- Spanish **antes de viajar**; Arabic **قبل السفر** (airplane mode `وضع الطيران` kept)
+- **Insider issue bodies** — all 26 issues in `lib/i18n/insider-bodies-{es,ar}.ts` via `localizeInsiderIssue`
+- **Trustpilot** quote country + body translated (`lib/i18n/trustpilot.ts`); “Excellent” → Excelente / ممتاز
+- **Stripe Elements / PayPal SDK locale** via `lib/i18n/payment-locale.ts` (`en` / `es-419` / `ar`; PayPal `en_US` / `es_ES` / `ar_EG`). Checkout API already sends `language: locale`
 
-## Still English (by design or data)
+## Still English (limits / data)
 
-- Trustpilot **quote** bodies (authentic reviews)
-- Stripe / PayPal **hosted** payment UIs
-- Catalog / content data not yet in dictionaries:
-  - Hajj & Umrah **tier names**, route plan blurbs, benefits comparison table, inspiration gallery
-  - Regional **hero taglines** / FAQ border answers / country list names
-  - Destination card **titles & blurbs** (`destinations-catalog`)
-  - “This week” search pills
-- Insider **issue body** paragraphs (titles/kickers/CTAs localized; long article bodies still EN)
-- Dynamic plan/country names and API error messages from the backend
-- Some OS menu tokens kept inside translated install steps (e.g. “Data Roaming”)
-- Brand line “Built by Muslims, for Muslims” on pilgrimage promo
+- Stripe Checkout **hosted** page, PayPal / Apple Pay / Google Pay **provider sheets** — we only pass locale; strings depend on each provider (device language for Apple/Google)
+- Regional / destination **country name lists** (proper nouns)
+- “This week” search pills
+- Dynamic plan names and API error messages from the backend
+- Some OS menu tokens in install steps (e.g. “Data Roaming”)
 
 ## How to review locally
 
 1. `npm run dev` (restart if middleware changed)
 2. http://localhost:3000/es and http://localhost:3000/ar
-3. Walk: Home → Destinations → Plan → Checkout → Success → Support → FAQ → Learn → Compare → Partners → Newsletter → a legal page (Privacy)
-4. Flip language in the header; confirm URLs stay under `/es` or `/ar`
-5. Spot-check wording you care about (especially “antes de viajar” / “قبل السفر”)
+3. Walk: Home → Destinations → Regional plan → Hajj & Umrah → Checkout wallets → Insider issue → Compare (Trustpilot)
+4. Spot-check: tier names, inspiration gallery, destination blurbs, Insider body paragraphs, Trustpilot cards
 
 ## After you approve
 
