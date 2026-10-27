@@ -34,6 +34,9 @@ import { ExpressCheckoutWallets } from "@/components/checkout/ExpressCheckoutWal
 import { PayPalCheckoutButton } from "@/components/checkout/PayPalCheckoutButton";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
 import { localizedPath } from "@/lib/i18n/path";
+import { formatMoneyLabel } from "@/lib/currency/format";
+import { paypalChargesInLocal } from "@/lib/currency/paypal";
+import { useCurrency } from "@/lib/currency/use-currency";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 
 const EMAIL_STORAGE_KEY = "nl_checkout_email";
@@ -62,6 +65,7 @@ function useIsPhoneCheckout(): boolean | null {
 
 export function ModernCheckoutPage() {
   const [locale] = useLocaleState();
+  const { currency, rates } = useCurrency();
   const dict = getDictionary(locale);
   const c = dict.checkout;
   const searchParams = useSearchParams();
@@ -121,7 +125,18 @@ export function ModernCheckoutPage() {
     () => Math.max(0.01, price - effectiveDiscount),
     [price, effectiveDiscount],
   );
-  const formattedTotal = useMemo(() => finalPrice.toFixed(2), [finalPrice]);
+  const formattedTotal = useMemo(
+    () => formatMoneyLabel(finalPrice, currency, rates, locale),
+    [finalPrice, currency, rates, locale],
+  );
+  const formattedPrice = useMemo(
+    () => formatMoneyLabel(price, currency, rates, locale),
+    [price, currency, rates, locale],
+  );
+  const formattedDiscount = useMemo(
+    () => formatMoneyLabel(discountAmount, currency, rates, locale),
+    [discountAmount, currency, rates, locale],
+  );
   const payLabel = submitting
     ? useFastCheckout
       ? c.openingPay
@@ -244,6 +259,7 @@ export function ModernCheckoutPage() {
         affiliateRef: affiliateRef || undefined,
         wantsTopUp: wantsTopUp || undefined,
         language: locale,
+        currency,
       });
 
       if (!result.success || !result.checkoutUrl) {
@@ -306,7 +322,7 @@ export function ModernCheckoutPage() {
 
                 <div className="summary-row summary-total checkout-fast__total">
                   <span>{c.total}</span>
-                  <strong>${formattedTotal}</strong>
+                  <strong>{formattedTotal}</strong>
                 </div>
                 {discountAmount > 0 && (
                   <p className="checkout-fast__discount" role="status">
@@ -380,6 +396,14 @@ export function ModernCheckoutPage() {
                   </span>
                 </div>
 
+
+                {currency !== "USD" ? (
+                  <p className="checkout-currency-note">
+                    {paypalChargesInLocal(currency)
+                      ? t(dict, "currency.chargedInLocal", { currency })
+                      : dict.currency.chargedInUsd}
+                  </p>
+                ) : null}
                 <ExpressCheckoutWallets
                   amountCents={Math.round(finalPrice * 100)}
                   payload={{
@@ -393,6 +417,7 @@ export function ModernCheckoutPage() {
                     affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
                     language: locale,
+                    currency,
                   }}
                   onError={(message) => setError(message || null)}
                 />
@@ -409,6 +434,7 @@ export function ModernCheckoutPage() {
                     affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
                     language: locale,
+                    currency,
                   }}
                   disabled={submitting}
                   onError={(message) => setError(message || null)}
@@ -617,7 +643,7 @@ export function ModernCheckoutPage() {
                 </div>
                 <div className="summary-row">
                   <span>{c.subtotal}</span>
-                  <strong>${price.toFixed(2)}</strong>
+                  <strong>{formattedPrice}</strong>
                 </div>
                 {discountAmount > 0 && (
                   <div className="summary-row summary-row--discount">
@@ -625,7 +651,7 @@ export function ModernCheckoutPage() {
                       {c.insiderDiscount}
                       {appliedPromo ? ` (${appliedPromo})` : ""}
                     </span>
-                    <strong>- ${discountAmount.toFixed(2)}</strong>
+                    <strong>- {formattedDiscount}</strong>
                   </div>
                 )}
                 <div className="summary-row">
@@ -634,7 +660,7 @@ export function ModernCheckoutPage() {
                 </div>
                 <div className="summary-row summary-total">
                   <span>{c.total}</span>
-                  <strong>${formattedTotal}</strong>
+                  <strong>{formattedTotal}</strong>
                 </div>
 
                 <div className="checkout-trust-badges" aria-label="Trust">
@@ -648,6 +674,14 @@ export function ModernCheckoutPage() {
                   </span>
                 </div>
 
+
+                {currency !== "USD" ? (
+                  <p className="checkout-currency-note">
+                    {paypalChargesInLocal(currency)
+                      ? t(dict, "currency.chargedInLocal", { currency })
+                      : dict.currency.chargedInUsd}
+                  </p>
+                ) : null}
                 <ExpressCheckoutWallets
                   amountCents={Math.round(finalPrice * 100)}
                   payload={{
@@ -661,6 +695,7 @@ export function ModernCheckoutPage() {
                     affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
                     language: locale,
+                    currency,
                   }}
                   onError={(message) => setError(message || null)}
                 />
@@ -677,6 +712,7 @@ export function ModernCheckoutPage() {
                     affiliateRef: affiliateRef || undefined,
                     wantsTopUp: wantsTopUp || undefined,
                     language: locale,
+                    currency,
                   }}
                   disabled={submitting}
                   onError={(message) => setError(message || null)}

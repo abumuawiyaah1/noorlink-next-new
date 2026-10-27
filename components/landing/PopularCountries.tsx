@@ -15,6 +15,8 @@ import {
   type PopularSeasonId,
 } from "@/lib/popular-countries";
 import { getPopularStory } from "@/lib/popular-moments";
+import { formatMoneyLabel } from "@/lib/currency/format";
+import { useCurrency } from "@/lib/currency/use-currency";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
 import { localizedSeasonLabel } from "@/lib/i18n/popular-stories";
 import { useLocaleState } from "@/lib/i18n/use-locale";
@@ -38,6 +40,7 @@ function withReasons(
 
 export function PopularCountries() {
   const [locale] = useLocaleState();
+  const { currency, rates } = useCurrency();
   const dict = getDictionary(locale);
   const season = resolvePopularSeason();
   const [cards, setCards] = useState<PopularCard[]>(() =>
@@ -81,7 +84,12 @@ export function PopularCountries() {
         <div className="popular-countries__grid" role="list">
           {cards.map((rawCard, index) => {
             const card = localizeDestinationCard(rawCard, locale);
-            const price = livePrices[card.priceCountryId]?.label ?? dict.common.seePlans;
+            const live = livePrices[card.priceCountryId];
+            const price = live
+              ? t(dict, "destinationsPage.fromPrice", {
+                  price: formatMoneyLabel(live.amount, currency, rates, locale),
+                })
+              : dict.common.seePlans;
             const flag = getCountryFlag(card.priceCountryId);
             const image = destinationCardSrcSet(card.image);
             return (

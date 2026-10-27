@@ -19,6 +19,8 @@ import {
   useLiveStartingPrices,
 } from "@/components/destinations/useLiveStartingPrices";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
+import { formatMoneyLabel } from "@/lib/currency/format";
+import { useCurrency } from "@/lib/currency/use-currency";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 import { localizeDestinationCard } from "@/lib/i18n/destinations";
 import { getRegionalProductByApiId } from "@/lib/regional-products";
@@ -55,6 +57,7 @@ export function ModernDestinationsPage({
 }: Props) {
   const router = useRouter();
   const [locale] = useLocaleState();
+  const { currency, rates } = useCurrency();
   const dict = getDictionary(locale);
   const [query, setQuery] = useState(initialQuery);
   const [region, setRegion] = useState<DestinationFilterId>(initialRegion);

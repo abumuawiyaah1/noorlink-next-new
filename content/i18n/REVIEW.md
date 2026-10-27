@@ -2,7 +2,9 @@
 
 **Status:** Official live locales — **en** (default), **es** (LatAm), **ar** (MSA). Customer UI + deep content shipped on `main`.
 
-**Language detection:** URL prefix → cookie (switcher / prior visit) → browser `Accept-Language` on first visit → English. Not geo/IP (geo reserved for future local currency).
+**Language detection:** URL prefix → cookie (switcher / prior visit) → browser `Accept-Language` on first visit → English.
+
+**Currency (retail):** IP/country → cookie → switcher (`nl_currency`). Prices convert from USD catalog for display (24 currencies). Checkout still settles in **USD** until FastAPI multi-currency charging ships; preferred `currency` is already sent on session/PayPal/wallet bodies.
 
 ## Covered (switcher + `/es` `/ar`)
 

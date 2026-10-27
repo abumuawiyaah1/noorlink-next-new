@@ -1,5 +1,6 @@
 "use client";
 
+import { CurrencySwitcher } from "@/components/layout/CurrencySwitcher";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import {
   getDictionary,
@@ -74,6 +75,7 @@ export function SiteHeader({
             className="site-header__lang"
             onLocaleChange={setLocale}
           />
+          <CurrencySwitcher className="site-header__currency" />
         </nav>
 
         <button

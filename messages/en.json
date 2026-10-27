@@ -15,7 +15,8 @@
     "myEsims": "My eSIMs",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "language": "Language"
+    "language": "Language",
+    "currency": "Currency"
   },
   "home": {
     "kicker": "Install before you fly.",
@@ -2156,5 +2157,12 @@
       "Spain": "Spain",
       "UK": "UK"
     }
+  },
+  "currency": {
+    "label": "Currency",
+    "chargedInUsd": "Card statements show USD. The total above is converted for your convenience.",
+    "chargedInLocal": "PayPal charges in {currency}. Card checkout may also show a local amount.",
+    "payInCurrency": "Pay in {currency}",
+    "approxNote": "Prices shown in {currency}."
   }
 }

@@ -7,6 +7,11 @@ import { CookieYesBannerFix } from "@/components/ui/CookieYesBannerFix";
 import { MarketingAttributionCapture } from "@/components/analytics/MarketingAttributionCapture";
 import { GlobalBackButton } from "@/components/ui/GlobalBackButton";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
+import {
+  CURRENCY_HEADER,
+  normalizeCurrency,
+} from "@/lib/currency/config";
+import { CurrencyProvider } from "@/lib/currency/use-currency";
 import { LOCALE_HEADER, LOCALE_META, normalizeLocale } from "@/lib/i18n/config";
 import { LocaleProvider } from "@/lib/i18n/use-locale";
 import { ROOT_METADATA } from "@/lib/seo";
@@ -37,6 +42,7 @@ export default async function RootLayout({
 }>) {
   const headerStore = await headers();
   const locale = normalizeLocale(headerStore.get(LOCALE_HEADER));
+  const currency = normalizeCurrency(headerStore.get(CURRENCY_HEADER));
   const meta = LOCALE_META[locale];
 
   return (
@@ -73,12 +79,14 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <LocaleProvider initialLocale={locale}>
-          <SiteJsonLd />
-          <MarketingAttributionCapture />
-          {children}
-          <GlobalBackButton />
-          <WhatsAppFab />
-          <CookieYesBannerFix />
+          <CurrencyProvider initialCurrency={currency}>
+            <SiteJsonLd />
+            <MarketingAttributionCapture />
+            {children}
+            <GlobalBackButton />
+            <WhatsAppFab />
+            <CookieYesBannerFix />
+          </CurrencyProvider>
         </LocaleProvider>
         <Script
           id="cookieyes"

@@ -11,12 +11,15 @@ import { DestinationCardMedia } from "@/components/ui/DestinationCardMedia";
 import { RegionFlagPreview } from "@/components/ui/RegionFlagPreview";
 import { getRegionalImageUrl } from "@/lib/country-images";
 import { useLiveStartingPrices } from "@/components/destinations/useLiveStartingPrices";
+import { formatMoneyLabel } from "@/lib/currency/format";
+import { useCurrency } from "@/lib/currency/use-currency";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 import { localizeRegionalProduct } from "@/lib/i18n/regional";
 
 export function RegionalPlansPromo() {
   const [locale] = useLocaleState();
+  const { currency, rates } = useCurrency();
   const dict = getDictionary(locale);
   const priceIds = REGIONAL_ROUTE_SLUGS.map(
     (slug) => REGIONAL_PRODUCTS[slug].apiCountryId,
@@ -40,10 +43,13 @@ export function RegionalPlansPromo() {
               REGIONAL_PRODUCTS[routeSlug],
               locale,
             );
-            const pendingLabel = dict.common.seePlans;
-            const price =
-              livePrices[product.apiCountryId]?.label ?? pendingLabel;
-            const hasPrice = Boolean(livePrices[product.apiCountryId]);
+            const live = livePrices[product.apiCountryId];
+            const price = live
+              ? t(dict, "destinationsPage.fromPrice", {
+                  price: formatMoneyLabel(live.amount, currency, rates, locale),
+                })
+              : dict.common.seePlans;
+            const hasPrice = Boolean(live);
             const image = getRegionalImageUrl(routeSlug);
             const featured = Boolean(product.featured);
             const regionName =

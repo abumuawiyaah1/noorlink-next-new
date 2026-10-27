@@ -11,7 +11,7 @@ export const DEFAULT_LOCALE: Locale = "en";
  * 2. Else `nl_locale` cookie (language switcher / prior visit)
  * 3. Else browser `Accept-Language` on first visit
  * 4. Else English
- * Geo/IP is reserved for future local currency — not for forcing language.
+ * Geo/IP is used for retail currency detection — not for forcing language.
  */
 
 /** Cookie set by middleware / language switcher. */

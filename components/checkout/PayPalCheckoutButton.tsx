@@ -6,6 +6,7 @@ import { attributionPayloadForCheckout } from "@/lib/attribution";
 import { debug, debugError } from "@/lib/debug";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocaleState } from "@/lib/i18n/use-locale";
+import { resolvePayPalChargeCurrency } from "@/lib/currency/paypal";
 import { loadPayPalSdk, resolvePayPalConfig } from "@/lib/paypal-sdk";
 
 export type PayPalCheckoutPayload = {
@@ -19,6 +20,7 @@ export type PayPalCheckoutPayload = {
   affiliateRef?: string;
   wantsTopUp?: boolean;
   language?: string;
+  currency?: string;
 };
 
 type Props = {
@@ -41,6 +43,7 @@ function checkoutBody(payload: PayPalCheckoutPayload): Record<string, unknown> {
   if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef;
   if (payload.wantsTopUp) body.wantsTopUp = true;
   if (payload.language) body.language = payload.language;
+  if (payload.currency) body.currency = payload.currency;
   const attribution = attributionPayloadForCheckout();
   if (attribution) body.attribution = attribution;
   return body;
@@ -73,6 +76,7 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
 
   const packageId = payload.packageId ?? "";
   const price = payload.price;
+  const chargeCurrency = resolvePayPalChargeCurrency(payload.currency);
 
   useEffect(() => {
     let cancelled = false;
@@ -81,6 +85,7 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
       close?: () => Promise<void>;
     } | null = null;
     const isCancelled = () => cancelled;
+    setStatus("loading");
 
     async function boot() {
       try {
@@ -93,7 +98,12 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
           return;
         }
 
-        const paypal = await loadPayPalSdk(data.clientId, data.mode, locale);
+        const paypal = await loadPayPalSdk(
+          data.clientId,
+          data.mode,
+          locale,
+          chargeCurrency,
+        );
         if (cancelled) return;
         if (!paypal) {
           debugError("checkout", "paypal sdk missing after load");
@@ -232,7 +242,7 @@ export function PayPalCheckoutButton({ payload, disabled, onError }: Props) {
       cancelled = true;
       void buttons?.close?.();
     };
-  }, [packageId, price, locale]);
+  }, [packageId, price, locale, chargeCurrency]);
 
   if (status === "hidden") return null;
 

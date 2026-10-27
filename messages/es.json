@@ -16,7 +16,8 @@
     "myEsims": "Mis eSIMs",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
-    "language": "Idioma"
+    "language": "Idioma",
+    "currency": "Moneda"
   },
   "home": {
     "kicker": "Instálala antes de viajar.",
@@ -2157,5 +2158,12 @@
       "Spain": "España",
       "UK": "Reino Unido"
     }
+  },
+  "currency": {
+    "label": "Moneda",
+    "chargedInUsd": "El estado de cuenta muestra USD. El total de arriba está convertido para tu comodidad.",
+    "chargedInLocal": "PayPal cobra en {currency}. El pago con tarjeta también puede mostrar un importe local.",
+    "payInCurrency": "Pagar en {currency}",
+    "approxNote": "Precios mostrados en {currency}."
   }
 }

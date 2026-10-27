@@ -307,6 +307,7 @@ function TierCard({
       <div className="pilgrim-price-wrap">
         <PsychologicalPrice
           parts={plan.formattedPriceParts}
+          amountUsd={plan.price}
           currency={plan.currency}
         />
       </div>
@@ -833,6 +834,7 @@ export function PilgrimSelectionPage({
                               route.key,
                             ).formattedPriceParts
                           }
+        amountUsd={routePacks.premium.price}
                           currency={routePacks.premium.currency}
                         />
                       </div>
@@ -885,6 +887,7 @@ export function PilgrimSelectionPage({
               <div className="pilgrim-desktop-cta__price">
                 <PsychologicalPrice
                   parts={stickyParts}
+        amountUsd={activePlan.price}
                   currency={activePlan.currency}
                 />
               </div>
@@ -970,6 +973,7 @@ export function PilgrimSelectionPage({
               <span className="pilgrim-sticky-cta__plan">{activePlanLabel}</span>
               <PsychologicalPrice
                 parts={stickyParts}
+        amountUsd={activePlan.price}
                 currency={activePlan.currency}
               />
             </div>

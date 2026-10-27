@@ -15,6 +15,8 @@ export type CheckoutSessionPayload = {
   wantsTopUp?: boolean;
   isGift?: boolean;
   language?: string;
+  /** Shopper display / preferred charge currency (ISO). Price stays USD until backend multi-currency. */
+  currency?: string;
   gift?: {
     recipientEmail: string;
     recipientName: string;
@@ -59,6 +61,7 @@ export async function createCheckoutSession(
   if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef.trim().toUpperCase();
   if (payload.wantsTopUp) body.wantsTopUp = true;
   if (payload.language) body.language = payload.language;
+  if (payload.currency) body.currency = payload.currency.toUpperCase();
   if (payload.isGift) {
     body.isGift = true;
     if (payload.gift) body.gift = payload.gift;

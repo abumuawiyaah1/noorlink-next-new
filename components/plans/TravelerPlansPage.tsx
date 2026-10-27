@@ -193,6 +193,7 @@ function PlanRow({
       <span className="plans-row__price">
         <PsychologicalPrice
           parts={plan.formattedPriceParts}
+          amountUsd={plan.price}
           currency={plan.currency}
         />
         {plan.planCategory === "flexible" && (
@@ -688,8 +689,9 @@ export function TravelerPlansPage({
                 </div>
                 <div className="plans-desktop-cta__price">
                   <PsychologicalPrice
-                    parts={selectedPlan.formattedPriceParts}
-                    currency={selectedPlan.currency}
+                  parts={selectedPlan.formattedPriceParts}
+                  amountUsd={selectedPlan.price}
+                  currency={selectedPlan.currency}
                   />
                 </div>
                 <a href={selectedCheckoutHref} className="plans-desktop-cta__button">
@@ -725,8 +727,9 @@ export function TravelerPlansPage({
               {formatDuration(selectedPlan.durationDays, dict)}
             </span>
             <PsychologicalPrice
-              parts={selectedPlan.formattedPriceParts}
-              currency={selectedPlan.currency}
+                  parts={selectedPlan.formattedPriceParts}
+                  amountUsd={selectedPlan.price}
+                  currency={selectedPlan.currency}
             />
           </div>
           <a href={selectedCheckoutHref} className="plans-sticky-cta__button">

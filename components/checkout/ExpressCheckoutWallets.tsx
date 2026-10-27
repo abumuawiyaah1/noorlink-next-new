@@ -26,6 +26,7 @@ type ExpressPayload = {
   affiliateRef?: string;
   wantsTopUp?: boolean;
   language?: string;
+  currency?: string;
 };
 
 type Props = {
@@ -100,6 +101,7 @@ function ExpressCheckoutInner({
       if (payload.affiliateRef) body.affiliateRef = payload.affiliateRef;
       if (payload.wantsTopUp) body.wantsTopUp = true;
       if (payload.language) body.language = payload.language;
+      if (payload.currency) body.currency = payload.currency;
       const attribution = attributionPayloadForCheckout();
       if (attribution) body.attribution = attribution;
 
