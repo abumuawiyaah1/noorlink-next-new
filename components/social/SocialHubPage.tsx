@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { CopyButton } from "@/components/social/CopyButton";
+import { EducationalDrafts } from "@/components/social/EducationalDrafts";
 import { MediaLibrary } from "@/components/social/MediaLibrary";
 import {
   SOCIAL_BRAND_ASSETS,
@@ -31,8 +32,9 @@ export function SocialHubPage({ onLogout }: { onLogout: () => void }) {
             <span className="content-kicker">NoorLink team</span>
             <h1>Social toolkit</h1>
             <p>
-              Store partner media, open Meta tools, copy captions, and download
-              brand assets for Facebook and Instagram.
+              Store partner media, review educational drafts for Meta and
+              LinkedIn, copy captions, and download brand assets — post only
+              after review.
             </p>
             <div className="social-hub-hero-actions">
               <p className="content-hero__badge">
@@ -92,11 +94,16 @@ export function SocialHubPage({ onLogout }: { onLogout: () => void }) {
             </ol>
           </section>
 
+          <EducationalDrafts />
+
           <section className="social-hub-section" aria-labelledby="social-captions-heading">
             <div className="content-section-head">
               <span className="content-kicker">Captions</span>
-              <h2 id="social-captions-heading">Ready-to-post copy</h2>
-              <p>Calm, practical tone. Edit the bracketed line, then copy.</p>
+              <h2 id="social-captions-heading">Promo templates</h2>
+              <p>
+                Brand and destination promos (separate from educational drafts).
+                Calm, practical tone. Edit the bracketed line, then copy.
+              </p>
             </div>
             <div className="social-hub-grid">
               {SOCIAL_CAPTION_TEMPLATES.map((template) => (
@@ -157,6 +164,15 @@ export function SocialHubPage({ onLogout }: { onLogout: () => void }) {
                       {SOCIAL_PROFILE_COPY.facebookAbout}
                     </pre>
                     <CopyButton text={SOCIAL_PROFILE_COPY.facebookAbout} />
+                  </dd>
+                </div>
+                <div>
+                  <dt>LinkedIn About</dt>
+                  <dd>
+                    <pre className="social-hub-copy social-hub-copy--compact">
+                      {SOCIAL_PROFILE_COPY.linkedinAbout}
+                    </pre>
+                    <CopyButton text={SOCIAL_PROFILE_COPY.linkedinAbout} />
                   </dd>
                 </div>
                 <div>
