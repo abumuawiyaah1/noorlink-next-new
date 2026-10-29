@@ -23,6 +23,12 @@ import { formatMoneyLabel } from "@/lib/currency/format";
 import { useCurrency } from "@/lib/currency/use-currency";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 import { localizeDestinationCard } from "@/lib/i18n/destinations";
+import { localizedPath } from "@/lib/i18n/path";
+import {
+  getIndexedPseoDestinations,
+  getPseoLocaleCopy,
+  pseoHubPath,
+} from "@/lib/pseo";
 import { getRegionalProductByApiId } from "@/lib/regional-products";
 import { fetchTrendingCountrySignals } from "@/lib/analytics-api";
 import {
@@ -235,6 +241,38 @@ export function ModernDestinationsPage({
             {t(dict, "destinationsPage.empty")}
           </p>
         )}
+
+        {showPopularTitle ? (
+          <section className="dest-esim-guides" aria-labelledby="dest-esim-guides-title">
+            <h2 id="dest-esim-guides-title" className="dest-popular-title">
+              {t(dict, "destinationsPage.guidesTitle")}
+            </h2>
+            <p className="dest-esim-guides__blurb">
+              {t(dict, "destinationsPage.guidesBlurb")}
+            </p>
+            <ul className="dest-esim-guides__list">
+              {getIndexedPseoDestinations().map((dest) => {
+                const copy = getPseoLocaleCopy(dest, locale);
+                return (
+                  <li key={dest.slug}>
+                    <Link
+                      href={localizedPath(pseoHubPath(dest.slug), locale)}
+                      className="dest-esim-guides__link"
+                    >
+                      {copy.countryName}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <Link
+              href={localizedPath("/esim", locale)}
+              className="dest-esim-guides__all"
+            >
+              {dict.footer.esimGuides}
+            </Link>
+          </section>
+        ) : null}
       </div>
       <SiteFooter />
     </>

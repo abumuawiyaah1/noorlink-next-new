@@ -142,6 +142,13 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
     });
   }
 
+  entries.push({
+    url: absoluteUrl("/esim"),
+    changeFrequency: "weekly",
+    priority: 0.85,
+    lastModified: now,
+  });
+
   // pSEO hubs — only is_indexed rows (staged crawl release).
   for (const dest of getIndexedPseoDestinations()) {
     const bare = `/esim/${dest.slug}`;

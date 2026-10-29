@@ -188,3 +188,53 @@
   display: flex;
   justify-content: center;
 }
+
+.pseo-hub__related {
+  margin-bottom: 2rem;
+}
+
+.pseo-hub__related h2 {
+  margin: 0 0 0.75rem;
+  color: var(--pseo-teal);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.pseo-hub__related-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pseo-index__list {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.pseo-index__link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: var(--pseo-surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  text-decoration: none;
+  color: inherit;
+}
+
+.pseo-index__name {
+  color: var(--pseo-teal);
+  font-weight: 700;
+}
+
+.pseo-index__meta {
+  color: var(--pseo-muted);
+  font-size: 0.9rem;
+}

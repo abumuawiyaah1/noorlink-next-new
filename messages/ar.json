@@ -46,6 +46,7 @@
     "partners": "الشركاء",
     "learn": "أدلة",
     "destinations": "الوجهات",
+    "esimGuides": "أدلة eSIM",
     "support": "الدعم",
     "followUs": "تابعنا",
     "socialAria": "وسائل التواصل"
@@ -388,7 +389,9 @@
       "africa": "أفريقيا",
       "south-america": "أمريكا الجنوبية",
       "global": "عالمي"
-    }
+    },
+    "guidesTitle": "أدلة eSIM للسفر",
+    "guidesBlurb": "نصائح الشبكة وAPN والتغطية — ثم اختر باقة."
   },
   "plansPage": {
     "enjoyTravel": "سافر براحة دون تعقيد",
@@ -400,6 +403,7 @@
     "checkout": "الدفع",
     "continue": "متابعة",
     "checkCompat": "تحقق من التوافق",
+    "esimGuide": "دليل eSIM للسفر إلى {country}",
     "loadError": "تعذّر تحميل الخطط. قد تكون الخدمة غير متاحة مؤقتًا.",
     "coversN": "تغطي {n} دول",
     "showMore": "عرض المزيد",
@@ -2186,6 +2190,12 @@
     "calcTypical": "مسافر عادي — خرائط ومحادثات وبعض التصفح.",
     "calcHeavy": "استخدام كثيف — تنقّل طوال اليوم ورفع صور.",
     "calcCreator": "صانع محتوى / نقطة اتصال — اختر باقة أكبر.",
-    "calcCta": "قارن الباقات الحالية"
+    "calcCta": "قارن الباقات الحالية",
+    "indexNav": "أدلة eSIM",
+    "indexTitle": "أدلة eSIM للسفر حسب الوجهة",
+    "indexDescription": "نصائح عملية للشبكة وAPN والمدن — ثم تابع إلى الباقات والدفع.",
+    "browseDestinations": "تصفح كل الوجهات",
+    "relatedTitle": "المزيد من أدلة الوجهات",
+    "guideLink": "دليل eSIM للسفر إلى {country}"
   }
 }

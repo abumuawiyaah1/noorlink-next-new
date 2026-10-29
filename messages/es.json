@@ -46,6 +46,7 @@
     "partners": "Socios",
     "learn": "Guías",
     "destinations": "Destinos",
+    "esimGuides": "Guías eSIM",
     "support": "Soporte",
     "followUs": "Síguenos",
     "socialAria": "Redes sociales"
@@ -388,7 +389,9 @@
       "africa": "África",
       "south-america": "Sudamérica",
       "global": "Global"
-    }
+    },
+    "guidesTitle": "Guías eSIM de viaje",
+    "guidesBlurb": "Consejos de red, APN y cobertura — luego elige un plan."
   },
   "plansPage": {
     "enjoyTravel": "Viaja sin complicaciones",
@@ -400,6 +403,7 @@
     "checkout": "Pagar",
     "continue": "Continuar",
     "checkCompat": "Comprobar compatibilidad",
+    "esimGuide": "Guía eSIM de viaje para {country}",
     "loadError": "No pudimos cargar los planes. El servicio puede estar temporalmente no disponible.",
     "coversN": "Cubre {n} países",
     "showMore": "Ver más",
@@ -2186,6 +2190,12 @@
     "calcTypical": "Viajero típico — mapas, chat y algo de redes.",
     "calcHeavy": "Uso intensivo — navegación todo el día y subida de fotos.",
     "calcCreator": "Creador / hotspot — elige un plan más grande.",
-    "calcCta": "Comparar planes en vivo"
+    "calcCta": "Comparar planes en vivo",
+    "indexNav": "Guías eSIM",
+    "indexTitle": "Guías eSIM de viaje por destino",
+    "indexDescription": "Consejos de red, APN y ciudades cubiertas — luego sigue a planes y pago.",
+    "browseDestinations": "Ver todos los destinos",
+    "relatedTitle": "Más guías de destino",
+    "guideLink": "Guía eSIM de viaje para {country}"
   }
 }

@@ -291,3 +291,8 @@
                 height: 120px;
             }
         }
+.dest-esim-guides { margin: 2.5rem 0 3rem; }
+.dest-esim-guides__blurb { margin: 0 0 1rem; opacity: 0.8; max-width: 40rem; }
+.dest-esim-guides__list { display: flex; flex-wrap: wrap; gap: 0.5rem 0.85rem; list-style: none; margin: 0 0 0.85rem; padding: 0; }
+.dest-esim-guides__link { color: #0F3D3E; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.dest-esim-guides__all { color: #0F3D3E; font-weight: 700; }

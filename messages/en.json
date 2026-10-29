@@ -45,6 +45,7 @@
     "partners": "Partners",
     "learn": "Learn",
     "destinations": "Destinations",
+    "esimGuides": "eSIM guides",
     "support": "Support",
     "followUs": "Follow us",
     "socialAria": "Social"
@@ -387,7 +388,9 @@
       "africa": "Africa",
       "south-america": "South America",
       "global": "Global"
-    }
+    },
+    "guidesTitle": "Travel eSIM guides",
+    "guidesBlurb": "Setup tips, local networks, and APN notes — then pick a plan."
   },
   "plansPage": {
     "enjoyTravel": "Enjoy hassle-free travel",
@@ -399,6 +402,7 @@
     "checkout": "Checkout",
     "continue": "Continue",
     "checkCompat": "Check compatibility",
+    "esimGuide": "Travel eSIM guide for {country}",
     "loadError": "Unable to load plans. The service may be temporarily unavailable.",
     "coversN": "Covers {n} countries",
     "showMore": "Show more",
@@ -2185,6 +2189,12 @@
     "calcTypical": "Typical traveler — maps, chat, and some social scroll.",
     "calcHeavy": "Heavy use — navigation all day plus photo uploads.",
     "calcCreator": "Creator / hotspot — pick a larger or unlimited-style plan.",
-    "calcCta": "Compare live plans"
+    "calcCta": "Compare live plans",
+    "indexNav": "eSIM guides",
+    "indexTitle": "Travel eSIM guides by destination",
+    "indexDescription": "Practical network tips, APN notes, and city coverage — then continue to live plans and checkout.",
+    "browseDestinations": "Browse all destinations",
+    "relatedTitle": "More destination guides",
+    "guideLink": "Travel eSIM guide for {country}"
   }
 }

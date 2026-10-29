@@ -335,6 +335,11 @@
   color: var(--text-muted);
 }
 
+.plans-trust__guide {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+}
+
 .plans-trust__compat {
   display: inline-flex;
   align-items: center;

@@ -6,7 +6,11 @@ import type { PseoDestination } from "@/lib/pseo/types";
 import type { Locale } from "@/lib/i18n/config";
 import { localizedPath } from "@/lib/i18n/path";
 import { getDictionary } from "@/lib/i18n/dictionaries";
-import { getPseoLocaleCopy } from "@/lib/pseo";
+import {
+  getPseoLocaleCopy,
+  getRelatedIndexedPseo,
+  pseoHubPath,
+} from "@/lib/pseo";
 
 type Props = {
   destination: PseoDestination;
@@ -148,6 +152,25 @@ export function EsimDestinationHub({ destination, locale }: Props) {
             {p.calcCta}
           </Link>
         </div>
+      </section>
+
+      <section className="pseo-hub__related" aria-labelledby="pseo-related-title">
+        <h2 id="pseo-related-title">{p.relatedTitle}</h2>
+        <ul className="pseo-hub__related-list">
+          {getRelatedIndexedPseo(destination.slug).map((related) => {
+            const relatedCopy = getPseoLocaleCopy(related, locale);
+            return (
+              <li key={related.slug}>
+                <Link
+                  href={localizedPath(pseoHubPath(related.slug), locale)}
+                  className="pseo-hub__text-link"
+                >
+                  {relatedCopy.countryName}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </section>
 
       <footer className="pseo-hub__footer">

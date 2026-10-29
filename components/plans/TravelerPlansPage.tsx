@@ -43,6 +43,11 @@ import { getDictionary, t, type Dictionary } from "@/lib/i18n/dictionaries";
 import { localizedPath } from "@/lib/i18n/path";
 import { localizeRegionalProduct } from "@/lib/i18n/regional";
 import { useLocaleState } from "@/lib/i18n/use-locale";
+import {
+  getIndexedPseoForCountry,
+  getPseoLocaleCopy,
+  pseoHubPath,
+} from "@/lib/pseo";
 import "@/styles/plans-dynamic.css";
 
 type PlanTab = PlanCategory;
@@ -443,6 +448,10 @@ export function TravelerPlansPage({
   const title =
     localizedRegional?.displayName ??
     formatCountryLabel(data?.countryName ?? countryId);
+  const pseoHub = useMemo(
+    () => (regional ? null : getIndexedPseoForCountry(countryId)),
+    [regional, countryId],
+  );
   const flag = regional?.flag ?? resolveCountryFlag(countryId, data?.flag);
   // Checkout + API identifiers stay in English so order data is locale-independent.
   const checkoutCountryName = regional?.displayName ?? title;
@@ -593,6 +602,20 @@ export function TravelerPlansPage({
                       })}`
                     : ""}
                 </p>
+                {pseoHub ? (
+                  <p className="plans-trust__guide">
+                    <Link
+                      href={localizedPath(pseoHubPath(pseoHub.slug), locale)}
+                      className="plans-page__inline-link"
+                    >
+                      {t(dict, "plansPage.esimGuide", {
+                        country:
+                          getPseoLocaleCopy(pseoHub, locale).countryName ||
+                          title,
+                      })}
+                    </Link>
+                  </p>
+                ) : null}
               </div>
               <button
                 type="button"

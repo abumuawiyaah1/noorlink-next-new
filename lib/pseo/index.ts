@@ -20,6 +20,25 @@ export function getPseoDestination(slug: string): PseoDestination | null {
   );
 }
 
+/** Indexed hub for a plans country id (e.g. turkey → /esim/turkey). */
+export function getIndexedPseoForCountry(
+  countryId: string,
+): PseoDestination | null {
+  const normalized = countryId.trim().toLowerCase();
+  const aliases: Record<string, string> = {
+    "united-arab-emirates": "uae",
+    saudi: "saudi-arabia",
+    dominican: "dominican-republic",
+  };
+  const slug = aliases[normalized] ?? normalized;
+  const dest = getPseoDestination(slug);
+  return dest?.isIndexed ? dest : null;
+}
+
+export function pseoHubPath(slug: string): string {
+  return `/esim/${slug.trim().toLowerCase()}`;
+}
+
 export function getPseoAvailableLocales(dest: PseoDestination): Locale[] {
   return (Object.keys(dest.locales) as Locale[]).filter(
     (locale) => !!dest.locales[locale],
@@ -28,4 +47,15 @@ export function getPseoAvailableLocales(dest: PseoDestination): Locale[] {
 
 export function getPseoLocaleCopy(dest: PseoDestination, locale: Locale) {
   return dest.locales[locale] ?? dest.locales.en;
+}
+
+/** Other indexed hubs for internal linking (excludes current slug). */
+export function getRelatedIndexedPseo(
+  slug: string,
+  limit = 6,
+): PseoDestination[] {
+  const current = slug.trim().toLowerCase();
+  return getIndexedPseoDestinations()
+    .filter((d) => d.slug !== current)
+    .slice(0, limit);
 }
