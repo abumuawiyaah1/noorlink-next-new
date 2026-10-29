@@ -2164,5 +2164,27 @@
     "chargedInLocal": "PayPal charges in {currency}. Card checkout may also show a local amount.",
     "payInCurrency": "Pay in {currency}",
     "approxNote": "Prices shown in {currency}."
+  },
+  "pseo": {
+    "kicker": "Travel eSIM guide",
+    "titlePrefix": "Best travel eSIM for",
+    "viewPlans": "See plans & prices",
+    "beforeYouFly": "Install before you fly",
+    "networkFacts": "Network facts",
+    "carriers": "Local network partners",
+    "frequencies": "Speeds & bands",
+    "cities": "Popular cities covered",
+    "roamingTitle": "Local tip before you land",
+    "apnTitle": "APN setup guide",
+    "compatTitle": "Is your phone eSIM ready?",
+    "compatBody": "Most recent iPhone, Google Pixel, and selected Samsung Galaxy models support eSIM. Check your device before you buy.",
+    "compatCta": "Free phone check",
+    "calcTitle": "Quick data planner",
+    "calcHint": "How much data do you need for this trip?",
+    "calcLight": "Light use — messaging and maps for a short stay.",
+    "calcTypical": "Typical traveler — maps, chat, and some social scroll.",
+    "calcHeavy": "Heavy use — navigation all day plus photo uploads.",
+    "calcCreator": "Creator / hotspot — pick a larger or unlimited-style plan.",
+    "calcCta": "Compare live plans"
   }
 }

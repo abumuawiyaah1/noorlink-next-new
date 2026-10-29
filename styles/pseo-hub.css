@@ -1,0 +1,190 @@
+/* pSEO destination hubs — brand tokens, logical CSS for RTL */
+
+.pseo-hub {
+  --pseo-teal: #0f3d3e;
+  --pseo-ink: #05191a;
+  --pseo-orange: #ff9500;
+  --pseo-bg: #f3f5f7;
+  --pseo-surface: #ffffff;
+  --pseo-mist: #f3f7f7;
+  --pseo-body: #111827;
+  --pseo-muted: #5b6b6c;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+  color: var(--pseo-body);
+}
+
+.pseo-hub__kicker {
+  margin: 0 0 0.5rem;
+  color: var(--pseo-orange);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pseo-hub__title {
+  margin: 0 0 1rem;
+  color: var(--pseo-teal);
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.pseo-hub__intro {
+  margin: 0 0 1.5rem;
+  color: var(--pseo-muted);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.pseo-hub__cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.pseo-hub__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.65rem 1.15rem;
+  border-radius: 10px;
+  background: var(--pseo-orange);
+  color: var(--pseo-ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pseo-hub__cta--ghost {
+  background: transparent;
+  color: var(--pseo-teal);
+  border: 1.5px solid var(--pseo-teal);
+}
+
+.pseo-hub__grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .pseo-hub__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pseo-hub__card,
+.pseo-hub__panel,
+.pseo-hub__tool {
+  background: var(--pseo-surface);
+  border: 1px solid rgba(15, 61, 62, 0.08);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+}
+
+.pseo-hub__card h2,
+.pseo-hub__panel h2,
+.pseo-hub__tool h2 {
+  margin: 0 0 0.4rem;
+  color: var(--pseo-teal);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pseo-hub__card p,
+.pseo-hub__panel p,
+.pseo-hub__disclosure-body p {
+  margin: 0;
+  color: var(--pseo-body);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.pseo-hub__panel {
+  margin-bottom: 1.5rem;
+  background: var(--pseo-mist);
+}
+
+.pseo-hub__tools {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.pseo-hub__disclosure {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--pseo-teal);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: start;
+  cursor: pointer;
+}
+
+.pseo-hub__disclosure-body {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.pseo-hub__code {
+  color: var(--pseo-teal);
+  font-weight: 700;
+}
+
+.pseo-hub__calc-hint {
+  margin: 0 0 0.75rem;
+  color: var(--pseo-muted);
+  font-size: 0.9rem;
+}
+
+.pseo-hub__calc-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.pseo-hub__chip {
+  min-height: 40px;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(15, 61, 62, 0.25);
+  background: var(--pseo-surface);
+  color: var(--pseo-teal);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pseo-hub__chip--active {
+  border-color: var(--pseo-orange);
+  background: rgba(255, 149, 0, 0.12);
+}
+
+.pseo-hub__calc-result {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  color: var(--pseo-body);
+}
+
+.pseo-hub__text-link {
+  color: var(--pseo-teal);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pseo-hub__footer {
+  display: flex;
+  justify-content: center;
+}

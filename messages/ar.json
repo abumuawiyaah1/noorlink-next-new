@@ -2165,5 +2165,27 @@
     "chargedInLocal": "باي بال يخصم بعملة {currency}. الدفع بالبطاقة قد يعرض أيضاً مبلغاً محلياً.",
     "payInCurrency": "ادفع بـ {currency}",
     "approxNote": "الأسعار معروضة بعملة {currency}."
+  },
+  "pseo": {
+    "kicker": "دليل شريحة eSIM للسفر",
+    "titlePrefix": "أفضل شريحة eSIM للسفر إلى",
+    "viewPlans": "عرض الباقات والأسعار",
+    "beforeYouFly": "ثبّتها قبل الإقلاع",
+    "networkFacts": "حقائق الشبكة",
+    "carriers": "شركاء الشبكة المحليون",
+    "frequencies": "السرعات والنطاقات",
+    "cities": "مدن شائعة مغطاة",
+    "roamingTitle": "نصيحة محلية قبل الهبوط",
+    "apnTitle": "دليل إعداد APN",
+    "compatTitle": "هل هاتفك يدعم eSIM؟",
+    "compatBody": "معظم أجهزة iPhone الحديثة وGoogle Pixel وبعض Samsung Galaxy تدعم eSIM. تحقق من جهازك قبل الشراء.",
+    "compatCta": "فحص الهاتف مجاناً",
+    "calcTitle": "مخطّط بيانات سريع",
+    "calcHint": "كم تحتاج من البيانات لهذه الرحلة؟",
+    "calcLight": "استخدام خفيف — رسائل وخرائط لإقامة قصيرة.",
+    "calcTypical": "مسافر عادي — خرائط ومحادثات وبعض التصفح.",
+    "calcHeavy": "استخدام كثيف — تنقّل طوال اليوم ورفع صور.",
+    "calcCreator": "صانع محتوى / نقطة اتصال — اختر باقة أكبر.",
+    "calcCta": "قارن الباقات الحالية"
   }
 }

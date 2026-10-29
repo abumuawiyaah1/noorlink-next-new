@@ -2,12 +2,17 @@ import { plansPathForCountry } from "@/lib/country-slugs";
 import { LEARN_POSTS } from "@/lib/learn-posts";
 import { COUNTRY_TEMPLATE_HINTS } from "@/lib/country-templates";
 import { INSIDER_ISSUES } from "@/lib/insider-issues";
+import { localizedPath } from "@/lib/i18n/path";
+import {
+  getIndexedPseoDestinations,
+  getPseoAvailableLocales,
+} from "@/lib/pseo";
 import {
   REGIONAL_PRODUCTS,
   plansPathForRegion,
   type RegionalRouteSlug,
 } from "@/lib/regional-products";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, LOCALE_HREFLANG } from "@/lib/seo";
 
 export type SitemapEntry = {
   url: string;
@@ -21,6 +26,9 @@ export type SitemapEntry = {
     | "yearly"
     | "never";
   priority?: number;
+  alternates?: {
+    languages?: Record<string, string>;
+  };
 };
 
 const REGIONAL_ROUTE_SLUGS = new Set<RegionalRouteSlug>(
@@ -131,6 +139,26 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
       url: absoluteUrl(`/newsletter/${issue.slug}`),
       changeFrequency: "monthly",
       priority: 0.5,
+    });
+  }
+
+  // pSEO hubs — only is_indexed rows (staged crawl release).
+  for (const dest of getIndexedPseoDestinations()) {
+    const bare = `/esim/${dest.slug}`;
+    const locales = getPseoAvailableLocales(dest);
+    const languages: Record<string, string> = {};
+    for (const locale of locales) {
+      languages[LOCALE_HREFLANG[locale]] = absoluteUrl(
+        localizedPath(bare, locale),
+      );
+    }
+    languages["x-default"] = absoluteUrl(localizedPath(bare, "en"));
+    entries.push({
+      url: absoluteUrl(bare),
+      changeFrequency: "monthly",
+      priority: 0.85,
+      lastModified: now,
+      alternates: { languages },
     });
   }
 
