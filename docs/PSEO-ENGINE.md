@@ -20,12 +20,12 @@ Organic acquisition for travel eSIM without ad spend. Hubs rank for “eSIM + co
 - Hub HTML from CDN/ISR (aim TTFB ≪ origin DB)
 - No Supabase on the critical path for v1 page render
 - Unique Layer-A fields required before `is_indexed = true`
-- Wave A indexed first; B/C after impressions prove the template
+- Wave A + B indexed; Wave C after competitive pages are polished
 
 ## Waves
-- **A (index first):** turkey, thailand, mexico, colombia, dominican-republic, egypt, uae, morocco, indonesia, costa-rica
-- **B:** jamaica, bahamas, barbados, spain, italy, france, brazil, canada, saudi-arabia
-- **C (competitive):** usa, japan, uk, germany, south-korea, australia
+- **A (indexed):** turkey, thailand, mexico, colombia, dominican-republic, egypt, uae, morocco, indonesia, costa-rica
+- **B (indexed):** jamaica, bahamas, barbados, spain, italy, france, brazil, canada, saudi-arabia
+- **C (staged):** usa, japan, uk, germany, south-korea, australia
 
 ## Safety layers
 A Variable-rich fields · B `is_indexed` · C canonical + hreflang · D 30-day ISR
