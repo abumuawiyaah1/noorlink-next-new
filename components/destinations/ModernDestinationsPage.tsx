@@ -197,11 +197,7 @@ export function ModernDestinationsPage({
                 key={card.id}
                 href={withAttribution(card.href, { promo, ref: refCode })}
                 className={`card ${card.className}${regional ? " region-card" : ""}`}
-                aria-label={
-                  regional
-                    ? `${t(dict, "destinationsPage.seePlans")}: ${card.title}, ${priceLabel}`
-                    : `${t(dict, "destinationsPage.seePlans")}: ${card.title}, ${priceLabel}`
-                }
+                aria-label={`${t(dict, "destinationsPage.seePlans")}: ${card.title}, ${priceLabel}`}
               >
                 <DestinationCardMedia
                   src={card.image}

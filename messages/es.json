@@ -2196,6 +2196,32 @@
     "indexDescription": "Consejos de red, APN y ciudades cubiertas — luego sigue a planes y pago.",
     "browseDestinations": "Ver todos los destinos",
     "relatedTitle": "Más guías de destino",
-    "guideLink": "Guía eSIM de viaje para {country}"
+    "guideLink": "Guía eSIM de viaje para {country}",
+    "airportsTitle": "Aeropuertos e instalación antes de aterrizar",
+    "airportsBody": "Llegadas principales: {airports}. Instala tu eSIM NoorLink en Wi‑Fi antes de volar para tener datos al salir de la terminal.",
+    "airportsFallback": "Instala en el Wi‑Fi de casa antes de volar. En la puerta, pon la eSIM de viaje como línea de datos y activa el roaming solo en esa línea.",
+    "faqTitle": "Preguntas frecuentes",
+    "faqWorksQ": "¿Funciona una eSIM de viaje en {country}?",
+    "faqWorksA": "Sí. Los planes NoorLink para {country} usan redes socias como {carrier}. Instala antes de volar y activa la línea de datos eSIM al aterrizar.",
+    "faqInstallQ": "¿Debo instalar antes de aterrizar en {airport}?",
+    "faqInstallA": "Sí — instala en Wi‑Fi en casa. Al aterrizar en {airport}, elige la eSIM de viaje para datos y deja el roaming activo solo en esa línea.",
+    "faqRoamingQ": "¿Necesito el roaming de datos activado?",
+    "faqRoamingA": "Activa el roaming solo en la línea eSIM de NoorLink. Desactiva los datos de tu SIM habitual para evitar cargos sorpresa.",
+    "faqVsSimQ": "¿eSIM de viaje frente a SIM del aeropuerto o roaming?",
+    "faqVsSimA": "Una eSIM evita la cola del aeropuerto y suele costar menos que el roaming de tu operador. Mantienes tu número principal para WhatsApp y códigos OTP.",
+    "faqDataQ": "¿Cuántos datos necesito en {country}?",
+    "faqDataA": "La mayoría de viajes urbanos van bien con 3–10 GB. Usa el planificador de esta página y compara planes en vivo para {country}.",
+    "faqLocalQ": "¿Qué más preguntan los viajeros sobre {country}?",
+    "trustTitle": "Viaja con calma — instala antes de volar",
+    "trustBody": "Comprueba que el teléfono esté desbloqueado y sea compatible con eSIM, instala en Wi‑Fi y aterriza listo para mapas y mensajes.",
+    "trustReviews": "Ver reseñas en Trustpilot",
+    "clustersTitle": "Próximos pasos útiles",
+    "clusters": {
+      "beforeYouFly": "Lista antes de volar",
+      "umrahPrep": "Guía eSIM para Umrah",
+      "destinations": "Ver todos los destinos",
+      "deviceCheck": "Comprobar compatibilidad del teléfono"
+    },
+    "fromPriceCta": "{price} — ver planes"
   }
 }

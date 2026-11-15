@@ -2195,6 +2195,32 @@
     "indexDescription": "Practical network tips, APN notes, and city coverage — then continue to live plans and checkout.",
     "browseDestinations": "Browse all destinations",
     "relatedTitle": "More destination guides",
-    "guideLink": "Travel eSIM guide for {country}"
+    "guideLink": "Travel eSIM guide for {country}",
+    "airportsTitle": "Airports & install before you land",
+    "airportsBody": "Main arrivals: {airports}. Install your NoorLink eSIM on Wi‑Fi before you fly so data is ready when you leave the terminal.",
+    "airportsFallback": "Install on home Wi‑Fi before you fly. At the gate, set the travel eSIM as your mobile data line and turn data roaming on for that line only.",
+    "faqTitle": "Frequently asked questions",
+    "faqWorksQ": "Does a travel eSIM work in {country}?",
+    "faqWorksA": "Yes. NoorLink travel eSIM plans for {country} use partner networks such as {carrier}. Install before you fly, then enable the eSIM data line after landing.",
+    "faqInstallQ": "Should I install before landing at {airport}?",
+    "faqInstallA": "Yes — install on Wi‑Fi at home. When you land at {airport}, select the travel eSIM for cellular data and keep data roaming on for that line only.",
+    "faqRoamingQ": "Do I need data roaming turned on?",
+    "faqRoamingA": "Turn data roaming on for the NoorLink eSIM line only. Keep your home SIM’s mobile data off so you avoid surprise roaming charges.",
+    "faqVsSimQ": "Travel eSIM vs airport SIM or home roaming?",
+    "faqVsSimA": "A travel eSIM skips the airport SIM desk and usually costs less than home-carrier roaming. You still keep your primary number for WhatsApp and OTP codes.",
+    "faqDataQ": "How much data do I need in {country}?",
+    "faqDataA": "Most city trips are fine on 3–10 GB. Use the planner on this page, then compare live plans for {country}.",
+    "faqLocalQ": "Anything else travelers ask about {country}?",
+    "trustTitle": "Travel calm — install before you fly",
+    "trustBody": "Check that your phone is unlocked and eSIM-compatible, install on Wi‑Fi, then land ready for maps and messages.",
+    "trustReviews": "See traveler reviews on Trustpilot",
+    "clustersTitle": "Helpful next steps",
+    "clusters": {
+      "beforeYouFly": "Before-you-fly checklist",
+      "umrahPrep": "Umrah eSIM prep guide",
+      "destinations": "Browse all destinations",
+      "deviceCheck": "Free phone compatibility check"
+    },
+    "fromPriceCta": "{price} — see plans"
   }
 }
