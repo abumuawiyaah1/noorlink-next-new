@@ -1097,4 +1097,293 @@ export const PSEO_DESTINATIONS: PseoDestination[] = [
       },
     },
   },
+
+  // ——— Wave D (staged — flip isIndexed next week) ———
+  {
+    slug: "kuwait",
+    plansPath: "/plans/kuwait",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "Zain",
+    secondaryCarrier: "Ooredoo KW",
+    apnName: "internet",
+    apnNotes: "Kuwait City coverage is strong; APN is usually automatic on travel eSIMs.",
+    supportedFrequencies: "5G / 4G LTE",
+    popularCities: ["Kuwait City", "Salmiya", "Hawalli", "Jahra", "Fahaheel"],
+    locales: {
+      en: {
+        countryName: "Kuwait",
+        intro:
+          "Kuwait City stays and Gulf stopovers need maps and ride apps ready the moment you leave KWI — without home-carrier roaming.",
+        roamingTip:
+          "Install before KWI. Enable eSIM data after landing for Careem and navigation.",
+      },
+      ar: {
+        countryName: "الكويت",
+        intro:
+          "زيارات الكويت والتوقفات القصيرة تحتاج بيانات للخرائط والتطبيقات فور مغادرة المطار.",
+        roamingTip:
+          "ثبّت الشريحة قبل السفر وفعّل بيانات eSIM بعد الهبوط لكريم والملاحة.",
+      },
+    },
+  },
+  {
+    slug: "bahrain",
+    plansPath: "/plans/bahrain",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "Batelco",
+    secondaryCarrier: "Zain BH",
+    apnName: "internet",
+    apnNotes: "Manama and the causeway corridor are well covered; APN is usually automatic.",
+    supportedFrequencies: "5G / 4G LTE",
+    popularCities: ["Manama", "Muharraq", "Riffa", "Seef", "Amwaj"],
+    locales: {
+      en: {
+        countryName: "Bahrain",
+        intro:
+          "Manama weekends and BAH layovers are smoother with data ready for maps, banking apps, and rides from the terminal.",
+        roamingTip:
+          "Install before BAH. Switch to eSIM data after landing — do not wait until you leave free airport Wi‑Fi.",
+      },
+      ar: {
+        countryName: "البحرين",
+        intro:
+          "منامة وعطلات نهاية الأسبوع تحتاج بيانات جاهزة للخرائط والتطبيقات من لحظة مغادرة المطار.",
+        roamingTip:
+          "ثبّت الشريحة قبل السفر وفعّل eSIM بعد الهبوط قبل مغادرة واي فاي المطار.",
+      },
+    },
+  },
+  {
+    slug: "oman",
+    plansPath: "/plans/oman",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "Omantel",
+    secondaryCarrier: "Ooredoo OM",
+    apnName: "internet",
+    apnNotes: "Muscat is strong; mountain and desert roads thin — download offline maps for day trips.",
+    supportedFrequencies: "5G / 4G LTE",
+    popularCities: ["Muscat", "Salalah", "Nizwa", "Sur", "Sohar"],
+    locales: {
+      en: {
+        countryName: "Oman",
+        intro:
+          "Muscat arrivals and mountain or wadi day trips need maps ready before you leave MCT — install data at home, not at the visitor desk.",
+        roamingTip:
+          "Enable eSIM data after landing. Download offline maps before Jebel Akhdar or desert drives.",
+      },
+      ar: {
+        countryName: "عُمان",
+        intro:
+          "مسقط والرحلات إلى الجبال والأودية تحتاج خرائط جاهزة قبل مغادرة المطار.",
+        roamingTip:
+          "فعّل بيانات eSIM بعد الهبوط وحمل خرائط دون اتصال قبل الرحلات الجبلية.",
+      },
+    },
+  },
+  {
+    slug: "trinidad-and-tobago",
+    plansPath: "/plans/trinidad-and-tobago",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "Digicel",
+    secondaryCarrier: "bmobile",
+    apnName: "internet",
+    apnNotes: "Port of Spain and Tobago towns are workable; rural coverage varies — keep offline maps for coastline drives.",
+    supportedFrequencies: "4G LTE",
+    popularCities: ["Port of Spain", "San Fernando", "Scarborough", "Chaguanas", "Crown Point"],
+    locales: {
+      en: {
+        countryName: "Trinidad and Tobago",
+        intro:
+          "Carnival weeks and dual-island hops need WhatsApp and maps without hunting for a tourist SIM after POS or TAB.",
+        roamingTip:
+          "Install before you fly. Enable eSIM data after landing for rides and ferry updates.",
+      },
+    },
+  },
+  {
+    slug: "aruba",
+    plansPath: "/plans/aruba",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "Digicel",
+    secondaryCarrier: "Setar",
+    apnName: "internet",
+    apnNotes: "Oranjestad and Palm Beach are strong; inland coverage is usually fine for a small island.",
+    supportedFrequencies: "4G LTE",
+    popularCities: ["Oranjestad", "Palm Beach", "Noord", "San Nicolas", "Eagle Beach"],
+    locales: {
+      en: {
+        countryName: "Aruba",
+        intro:
+          "Beach weeks and AUA arrivals are calmer when rides and maps work from the terminal — install before you leave home Wi‑Fi.",
+        roamingTip:
+          "Enable eSIM data after landing. Keep your home number for OTP; use the travel line for data.",
+      },
+      es: {
+        countryName: "Aruba",
+        intro:
+          "Semanas de playa y llegadas a AUA son más tranquilas con mapas y rides listos desde la terminal.",
+        roamingTip:
+          "Activa la eSIM al aterrizar. Mantén tu número habitual para OTP y usa la línea de viaje para datos.",
+      },
+    },
+  },
+  {
+    slug: "puerto-rico",
+    plansPath: "/plans/puerto-rico",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "T-Mobile",
+    secondaryCarrier: "Claro PR",
+    apnName: "fast.t-mobile.com",
+    apnNotes: "San Juan coverage is strong; mountain towns can thin — download offline maps for island drives.",
+    supportedFrequencies: "5G / 4G LTE",
+    popularCities: ["San Juan", "Condado", "Old San Juan", "Ponce", "Rincón"],
+    locales: {
+      en: {
+        countryName: "Puerto Rico",
+        intro:
+          "SJU arrivals and island road trips need maps and rides without surprise US roaming on a foreign home SIM.",
+        roamingTip:
+          "Install before SJU. Enable eSIM data after landing for Uber and navigation.",
+      },
+      es: {
+        countryName: "Puerto Rico",
+        intro:
+          "Llegadas a SJU y rutas por la isla piden mapas y rides sin roaming sorpresa de tu SIM extranjera.",
+        roamingTip:
+          "Instala antes de SJU y activa la eSIM al aterrizar para Uber y navegación.",
+      },
+    },
+  },
+  {
+    slug: "austria",
+    plansPath: "/plans/austria",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "A1",
+    secondaryCarrier: "Magenta",
+    apnName: "internet",
+    apnNotes: "Vienna and Salzburg are strong; alpine valleys thin — keep offline maps for ski or hiking days.",
+    supportedFrequencies: "5G / 4G LTE",
+    popularCities: ["Vienna", "Salzburg", "Innsbruck", "Graz", "Hallstatt"],
+    locales: {
+      en: {
+        countryName: "Austria",
+        intro:
+          "Vienna metros and alpine transfers are smoother with data ready for ÖBB apps and maps from VIE onward.",
+        roamingTip:
+          "Install before VIE. Enable eSIM data for S-Bahn and train connections; download offline maps before mountain days.",
+      },
+    },
+  },
+  {
+    slug: "belgium",
+    plansPath: "/plans/belgium",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "Proximus",
+    secondaryCarrier: "Orange BE",
+    apnName: "internet",
+    apnNotes: "Brussels and Antwerp are strong; Eurostar/Thalys days need cellular between station Wi‑Fi pockets.",
+    supportedFrequencies: "5G / 4G LTE",
+    popularCities: ["Brussels", "Antwerp", "Bruges", "Ghent", "Leuven"],
+    locales: {
+      en: {
+        countryName: "Belgium",
+        intro:
+          "Brussels weekends and train hops to Bruges need maps and tickets online the moment you leave BRU.",
+        roamingTip:
+          "Install before BRU. Switch to eSIM data after landing for STIB and ride apps.",
+      },
+    },
+  },
+  {
+    slug: "poland",
+    plansPath: "/plans/poland",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "Orange PL",
+    secondaryCarrier: "Play",
+    apnName: "internet",
+    apnNotes: "Warsaw and Kraków are strong; countryside coverage varies — keep offline maps for day trips.",
+    supportedFrequencies: "5G / 4G LTE",
+    popularCities: ["Warsaw", "Kraków", "Gdańsk", "Wrocław", "Poznań"],
+    locales: {
+      en: {
+        countryName: "Poland",
+        intro:
+          "Warsaw arrivals and Kraków city breaks need maps and ride apps without EU roaming surprises from a non‑EU home SIM.",
+        roamingTip:
+          "Install before WAW or KRK. Enable eSIM data after landing for Jakdojade and navigation.",
+      },
+    },
+  },
+  {
+    slug: "sweden",
+    plansPath: "/plans/sweden",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "Telia",
+    secondaryCarrier: "Tele2",
+    apnName: "internet",
+    apnNotes: "Stockholm and Gothenburg are strong; far-north coverage thins — download offline maps for Lapland.",
+    supportedFrequencies: "5G / 4G LTE",
+    popularCities: ["Stockholm", "Gothenburg", "Malmö", "Uppsala", "Kiruna"],
+    locales: {
+      en: {
+        countryName: "Sweden",
+        intro:
+          "Stockholm archipelago days and winter north trips are easier with data ready for SL apps and maps from ARN.",
+        roamingTip:
+          "Install before ARN. Enable eSIM data after landing; download offline maps before Lapland drives.",
+      },
+    },
+  },
+  {
+    slug: "maldives",
+    plansPath: "/plans/maldives",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "Dhiraagu",
+    secondaryCarrier: "Ooredoo MV",
+    apnName: "internet",
+    apnNotes: "Malé and resort islands vary — some resorts have Wi‑Fi only; keep eSIM for speedboat and seaplane days.",
+    supportedFrequencies: "4G LTE",
+    popularCities: ["Malé", "Hulhumalé", "Maafushi", "Addu", "Ari Atoll"],
+    locales: {
+      en: {
+        countryName: "Maldives",
+        intro:
+          "MLE arrivals and atoll transfers need WhatsApp and boarding updates when resort Wi‑Fi is still hours away.",
+        roamingTip:
+          "Install before MLE. Enable eSIM data after landing for speedboat or seaplane coordination.",
+      },
+    },
+  },
+  {
+    slug: "china",
+    plansPath: "/plans/china",
+    wave: "D",
+    isIndexed: false,
+    primaryCarrier: "China Mobile",
+    secondaryCarrier: "China Unicom",
+    apnName: "cmnet",
+    apnNotes: "Install before you fly. Many Western apps need a travel eSIM or VPN plan — set expectations before arrival.",
+    supportedFrequencies: "5G / 4G LTE",
+    popularCities: ["Shanghai", "Beijing", "Guangzhou", "Shenzhen", "Chengdu"],
+    locales: {
+      en: {
+        countryName: "China",
+        intro:
+          "China city weeks need maps and payments ready from PVG or PEK — a travel eSIM beats scrambling for a local stall after immigration.",
+        roamingTip:
+          "Install before you fly. Enable eSIM data after landing; plan ahead for apps that may need a VPN on some networks.",
+      },
+    },
+  },
 ];
