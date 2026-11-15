@@ -29,6 +29,11 @@ export function getIndexedPseoForCountry(
     "united-arab-emirates": "uae",
     saudi: "saudi-arabia",
     dominican: "dominican-republic",
+    korea: "south-korea",
+    "united-states": "usa",
+    "united-kingdom": "uk",
+    us: "usa",
+    gb: "uk",
   };
   const slug = aliases[normalized] ?? normalized;
   const dest = getPseoDestination(slug);
