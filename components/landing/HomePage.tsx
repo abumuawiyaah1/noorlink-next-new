@@ -1,4 +1,5 @@
 import { DeviceChecker } from "@/components/landing/DeviceChecker";
+import { HomeEsimGuides } from "@/components/landing/HomeEsimGuides";
 import { HomeFooter } from "@/components/landing/HomeFooter";
 import { HomeHero } from "@/components/landing/HomeHero";
 import { HomeNewsletter } from "@/components/landing/HomeNewsletter";
@@ -22,6 +23,7 @@ export function HomePage() {
         <TrustStatsBar className="trust-stats-intro--home" />
       </div>
       <PopularCountries />
+      <HomeEsimGuides />
       <HowItWorks />
       <Testimonials />
       <DeviceChecker />

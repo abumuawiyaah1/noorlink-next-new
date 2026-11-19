@@ -150,6 +150,7 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
   });
 
   // pSEO hubs — only is_indexed rows (staged crawl release).
+  // Wave A slightly higher priority so Google prefers those in the queue.
   for (const dest of getIndexedPseoDestinations()) {
     const bare = `/esim/${dest.slug}`;
     const locales = getPseoAvailableLocales(dest);
@@ -160,10 +161,12 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
       );
     }
     languages["x-default"] = absoluteUrl(localizedPath(bare, "en"));
+    const priority =
+      dest.wave === "A" ? 0.9 : dest.wave === "B" ? 0.85 : 0.8;
     entries.push({
       url: absoluteUrl(bare),
       changeFrequency: "monthly",
-      priority: 0.85,
+      priority,
       lastModified: now,
       alternates: { languages },
     });

@@ -2194,6 +2194,8 @@
     "indexNav": "Guías eSIM",
     "indexTitle": "Guías eSIM de viaje por destino",
     "indexDescription": "Consejos de red, APN y ciudades cubiertas — luego sigue a planes y pago.",
+    "homeGuidesTitle": "Guías eSIM listas para instalar",
+    "homeGuidesBlurb": "Guías cortas por destino — redes, aeropuertos e instalación antes de volar — luego sigue a los planes.",
     "browseDestinations": "Ver todos los destinos",
     "relatedTitle": "Más guías de destino",
     "guideLink": "Guía eSIM de viaje para {country}",

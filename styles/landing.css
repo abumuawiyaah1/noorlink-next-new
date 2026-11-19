@@ -373,6 +373,48 @@
         .popular-countries {
             padding: 40px 0 56px;
         }
+        .home-esim-guides {
+            padding: 8px 0 48px;
+        }
+        .home-esim-guides .why-kicker {
+            display: block;
+            text-align: center;
+        }
+        .home-esim-guides h2 {
+            color: var(--primary);
+            font-size: clamp(1.45rem, 2.6vw, 1.85rem);
+            margin: 8px 0 10px;
+            text-align: center;
+        }
+        .home-esim-guides__blurb {
+            color: var(--text-muted);
+            max-width: 36rem;
+            margin: 0 auto 1.1rem;
+            text-align: center;
+            line-height: 1.55;
+        }
+        .home-esim-guides__list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 0.9rem;
+            list-style: none;
+            margin: 0 auto 0.9rem;
+            padding: 0;
+            max-width: 920px;
+        }
+        .home-esim-guides__link {
+            color: #0F3D3E;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .home-esim-guides__all {
+            display: block;
+            text-align: center;
+            color: #0F3D3E;
+            font-weight: 700;
+        }
         .popular-countries__header {
             text-align: center;
             margin-bottom: 28px;

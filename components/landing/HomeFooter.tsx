@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FooterSocialLinks } from "@/components/layout/FooterSocialLinks";
 import { SecureCheckoutTrust } from "@/components/ui/SecureCheckoutTrust";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedPath } from "@/lib/i18n/path";
 import { useLocaleState } from "@/lib/i18n/use-locale";
 import { SUPPORT_EMAIL } from "@/lib/support-contact";
 
@@ -16,7 +17,11 @@ export function HomeFooter() {
     <footer>
       <div className="container footer-grid">
         <div>
-          <Link href="/" className="logo-text" style={{ color: "white" }}>
+          <Link
+            href={localizedPath("/", locale)}
+            className="logo-text"
+            style={{ color: "white" }}
+          >
             Noor<span style={{ color: "var(--accent)" }}>Link</span>
             <sup className="logo-tm">TM</sup>
           </Link>
@@ -42,12 +47,28 @@ export function HomeFooter() {
         <div>
           <h4>{dict.footer.company}</h4>
           <nav className="footer-list" aria-label={dict.footer.company}>
-            <Link href="/about">{dict.footer.aboutUs}</Link>
-            <Link href="/learn">{dict.footer.learn}</Link>
-            <Link href="/newsletter">{dict.footer.newsletter}</Link>
-            <Link href="/support">{dict.footer.contactSupport}</Link>
-            <Link href="/partners#apply">{dict.footer.partners}</Link>
-            <Link href="/faq">{dict.footer.faq}</Link>
+            <Link href={localizedPath("/about", locale)}>
+              {dict.footer.aboutUs}
+            </Link>
+            <Link href={localizedPath("/destinations", locale)}>
+              {dict.footer.destinations}
+            </Link>
+            <Link href={localizedPath("/esim", locale)}>
+              {dict.footer.esimGuides}
+            </Link>
+            <Link href={localizedPath("/learn", locale)}>
+              {dict.footer.learn}
+            </Link>
+            <Link href={localizedPath("/newsletter", locale)}>
+              {dict.footer.newsletter}
+            </Link>
+            <Link href={localizedPath("/support", locale)}>
+              {dict.footer.contactSupport}
+            </Link>
+            <Link href={localizedPath("/partners#apply", locale)}>
+              {dict.footer.partners}
+            </Link>
+            <Link href={localizedPath("/faq", locale)}>{dict.footer.faq}</Link>
           </nav>
         </div>
         <div>

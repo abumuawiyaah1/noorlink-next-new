@@ -49,5 +49,12 @@ Organic acquisition for travel eSIM without ad spend. Hubs rank for “eSIM + co
 4. Prefer intent clusters (`/learn`, `/help`) linking into hubs over doorway pages.
 5. Cap expansion when catalog is covered; invest in refresh + internal links.
 
+## Indexing status (GSC, mid‑Nov 2026)
+- ~8 indexed / ~170 **Discovered – currently not indexed** (0 crawled-not-indexed).
+- Indexed sample: home, `/es`, turkey (+ es/ar), mexico (+ es), `/kyc`.
+- **Do not** flip Wave D until more A–C hubs leave “Discovered.”
+- On-site crawl helps (shipped): homepage Wave A guide links, home footer → `/esim` + destinations, help → `/esim`, related hubs prefer Wave A (limit 8), sitemap priority A > B > C, index lists sort A→C.
+- Manual: GSC URL Inspection on priority EN Wave A hubs + `/esim` / `/hajj-umrah` (sparingly).
+
 ## Safety layers
 A Variable-rich fields · B `is_indexed` · C canonical + hreflang · D 30-day ISR · E FAQ/Offer JSON-LD

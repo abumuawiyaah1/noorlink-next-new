@@ -2193,6 +2193,8 @@
     "indexNav": "eSIM guides",
     "indexTitle": "Travel eSIM guides by destination",
     "indexDescription": "Practical network tips, APN notes, and city coverage — then continue to live plans and checkout.",
+    "homeGuidesTitle": "Install-ready eSIM guides",
+    "homeGuidesBlurb": "Short destination guides — networks, airports, and install-before-you-fly tips — then continue to live plans.",
     "browseDestinations": "Browse all destinations",
     "relatedTitle": "More destination guides",
     "guideLink": "Travel eSIM guide for {country}",
